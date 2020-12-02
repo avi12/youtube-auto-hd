@@ -1,0 +1,24 @@
+# Yarn and npm
+yarn-error.log
+npm-debug.log
+node_modules
+
+# WebStorm files
+.idea/*
+
+# Vim swap files
+*.swp
+*.swo
+
+# Sublime files
+*.sublime-workspace
+*.sublime-project
+
+# Mac and windows files
+.DS_Store
+.tmp
+
+# Distribution
+/dist_packed-edge
+/dist_packed
+/dist/build/

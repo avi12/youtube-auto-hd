@@ -1,0 +1,64 @@
+{
+  "name": "youtube-auto-hd-fps",
+  "version": "1.1.20",
+  "homepage": "https://avi12.com",
+  "repository": "avi12/youtube-auto-hd",
+  "author": {
+    "name": "avi12",
+    "email": "avi6106@gmail.com"
+  },
+  "bugs": {
+    "email": "avi6106@gmail.com"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "pack": "web-ext build --overwrite-dest --artifacts-dir dist_packed --source-dir dist",
+    "pack-stores": "webext-store-incompat-fixer -i dist_packed/youtube_auto_hd_fps-{version}.zip --edge-locale-inclusions en,fr,he,it,nl --stores edge,firefox",
+    "pack-self": "zip-self -o dist_packed/youtube_auto_hd_fps-{version}-source.zip",
+    "build-pack": "yarn run build && yarn run pack && yarn run pack-stores && yarn run pack-self",
+    "set-version": "set-json-version -f package.json dist/manifest.json -v",
+    "validate": "svelte-check",
+    "run-browser": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=dQw4w9WgXcQ --source-dir dist --verbose --target",
+    "run-firefox": "yarn run-browser firefox-desktop",
+    "run-chromium": "yarn run-browser chromium"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "~17.0.0",
+    "@rollup/plugin-node-resolve": "~11.0.0",
+    "@rollup/plugin-typescript": "~8.0.0",
+    "@tsconfig/svelte": "^1.0.10",
+    "@types/chrome": "~0.0.126",
+    "prettier": "^2.2.0",
+    "prettier-plugin-svelte": "^1.4.1",
+    "rollup": "~2.34.0",
+    "rollup-plugin-css-only": "^3.0.0",
+    "rollup-plugin-svelte": "~7.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "svelte": "~3.30.1",
+    "svelte-check": "^1.0.55",
+    "svelte-preprocess": "^4.5.1",
+    "tslib": "^2.0.2",
+    "web-ext": "^5.4.0",
+    "webext-store-incompat-fixer": "^0.1.7",
+    "zip-self": "^0.2.5"
+  },
+  "browserslist": [
+    "Firefox ESR",
+    "Firefox >= 48",
+    "Chrome >= 22",
+    "Opera >= 15",
+    "Edge >= 14",
+    "Safari >= 14",
+    "unreleased Firefox versions",
+    "unreleased Chrome versions",
+    "unreleased Opera versions",
+    "unreleased Edge versions",
+    "unreleased Safari versions"
+  ],
+  "prettier": {
+    "arrowParens": "avoid",
+    "singleQuote": false,
+    "trailingComma": "none"
+  }
+}
