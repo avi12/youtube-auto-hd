@@ -47,7 +47,6 @@ function createConfig(filename, useSvelte = false) {
 export default [
   createConfig("popup", true),
   createConfig("background"),
-  createConfig("cj-landing"),
   createConfig("yt-auto-hd-content-script-functions"),
   createConfig("yt-auto-hd-content-script-initialize"),
   createConfig("yt-auto-hd-setup"),
