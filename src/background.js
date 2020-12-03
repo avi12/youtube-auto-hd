@@ -5,7 +5,7 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
   switch (reason) {
     case "update":
       chrome.tabs.create({
-        url: `${baseUrl}whatsnew?installed=1`
+        url: `${baseUrl}/whatsnew?installed=1`
       });
       break;
 
