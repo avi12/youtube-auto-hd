@@ -4480,6 +4480,11 @@ set-immediate-shim@~1.0.1:
   resolved "https://registry.yarnpkg.com/set-immediate-shim/-/set-immediate-shim-1.0.1.tgz#4b2b1b27eb808a9f8dcc481a58e5e56f599f3f61"
   integrity sha1-SysbJ+uAip+NzEgaWOXlb1mfP2E=
 
+set-json-version@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/set-json-version/-/set-json-version-1.0.4.tgz#8dc969fe50ccdc3527c86d64aac2c40f85799d8b"
+  integrity sha512-mw0lNDFKzG8ZijbPbEXbYqgoBDP5NgrhUmwPVvi2dUDamMaAAf1gUx1jkDWrwT1ziCZTrcRp1PqZxlaa+drNtQ==
+
 set-value@^2.0.0, set-value@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/set-value/-/set-value-2.0.1.tgz#a18d40530e6f07de4228c7defe4227af8cad005b"
