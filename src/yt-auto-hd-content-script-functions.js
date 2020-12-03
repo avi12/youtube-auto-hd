@@ -1,6 +1,6 @@
 "use strict";
 
-import { getIsFewerQualityValues, getStorage } from "./yt-auto-hd-utilities";
+import { getIsFewerQualityValues, getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
 import { initial } from "./yt-auto-hd-setup";
 
 chrome.storage.onChanged.addListener(updatePlayer);
