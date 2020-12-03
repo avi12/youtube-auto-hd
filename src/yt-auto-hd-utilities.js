@@ -1,5 +1,7 @@
 "use strict";
 
+import { initial } from "./yt-auto-hd-setup";
+
 export async function resizePlayerIfNeeded(sizeObj = {}) {
   const {
     size: isLargeRequired = initial.size,
