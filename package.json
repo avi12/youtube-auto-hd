@@ -24,11 +24,8 @@
     "run-chromium": "yarn run-browser chromium"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "~17.0.0",
     "@rollup/plugin-node-resolve": "~11.0.0",
-    "@rollup/plugin-typescript": "~8.0.0",
     "@tsconfig/svelte": "^1.0.10",
-    "@types/chrome": "~0.0.126",
     "prettier": "^2.2.0",
     "prettier-plugin-svelte": "^1.4.1",
     "rollup": "~2.34.0",
