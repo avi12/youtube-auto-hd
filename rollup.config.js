@@ -10,7 +10,7 @@ function createConfig(filename, useSvelte = false) {
     input: `src/${filename}.js`,
     output: {
       format: "iife",
-      file: `dist/build/${filename}.js`,
+      file: `dist/build/${filename}.js`
     },
     plugins: [
       useSvelte && css({ output: "bundle.css" }),
@@ -19,7 +19,7 @@ function createConfig(filename, useSvelte = false) {
           // enable run-time checks when not in production
           compilerOptions: {
             dev: !production
-          },
+          }
           // we'll extract any component CSS out into
           // a separate file - better for performance
         }),
@@ -31,16 +31,16 @@ function createConfig(filename, useSvelte = false) {
       // https://github.com/rollup/plugins/tree/master/packages/commonjs
       resolve({
         browser: true,
-        dedupe: ["svelte"],
+        dedupe: ["svelte"]
       }),
 
       // If we're building for production (npm run build
       // instead of npm run dev), minify
-      production && terser(),
+      production && terser()
     ],
     watch: {
-      clearScreen: false,
-    },
+      clearScreen: false
+    }
   };
 }
 
@@ -50,5 +50,5 @@ export default [
   createConfig("yt-auto-hd-content-script-functions"),
   createConfig("yt-auto-hd-content-script-initialize"),
   createConfig("yt-auto-hd-setup"),
-  createConfig("yt-auto-hd-utilities"),
+  createConfig("yt-auto-hd-utilities")
 ];
