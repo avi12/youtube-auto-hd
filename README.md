@@ -13,8 +13,8 @@ yarn
 ```shell script
 yarn dev
 ```
-Then, open the extensions page in your browser, and select the `dist` folder.  
-If you're on Firefox, select the `manifest.json`.
+Then, open the extensions page in your browser, enable the developer tools (top-right corner usually), and either drag-drop the `dist` folder or click "Load unpacked extension" and choose it.  
+If you're on Firefox, simply run the command below.
 ## Testing
 ```shell script
 yarn run-firefox
