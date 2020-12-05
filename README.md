@@ -30,3 +30,6 @@ yarn run-firefox
 ## Contribution
 Feel free to contribute! Keep in mind that the license I chose is [GPL v3](/LICENSE).  
 If you want to fork, make sure to credit [avi12](https://avi12.com) and link to this repository.
+
+## Translating
+You can translate the extension to your own language by filling [this form](https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate).
