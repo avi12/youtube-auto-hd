@@ -3,24 +3,24 @@ A browser extension that sets the quality of YouTube videos according to the use
 Available for [Google Chrome](https://chrome.google.com/webstore/detail/fcphghnknhkimeagdglkljinmpbagone), [Mozilla Firefox](https://addons.mozilla.org/addon/youtube-auto-hd-fps), [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom) and [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps).
 
 ## Requirements for setting up
-Install [Node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com/getting-started/install).
+Install [Node.js](https://nodejs.org) and [PNPM](https://pnpm.js.org/en/installation).
 
 ## Download dev dependencies:
 ```shell script
-yarn
+pnpm i
 ```
 ## Start Rollup for development
 ```shell script
-yarn dev
+pnpm dev
 ````
 ## Running
 ### Chromium/Chrome
 ```shell script
-yarn run-chromium
+pnpm run-chromium
 ```
 ### Firefox
 ```shell script
-yarn run-firefox
+pnpm run-firefox
 ```
 ### Other browsers
 1. Open the extensions page in your browser.

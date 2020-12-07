@@ -1,6 +1,4 @@
-# Yarn and npm
-yarn-error.log
-npm-debug.log
+# pnpm
 node_modules
 
 # WebStorm files

@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "~11.0.0",
-    "@tsconfig/svelte": "^1.0.10",
     "prettier": "^2.2.0",
     "prettier-plugin-svelte": "^1.4.1",
     "rollup": "~2.34.0",
