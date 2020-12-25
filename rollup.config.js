@@ -2,8 +2,10 @@ import resolve from "@rollup/plugin-node-resolve";
 import svelte from "rollup-plugin-svelte";
 import { terser } from "rollup-plugin-terser";
 import css from "rollup-plugin-css-only";
+import commonjs from "@rollup/plugin-commonjs";
+import preprocess from "svelte-preprocess";
 
-const production = !process.env.ROLLUP_WATCH;
+const isProduction = !process.env.ROLLUP_WATCH;
 
 function createConfig(filename, useSvelte = false) {
   return {
@@ -18,8 +20,13 @@ function createConfig(filename, useSvelte = false) {
         svelte({
           // enable run-time checks when not in production
           compilerOptions: {
-            dev: !production
-          }
+            dev: !isProduction
+          },
+          preprocess: preprocess({
+            scss: {
+              includePaths: ["theme"]
+            }
+          })
           // we'll extract any component CSS out into
           // a separate file - better for performance
         }),
@@ -29,6 +36,7 @@ function createConfig(filename, useSvelte = false) {
       // some cases you'll need additional configuration -
       // consult the documentation for details:
       // https://github.com/rollup/plugins/tree/master/packages/commonjs
+      commonjs(),
       resolve({
         browser: true,
         dedupe: ["svelte"]
@@ -36,7 +44,7 @@ function createConfig(filename, useSvelte = false) {
 
       // If we're building for production (npm run build
       // instead of npm run dev), minify
-      production && terser()
+      isProduction && terser()
     ],
     watch: {
       clearScreen: false
