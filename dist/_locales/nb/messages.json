@@ -1,4 +1,6 @@
 {
+"cj_i18n_00354":{"message":"Donér"},
+"cj_i18n_01605":{"message":"Hjelp med oversettelser"},
 "cj_i18n_02146":{"message":"Angi videokvaliteten på YouTube automatisk i henhold til deres FPS!"},
 "cj_i18n_02147":{"message":"Se kvalitet"},
 "cj_i18n_02148":{"message":"FPS videoer"},
@@ -12,5 +14,6 @@
 "cj_i18n_06657":{"message":"Liker du denne utvidelsen?"},
 "cj_i18n_06658":{"message":"Vennligst ranger 5 stjerner!"},
 "cj_i18n_06659":{"message":"Vurder å støtte utviklingen!"},
-"cj_i18n_06660":{"message":"I tillegg, vurder å støtte utviklingen!"}
+"cj_i18n_06660":{"message":"I tillegg, vurder å støtte utviklingen!"},
+"cj_i18n_06858":{"message":"Alle framerates"}
 }

@@ -1,6 +1,6 @@
 {
   "name": "youtube-auto-hd-fps",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "homepage": "https://avi12.com",
   "repository": "avi12/youtube-auto-hd",
   "author": {
@@ -11,8 +11,8 @@
     "email": "avi6106@gmail.com"
   },
   "scripts": {
-    "build": "rollup -c",
     "dev": "rollup -c -w",
+    "build": "rollup -c",
     "pack": "web-ext build --overwrite-dest --artifacts-dir dist_packed --source-dir dist --filename youtube_auto_hd_fps-{version}.zip",
     "pack-stores": "webext-store-incompat-fixer -i dist_packed/youtube_auto_hd_fps-{version}.zip --edge-locale-inclusions en,fr,he,it,nl --stores edge,firefox",
     "pack-self": "zip-self -o dist_packed/youtube_auto_hd_fps-{version}-source.zip",
@@ -24,20 +24,24 @@
     "run-chromium": "yarn run-browser chromium"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "~11.0.0",
-    "prettier": "^2.2.0",
-    "prettier-plugin-svelte": "^1.4.1",
-    "rollup": "~2.34.0",
-    "rollup-plugin-css-only": "^3.0.0",
+    "@mdi/js": "^5.8.55",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "~11.0.1",
+    "postcss": "^8.2.1",
+    "prettier": "^2.2.1",
+    "prettier-plugin-svelte": "^1.4.2",
+    "rollup": "~2.34.2",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-svelte": "~7.0.0",
     "rollup-plugin-terser": "^7.0.2",
+    "sass": "^1.30.0",
     "set-json-version": "^1.0.4",
     "svelte": "~3.30.1",
-    "svelte-check": "^1.0.55",
-    "svelte-preprocess": "^4.5.1",
-    "tslib": "^2.0.2",
-    "web-ext": "^5.4.0",
-    "webext-store-incompat-fixer": "^0.1.7",
+    "svelte-check": "^1.1.23",
+    "svelte-preprocess": "^4.6.1",
+    "web-ext": "^5.4.1",
+    "webext-store-incompat-fixer": "^0.1.11",
     "zip-self": "^0.2.5"
   },
   "browserslist": [
@@ -56,6 +60,10 @@
   "prettier": {
     "arrowParens": "avoid",
     "singleQuote": false,
-    "trailingComma": "none"
+    "trailingComma": "none",
+    "svelteSortOrder": "scripts-markup-styles"
+  },
+  "dependencies": {
+    "svelte-materialify": "^0.3.4"
   }
 }

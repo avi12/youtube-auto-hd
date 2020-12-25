@@ -1,9 +1,13 @@
 {
+"cj_i18n_00354":{"message":"Spenden"},
+"cj_i18n_01605":{"message":"Mit der Übersetzung helfen"},
 "cj_i18n_02146":{"message":"Stelle die Videoqualität auf Youtube automatisch entsprechend der FPS ein!"},
 "cj_i18n_02152":{"message":"Videos werden in diese Qualitätsstufe mit 30 FPS abgespielt."},
 "cj_i18n_02173":{"message":"Lust bei der Übersetzung zu helfen?"},
 "cj_i18n_06287":{"message":"Anklicken, um die Änderungshistorie anzusehen"},
 "cj_i18n_06288":{"message":"__app_name__ wurde aktualisiert"},
 "cj_i18n_06567":{"message":"Grösse beibehalten bei"},
-"cj_i18n_06568":{"message":"Videos automatisch anpassen"}
+"cj_i18n_06568":{"message":"Videos automatisch anpassen"},
+"cj_i18n_06657":{"message":"Magst du diese Erweiterung?"},
+"cj_i18n_06658":{"message":"Bitte bewerte uns mit 5 Sternen!"}
 }

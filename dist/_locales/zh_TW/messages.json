@@ -1,4 +1,6 @@
 {
+"cj_i18n_00354":{"message":"贊助"},
+"cj_i18n_01605":{"message":"協助翻譯"},
 "cj_i18n_02145":{"message":"YouTube 自動 HD + FPS"},
 "cj_i18n_02146":{"message":"自動依據其 FPS 設定 YouTube 上的影片畫質！"},
 "cj_i18n_02147":{"message":"觀看畫質"},
@@ -9,5 +11,9 @@
 "cj_i18n_06287":{"message":"按一下檢視更新日誌"},
 "cj_i18n_06288":{"message":"__app_name__ 已更新"},
 "cj_i18n_06567":{"message":"維持影片大小為"},
-"cj_i18n_06568":{"message":"自動調整影片大小"}
+"cj_i18n_06568":{"message":"自動調整影片大小"},
+"cj_i18n_06657":{"message":"喜歡這個擴展？"},
+"cj_i18n_06658":{"message":"請給打個5星好評！"},
+"cj_i18n_06659":{"message":"考慮支持繼續開發吧！"},
+"cj_i18n_06660":{"message":"也可以考慮支持我們繼續開發！"}
 }
