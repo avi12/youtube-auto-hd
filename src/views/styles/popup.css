@@ -96,3 +96,8 @@ body {
     animation-duration: 0ms !important;
   }
 }
+
+/* hide scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
