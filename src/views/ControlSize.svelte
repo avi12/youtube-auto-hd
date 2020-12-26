@@ -74,7 +74,7 @@
 
 {#if isResizeVideo}
   <div class="size">
-    <div>{i18n.labelVideoSize}:</div>
+    <div class="size__label">{i18n.labelVideoSize}:</div>
     <div
       class="size__box-wrapper"
       class:size__box-wrapper--selected={sizeVideo === 0}
@@ -111,8 +111,9 @@
     align-items: center;
   }
 
-  .size > *:nth-of-type(2) {
-    margin-inline-start: 10px;
+  .size__label {
+    padding-inline-end: 16px;
+    flex: 1;
   }
 
   .size__box-wrapper {
@@ -124,6 +125,7 @@
     justify-content: center;
     align-items: center;
     border: 1px solid transparent;
+    flex: none;
   }
 
   .size__box-wrapper:focus-within {
