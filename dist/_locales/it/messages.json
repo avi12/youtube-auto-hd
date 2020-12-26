@@ -1,19 +1,11 @@
 {
 "cj_i18n_00354":{"message":"Dona"},
 "cj_i18n_01605":{"message":"Contribuisci alla traduzione"},
-"cj_i18n_02145":{"message":"YouTube Auto HD + FPS"},
 "cj_i18n_02146":{"message":"Imposta automaticamente la qualità del video su YouTube in base agli FPS!"},
 "cj_i18n_02147":{"message":"Qualità visualizzazioni"},
 "cj_i18n_02148":{"message":"FPS video"},
 "cj_i18n_02149":{"message":"FPS e meno"},
 "cj_i18n_02152":{"message":"I video verranno riprodotti a 30 FPS per questa qualità."},
-"cj_i18n_02173":{"message":"Vorresti aiutarci a tradurre?"},
-"cj_i18n_06287":{"message":"Clicca per il log delle modifiche"},
-"cj_i18n_06288":{"message":"__app_name__ è stata aggiornata"},
 "cj_i18n_06567":{"message":"Mantieni dimensione su"},
-"cj_i18n_06568":{"message":"Auto-ridimensiona video"},
-"cj_i18n_06657":{"message":"Cosa ne pensi di questa estensione?"},
-"cj_i18n_06658":{"message":"Dacci 5 stelle!"},
-"cj_i18n_06659":{"message":"Aiutaci con lo sviluppo!"},
-"cj_i18n_06660":{"message":"Inoltre, considera di supportare lo sviluppo!"}
+"cj_i18n_06568":{"message":"Auto-ridimensiona video"}
 }
