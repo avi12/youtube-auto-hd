@@ -2,7 +2,15 @@
 "cj_i18n_00354":{"message":"Spenden"},
 "cj_i18n_01605":{"message":"Mit der Übersetzung helfen"},
 "cj_i18n_02146":{"message":"Stelle die Videoqualität auf Youtube automatisch entsprechend der FPS ein!"},
+"cj_i18n_02147":{"message":"Qualität ansehen"},
+"cj_i18n_02148":{"message":"FPS Videos"},
+"cj_i18n_02149":{"message":"FPS und niedriger"},
 "cj_i18n_02152":{"message":"Videos werden in diese Qualitätsstufe mit 30 FPS abgespielt."},
 "cj_i18n_06567":{"message":"Grösse beibehalten bei"},
-"cj_i18n_06568":{"message":"Videos automatisch anpassen"}
+"cj_i18n_06568":{"message":"Videos automatisch anpassen"},
+"cj_i18n_06858":{"message":"Alle Bildraten"},
+"cj_i18n_06859":{"message":"Größe des Players"},
+"cj_i18n_06860":{"message":"Unterstütze den Entwickler"},
+"cj_i18n_06861":{"message":"Bewerte die Erweiterung"},
+"cj_i18n_06862":{"message":"Nutze die selbe Qualität für alle Bildraten"}
 }
