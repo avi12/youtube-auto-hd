@@ -4,7 +4,6 @@
   export let label;
   export let values = [];
   export let value = [];
-  export let min = 0;
 
   let iValue = values.indexOf(value);
 
@@ -21,7 +20,7 @@
 <Slider
   color="red"
   max={values.length - 1}
-  {min}
+  min={0}
   on:update={onInput}
   step={1}
   thumb={getThumb}

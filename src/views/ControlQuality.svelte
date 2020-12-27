@@ -26,23 +26,6 @@
 
   const qualitiesReversed = qualities.reverse();
   const fpsList = [30, 50, 60];
-  // let minimums = fpsList.reduce((obj, fps) => ({ ...obj, [fps]: 0 }), {});
-  //
-  // $: if (!isSameQualityForAllFps) {
-  //   // If the FPS-quality pair makes no sense
-  //   // E.g. 2160p 60FPS and 480p 30FPS make no sense,
-  //   // because if the computer's hardware is good enough
-  //   // to handle 2160p 60FPS, it'll surely be good enough
-  //   // to handle 480p 30FPS
-  //   const fpsQualityWeird = Object.entries(qualitiesStored).find(
-  //     ([fps, quality]) => fps > 30 && quality > qualitiesStored[30]
-  //   );
-  //
-  //   if (fpsQualityWeird) {
-  //     const [fps, quality] = fpsQualityWeird;
-  //     minimums[fps] = qualities.indexOf(quality);
-  //   }
-  // }
 
   $: {
     if (isSameQualityForAllFps) {
