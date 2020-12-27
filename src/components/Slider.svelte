@@ -4,12 +4,14 @@
   export let label;
   export let values = [];
   export let value = [];
+  export let min = 0;
 
   let iValue = values.indexOf(value);
 
   function onInput(e) {
     value = values.find((_, i) => i === e.detail.value[0]);
   }
+
   function getThumb(iValue) {
     const qualityNumber = values[iValue];
     return `${qualityNumber}p`;
@@ -19,7 +21,7 @@
 <Slider
   color="red"
   max={values.length - 1}
-  min={0}
+  {min}
   on:update={onInput}
   step={1}
   thumb={getThumb}
