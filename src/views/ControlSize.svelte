@@ -78,28 +78,28 @@
     <div
       class="size__box-wrapper"
       class:size__box-wrapper--selected={sizeVideo === 0}
-      on:keydown={resizeVideo}>
+      on:keydown={resizeVideo}
+      bind:this={elSizeSmall}
+      on:click={() => (sizeVideo = 0)}>
       <!--suppress CheckEmptyScriptTag -->
       <div
         aria-label="Small player size"
         tabindex="0"
         class="size__box"
-        data-video-size="0"
-        bind:this={elSizeSmall}
-        on:click={() => (sizeVideo = 0)} />
+        data-video-size="0" />
     </div>
     <div
       class="size__box-wrapper"
       class:size__box-wrapper--selected={sizeVideo === 1}
-      on:keydown={resizeVideo}>
+      on:keydown={resizeVideo}
+      bind:this={elSizeLarge}
+      on:click={() => (sizeVideo = 1)}>
       <!--suppress CheckEmptyScriptTag -->
       <div
         aria-label="Large player size"
         tabindex="0"
         class="size__box"
-        bind:this={elSizeLarge}
-        data-video-size="1"
-        on:click={() => (sizeVideo = 1)} />
+        data-video-size="1" />
     </div>
   </div>
 {/if}
@@ -125,7 +125,9 @@
     justify-content: center;
     align-items: center;
     border: 1px solid transparent;
+    background: transparent;
     flex: none;
+    cursor: pointer;
   }
 
   .size__box-wrapper:focus-within {
@@ -137,8 +139,8 @@
     border: 1px solid red;
   }
 
-  .size__box {
-    cursor: pointer;
+  .size__box-wrapper:not(.size__box-wrapper--selected):hover {
+    background: #f5f5f5;
   }
 
   [data-video-size="0"] {
