@@ -140,7 +140,7 @@
   }
 
   .size__box-wrapper:not(.size__box-wrapper--selected):hover {
-    background: #f5f5f5;
+    background: #eaeaea;
   }
 
   [data-video-size="0"] {
