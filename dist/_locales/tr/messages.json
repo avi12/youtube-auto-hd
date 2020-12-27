@@ -1,5 +1,11 @@
 {
 "cj_i18n_00354":{"message":"Bağış yap"},
 "cj_i18n_01605":{"message":"Çevirilerde yardım edin"},
-"cj_i18n_02147":{"message":"Görüntü kalitesini göster"}
+"cj_i18n_02146":{"message":"Automatically set the video quality on YouTube according to its FPS!"},
+"cj_i18n_02147":{"message":"Görüntü kalitesini göster"},
+"cj_i18n_06858":{"message":"Tüm kare hızları"},
+"cj_i18n_06859":{"message":"Oynatıcı boyutu"},
+"cj_i18n_06860":{"message":"Geliştiriciyi destekle"},
+"cj_i18n_06861":{"message":"Eklentiyi derecelendir"},
+"cj_i18n_06862":{"message":"Bütün kare hızları için aynı kaliteyi kullan"}
 }
