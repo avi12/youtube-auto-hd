@@ -16,12 +16,12 @@
     "pack": "web-ext build --overwrite-dest --artifacts-dir dist_packed --source-dir dist --filename youtube_auto_hd_fps-{version}.zip",
     "pack-stores": "webext-store-incompat-fixer -i dist_packed/youtube_auto_hd_fps-{version}.zip --edge-locale-inclusions en,fr,he,it,nl --stores edge,firefox",
     "pack-self": "zip-self -o dist_packed/youtube_auto_hd_fps-{version}-source.zip",
-    "build-pack": "yarn run build && yarn run pack && yarn run pack-stores && yarn run pack-self",
+    "build-pack": "pnpm run build && pnpm run pack && pnpm run pack-stores && pnpm run pack-self",
     "set-version": "set-json-version -f package.json dist/manifest.json -v",
     "validate": "svelte-check",
     "run-browser": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=dQw4w9WgXcQ --source-dir dist --verbose --target",
-    "run-firefox": "yarn run-browser firefox-desktop",
-    "run-chromium": "yarn run-browser chromium"
+    "run-firefox": "pnpm run-browser firefox-desktop",
+    "run-chromium": "pnpm run-browser chromium"
   },
   "devDependencies": {
     "@mdi/js": "^5.8.55",
