@@ -21,7 +21,9 @@
     "validate": "svelte-check",
     "run-browser": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=dQw4w9WgXcQ --source-dir dist --verbose --target",
     "run-firefox": "pnpm run-browser firefox-desktop",
-    "run-chromium": "pnpm run-browser chromium"
+    "run-chromium": "pnpm run-browser chromium",
+    "run-edge-windows": "\"\"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"\" https://www.youtube.com/watch?v=dQw4w9WgXcQ --load-extension=%cd%\\dist",
+    "run-opera-windows": "\"\"%LocalAppData%\\Programs\\Opera\\launcher.exe\"\" https://www.youtube.com/watch?v=dQw4w9WgXcQ --load-extension=%cd%\\dist"
   },
   "devDependencies": {
     "@mdi/js": "^5.8.55",
