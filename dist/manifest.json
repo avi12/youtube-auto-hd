@@ -52,7 +52,7 @@
       "128": "icons/icon-128.png"
     }
   },
-  "content_security_policy": "default-src 'none'; child-src 'none'; manifest-src 'none'; media-src 'none'; prefetch-src 'none'; worker-src 'none'; connect-src 'none'; frame-src 'none'; font-src 'none'; object-src 'none'; img-src data:; script-src 'self'; script-src-elem 'report-sample' 'self'; script-src-attr 'none'; style-src 'self'; style-src-attr 'self'; style-src-elem 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; block-all-mixed-content; upgrade-insecure-requests; sandbox allow-same-origin allow-scripts allow-popups; report-uri https://api.jeurissen.co/reports/csp/webext/ythd/v1_3_0/",
+  "content_security_policy": "default-src 'none'; child-src 'none'; manifest-src 'none'; media-src 'none'; prefetch-src 'none'; worker-src 'none'; connect-src 'none'; frame-src 'none'; font-src 'none'; object-src 'none'; img-src data:; script-src 'self'; script-src-elem 'report-sample' 'self'; script-src-attr 'none'; style-src 'self'; style-src-attr 'self'; style-src-elem 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; block-all-mixed-content; upgrade-insecure-requests; sand-box allow-same-origin allow-scripts allow-popups; report-uri https://api.jeurissen.co/reports/csp/webext/ythd/v1_3_0/",
   "permissions": [
     "storage",
     "cookies",

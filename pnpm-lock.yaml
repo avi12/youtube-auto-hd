@@ -125,30 +125,30 @@ packages:
       node: '>=10.0.0'
     resolution:
       integrity: sha512-GeeM827DlzFFidn1eKkMBiqXFD2oLsnZbaiGhByPl0vcapsRzUL+t9hDoov1swc9rB2jw64R+ihtzC8qOE9wXw==
-  /@nodelib/fs.scandir/2.1.3:
+  /@nodelib/fs.scandir/2.1.4:
     dependencies:
-      '@nodelib/fs.stat': 2.0.3
+      '@nodelib/fs.stat': 2.0.4
       run-parallel: 1.1.10
     dev: true
     engines:
       node: '>= 8'
     resolution:
-      integrity: sha512-eGmwYQn3gxo4r7jdQnkrrN6bY478C3P+a/y72IJukF8LjB6ZHeB3c+Ehacj3sYeSmUXGlnA67/PmbM9CVwL7Dw==
-  /@nodelib/fs.stat/2.0.3:
+      integrity: sha512-33g3pMJk3bg5nXbL/+CY6I2eJDzZAni49PfJnL5fghPTggPvBd/pFNSgJsdAgWptuFu7qq/ERvOYFlhvsLTCKA==
+  /@nodelib/fs.stat/2.0.4:
     dev: true
     engines:
       node: '>= 8'
     resolution:
-      integrity: sha512-bQBFruR2TAwoevBEd/NWMoAAtNGzTRgdrqnYCc7dhzfoNvqPzLyqlEQnzZ3kVnNrSp25iyxE00/3h2fqGAGArA==
-  /@nodelib/fs.walk/1.2.4:
+      integrity: sha512-IYlHJA0clt2+Vg7bccq+TzRdJvv19c2INqBSsoOLp1je7xjtr7J26+WXR72MCdvU9q1qTzIWDfhMf+DRvQJK4Q==
+  /@nodelib/fs.walk/1.2.5:
     dependencies:
-      '@nodelib/fs.scandir': 2.1.3
+      '@nodelib/fs.scandir': 2.1.4
       fastq: 1.10.0
     dev: true
     engines:
       node: '>= 8'
     resolution:
-      integrity: sha512-1V9XOY4rDW0rehzbrcqAmHnz8e7SKvX27gh8Gt2WgB0+pdzdiLV83p72kZPU+jvMbS1qU5mauP2iOvO8rhmurQ==
+      integrity: sha512-Wt4shGVXvjmpVCooNQ4EXlF+8t1zJ+AkQ0WfRaqcWL9aj0vA+z3/WA7UH7rl0lWpovaWI0L4YtSS1YxS7539kg==
   /@rollup/plugin-commonjs/17.0.0_rollup@2.35.1:
     dependencies:
       '@rollup/pluginutils': 3.1.0_rollup@2.35.1
@@ -2053,8 +2053,8 @@ packages:
       integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
   /fast-glob/3.2.4:
     dependencies:
-      '@nodelib/fs.stat': 2.0.3
-      '@nodelib/fs.walk': 1.2.4
+      '@nodelib/fs.stat': 2.0.4
+      '@nodelib/fs.walk': 1.2.5
       glob-parent: 5.1.1
       merge2: 1.4.1
       micromatch: 4.0.2
