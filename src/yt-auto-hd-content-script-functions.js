@@ -111,9 +111,9 @@ function getFpsFromRange(qualities, fpsToCheck) {
 }
 
 async function getUserQualities() {
-  let qualities = (await getStorage("local", "qualities")) || {};
+  let qualities = (await getStorage("local", "qualities")) ?? {};
   if (getIsFewerQualityValues(qualities, initial.qualities)) {
-    qualities = Object.assign(qualities, initial.qualities);
+    qualities = { ...qualities, ...initial.qualities };
   }
   return qualities;
 }
@@ -138,9 +138,7 @@ function getCurrentQualityElements() {
 }
 
 function convertQualityToNumber(elQuality) {
-  const labelQuality = elQuality.textContent;
-  const matchQuality = labelQuality.match(/\d{3,4}/)[0];
-  return Number(matchQuality);
+  return parseInt(elQuality.textContent);
 }
 
 function isQualityElement(element) {
