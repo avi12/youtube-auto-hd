@@ -1,6 +1,6 @@
 {
   "name": "youtube-auto-hd-fps",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "homepage": "https://avi12.com",
   "repository": "avi12/youtube-auto-hd",
   "author": {
@@ -14,7 +14,7 @@
     "dev": "rollup -c -w",
     "build": "rollup -c",
     "pack": "web-ext build --overwrite-dest --artifacts-dir dist_packed --source-dir dist --filename youtube_auto_hd_fps-{version}.zip",
-    "pack-stores": "webext-store-incompat-fixer -i dist_packed/youtube_auto_hd_fps-{version}.zip --edge-locale-inclusions en,de,he,nl-pt_BR,sr --stores edge,firefox",
+    "pack-stores": "webext-store-incompat-fixer -i dist_packed/youtube_auto_hd_fps-{version}.zip --edge-locale-inclusions en,de,de_CH,de_AT,es,es_419,es_US,he,ja,nl,pl,pt_BR,sr --stores edge,firefox",
     "pack-self": "zip-self -o dist_packed/youtube_auto_hd_fps-{version}-source.zip",
     "build-pack": "pnpm run build && pnpm run pack && pnpm run pack-stores && pnpm run pack-self",
     "set-version": "set-json-version -f package.json dist/manifest.json -v",
@@ -41,6 +41,7 @@
     "set-json-version": "^1.0.4",
     "svelte": "~3.31.0",
     "svelte-check": "^1.1.23",
+    "svelte-materialify": "^0.3.4",
     "svelte-preprocess": "^4.6.1",
     "web-ext": "^5.4.1",
     "webext-store-incompat-fixer": "^0.1.11",
@@ -64,8 +65,5 @@
     "singleQuote": false,
     "trailingComma": "none",
     "svelteSortOrder": "scripts-markup-styles"
-  },
-  "dependencies": {
-    "svelte-materialify": "^0.3.4"
   }
 }
