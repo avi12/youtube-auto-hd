@@ -1,7 +1,11 @@
 "use strict";
 
-import { getIsFewerQualityValues, getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
-import { initial } from "./yt-auto-hd-setup";
+import {
+  getIsFewerQualityValues,
+  getStorage,
+  resizePlayerIfNeeded
+} from "./yt-auto-hd-utilities";
+import { initial, qualities } from "./yt-auto-hd-setup";
 
 chrome.storage.onChanged.addListener(updatePlayer);
 
@@ -13,7 +17,7 @@ export async function prepareToChangeQuality() {
   if (!isLastOptionQuality()) {
     toggleSettingsMenu();
     elVideo.addEventListener("canplay", prepareToChangeQuality, {
-      once: true,
+      once: true
     });
     return;
   }
@@ -44,19 +48,31 @@ async function changeQuality() {
   if (elQualities.length === 0) {
     return;
   }
-  if (i > -1) {
+  const isQualityExists = i > -1;
+  if (isQualityExists) {
     elQualities[i].click();
-  } else {
+  } else if (getIsQualityLower(elQualities[0], qualitiesUser[fps])) {
     elQualities[0].click();
+  } else {
+    const iClosestQuality = qualitiesCurrent.findIndex(quality => quality <= qualitiesUser[fps]);
+    const isClosestQualityFound = iClosestQuality > -1;
+    if (isClosestQualityFound) {
+      elQualities[iClosestQuality].click();
+    } else {
+      toggleSettingsMenu();
+    }
   }
 }
 
+/**
+ * @returns {HTMLElement[]|HTMLElement}
+ */
 function getElement(elementName, { isGetAll = false } = {}) {
   const selectors = {
     buttonSettings: ".ytp-settings-button",
     optionQuality: ".ytp-menuitem:last-child",
     menuOption: ".ytp-menuitem",
-    video: "video",
+    video: "video"
   };
 
   if (isGetAll) {
@@ -65,6 +81,15 @@ function getElement(elementName, { isGetAll = false } = {}) {
 
   const elements = [...document.querySelectorAll(selectors[elementName])];
   return elements.find(isElementVisible);
+}
+
+/**
+ * @param {HTMLElement} elQuality
+ * @param {number} qualityUser
+ */
+function getIsQualityLower(elQuality, qualityUser) {
+  const qualityVideo = Number(elQuality.textContent);
+  return qualityVideo < qualityUser;
 }
 
 export { getElement };
@@ -97,6 +122,9 @@ function openQualityMenu() {
   elSettingQuality.click();
 }
 
+/**
+ * @returns {number}
+ */
 function getFpsFromRange(qualities, fpsToCheck) {
   const fpsList = Object.keys(qualities)
     .map(Number)
@@ -110,6 +138,9 @@ function getFpsFromRange(qualities, fpsToCheck) {
   return fpsList[0];
 }
 
+/**
+ * @returns {Promise<Object>}
+ */
 async function getUserQualities() {
   let qualities = (await getStorage("local", "qualities")) ?? {};
   if (getIsFewerQualityValues(qualities, initial.qualities)) {
@@ -118,6 +149,9 @@ async function getUserQualities() {
   return qualities;
 }
 
+/**
+ * @returns {number}
+ */
 function getFPS() {
   const elQualities = getCurrentQualityElements();
   const labelQuality = elQualities[0]?.textContent;
@@ -128,15 +162,24 @@ function getFPS() {
   return fpsMatch ? Number(fpsMatch[1]) : 30;
 }
 
+/**
+ * @returns {number[]}
+ */
 function getCurrentQualities() {
   const elQualities = getCurrentQualityElements();
   return elQualities.map(convertQualityToNumber);
 }
 
+/**
+ * @returns {HTMLElement[]}
+ */
 function getCurrentQualityElements() {
   return getElement("menuOption", { isGetAll: true }).filter(isQualityElement);
 }
 
+/**
+ * @returns {number}
+ */
 function convertQualityToNumber(elQuality) {
   return parseInt(elQuality.textContent);
 }
@@ -147,8 +190,11 @@ function isQualityElement(element) {
   return isQuality && !isHasChildren;
 }
 
+/**
+ * @returns {number}
+ */
 function getQualityIndex(qualitiesCurrent, qualityUser) {
-  return qualitiesCurrent.findIndex((elQuality) => elQuality === qualityUser);
+  return qualitiesCurrent.findIndex(elQuality => elQuality === qualityUser);
 }
 
 async function updatePlayer({ qualities, autoResize, size }) {
