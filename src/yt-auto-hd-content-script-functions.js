@@ -54,7 +54,9 @@ async function changeQuality() {
   } else if (getIsQualityLower(elQualities[0], qualitiesUser[fps])) {
     elQualities[0].click();
   } else {
-    const iClosestQuality = qualitiesCurrent.findIndex(quality => quality <= qualitiesUser[fps]);
+    const iClosestQuality = qualitiesCurrent.findIndex(
+      quality => quality <= qualitiesUser[fps]
+    );
     const isClosestQualityFound = iClosestQuality > -1;
     if (isClosestQualityFound) {
       elQualities[iClosestQuality].click();
@@ -86,23 +88,34 @@ function getElement(elementName, { isGetAll = false } = {}) {
 /**
  * @param {HTMLElement} elQuality
  * @param {number} qualityUser
+ * @returns {boolean}
  */
 function getIsQualityLower(elQuality, qualityUser) {
-  const qualityVideo = Number(elQuality.textContent);
+  const qualityVideo = parseInt(elQuality.textContent);
   return qualityVideo < qualityUser;
 }
 
 export { getElement };
 
+/**
+ * @param {HTMLElement} element
+ * @returns {boolean}
+ */
 function isElementVisible(element) {
   return element?.offsetWidth > 0 && element?.offsetHeight > 0;
 }
 
+/**
+ * @returns {string|undefined}
+ */
 function isSettingsMenuOpen() {
   const elButtonSettings = getElement("buttonSettings");
   return elButtonSettings?.ariaExpanded;
 }
 
+/**
+ * @returns {RegExpMatchArray|boolean}
+ */
 function isLastOptionQuality() {
   const elOptionInSettings = getElement("optionQuality");
   try {
@@ -123,6 +136,8 @@ function openQualityMenu() {
 }
 
 /**
+ * @param {object} qualities
+ * @param {number} fpsToCheck
  * @returns {number}
  */
 function getFpsFromRange(qualities, fpsToCheck) {
@@ -184,6 +199,10 @@ function convertQualityToNumber(elQuality) {
   return parseInt(elQuality.textContent);
 }
 
+/**
+ * @param {HTMLElement} element
+ * @returns {boolean}
+ */
 function isQualityElement(element) {
   const isQuality = Boolean(element.textContent.match(/\d/));
   const isHasChildren = element.children.length > 1;
@@ -191,7 +210,9 @@ function isQualityElement(element) {
 }
 
 /**
- * @returns {number}
+ * @param {number[]} qualitiesCurrent
+ * @param {Number} qualityUser
+ * @returns {Number}
  */
 function getQualityIndex(qualitiesCurrent, qualityUser) {
   return qualitiesCurrent.findIndex(elQuality => elQuality === qualityUser);
