@@ -58,7 +58,7 @@ async function changeQuality() {
       const qualityFallback =
         (await getStorage("local", "qualityFallback")) ?? initial.qualityFallback;
 
-      const iFallbackQuality = qualityFallback === "best" ? iClosestQuality - 1 : iClosestQuality;
+      const iFallbackQuality = qualityFallback === "higher" ? iClosestQuality - 1 : iClosestQuality;
       elQualities[iFallbackQuality].click();
     } else {
       toggleSettingsMenu();
