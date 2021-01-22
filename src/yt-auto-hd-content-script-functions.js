@@ -1,10 +1,6 @@
 "use strict";
 
-import {
-  getIsFewerQualityValues,
-  getStorage,
-  resizePlayerIfNeeded
-} from "./yt-auto-hd-utilities";
+import { getIsFewerQualityValues, getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
 import { initial, qualities } from "./yt-auto-hd-setup";
 
 chrome.storage.onChanged.addListener(updatePlayer);
@@ -59,7 +55,11 @@ async function changeQuality() {
     );
     const isClosestQualityFound = iClosestQuality > -1;
     if (isClosestQualityFound) {
-      elQualities[iClosestQuality].click();
+      const qualityFallback =
+        (await getStorage("local", "qualityFallback")) ?? initial.qualityFallback;
+
+      const iFallbackQuality = qualityFallback === "best" ? iClosestQuality - 1 : iClosestQuality;
+      elQualities[iFallbackQuality].click();
     } else {
       toggleSettingsMenu();
     }
@@ -218,8 +218,8 @@ function getQualityIndex(qualitiesCurrent, qualityUser) {
   return qualitiesCurrent.findIndex(elQuality => elQuality === qualityUser);
 }
 
-async function updatePlayer({ qualities, autoResize, size }) {
-  if (qualities) {
+async function updatePlayer({ qualities, qualityFallback, autoResize, size }) {
+  if (qualities || qualityFallback) {
     prepareToChangeQuality();
     return;
   }
