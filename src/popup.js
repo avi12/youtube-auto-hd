@@ -4,7 +4,7 @@ import { initial } from "./yt-auto-hd-setup";
 
 async function init() {
   let [
-    { qualitiesStored = {}, qualityFallback = initial.qualityFallback },
+    { qualities: qualitiesStored = {}, qualityFallback = initial.qualityFallback },
     { autoResize, size }
   ] = await Promise.all([getStorage("local"), getStorage("sync")]);
 
