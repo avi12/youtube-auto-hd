@@ -66,14 +66,12 @@
   }
 </script>
 
-<div class="mt-3">
-  <div class="subheader">{i18n.labelSupport}</div>
-  <List dense>
-    {#each links as { label, url, icon }}
-      <ListItem on:click={() => openUrl(url)}>
-        <span slot="prepend"><Icon path={icon} class="red-text" /></span>
-        <div class="text-subtitle-1">{label}</div>
-      </ListItem>
-    {/each}
-  </List>
-</div>
+<div class="subheader">{i18n.labelSupport}</div>
+<List dense>
+  {#each links as { label, url, icon }}
+    <ListItem on:click={() => openUrl(url)}>
+      <span slot="prepend"><Icon path={icon} class="red-text" /></span>
+      <div class="text-subtitle-1">{label}</div>
+    </ListItem>
+  {/each}
+</List>
