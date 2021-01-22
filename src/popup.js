@@ -3,10 +3,10 @@ import { getIsFewerQualityValues, getStorage } from "./yt-auto-hd-utilities";
 import { initial } from "./yt-auto-hd-setup";
 
 async function init() {
-  let [qualitiesStored = {}, { autoResize, size }] = await Promise.all([
-    getStorage("local", "qualities"),
-    getStorage("sync")
-  ]);
+  let [
+    { qualitiesStored = {}, qualityFallback = initial.qualityFallback },
+    { autoResize, size }
+  ] = await Promise.all([getStorage("local"), getStorage("sync")]);
 
   if (getIsFewerQualityValues(qualitiesStored, initial.qualities)) {
     qualitiesStored = Object.assign(qualitiesStored, initial.qualities);
@@ -15,6 +15,7 @@ async function init() {
     target: document.body,
     props: {
       qualitiesStored,
+      qualityFallback,
       isResizeVideo: autoResize,
       sizeVideo: size
     }

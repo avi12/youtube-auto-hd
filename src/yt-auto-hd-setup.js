@@ -9,6 +9,7 @@ export const initial = {
     50: qualityClosest,
     30: qualityClosest
   },
+  qualityFallback: "worse",
   autoResize: true,
   size: 1
 };
