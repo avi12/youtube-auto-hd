@@ -6,6 +6,8 @@ Available for:
 * [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom)
 * [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
 
+Made by [avi12](https://avi12.com).
+
 ## Translating
 You can translate the extension to your own language by filling [this form](https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate).
 
