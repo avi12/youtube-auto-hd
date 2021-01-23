@@ -33,10 +33,10 @@
 </Tooltip>
 
 <div class="d-flex flex-column flex-gap mt-1">
-  <Radio bind:group={qualityFallback} value="higher">
+  <Radio bind:group={qualityFallback} color="red" value="higher">
     {i18n.labelOptionHigher}
   </Radio>
-  <Radio bind:group={qualityFallback} value="lower">
+  <Radio bind:group={qualityFallback} color="red" value="lower">
     {i18n.labelOptionLower}
   </Radio>
 </div>
