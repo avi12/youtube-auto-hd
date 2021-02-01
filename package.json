@@ -42,7 +42,6 @@
     "svelte": "~3.31.0",
     "svelte-check": "^1.1.23",
     "svelte-materialify": "^0.3.4",
-    "svelte-preprocess": "^4.6.1",
     "web-ext": "^5.4.1",
     "webext-store-incompat-fixer": "^0.1.11",
     "zip-self": "^0.2.5"

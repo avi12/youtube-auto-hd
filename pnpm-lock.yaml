@@ -15,7 +15,6 @@ devDependencies:
   svelte: 3.31.0
   svelte-check: 1.1.23_140d357b971a95ba95d0eef669fd1779
   svelte-materialify: 0.3.4_svelte@3.31.0
-  svelte-preprocess: 4.6.1_140d357b971a95ba95d0eef669fd1779
   web-ext: 5.4.1
   webext-store-incompat-fixer: 0.1.11
   zip-self: 0.2.5
@@ -1203,7 +1202,7 @@ packages:
     resolution:
       integrity: sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
   /core-js/2.6.12:
-    deprecated: 'core-js@<3 is no longer maintained and not recommended for usage due to the number of issues. Please, upgrade your dependencies to the actual version of core-js@3.'
+    deprecated: core-js@<3 is no longer maintained and not recommended for usage due to the number of issues. Please, upgrade your dependencies to the actual version of core-js@3.
     dev: true
     requiresBuild: true
     resolution:
@@ -4772,7 +4771,7 @@ packages:
       tough-cookie: 2.5.0
       tunnel-agent: 0.6.0
       uuid: 3.4.0
-    deprecated: 'request has been deprecated, see https://github.com/request/request/issues/3142'
+    deprecated: request has been deprecated, see https://github.com/request/request/issues/3142
     dev: true
     engines:
       node: '>= 6'
@@ -4811,7 +4810,7 @@ packages:
     resolution:
       integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==
   /resolve-url/0.2.1:
-    deprecated: 'https://github.com/lydell/resolve-url#deprecated'
+    deprecated: https://github.com/lydell/resolve-url#deprecated
     dev: true
     optional: true
     resolution:
@@ -5493,57 +5492,6 @@ packages:
       svelte: '>=3.29.4'
     resolution:
       integrity: sha512-94P2UMEFvEFHLksyZllFVU047tl/xkbA8aOlASaAzfEXfWQiWaGiuEnmKywT2AFImoPgFRseL++/6v2F6EBSig==
-  /svelte-preprocess/4.6.1_140d357b971a95ba95d0eef669fd1779:
-    dependencies:
-      '@types/pug': 2.0.4
-      '@types/sass': 1.16.0
-      detect-indent: 6.0.0
-      postcss: 8.2.1
-      sass: 1.30.0
-      strip-indent: 3.0.0
-      svelte: 3.31.0
-    dev: true
-    engines:
-      node: '>= 9.11.2'
-    peerDependencies:
-      '@babel/core': ^7.10.2
-      coffeescript: ^2.5.1
-      less: ^3.11.3
-      node-sass: '*'
-      postcss: ^7 || ^8
-      postcss-load-config: ^2.1.0
-      pug: ^3.0.0
-      sass: ^1.26.8
-      stylus: ^0.54.7
-      sugarss: ^2.0.0
-      svelte: ^3.23.0
-      typescript: ^3.9.5 || ^4.0.0
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      coffeescript:
-        optional: true
-      less:
-        optional: true
-      node-sass:
-        optional: true
-      postcss:
-        optional: true
-      postcss-load-config:
-        optional: true
-      pug:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      typescript:
-        optional: true
-    requiresBuild: true
-    resolution:
-      integrity: sha512-s7KdhR2pOsffyOzZIMEb315f6pfgeDnOWN47m6YKFeSEx3NMf/79Znc3vuG/Ai79SL/vsi86WDrjFPLGRfDesg==
   /svelte-preprocess/4.6.1_eeee16bd07fde5e90256a873a688292c:
     dependencies:
       '@types/pug': 2.0.4
@@ -5917,7 +5865,7 @@ packages:
     resolution:
       integrity: sha512-B0yRTzYdUCCn9n+F4+Gh4yIDtMQcaJsmYBDsTSG8g/OejKBodLQ2IHfN3bM7jUsRXndopT7OIXWdYqc1fjmV6g==
   /urix/0.1.0:
-    deprecated: 'Please see https://github.com/lydell/urix#deprecated'
+    deprecated: Please see https://github.com/lydell/urix#deprecated
     dev: true
     optional: true
     resolution:
@@ -6319,7 +6267,6 @@ specifiers:
   svelte: ~3.31.0
   svelte-check: ^1.1.23
   svelte-materialify: ^0.3.4
-  svelte-preprocess: ^4.6.1
   web-ext: ^5.4.1
   webext-store-incompat-fixer: ^0.1.11
   zip-self: ^0.2.5
