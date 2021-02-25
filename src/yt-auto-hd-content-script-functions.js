@@ -9,12 +9,12 @@ import { initial, qualities } from "./yt-auto-hd-setup";
 
 chrome.storage.onChanged.addListener(updatePlayer);
 
-export async function prepareToChangeQuality() {
+export async function prepareToChangeQuality(isForceQualityChange) {
   if (!isSettingsMenuOpen()) {
     toggleSettingsMenu();
   }
   const elVideo = getElement("video");
-  if (!isLastOptionQuality()) {
+  if (!isLastOptionQuality() && !isForceQualityChange) {
     toggleSettingsMenu();
     elVideo.addEventListener("canplay", prepareToChangeQuality, {
       once: true
@@ -67,6 +67,8 @@ async function changeQuality() {
 }
 
 /**
+ * @param {string} elementName
+ * @param {boolean} isGetAll
  * @returns {HTMLElement[]|HTMLElement}
  */
 function getElement(elementName, { isGetAll = false } = {}) {
@@ -114,17 +116,21 @@ function isSettingsMenuOpen() {
 }
 
 /**
- * @returns {RegExpMatchArray|boolean}
+ * @returns {boolean}
  */
 function isLastOptionQuality() {
   const elOptionInSettings = getElement("optionQuality");
+  const selectorQualityName = ".ytp-menuitem-content";
   try {
-    return elOptionInSettings.textContent.match(/\d{3,4}/);
+    const qualityName = elOptionInSettings.querySelector(selectorQualityName)
+      .textContent;
+    // If the quality begins with non-numeric characters, e.g. "Auto", apply the quality change
+    // Otherwise, don't touch the quality, as the user has manually set it
+    return !isNaN(parseInt(qualityName));
   } catch {
     return false;
   }
 }
-
 function toggleSettingsMenu() {
   const elButtonSettings = getElement("buttonSettings");
   elButtonSettings.click();
@@ -211,7 +217,7 @@ function isQualityElement(element) {
 
 /**
  * @param {number[]} qualitiesCurrent
- * @param {Number} qualityUser
+ * @param {number} qualityUser
  * @returns {Number}
  */
 function getQualityIndex(qualitiesCurrent, qualityUser) {

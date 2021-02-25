@@ -37,8 +37,5 @@ function createConfig(filename, useSvelte = false) {
 export default [
   createConfig("popup", true),
   createConfig("background"),
-  createConfig("yt-auto-hd-content-script-functions"),
-  createConfig("yt-auto-hd-content-script-initialize"),
-  createConfig("yt-auto-hd-setup"),
-  createConfig("yt-auto-hd-utilities")
+  createConfig("yt-auto-hd-content-script-initialize")
 ];
