@@ -10,7 +10,7 @@ const gObserverOptions = { childList: true, subtree: true };
 
 async function doVideoAction(e) {
   resizePlayerIfNeeded();
-  const isSucceeded = await prepareToChangeQuality();
+  const isSucceeded = await prepareToChangeQuality(true);
   if (isSucceeded && e) {
     e.target.removeEventListener("canplay", doVideoAction);
   }
