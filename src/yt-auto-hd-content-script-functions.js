@@ -67,6 +67,8 @@ async function changeQuality() {
 }
 
 /**
+ * @param {string} elementName
+ * @param {boolean} isGetAll
  * @returns {HTMLElement[]|HTMLElement}
  */
 function getElement(elementName, { isGetAll = false } = {}) {
