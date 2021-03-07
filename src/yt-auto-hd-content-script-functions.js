@@ -1,10 +1,6 @@
 "use strict";
 
-import {
-  getIsFewerQualityValues,
-  getStorage,
-  resizePlayerIfNeeded
-} from "./yt-auto-hd-utilities";
+import { getIsFewerQualityValues, getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
 import { initial, qualities } from "./yt-auto-hd-setup";
 
 chrome.storage.onChanged.addListener(updatePlayer);
@@ -14,7 +10,7 @@ export async function prepareToChangeQuality(isForceQualityChange) {
     toggleSettingsMenu();
   }
   const elVideo = getElement("video");
-  if (!isLastOptionQuality() && !isForceQualityChange) {
+  if (!isLastOptionQuality() || (!isQualityAuto() && !isForceQualityChange)) {
     toggleSettingsMenu();
     elVideo.addEventListener("canplay", prepareToChangeQuality, {
       once: true
@@ -120,20 +116,38 @@ function isSettingsMenuOpen() {
  */
 function isLastOptionQuality() {
   const elOptionInSettings = getElement("optionQuality");
-  const selectorQualityName = ".ytp-menuitem-content";
-  try {
-    const qualityName = elOptionInSettings.querySelector(selectorQualityName)
-      .textContent;
-    // If the quality begins with non-numeric characters, e.g. "Auto", apply the quality change
-    // Otherwise, don't touch the quality, as the user has manually set it
-    return !isNaN(parseInt(qualityName));
-  } catch {
+  if (!elOptionInSettings) {
     return false;
   }
+
+  const selQualityName = ".ytp-menuitem-content";
+  const elQualityName = elOptionInSettings.querySelector(selQualityName);
+
+  // If the video is a channel trailer, the last option is initially the speed one,
+  // and the speed setting can only be a single digit
+  const matchNumber = elQualityName.textContent.match(/\d+/);
+  if (!matchNumber) {
+    return false;
+  }
+  const numberString = matchNumber[0];
+  const minQualityCharLength = 3; // e.g. 3 characters in 720p
+  return numberString.length >= minQualityCharLength;
 }
+
+/**
+ * @returns {boolean}
+ */
+function isQualityAuto() {
+  const elOptionInSettings = getElement("optionQuality");
+  const selQualityName = ".ytp-menuitem-content";
+  const elQualityText = elOptionInSettings.querySelector(selQualityName);
+  const qualityName = elQualityText.textContent;
+  return !isNaN(parseInt(qualityName));
+}
+
 function toggleSettingsMenu() {
   const elButtonSettings = getElement("buttonSettings");
-  elButtonSettings.click();
+  elButtonSettings?.click();
 }
 
 function openQualityMenu() {
