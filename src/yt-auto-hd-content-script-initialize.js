@@ -3,17 +3,35 @@
 import { resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
 import {
   getElement,
-  prepareToChangeQuality,
+  prepareToChangeQuality
 } from "./yt-auto-hd-content-script-functions";
 
 const gObserverOptions = { childList: true, subtree: true };
+window.ythdLastQualityClicked = null;
 
-async function doVideoAction(e) {
+function doVideoAction() {
   resizePlayerIfNeeded();
-  const isSucceeded = await prepareToChangeQuality(true);
-  if (isSucceeded && e) {
-    e.target.removeEventListener("canplay", doVideoAction);
+  prepareToChangeQuality(window.ythdLastQualityClicked);
+}
+
+/**
+ * @param {HTMLElement} target
+ */
+async function saveLastClick({ target }) {
+  const elQuality = (() => {
+    if (target.matches("span")) {
+      return target;
+    }
+    if (target.matches("div")) {
+      return target.querySelector("span");
+    }
+    return null;
+  })();
+  const quality = parseInt(elQuality?.textContent);
+  if (isNaN(quality)) {
+    return;
   }
+  window.ythdLastQualityClicked = quality;
 }
 
 function addTemporaryBodyListener() {
@@ -23,6 +41,7 @@ function addTemporaryBodyListener() {
       return;
     }
 
+    window.ythdLastQualityClicked = null;
     doVideoAction();
     elVideo.addEventListener("canplay", doVideoAction);
     observer.disconnect();
@@ -43,6 +62,8 @@ new MutationObserver((_, observer) => {
     return;
   }
   const isEmbed = location.pathname.startsWith("/embed/");
+
+  getElement("player").addEventListener("click", saveLastClick);
 
   if (isEmbed) {
     elVideo.addEventListener("canplay", doVideoAction);
