@@ -1,5 +1,17 @@
 "use strict";
 
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+  if (reason !== "update") {
+    return;
+  }
+
+  chrome.storage.sync.remove([
+    "rateDisplay",
+    "isOfferDonation",
+    "isOfferTranslation"
+  ]);
+});
+
 const manifest = chrome.runtime.getManifest();
 const newVersionNumber = manifest.version;
 
