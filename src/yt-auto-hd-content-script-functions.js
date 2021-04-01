@@ -1,16 +1,23 @@
 "use strict";
 
-import { getIsFewerQualityValues, getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
+import {
+  getIsFewerQualityValues,
+  getStorage,
+  resizePlayerIfNeeded
+} from "./yt-auto-hd-utilities";
 import { initial, qualities } from "./yt-auto-hd-setup";
 
 chrome.storage.onChanged.addListener(updatePlayer);
 
-export async function prepareToChangeQuality(isForceQualityChange) {
+export async function prepareToChangeQuality() {
   if (!isSettingsMenuOpen()) {
     toggleSettingsMenu();
   }
   const elVideo = getElement("video");
-  if (!isLastOptionQuality() || (!isQualityAuto() && !isForceQualityChange)) {
+  if (
+    !isLastOptionQuality() ||
+    (!isQualityAuto() && !window.ythdLastQualityClicked)
+  ) {
     toggleSettingsMenu();
     elVideo.addEventListener("canplay", prepareToChangeQuality, {
       once: true
@@ -18,7 +25,8 @@ export async function prepareToChangeQuality(isForceQualityChange) {
     return;
   }
   openQualityMenu();
-  await changeQuality();
+
+  await changeQuality(window.ythdLastQualityClicked);
   const elButtonSettings = getElement("buttonSettings");
   if (document.activeElement === elButtonSettings) {
     elButtonSettings.blur();
@@ -27,7 +35,7 @@ export async function prepareToChangeQuality(isForceQualityChange) {
   return true;
 }
 
-async function changeQuality() {
+async function changeQuality(qualityCustom) {
   const fpsCurrent = getFPS();
   const qualitiesCurrent = getCurrentQualities();
   const elQualities = getCurrentQualityElements();
@@ -36,14 +44,8 @@ async function changeQuality() {
     qualitiesUser = initial.qualities;
   }
   const fps = getFpsFromRange(qualitiesUser, fpsCurrent);
-  const i = getQualityIndex(qualitiesCurrent, qualitiesUser[fps]);
-  // Sometimes the qualities list is empty
-  // Though, this if statement doesn't affect
-  // the extension's functionality - it's just
-  // to prevent undefined-related errors
-  if (elQualities.length === 0) {
-    return;
-  }
+  const i = getIQuality(qualitiesCurrent, qualityCustom || qualitiesUser[fps]);
+
   const isQualityExists = i > -1;
   if (isQualityExists) {
     elQualities[i].click();
@@ -72,6 +74,7 @@ function getElement(elementName, { isGetAll = false } = {}) {
     buttonSettings: ".ytp-settings-button",
     optionQuality: ".ytp-menuitem:last-child",
     menuOption: ".ytp-menuitem",
+    player: ".html5-video-player",
     video: "video"
   };
 
@@ -125,7 +128,7 @@ function isLastOptionQuality() {
 
   // If the video is a channel trailer, the last option is initially the speed one,
   // and the speed setting can only be a single digit
-  const matchNumber = elQualityName.textContent.match(/\d+/);
+  const matchNumber = elQualityName?.textContent?.match(/\d+/);
   if (!matchNumber) {
     return false;
   }
@@ -134,15 +137,8 @@ function isLastOptionQuality() {
   return numberString.length >= minQualityCharLength;
 }
 
-/**
- * @returns {boolean}
- */
-function isQualityAuto() {
-  const elOptionInSettings = getElement("optionQuality");
-  const selQualityName = ".ytp-menuitem-content";
-  const elQualityText = elOptionInSettings.querySelector(selQualityName);
-  const qualityName = elQualityText.textContent;
-  return !isNaN(parseInt(qualityName));
+export function isQualityAuto() {
+  return isNaN(parseInt(window.ythdLastQualityClicked));
 }
 
 function toggleSettingsMenu() {
@@ -176,7 +172,7 @@ function getFpsFromRange(qualities, fpsToCheck) {
 /**
  * @returns {Promise<Object>}
  */
-async function getUserQualities() {
+export async function getUserQualities() {
   let qualities = (await getStorage("local", "qualities")) ?? {};
   if (getIsFewerQualityValues(qualities, initial.qualities)) {
     qualities = { ...qualities, ...initial.qualities };
@@ -234,13 +230,14 @@ function isQualityElement(element) {
  * @param {number} qualityUser
  * @returns {Number}
  */
-function getQualityIndex(qualitiesCurrent, qualityUser) {
+function getIQuality(qualitiesCurrent, qualityUser) {
   return qualitiesCurrent.findIndex(elQuality => elQuality === qualityUser);
 }
 
 async function updatePlayer({ qualities, autoResize, size }) {
   if (qualities) {
-    prepareToChangeQuality();
+    window.ythdLastQualityClicked = null;
+    prepareToChangeQuality(window.ythdLastQualityClicked);
     return;
   }
 
