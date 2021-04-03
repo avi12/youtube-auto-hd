@@ -5211,7 +5211,7 @@ specifiers:
   set-json-version: ^1.0.5
   svelte: ~3.37.0
   svelte-check: ^1.3.0
-  svelte-materialify: ^0.3.6
+  svelte-materialify: 0.3.6
   web-ext: ^6.0.0
   webext-store-incompat-fixer: ^0.1.13
   zip-self: ^0.3.1
