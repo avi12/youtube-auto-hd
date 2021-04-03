@@ -7,8 +7,6 @@ import {
 } from "./yt-auto-hd-utilities";
 import { initial, qualities } from "./yt-auto-hd-setup";
 
-chrome.storage.onChanged.addListener(updatePlayer);
-
 export async function prepareToChangeQuality() {
   if (!isSettingsMenuOpen()) {
     toggleSettingsMenu();
@@ -32,7 +30,6 @@ export async function prepareToChangeQuality() {
     elButtonSettings.blur();
   }
   elVideo.focus();
-  return true;
 }
 
 async function changeQuality(qualityCustom) {
@@ -69,7 +66,7 @@ async function changeQuality(qualityCustom) {
  * @param {boolean} isGetAll
  * @returns {HTMLElement[]|HTMLElement}
  */
-function getElement(elementName, { isGetAll = false } = {}) {
+export function getElement(elementName, { isGetAll = false } = {}) {
   const selectors = {
     buttonSettings: ".ytp-settings-button",
     optionQuality: ".ytp-menuitem:last-child",
@@ -95,8 +92,6 @@ function getIsQualityLower(elQuality, qualityUser) {
   const qualityVideo = parseInt(elQuality.textContent);
   return qualityVideo < qualityUser;
 }
-
-export { getElement };
 
 /**
  * @param {HTMLElement} element
@@ -234,23 +229,25 @@ function getIQuality(qualitiesCurrent, qualityUser) {
   return qualitiesCurrent.findIndex(elQuality => elQuality === qualityUser);
 }
 
-async function updatePlayer({ qualities, autoResize, size }) {
-  if (qualities) {
-    window.ythdLastQualityClicked = null;
-    prepareToChangeQuality(window.ythdLastQualityClicked);
-    return;
-  }
+chrome.storage.onChanged.addListener(
+  async ({ qualities, autoResize, size }) => {
+    if (qualities) {
+      window.ythdLastQualityClicked = null;
+      prepareToChangeQuality();
+      return;
+    }
 
-  if (autoResize) {
-    resizePlayerIfNeeded();
-    return;
-  }
-
-  if (size !== undefined) {
-    const autoResize =
-      (await getStorage("sync", "autoResize")) ?? initial.autoResize;
     if (autoResize) {
-      resizePlayerIfNeeded({ size: size.newValue });
+      resizePlayerIfNeeded();
+      return;
+    }
+
+    if (size !== undefined) {
+      const autoResize =
+        (await getStorage("sync", "autoResize")) ?? initial.autoResize;
+      if (autoResize) {
+        resizePlayerIfNeeded({ size: size.newValue });
+      }
     }
   }
-}
+);

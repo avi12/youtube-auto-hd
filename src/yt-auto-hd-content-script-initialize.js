@@ -1,29 +1,23 @@
 "use strict";
 
 import { resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
-import {
-  getElement,
-  prepareToChangeQuality
-} from "./yt-auto-hd-content-script-functions";
+import { getElement, prepareToChangeQuality } from "./yt-auto-hd-content-script-functions";
 
 const gObserverOptions = { childList: true, subtree: true };
 window.ythdLastQualityClicked = null;
 
 function doVideoAction() {
   resizePlayerIfNeeded();
-  prepareToChangeQuality(window.ythdLastQualityClicked);
+  prepareToChangeQuality();
 }
 
-/**
- * @param {HTMLElement} target
- */
-async function saveLastClick({ target }) {
+async function saveLastClick({ target: element }) {
   const elQuality = (() => {
-    if (target.matches("span")) {
-      return target;
+    if (element.matches("span")) {
+      return element;
     }
-    if (target.matches("div")) {
-      return target.querySelector("span");
+    if (element.matches("div")) {
+      return element.querySelector("span");
     }
     return null;
   })();
@@ -35,7 +29,11 @@ async function saveLastClick({ target }) {
 }
 
 function addTemporaryBodyListener() {
-  new MutationObserver((_, observer) => {
+  // Typically - listen to the player div (<video> container)
+  // Otherwise, say it's a main channel page that has a channel trailer,
+  // the <video> container wouldn't immediately exist, hence listen to the body
+  const elementToListen = getElement("player") || document.body;
+  new MutationObserver(async (_, observer) => {
     const elVideo = getElement("video");
     if (!elVideo) {
       return;
@@ -45,7 +43,7 @@ function addTemporaryBodyListener() {
     doVideoAction();
     elVideo.addEventListener("canplay", doVideoAction);
     observer.disconnect();
-  }).observe(document.body, gObserverOptions);
+  }).observe(elementToListen, gObserverOptions);
 }
 
 function addGlobalEventListener() {
