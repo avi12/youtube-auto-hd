@@ -17,6 +17,7 @@
     "pack-stores": "webext-store-incompat-fixer -i dist_packed/youtube_auto_hd_fps-{version}.zip --edge-locale-inclusions en,sr,hr,de,de_CH,de_AT,es,es_419,es_US,fr,fr_CA,he,ja,nl,pl,pt_BR,zh_Hans,zh_Hant --stores edge,firefox",
     "pack-self": "zip-self -o dist_packed/youtube_auto_hd_fps-{version}-source.zip",
     "build-pack": "pnpm run build && pnpm run pack && pnpm run pack-stores && pnpm run pack-self",
+    "deploy": "web-ext-deploy --env --verbose",
     "set-version": "set-json-version -f package.json dist/manifest.json -v",
     "validate": "svelte-check",
     "run-browser": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=dQw4w9WgXcQ --source-dir dist --verbose --target",
@@ -42,6 +43,7 @@
     "svelte-check": "^1.3.0",
     "svelte-materialify": "^0.3.6",
     "web-ext": "^6.0.0",
+    "web-ext-deploy": "^0.7.1",
     "webext-store-incompat-fixer": "^0.1.13",
     "zip-self": "^0.3.1"
   },

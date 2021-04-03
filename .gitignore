@@ -20,3 +20,5 @@ node_modules
 /dist_packed-edge
 /dist_packed
 /dist/build/
+
+*.env
