@@ -8,6 +8,8 @@ Available for:
 - [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom)
 - [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
 
+![2021-04-04_08-53-33](https://user-images.githubusercontent.com/6422804/113500084-e26b2a00-9523-11eb-9e6b-5e25a4c6eba0.png)
+
 Made by [avi12](https://avi12.com).
 
 ## Translating
