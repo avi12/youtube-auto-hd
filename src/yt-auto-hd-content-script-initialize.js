@@ -1,7 +1,10 @@
 "use strict";
 
 import { resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
-import { getElement, prepareToChangeQuality } from "./yt-auto-hd-content-script-functions";
+import {
+  getElement,
+  prepareToChangeQuality
+} from "./yt-auto-hd-content-script-functions";
 
 const gObserverOptions = { childList: true, subtree: true };
 window.ythdLastQualityClicked = null;
@@ -33,7 +36,17 @@ function addTemporaryBodyListener() {
   // Otherwise, say it's a main channel page that has a channel trailer,
   // the <video> container wouldn't immediately exist, hence listen to the body
   const elementToListen = getElement("player") || document.body;
-  new MutationObserver(async (_, observer) => {
+
+  // The ultimate fix for the "notification panel closes" issue
+  // I don't know what it has to do with those classes, but it works
+  const regexExit = /(ytp-tooltip-title|ytp-time-current)/;
+  const getIsExit = mutations =>
+    Boolean(mutations[mutations.length - 1].target.className.match(regexExit));
+
+  new MutationObserver(async (mutations, observer) => {
+    if (getIsExit(mutations)) {
+      return;
+    }
     const elVideo = getElement("video");
     if (!elVideo) {
       return;
