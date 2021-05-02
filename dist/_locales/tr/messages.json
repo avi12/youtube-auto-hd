@@ -1,8 +1,11 @@
 {
 "cj_i18n_00354":{"message":"Bağış yap"},
 "cj_i18n_01605":{"message":"Çevirilerde yardım edin"},
-"cj_i18n_02146":{"message":"Automatically set the video quality on YouTube according to its FPS!"},
+"cj_i18n_02146":{"message":"Video kalitesini videonun FPS' sine göre otomatik olarak ayarla"},
 "cj_i18n_02147":{"message":"Görüntü kalitesini göster"},
+"cj_i18n_02152":{"message":"Video bu kalite için 30 FPS'te oynatılacak"},
+"cj_i18n_06567":{"message":"Şu boyutta tut"},
+"cj_i18n_06568":{"message":"Videolar otomatik boyutlandır"},
 "cj_i18n_06858":{"message":"Tüm kare hızları"},
 "cj_i18n_06859":{"message":"Oynatıcı boyutu"},
 "cj_i18n_06860":{"message":"Geliştiriciyi destekle"},
