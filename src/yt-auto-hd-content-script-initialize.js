@@ -39,11 +39,11 @@ function addTemporaryBodyListener() {
 
   // The ultimate fix for the "notification panel closes" issue
   // I don't know what it has to do with those classes, but it works
-  const regexExit = /(ytp-tooltip-title|ytp-time-current)/;
+  const regexExit = /ytp-tooltip-title|ytp-time-current|ytp-bound-time-right/;
   const getIsExit = mutations =>
     Boolean(mutations[mutations.length - 1].target.className.match(regexExit));
 
-  new MutationObserver(async (mutations, observer) => {
+  new MutationObserver((mutations, observer) => {
     if (getIsExit(mutations)) {
       return;
     }
