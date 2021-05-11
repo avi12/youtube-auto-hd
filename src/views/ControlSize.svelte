@@ -57,7 +57,7 @@
     chrome.storage.sync.set({ size: sizeVideo });
 
     chrome.cookies.set({
-      url: "https://www.youtube.com/",
+      url: "https://youtube.com",
       name: "wide",
       value: sizeVideo.toString()
     });

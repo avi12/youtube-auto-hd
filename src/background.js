@@ -1,5 +1,7 @@
 "use strict";
 
+import { getStorage } from "./yt-auto-hd-utilities";
+
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason !== "update") {
     return;
@@ -10,7 +12,27 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
     "isOfferDonation",
     "isOfferTranslation"
   ]);
+
+  fixCookiesIfNeeded();
 });
+
+async function fixCookiesIfNeeded() {
+  const { autoResize, size } = await getStorage("sync");
+  if (!autoResize) {
+    return;
+  }
+
+  chrome.cookies.remove({
+    url: "https://www.youtube.com/",
+    name: "wide"
+  });
+
+  chrome.cookies.set({
+    url: "https://youtube.com",
+    name: "wide",
+    value: size.toString()
+  });
+}
 
 const manifest = chrome.runtime.getManifest();
 const newVersionNumber = manifest.version;
