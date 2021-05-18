@@ -77,7 +77,9 @@ new MutationObserver((_, observer) => {
   getElement("player").addEventListener("click", saveLastClick);
 
   if (isEmbed) {
+    doVideoAction();
     elVideo.addEventListener("canplay", doVideoAction);
+    observer.disconnect();
     return;
   }
 
