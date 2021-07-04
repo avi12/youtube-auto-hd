@@ -14,7 +14,8 @@ Made by [avi12](https://avi12.com).
 
 ## Translating
 
-You can translate the extension to your own language by filling [this form](https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate).
+You can translate the extension to your own language by filling [this form](https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate).  
+After filling, you will get an email, which will grant you access to a spreadsheet, in which you can contribute your translations.
 
 ## Requirements for setting up
 
