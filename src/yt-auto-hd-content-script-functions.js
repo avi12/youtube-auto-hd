@@ -34,14 +34,12 @@ export async function prepareToChangeQuality() {
 
 async function changeQuality(qualityCustom) {
   const fpsCurrent = getFPS();
-  const qualitiesCurrent = getCurrentQualities();
+  const qualitiesAvailable = getCurrentQualities();
+  const qualitiesUser = await getUserQualities();
   const elQualities = getCurrentQualityElements();
-  let qualitiesUser = await getUserQualities();
-  if (getIsFewerQualityValues(qualitiesUser, initial.qualities)) {
-    qualitiesUser = initial.qualities;
-  }
+
   const fps = getFpsFromRange(qualitiesUser, fpsCurrent);
-  const i = getIQuality(qualitiesCurrent, qualityCustom || qualitiesUser[fps]);
+  const i = getIQuality(qualitiesAvailable, qualityCustom || qualitiesUser[fps]);
 
   const isQualityExists = i > -1;
   if (isQualityExists) {
@@ -49,7 +47,7 @@ async function changeQuality(qualityCustom) {
   } else if (getIsQualityLower(elQualities[0], qualitiesUser[fps])) {
     elQualities[0].click();
   } else {
-    const iClosestQuality = qualitiesCurrent.findIndex(
+    const iClosestQuality = qualitiesAvailable.findIndex(
       quality => quality <= qualitiesUser[fps]
     );
     const isClosestQualityFound = iClosestQuality > -1;
@@ -168,11 +166,8 @@ function getFpsFromRange(qualities, fpsToCheck) {
  * @returns {Promise<Object>}
  */
 export async function getUserQualities() {
-  let qualities = (await getStorage("local", "qualities")) ?? {};
-  if (getIsFewerQualityValues(qualities, initial.qualities)) {
-    qualities = { ...qualities, ...initial.qualities };
-  }
-  return qualities;
+  let userQualities = (await getStorage("local", "qualities")) ?? {};
+  return { ...initial.qualities, ...userQualities };
 }
 
 /**
