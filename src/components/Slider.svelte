@@ -8,7 +8,7 @@
   let iValue = values.indexOf(value);
 
   function onInput(e) {
-    value = values.find((_, i) => i === e.detail.value[0]);
+    value = values.find((_, i) => i === parseInt(e.detail.value[0]));
   }
 
   function getThumb(iValue) {
