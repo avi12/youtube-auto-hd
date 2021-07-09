@@ -14,7 +14,10 @@ function doVideoAction() {
   prepareToChangeQuality();
 }
 
-async function saveLastClick({ target: element }) {
+async function saveLastClick({ target: element, isTrusted }) {
+  //We use programatic clicks to change quality, but we need to save/respond only to user clicks.
+  if (!isTrusted) return;
+
   const elQuality = (() => {
     if (element.matches("span")) {
       return element;
