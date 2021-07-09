@@ -73,6 +73,9 @@ function addGlobalEventListener() {
 
 // Run on initial page load
 new MutationObserver((_, observer) => {
+  /**
+   * @type {HTMLVideoElement}
+   */
   const elVideo = getElement("video");
   if (!elVideo) {
     return;
@@ -82,7 +85,9 @@ new MutationObserver((_, observer) => {
   getElement("player").addEventListener("click", saveLastClick);
 
   if (isEmbed) {
-    doVideoAction();
+    if (!elVideo.paused) {
+      doVideoAction();
+    }
     elVideo.addEventListener("canplay", doVideoAction);
     observer.disconnect();
     return;
