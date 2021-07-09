@@ -14,21 +14,24 @@ function doVideoAction() {
   prepareToChangeQuality();
 }
 
-async function saveLastClick({ target: element }) {
-  const elQuality = (() => {
-    if (element.matches("span")) {
-      return element;
+async function saveLastClick({ target: element, isTrusted }) {
+  //We use programatic clicks to change quality, but we need to save/respond only to user clicks.
+  if (isTrusted) {
+    const elQuality = (() => {
+      if (element.matches("span")) {
+        return element;
+      }
+      if (element.matches("div")) {
+        return element.querySelector("span");
+      }
+      return null;
+    })();
+    const quality = parseInt(elQuality?.textContent);
+    if (isNaN(quality)) {
+      return;
     }
-    if (element.matches("div")) {
-      return element.querySelector("span");
-    }
-    return null;
-  })();
-  const quality = parseInt(elQuality?.textContent);
-  if (isNaN(quality)) {
-    return;
+    window.ythdLastQualityClicked = quality;
   }
-  window.ythdLastQualityClicked = quality;
 }
 
 function addTemporaryBodyListener() {
