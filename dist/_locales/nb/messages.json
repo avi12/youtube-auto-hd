@@ -8,5 +8,9 @@
 "cj_i18n_02152":{"message":"Videoer vil spille av på 30 FPS for denne kvaliteten."},
 "cj_i18n_06567":{"message":"Behold størrelse på"},
 "cj_i18n_06568":{"message":"Automatisk endre størrelse på videoer"},
-"cj_i18n_06858":{"message":"Alle framerates"}
+"cj_i18n_06858":{"message":"Alle framerates"},
+"cj_i18n_06859":{"message":"Spillerstørrelse"},
+"cj_i18n_06860":{"message":"Støtt utvikleren"},
+"cj_i18n_06861":{"message":"Ranger utvidelsen"},
+"cj_i18n_06862":{"message":"Bruk samme kvalitet for alle bildefrekvenser"}
 }

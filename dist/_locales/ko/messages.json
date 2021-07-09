@@ -1,5 +1,12 @@
 {
 "cj_i18n_00354":{"message":"기부하기"},
+"cj_i18n_01605":{"message":"번역에 도움주기"},
 "cj_i18n_02146":{"message":"Automatically set the video quality on YouTube according to its FPS!"},
-"cj_i18n_02152":{"message":"비디오는 이 화질에서 30FPS로 재생될 것입니다."}
+"cj_i18n_02147":{"message":"화질 보기"},
+"cj_i18n_02152":{"message":"비디오는 이 화질에서 30FPS로 재생될 것입니다."},
+"cj_i18n_06567":{"message":"다음으로 크기 유지"},
+"cj_i18n_06568":{"message":"비디오 크기 자동 맞춤"},
+"cj_i18n_06859":{"message":"플레이어 크기"},
+"cj_i18n_06860":{"message":"개발자 지원하기"},
+"cj_i18n_06861":{"message":"확장기능 평점주기"}
 }
