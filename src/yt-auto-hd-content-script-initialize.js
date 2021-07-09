@@ -16,22 +16,22 @@ function doVideoAction() {
 
 async function saveLastClick({ target: element, isTrusted }) {
   //We use programatic clicks to change quality, but we need to save/respond only to user clicks.
-  if (isTrusted) {
-    const elQuality = (() => {
-      if (element.matches("span")) {
-        return element;
-      }
-      if (element.matches("div")) {
-        return element.querySelector("span");
-      }
-      return null;
-    })();
-    const quality = parseInt(elQuality?.textContent);
-    if (isNaN(quality)) {
-      return;
+  if (!isTrusted) return;
+
+  const elQuality = (() => {
+    if (element.matches("span")) {
+      return element;
     }
-    window.ythdLastQualityClicked = quality;
+    if (element.matches("div")) {
+      return element.querySelector("span");
+    }
+    return null;
+  })();
+  const quality = parseInt(elQuality?.textContent);
+  if (isNaN(quality)) {
+    return;
   }
+  window.ythdLastQualityClicked = quality;
 }
 
 function addTemporaryBodyListener() {
