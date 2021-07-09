@@ -1,10 +1,6 @@
 "use strict";
 
-import {
-  getIsFewerQualityValues,
-  getStorage,
-  resizePlayerIfNeeded
-} from "./yt-auto-hd-utilities";
+import { getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
 import { initial, qualities } from "./yt-auto-hd-setup";
 
 export async function prepareToChangeQuality() {
@@ -39,7 +35,10 @@ async function changeQuality(qualityCustom) {
   const elQualities = getCurrentQualityElements();
 
   const fps = getFpsFromRange(qualitiesUser, fpsCurrent);
-  const i = getIQuality(qualitiesAvailable, qualityCustom || qualitiesUser[fps]);
+  const i = getIQuality(
+    qualitiesAvailable,
+    qualityCustom || qualitiesUser[fps]
+  );
 
   const isQualityExists = i > -1;
   if (isQualityExists) {
@@ -166,7 +165,7 @@ function getFpsFromRange(qualities, fpsToCheck) {
  * @returns {Promise<Object>}
  */
 export async function getUserQualities() {
-  let userQualities = (await getStorage("local", "qualities")) ?? {};
+  const userQualities = (await getStorage("local", "qualities")) ?? {};
   return { ...initial.qualities, ...userQualities };
 }
 
