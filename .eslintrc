@@ -14,5 +14,12 @@
     "semi": "warn",
     "prefer-const": "warn",
     "comma-dangle": ["warn", "never"]
-  }
+  },
+  "plugins": ["svelte3"],
+  "overrides": [
+    {
+      "files": ["*.svelte"],
+      "processor": "svelte3/svelte3"
+    }
+  ]
 }
