@@ -5,10 +5,10 @@
   export let values = [];
   export let value = [];
 
-  let iValue = values.indexOf(value);
+  const iValue = values.indexOf(value);
 
   function onInput(e) {
-    value = values.find((_, i) => i === parseInt(e.detail.value[0]));
+    value = values.find((_, i) => i === Number(e.detail.value[0]));
   }
 
   function getThumb(iValue) {
