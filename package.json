@@ -29,6 +29,8 @@
     "@mdi/js": "^5.9.55",
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-node-resolve": "~11.2.1",
+    "@sveltejs/eslint-config": "github:sveltejs/eslint-config",
+    "eslint-plugin-svelte3": "^3.2.0",
     "postcss": "^8.2.9",
     "prettier": "^2.2.1",
     "prettier-plugin-svelte": "^2.2.0",

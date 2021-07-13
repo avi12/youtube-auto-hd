@@ -4,6 +4,8 @@ specifiers:
   '@mdi/js': ^5.9.55
   '@rollup/plugin-commonjs': ^18.0.0
   '@rollup/plugin-node-resolve': ~11.2.1
+  '@sveltejs/eslint-config': github:sveltejs/eslint-config
+  eslint-plugin-svelte3: ^3.2.0
   postcss: ^8.2.9
   prettier: ^2.2.1
   prettier-plugin-svelte: ^2.2.0
@@ -25,6 +27,8 @@ devDependencies:
   '@mdi/js': 5.9.55
   '@rollup/plugin-commonjs': 18.0.0_rollup@2.44.0
   '@rollup/plugin-node-resolve': 11.2.1_rollup@2.44.0
+  '@sveltejs/eslint-config': github.com/sveltejs/eslint-config/609b6675607551e3fcd98e4e322fa1ccd923388d_eslint-plugin-svelte3@3.2.0
+  eslint-plugin-svelte3: 3.2.0_svelte@3.37.0
   postcss: 8.2.9
   prettier: 2.2.1
   prettier-plugin-svelte: 2.2.0_prettier@2.2.1+svelte@3.37.0
@@ -1481,6 +1485,16 @@ packages:
       eslint: ^5 || ^6 || ^7
     dependencies:
       eslint: 7.28.0
+    dev: true
+
+  /eslint-plugin-svelte3/3.2.0_svelte@3.37.0:
+    resolution: {integrity: sha512-qdWB1QN21dEozsJFdR8XlEhMnsS6aKHjsXWuNmchYwxoet5I6QdCr1Xcq62++IzRBMCNCeH4waXqSOAdqrZzgA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      eslint: '>=6.0.0'
+      svelte: ^3.2.0
+    dependencies:
+      svelte: 3.37.0
     dev: true
 
   /eslint-scope/5.1.1:
@@ -4878,4 +4892,21 @@ packages:
       archiver-utils: 2.1.0
       compress-commons: 4.1.0
       readable-stream: 3.6.0
+    dev: true
+
+  github.com/sveltejs/eslint-config/609b6675607551e3fcd98e4e322fa1ccd923388d_eslint-plugin-svelte3@3.2.0:
+    resolution: {tarball: https://codeload.github.com/sveltejs/eslint-config/tar.gz/609b6675607551e3fcd98e4e322fa1ccd923388d}
+    id: github.com/sveltejs/eslint-config/609b6675607551e3fcd98e4e322fa1ccd923388d
+    name: '@sveltejs/eslint-config'
+    version: 5.6.0
+    peerDependencies:
+      '@typescript-eslint/eslint-plugin': '>= 3'
+      '@typescript-eslint/parser': '>= 3'
+      eslint: '>= 7'
+      eslint-plugin-import: '>= 2'
+      eslint-plugin-node: '>= 11'
+      eslint-plugin-svelte3: '>= 2'
+      typescript: '>= 3'
+    dependencies:
+      eslint-plugin-svelte3: 3.2.0_svelte@3.37.0
     dev: true
