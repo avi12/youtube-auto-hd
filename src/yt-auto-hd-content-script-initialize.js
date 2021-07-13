@@ -8,6 +8,13 @@ import {
 
 const gObserverOptions = { childList: true, subtree: true };
 window.ythdLastQualityClicked = null;
+let gPlayerObserver;
+
+// The ultimate fix for the "notification panel closes" issue
+// I don't know what it has to do with those classes, but it works
+const regexExit = /ytp-tooltip-title|ytp-time-current|ytp-bound-time-right/;
+const getIsExit = mutations =>
+  Boolean(mutations[mutations.length - 1].target.className.match(regexExit));
 
 function doVideoAction() {
   resizePlayerIfNeeded();
@@ -42,26 +49,23 @@ function addTemporaryBodyListener() {
   // the <video> container wouldn't immediately exist, hence listen to the body
   const elementToListen = getElement("player") || document.body;
 
-  // The ultimate fix for the "notification panel closes" issue
-  // I don't know what it has to do with those classes, but it works
-  const regexExit = /ytp-tooltip-title|ytp-time-current|ytp-bound-time-right/;
-  const getIsExit = mutations =>
-    Boolean(mutations[mutations.length - 1].target.className.match(regexExit));
+  if (!gPlayerObserver) {
+    gPlayerObserver = new MutationObserver((mutations, observer) => {
+      if (getIsExit(mutations)) {
+        return;
+      }
+      const elVideo = getElement("video");
+      if (!elVideo) {
+        return;
+      }
 
-  new MutationObserver((mutations, observer) => {
-    if (getIsExit(mutations)) {
-      return;
-    }
-    const elVideo = getElement("video");
-    if (!elVideo) {
-      return;
-    }
-
-    window.ythdLastQualityClicked = null;
-    doVideoAction();
-    elVideo.addEventListener("canplay", doVideoAction);
-    observer.disconnect();
-  }).observe(elementToListen, gObserverOptions);
+      window.ythdLastQualityClicked = null;
+      doVideoAction();
+      elVideo.addEventListener("canplay", doVideoAction);
+      observer.disconnect();
+    });
+  }
+  gPlayerObserver.observe(elementToListen, gObserverOptions);
 }
 
 function addGlobalEventListener() {
