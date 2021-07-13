@@ -31,8 +31,8 @@ export async function prepareToChangeQuality() {
 async function changeQuality(qualityCustom) {
   const fpsCurrent = getFPS();
   const qualitiesAvailable = getCurrentQualities();
-  const qualitiesUser = await getUserQualities();
   const elQualities = getCurrentQualityElements();
+  const qualitiesUser = await getUserQualities();
 
   const fps = getFpsFromRange(qualitiesUser, fpsCurrent);
   const i = getIQuality(
@@ -73,7 +73,9 @@ export function getElement(elementName, { isGetAll = false } = {}) {
   };
 
   if (isGetAll) {
-    return [...document.querySelectorAll(selectors[elementName])];
+    return [...document.querySelectorAll(selectors[elementName])].filter(
+      isElementVisible
+    );
   }
 
   const elements = [...document.querySelectorAll(selectors[elementName])];
