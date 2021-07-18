@@ -12,6 +12,13 @@ Available for:
 
 Made by [avi12](https://avi12.com).
 
+## Known issues
+### The player settings panel pops up when a video starts or when seeking through a video  
+To fix it, simply reload the page.  
+I could prevent this from happening by auto-reloading the page, but the average user would suspect that he got hacked, so I won't implement a fix for it, or at least not this kind of fix.
+
+It happens in the first place because the extension relies on communication with the [Storage API](https://developer.chrome.com/docs/extensions/reference/storage/) to get your preferred quality. When it gets disrupted, usually when the extension receives an update, the extension will attempt to open up the quality section in the player settings, but then the execution will stop due to making the call to the Storage API.
+
 ## Translating
 
 You can translate the extension to your own language by filling [this form](https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate).  
