@@ -22,13 +22,9 @@ async function fixCookiesIfNeeded() {
     return;
   }
 
-  chrome.cookies.remove({
-    url: "https://www.youtube.com/",
-    name: "wide"
-  });
-
   chrome.cookies.set({
-    url: "https://youtube.com",
+    url: "https://www.youtube.com",
+    domain: "youtube.com",
     name: "wide",
     value: size.toString()
   });
@@ -66,6 +62,7 @@ function triggerUpdateOnBrowserActivity() {
     chrome.windows.onFocusChanged.removeListener(callback);
     chrome.tabs.onCreated.removeListener(callback);
   }
+
   chrome.windows.onFocusChanged.addListener(callback);
   chrome.tabs.onCreated.addListener(callback);
 }

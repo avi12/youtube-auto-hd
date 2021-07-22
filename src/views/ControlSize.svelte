@@ -14,26 +14,20 @@
 
   function resizeVideo(e) {
     switch (e.key) {
-      case "Enter":
-        {
-          const sizeNew = e.target.firstElementChild.dataset.videoSize;
-          sizeVideo = +sizeNew;
-        }
-        break;
+    case "Enter":
+      const sizeNew = e.target.firstElementChild.dataset.videoSize;
+      sizeVideo = +sizeNew;
+      break;
 
-      case "ArrowRight":
-        {
-          sizeVideo = 1;
-          elSizeLarge.focus();
-        }
-        break;
+    case "ArrowRight":
+      sizeVideo = 1;
+      elSizeLarge.focus();
+      break;
 
-      case "ArrowLeft":
-        {
-          sizeVideo = 0;
-          elSizeSmall.focus();
-        }
-        break;
+    case "ArrowLeft":
+      sizeVideo = 0;
+      elSizeSmall.focus();
+      break;
     }
   }
 
@@ -57,7 +51,8 @@
     chrome.storage.sync.set({ size: sizeVideo });
 
     chrome.cookies.set({
-      url: "https://youtube.com",
+      url: "https://www.youtube.com",
+      domain: "youtube.com",
       name: "wide",
       value: sizeVideo.toString()
     });
@@ -105,53 +100,53 @@
 {/if}
 
 <style>
-  .size {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    .size {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-  .size__label {
-    padding-inline-end: 16px;
-    flex: 1;
-  }
+    .size__label {
+        padding-inline-end: 16px;
+        flex: 1;
+    }
 
-  .size__box-wrapper {
-    border-radius: 5px;
-    width: 50px;
-    height: 42px;
-    transition: 0.2s ease-in-out;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid transparent;
-    background: transparent;
-    flex: none;
-    cursor: pointer;
-  }
+    .size__box-wrapper {
+        border-radius: 5px;
+        width: 50px;
+        height: 42px;
+        transition: 0.2s ease-in-out;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid transparent;
+        background: transparent;
+        flex: none;
+        cursor: pointer;
+    }
 
-  .size__box-wrapper:focus-within {
-    border-color: blue;
-  }
+    .size__box-wrapper:focus-within {
+        border-color: blue;
+    }
 
-  .size__box-wrapper--selected {
-    background-color: rgba(200, 31, 31, 0.2);
-    border: 1px solid red;
-  }
+    .size__box-wrapper--selected {
+        background-color: rgba(200, 31, 31, 0.2);
+        border: 1px solid red;
+    }
 
-  .size__box-wrapper:not(.size__box-wrapper--selected):hover {
-    background: #eaeaea;
-  }
+    .size__box-wrapper:not(.size__box-wrapper--selected):hover {
+        background: #eaeaea;
+    }
 
-  [data-video-size="0"] {
-    outline: 2px solid black;
-    width: 13px;
-    height: 8px;
-  }
+    [data-video-size="0"] {
+        outline: 2px solid black;
+        width: 13px;
+        height: 8px;
+    }
 
-  [data-video-size="1"] {
-    outline: 3px solid black;
-    width: 22px;
-    height: 15px;
-  }
+    [data-video-size="1"] {
+        outline: 3px solid black;
+        width: 22px;
+        height: 15px;
+    }
 </style>
