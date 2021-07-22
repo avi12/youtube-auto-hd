@@ -167,8 +167,17 @@ function getFpsFromRange(qualities, fpsToCheck) {
  * @returns {Promise<Object>}
  */
 export async function getUserQualities() {
-  const userQualities = (await getStorage("local", "qualities")) ?? {};
-  return { ...initial.qualities, ...userQualities };
+  try {
+    const userQualities = (await getStorage("local", "qualities")) ?? {};
+    return { ...initial.qualities, ...userQualities };
+  } catch {
+    // Handling "Error: Extension context invalidated"
+
+    // This error typically occurs when the extension updates
+    // but the user hasn't refreshed the page, which typically causes
+    // the player settings to open when seeking through a video
+    return { ...initial.qualities };
+  }
 }
 
 /**
