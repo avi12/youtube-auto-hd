@@ -1,7 +1,7 @@
 {
 "cj_i18n_00354":{"message":"Donirajte"},
-"cj_i18n_01605":{"message":"Pomoћ oko prevoda"},
-"cj_i18n_02146":{"message":"Automatski podesite kvalitet video zapisa na YouTube-u u skladu sa njegovim k/s!"},
+"cj_i18n_01605":{"message":"Pomoć oko prevoda"},
+"cj_i18n_02146":{"message":"Automatski podesite video kvalitet na YouTube-u."},
 "cj_i18n_02147":{"message":"Kvalitet prikaza"},
 "cj_i18n_02148":{"message":"k/s video"},
 "cj_i18n_02149":{"message":"k/s i nizhe"},
@@ -10,7 +10,7 @@
 "cj_i18n_06568":{"message":"Automatski promenite velichinu video zapisa"},
 "cj_i18n_06858":{"message":"Sve brzine kadrova"},
 "cj_i18n_06859":{"message":"Velichina prikazivacha"},
-"cj_i18n_06860":{"message":"Podrshka programeru"},
-"cj_i18n_06861":{"message":"Otsenite proshireњe"},
+"cj_i18n_06860":{"message":"Podrška programeru"},
+"cj_i18n_06861":{"message":"Ocenite proširenje"},
 "cj_i18n_06862":{"message":"Koristite isti kvalitet za sve brzine kadrova"}
 }
