@@ -1,6 +1,7 @@
 # YouTube Auto HD + FPS
 
-A browser extension that sets the quality of YouTube videos according to the user's preference, based on the video's FPS.  
+A browser extension that sets the quality of YouTube videos according to the user's preference, based on the video's
+FPS.  
 Available for:
 
 - [Google Chrome](https://chrome.google.com/webstore/detail/fcphghnknhkimeagdglkljinmpbagone) ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/fcphghnknhkimeagdglkljinmpbagone?color=white&label=users&style=flat-square)
@@ -12,10 +13,26 @@ Available for:
 
 Made by [avi12](https://avi12.com).
 
+## Known issue
+
+Due to the way the browsers handle extensions, when an extension receives an update, content scripts in already-open web
+pages cannot use the [Storage API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage),
+until the user reloads those web pages.   
+In the context of this extension, it means that when the extension receives an update, as long as the user doesn't reload YouTube web pages, the extension cannot get the data regarding the user-preferred qualities.
+
+### A kind-of working solution
+To provide a smooth user experience, instead of forcing the user to reload all of the already-open web pages, I decided
+to keep track of the last qualities that were fetched, and use them.  
+
+This solution is not perfect, since if the user wants to update the quality of the videos in the currently-open web pages using the popup page (as seen above), it will not update dynamically.  
+However, this is the only viable solution, since the alternative one would be to auto-reload web pages, which would lead to a bad user experience.
+
 ## Translating
 
-You can translate the extension to your own language by filling [this form](https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate).  
-After filling, you will get an email, which will grant you access to a spreadsheet, in which you can contribute your translations.
+You can translate the extension to your own language by
+filling [this form](https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate).  
+After filling, you will get an email, which will grant you access to a spreadsheet, in which you can contribute your
+translations.
 
 ## Requirements for setting up
 
@@ -55,5 +72,6 @@ pnpm run-firefox
 
 ## Contribution
 
-Feel free to contribute! Keep in mind that the license I chose is [GPL v3](https://github.com/avi12/youtube-auto-hd/blob/main/LICENSE).  
+Feel free to contribute! Keep in mind that the license I chose
+is [GPL v3](https://github.com/avi12/youtube-auto-hd/blob/main/LICENSE).  
 If you want to fork, make sure to credit [avi12](https://avi12.com) and link to this repository.
