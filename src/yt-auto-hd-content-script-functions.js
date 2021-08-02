@@ -3,6 +3,8 @@
 import { getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
 import { initial, qualities } from "./yt-auto-hd-setup";
 
+window.ythdLastUserQualities = { ...initial.qualities };
+
 export async function prepareToChangeQuality() {
   if (!isSettingsMenuOpen()) {
     toggleSettingsMenu();
@@ -169,14 +171,15 @@ function getFpsFromRange(qualities, fpsToCheck) {
 export async function getUserQualities() {
   try {
     const userQualities = (await getStorage("local", "qualities")) ?? {};
-    return { ...initial.qualities, ...userQualities };
+    window.ythdLastUserQualities = { ...initial.qualities, ...userQualities };
+    return window.ythdLastUserQualities;
   } catch {
     // Handling "Error: Extension context invalidated"
 
     // This error typically occurs when the extension updates
     // but the user hasn't refreshed the page, which typically causes
     // the player settings to open when seeking through a video
-    return { ...initial.qualities };
+    return window.ythdLastUserQualities;
   }
 }
 
@@ -238,6 +241,7 @@ chrome.storage.onChanged.addListener(
   async ({ qualities, autoResize, size }) => {
     if (qualities) {
       window.ythdLastQualityClicked = null;
+      window.ythdLastUserQualities = { ...qualities };
       prepareToChangeQuality();
       return;
     }
