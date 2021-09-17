@@ -1,3 +1,5 @@
+"use strict";
+
 import Options from "./Options.svelte";
 import { getIsFewerQualityValues, getStorage } from "./yt-auto-hd-utilities";
 import { initial } from "./yt-auto-hd-setup";
