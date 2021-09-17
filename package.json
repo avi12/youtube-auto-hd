@@ -53,6 +53,7 @@
   },
   "browserslist": [
     "Firefox ESR",
+    "FirefoxAndroid >= 48",
     "Firefox >= 48",
     "Chrome >= 22",
     "Opera >= 15",
