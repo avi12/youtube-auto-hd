@@ -16,7 +16,7 @@ body {
 
 /* Correcting the line height */
 
-.extension-popup body {
+.extension-popup > body {
   line-height: 1.2;
 }
 
@@ -98,17 +98,7 @@ body {
   *,
   ::before,
   ::after {
-    transition: 0ms !important;
+    transition-duration: 0ms !important;
     animation-duration: 0ms !important;
   }
-}
-
-/* hide scrollbar */
-::-webkit-scrollbar {
-  display: none;
-}
-
-/* For Firefox */
-html {
-  scrollbar-width: none;
 }
