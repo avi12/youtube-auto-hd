@@ -7,11 +7,16 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
     return;
   }
 
-  chrome.storage.sync.remove([
+  const discontinuedStorageKeys = [
     "rateDisplay",
     "isOfferDonation",
     "isOfferTranslation"
-  ]);
+  ]
+
+  chrome.storage.sync.get(discontinuedStorageKeys, (storage) => {
+    if (Object.keys(storage) === 0) return;
+    chrome.storage.sync.remove(discontinuedStorageKeys);
+  });
 
   fixCookiesIfNeeded();
 });
