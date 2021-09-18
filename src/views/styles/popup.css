@@ -94,8 +94,8 @@ body {
 
 .s-list-item.dense .s-list-item__content,
 .s-list.dense .s-list-item .s-list-item__content {
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
 }
 
 /* Accessibility */
