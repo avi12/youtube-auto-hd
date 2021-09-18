@@ -1,10 +1,12 @@
 body {
-  font-family: Roboto, sans-serif;
-  width: 250px;
-  padding: 16px 16px 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
   overflow: hidden;
+  box-sizing: border-box;
+  margin: auto;
+  width: 250px;
+  padding: 16px;
+  padding-bottom: 4px;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 1rem;
 }
 
 /* Necessary to not keep any whitespace in the bottom part of the popup */
@@ -15,7 +17,7 @@ body {
 
 /* Correcting the line height */
 
-.extension-popup body {
+.extension-popup > body {
   line-height: 1.2;
 }
 
@@ -55,8 +57,8 @@ body {
 /* Slider overrides */
 
 .i18n--rtl .s-slider__connects::before {
-  left: 0;
   right: 0;
+  left: 0;
 }
 
 .i18n--rtl .s-slider__label {
@@ -71,8 +73,9 @@ body {
 }
 
 [aria-checked="false"] ~ .s-switch__track {
-  background-color: lightgray;
+  background-color: #d3d3d3;
 }
+
 [aria-checked="false"] ~ .s-switch__thumb {
   background-color: #aaaaaa;
 }
@@ -86,8 +89,14 @@ body {
 }
 
 .i18n--rtl .s-switch label {
-  margin-left: 0 !important;
   margin-right: 8px;
+  margin-left: 0 !important;
+}
+
+.s-list-item.dense .s-list-item__content,
+.s-list.dense .s-list-item .s-list-item__content {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
 }
 
 /* Accessibility */
@@ -96,17 +105,7 @@ body {
   *,
   ::before,
   ::after {
-    transition: 0s !important;
+    transition-duration: 0ms !important;
     animation-duration: 0ms !important;
   }
-}
-
-/* hide scrollbar */
-::-webkit-scrollbar {
-  display: none;
-}
-
-/* For Firefox */
-html {
-  scrollbar-width: none;
 }

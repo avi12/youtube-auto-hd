@@ -3,39 +3,40 @@ html {
 }
 
 .test-title {
-  margin: 0;
   position: absolute;
   top: 19px;
   left: 200px;
+  margin: 0;
+  color: #ffd000;
   font-family: sans-serif;
   font-weight: 400;
-  font-size: 19px;
-  color: #ffd000;
-  text-shadow: 1px 1px 1px #000;
+  font-size: 1.1875rem;
+  text-shadow: 1px 1px 1px #000000;
 }
 
 .test-wrapper {
-  margin: 0;
   position: absolute;
   top: 19px;
   right: 200px;
+  margin: 0;
 }
 
 .test-clock {
-  font-family: sans-serif;
-  font-size: 19px;
-  font-kerning: none;
   color: #c0c0ff;
-  text-shadow: 1px 1px 1px #000;
+  font-family: sans-serif;
+  font-size: 1.1875rem;
+  font-kerning: none;
+  text-shadow: 1px 1px 1px #000000;
 }
 
 .test-iframe {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin: 0 -50% 0 0;
-  transform: translate(-50%, -50%);
-  border: none;
   width: 1200px;
   height: 675px;
+  margin: 0;
+  margin-right: -50%;
+  border: none;
+  transform: translate(-50%, -50%);
 }

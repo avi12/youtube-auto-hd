@@ -7,14 +7,25 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
     return;
   }
 
-  chrome.storage.sync.remove([
+
+  removeDiscontinuedStorage();
+  fixCookiesIfNeeded();
+});
+
+function removeDiscontinuedStorage() {
+  const discontinuedStorageKeys = [
     "rateDisplay",
     "isOfferDonation",
     "isOfferTranslation"
-  ]);
+  ];
 
-  fixCookiesIfNeeded();
-});
+  chrome.storage.sync.get(discontinuedStorageKeys, storage => {
+    if (Object.keys(storage) === 0) {
+      return;
+    }
+    chrome.storage.sync.remove(discontinuedStorageKeys);
+  });
+}
 
 async function fixCookiesIfNeeded() {
   const { autoResize, size } = await getStorage("sync");

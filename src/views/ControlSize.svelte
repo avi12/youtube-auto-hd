@@ -100,53 +100,54 @@
 {/if}
 
 <style>
-    .size {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.size {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .size__label {
-        padding-inline-end: 16px;
-        flex: 1;
-    }
+.size__label {
+  flex: 1;
+  padding-inline-end: 16px;
+}
 
-    .size__box-wrapper {
-        border-radius: 5px;
-        width: 50px;
-        height: 42px;
-        transition: 0.2s ease-in-out;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid transparent;
-        background: transparent;
-        flex: none;
-        cursor: pointer;
-    }
+.size__box-wrapper {
+  display: flex;
+  flex: none;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 42px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+}
 
-    .size__box-wrapper:focus-within {
-        border-color: blue;
-    }
+.size__box-wrapper:focus-within {
+  border-color: blue;
+}
 
-    .size__box-wrapper--selected {
-        background-color: rgba(200, 31, 31, 0.2);
-        border: 1px solid red;
-    }
+.size__box-wrapper--selected {
+  border: 1px solid red;
+  background-color: rgba(200, 31, 31, 0.2);
+}
 
-    .size__box-wrapper:not(.size__box-wrapper--selected):hover {
-        background: #eaeaea;
-    }
+.size__box-wrapper:not(.size__box-wrapper--selected):hover {
+  background: #eaeaea;
+}
 
-    [data-video-size="0"] {
-        outline: 2px solid black;
-        width: 13px;
-        height: 8px;
-    }
+[data-video-size="0"] {
+  width: 13px;
+  height: 8px;
+  outline: 2px solid black;
+}
 
-    [data-video-size="1"] {
-        outline: 3px solid black;
-        width: 22px;
-        height: 15px;
-    }
+[data-video-size="1"] {
+  width: 22px;
+  height: 15px;
+  outline: 3px solid black;
+}
+
 </style>

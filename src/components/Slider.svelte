@@ -29,10 +29,11 @@
 </Slider>
 
 <style>
-  :global(.s-slider__tooltip::before) {
-    --size: 38px;
-    width: var(--size) !important;
-    height: var(--size) !important;
-    background: #f44336 !important;
-  }
+:global(.s-slider__tooltip::before) {
+  --size: 38px;
+
+  width: var(--size, 38px) !important;
+  height: var(--size, 38px) !important;
+  background: #f44336 !important;
+}
 </style>
