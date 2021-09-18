@@ -23,15 +23,14 @@
     }
   },
   "icons": {
-    "16": "icons/icon-16.png",
-    "19": "icons/icon-19.png",
-    "24": "icons/icon-24.png",
-    "32": "icons/icon-32.png",
-    "38": "icons/icon-38.png",
-    "48": "icons/icon-48.png",
-    "64": "icons/icon-64.png",
-    "96": "icons/icon-96.png",
-    "128": "icons/icon-128.png"
+    "16": "/icons/icon-16.png",
+    "24": "/icons/icon-24.png",
+    "32": "/icons/icon-32.png",
+    "48": "/icons/icon-48.png",
+    "64": "/icons/icon-64.png",
+    "96": "/icons/icon-96.png",
+    "128": "/icons/icon-128.png",
+    "256": "/icons/icon-256.png"
   },
   "permissions": [
     "cookies",
@@ -42,22 +41,25 @@
   ],
   "background": {
     "scripts": [
-      "build/background.js"
+      "/build/background.js"
     ],
     "persistent": false
   },
+  "options_ui": {
+    "page": "/popup.html",
+    "browser_style": false
+  },
+  "options_page": "/popup.html",
   "browser_action": {
-    "default_popup": "popup.html",
+    "default_popup": "/popup.html",
     "default_icon": {
-      "16": "icons/icon-16.png",
-      "19": "icons/icon-19.png",
-      "24": "icons/icon-24.png",
-      "32": "icons/icon-32.png",
-      "38": "icons/icon-38.png",
-      "48": "icons/icon-48.png",
-      "64": "icons/icon-64.png",
-      "96": "icons/icon-96.png",
-      "128": "icons/icon-128.png"
+      "16": "/icons/icon-16.png",
+      "19": "/icons/icon-19.png",
+      "24": "/icons/icon-24.png",
+      "32": "/icons/icon-32.png",
+      "38": "/icons/icon-38.png",
+      "48": "/icons/icon-48.png",
+      "96": "/icons/icon-96.png"
     }
   },
   "content_scripts": [
@@ -68,7 +70,7 @@
         "https://youtube.googleapis.com/*"
       ],
       "js": [
-        "build/yt-auto-hd-content-script-initialize.js"
+        "/build/yt-auto-hd-content-script-initialize.js"
       ],
       "all_frames": true
     }
