@@ -92,6 +92,12 @@ body {
   margin-left: 0 !important;
 }
 
+.s-list-item.dense .s-list-item__content,
+.s-list.dense .s-list-item .s-list-item__content {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
 /* Accessibility */
 
 @media (prefers-reduced-motion: reduce) {
