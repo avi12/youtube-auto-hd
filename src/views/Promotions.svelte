@@ -16,31 +16,33 @@
     labelTranslate: getI18n("cj_i18n_01605", "Help with translations")
   };
 
-  const browser = (() => {
-    const extensionBaseUrl = chrome.runtime.getURL("");
-    if (extensionBaseUrl.startsWith("moz-extension://")) {
-      return "firefox";
-    }
-    const { userAgent } = navigator;
-    if (userAgent.includes("OPR")) {
-      return "opera";
-    }
-    if (userAgent.includes("Edg")) {
-      return "edge";
-    }
-    return "chrome";
-  })();
-
   const linkRating = (() => {
-    // prettier-ignore
-    const urls = {
-      chrome: `https://chrome.google.com/webstore/detail/${getI18n("@@extension_id")}`,
-      firefox: "https://addons.mozilla.org/firefox/addon/youtube-auto-hd-fps",
-      opera: "https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps",
-      edge: `https://microsoftedge.microsoft.com/addons/detail/${getI18n("@@extension_id")}`
-    };
+    const extensionBaseUrl = chrome.runtime.getURL("");
 
-    return urls[browser];
+    // Mozilla Firefox
+    if (extensionBaseUrl.startsWith("moz-extension://")) {
+      return "https://addons.mozilla.org/firefox/addon/youtube-auto-hd-fps";
+    }
+
+    let userAgent = navigator.userAgent;
+
+    // Opera
+    if (userAgent.includes("OPR")) {
+      return "https://addons.opera.com/extensions/details/app_id/afgnmkmomgakegdfoldjonhgkohhodol";
+    }
+
+    // Microsoft Edge
+    if (userAgent.includes("Edg")) {
+      return "https://microsoftedge.microsoft.com/addons/detail/youtube-auto-hd-fps/ggnepcoiimddpmjaoejhdfppjbcnfaom";
+    }
+
+    // Safari Mac & iOS
+    if (/^((?!chrome|android).)*safari/i.test(userAgent)) {
+      return "https://apps.apple.com/app/auto-hd-fps-for-youtube/id1546729687";
+    }
+
+    // Anything else, probably Google Chrome
+    return "https://chrome.google.com/webstore/detail/youtube-auto-hd-+-fps/fcphghnknhkimeagdglkljinmpbagone";
   })();
 
   const links = [
