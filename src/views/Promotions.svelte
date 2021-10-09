@@ -19,30 +19,30 @@
   const linkRating = (() => {
     const extensionBaseUrl = chrome.runtime.getURL("");
 
-    // Mozilla Firefox
-    if (extensionBaseUrl.startsWith("moz-extension://")) {
+    const isFirefox = extensionBaseUrl.startsWith("moz-extension://");
+    if (isFirefox) {
       return "https://addons.mozilla.org/firefox/addon/youtube-auto-hd-fps";
     }
 
-    let userAgent = navigator.userAgent;
+    const { userAgent } = navigator;
 
-    // Opera
-    if (userAgent.includes("OPR")) {
+    const isOpera = userAgent.includes("OPR");
+    if (isOpera) {
       return "https://addons.opera.com/extensions/details/app_id/afgnmkmomgakegdfoldjonhgkohhodol";
     }
 
-    // Microsoft Edge
-    if (userAgent.includes("Edg")) {
-      return "https://microsoftedge.microsoft.com/addons/detail/youtube-auto-hd-fps/ggnepcoiimddpmjaoejhdfppjbcnfaom";
+    const isEdge = userAgent.includes("Edg");
+    if (isEdge) {
+      return "https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom";
     }
 
-    // Safari Mac & iOS
-    if (/^((?!chrome|android).)*safari/i.test(userAgent)) {
-      return "https://apps.apple.com/app/auto-hd-fps-for-youtube/id1546729687";
+    const isSafari = userAgent.match(/^((?!chrome|android).)*safari/i);
+    if (isSafari) {
+      return "https://apps.apple.com/app/id1546729687";
     }
 
     // Anything else, probably Google Chrome
-    return "https://chrome.google.com/webstore/detail/youtube-auto-hd-+-fps/fcphghnknhkimeagdglkljinmpbagone";
+    return "https://chrome.google.com/webstore/detail/fcphghnknhkimeagdglkljinmpbagone";
   })();
 
   const links = [
