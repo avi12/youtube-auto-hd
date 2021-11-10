@@ -7,5 +7,7 @@
 "cj_i18n_02149":{"message":"FPS e meno"},
 "cj_i18n_02152":{"message":"I video verranno riprodotti a 30 FPS per questa qualità."},
 "cj_i18n_06567":{"message":"Mantieni dimensione su"},
-"cj_i18n_06568":{"message":"Auto-ridimensiona video"}
+"cj_i18n_06568":{"message":"Auto-ridimensiona video"},
+"cj_i18n_06858":{"message":"Tutti i frame rate"},
+"cj_i18n_06862":{"message":"Imposta la stessa qualità per tutti i frame rate"}
 }
