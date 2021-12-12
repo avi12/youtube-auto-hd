@@ -10,10 +10,7 @@ export async function prepareToChangeQuality() {
     toggleSettingsMenu();
   }
   const elVideo = getElement("video");
-  if (
-    !isLastOptionQuality() ||
-    (!isQualityAuto() && !window.ythdLastQualityClicked)
-  ) {
+  if (!isLastOptionQuality() || (!isQualityAuto() && !window.ythdLastQualityClicked)) {
     toggleSettingsMenu();
     elVideo.addEventListener("canplay", prepareToChangeQuality, {
       once: true
@@ -37,10 +34,7 @@ async function changeQuality(qualityCustom) {
   const qualitiesUser = await getUserQualities();
 
   const fps = getFpsFromRange(qualitiesUser, fpsCurrent);
-  const i = getIQuality(
-    qualitiesAvailable,
-    qualityCustom || qualitiesUser[fps]
-  );
+  const i = getIQuality(qualitiesAvailable, qualityCustom || qualitiesUser[fps]);
 
   const isQualityExists = i > -1;
   if (isQualityExists) {
@@ -48,9 +42,7 @@ async function changeQuality(qualityCustom) {
   } else if (getIsQualityLower(elQualities[0], qualitiesUser[fps])) {
     elQualities[0].click();
   } else {
-    const iClosestQuality = qualitiesAvailable.findIndex(
-      quality => quality <= qualitiesUser[fps]
-    );
+    const iClosestQuality = qualitiesAvailable.findIndex(quality => quality <= qualitiesUser[fps]);
     const isClosestQualityFound = iClosestQuality > -1;
     if (isClosestQualityFound) {
       elQualities[iClosestQuality].click();
@@ -75,9 +67,7 @@ export function getElement(elementName, { isGetAll = false } = {}) {
   };
 
   if (isGetAll) {
-    return [...document.querySelectorAll(selectors[elementName])].filter(
-      isElementVisible
-    );
+    return [...document.querySelectorAll(selectors[elementName])].filter(isElementVisible);
   }
 
   const elements = [...document.querySelectorAll(selectors[elementName])];
@@ -237,26 +227,23 @@ function getIQuality(qualitiesCurrent, qualityUser) {
   return qualitiesCurrent.findIndex(elQuality => elQuality === qualityUser);
 }
 
-chrome.storage.onChanged.addListener(
-  async ({ qualities, autoResize, size }) => {
-    if (qualities) {
-      window.ythdLastQualityClicked = null;
-      window.ythdLastUserQualities = { ...qualities };
-      prepareToChangeQuality();
-      return;
-    }
+chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
+  if (qualities) {
+    window.ythdLastQualityClicked = null;
+    window.ythdLastUserQualities = { ...qualities };
+    prepareToChangeQuality();
+    return;
+  }
 
+  if (autoResize) {
+    resizePlayerIfNeeded();
+    return;
+  }
+
+  if (size !== undefined) {
+    const autoResize = (await getStorage("sync", "autoResize")) ?? initial.autoResize;
     if (autoResize) {
-      resizePlayerIfNeeded();
-      return;
-    }
-
-    if (size !== undefined) {
-      const autoResize =
-        (await getStorage("sync", "autoResize")) ?? initial.autoResize;
-      if (autoResize) {
-        resizePlayerIfNeeded({ size: size.newValue });
-      }
+      resizePlayerIfNeeded({ size: size.newValue });
     }
   }
-);
+});
