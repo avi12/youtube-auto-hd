@@ -50,8 +50,5 @@
     "web-ext": "^6.2.0",
     "webext-store-incompat-fixer": "^0.1.13",
     "zip-self": "^0.3.3"
-  },
-  "stylelint": {
-    "extends": "stylelint-config-ccb"
   }
 }
