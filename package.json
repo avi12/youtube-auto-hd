@@ -51,20 +51,6 @@
     "webext-store-incompat-fixer": "^0.1.13",
     "zip-self": "^0.3.3"
   },
-  "browserslist": [
-    "Firefox ESR",
-    "FirefoxAndroid >= 48",
-    "Firefox >= 48",
-    "Chrome >= 22",
-    "Opera >= 15",
-    "Edge >= 14",
-    "Safari >= 14",
-    "unreleased Firefox versions",
-    "unreleased Chrome versions",
-    "unreleased Opera versions",
-    "unreleased Edge versions",
-    "unreleased Safari versions"
-  ],
   "prettier": {
     "arrowParens": "avoid",
     "singleQuote": false,
