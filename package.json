@@ -17,7 +17,8 @@
     "pack-stores": "webext-store-incompat-fixer -i dist_packed/youtube_auto_hd_fps-{version}.zip --edge-locale-inclusions en,sr,hr,de,de_CH,de_AT,es,es_419,es_US,fr,fr_CA,he,ja,nl,pl,pt_BR,ru,zh_Hans,zh_Hant --stores edge,firefox",
     "pack-self": "zip-self -o dist_packed/youtube_auto_hd_fps-{version}-source.zip",
     "build-pack": "pnpm run build && pnpm run pack && pnpm run pack-stores && pnpm run pack-self",
-    "deploy": "web-ext-deploy --env --verbose",
+    "build-for-firefox": "build-for-browser --i dist_packed/youtube-speed-control-{version}.zip --browser=firefox",
+    "build-for-opera": "build-for-browser --i dist_packed/youtube-speed-control-{version}.zip --browser=opera",
     "set-version": "set-json-version -f package.json dist/manifest.json -v",
     "validate": "svelte-check",
     "run-browser": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=dQw4w9WgXcQ --source-dir dist --verbose --target",
@@ -30,9 +31,9 @@
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-node-resolve": "~11.2.1",
     "@sveltejs/eslint-config": "github:sveltejs/eslint-config",
-    "@types/chrome": "^0.0.170",
+    "@types/chrome": "^0.0.148",
+    "build-for-browser": "github:avi12/build-for-browser",
     "eslint": "^8.4.1",
-    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-svelte3": "^3.2.0",
     "postcss": "^8.2.9",
     "prettier-plugin-svelte": "^2.2.0",
@@ -50,23 +51,6 @@
     "svelte-materialify": "^0.3.6",
     "web-ext": "^6.2.0",
     "webext-store-incompat-fixer": "^0.1.13",
-    "zip-self": "^0.3.1"
-  },
-  "browserslist": [
-    "Firefox ESR",
-    "FirefoxAndroid >= 48",
-    "Firefox >= 48",
-    "Chrome >= 22",
-    "Opera >= 15",
-    "Edge >= 14",
-    "Safari >= 14",
-    "unreleased Firefox versions",
-    "unreleased Chrome versions",
-    "unreleased Opera versions",
-    "unreleased Edge versions",
-    "unreleased Safari versions"
-  ],
-  "stylelint": {
-    "extends": "stylelint-config-ccb"
+    "zip-self": "^0.3.3"
   }
 }

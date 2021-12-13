@@ -3,5 +3,5 @@
   "singleQuote": false,
   "trailingComma": "none",
   "svelteSortOrder": "scripts-markup-styles",
-  "printWidth": 110
+  "printWidth": 100
 }

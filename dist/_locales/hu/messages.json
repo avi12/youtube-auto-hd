@@ -1,4 +1,16 @@
 {
 "cj_i18n_00354":{"message":"Adományozás"},
-"cj_i18n_02146":{"message":"Automatically set the video quality on YouTube according to its FPS!"}
+"cj_i18n_01605":{"message":"Segítség a fordításokhoz"},
+"cj_i18n_02146":{"message":"Automatikusan állítsa be a videó minőségét az FPS szerint"},
+"cj_i18n_02147":{"message":"Minőség megtekintése"},
+"cj_i18n_02148":{"message":"FPS videók"},
+"cj_i18n_02149":{"message":"FPS és alatta"},
+"cj_i18n_02152":{"message":"A videók 30 FPS-ben lesznek lejátszva ebben a minőségben."},
+"cj_i18n_06567":{"message":"Méret tartésa"},
+"cj_i18n_06568":{"message":"Videók automatikus méretezése"},
+"cj_i18n_06858":{"message":"Összes képfrissítés"},
+"cj_i18n_06859":{"message":"Lejátszó méret"},
+"cj_i18n_06860":{"message":"Fejlseztő támogatása"},
+"cj_i18n_06861":{"message":"Kiterjesztés értékelése"},
+"cj_i18n_06862":{"message":"Ugyan az a minőség használata az összes képkocka sebességhez"}
 }
