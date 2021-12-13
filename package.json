@@ -51,12 +51,6 @@
     "webext-store-incompat-fixer": "^0.1.13",
     "zip-self": "^0.3.3"
   },
-  "prettier": {
-    "arrowParens": "avoid",
-    "singleQuote": false,
-    "trailingComma": "none",
-    "svelteSortOrder": "scripts-markup-styles"
-  },
   "stylelint": {
     "extends": "stylelint-config-ccb"
   }
