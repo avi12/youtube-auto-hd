@@ -24,13 +24,13 @@ specifiers:
   svelte-materialify: ^0.3.6
   web-ext: ^6.2.0
   webext-store-incompat-fixer: ^0.1.13
-  zip-self: ^0.3.1
+  zip-self: ^0.3.3
 
 devDependencies:
   '@mdi/js': 5.9.55
   '@rollup/plugin-commonjs': 18.0.0_rollup@2.44.0
   '@rollup/plugin-node-resolve': 11.2.1_rollup@2.44.0
-  '@sveltejs/eslint-config': github.com/sveltejs/eslint-config/31fd4faeea88990069502460b023698b1c9c2d13_eslint-plugin-svelte3@3.2.0
+  '@sveltejs/eslint-config': github.com/sveltejs/eslint-config/8a67624e4080bd7997606eb34981aa3346bc8de2_eslint-plugin-svelte3@3.2.0
   '@types/chrome': 0.0.148
   eslint-plugin-svelte3: 3.2.0_svelte@3.37.0
   postcss: 8.2.9
@@ -50,7 +50,7 @@ devDependencies:
   svelte-materialify: 0.3.6_svelte@3.37.0
   web-ext: 6.2.0
   webext-store-incompat-fixer: 0.1.13
-  zip-self: 0.3.1
+  zip-self: 0.3.3
 
 packages:
 
@@ -723,9 +723,9 @@ packages:
     resolution: {integrity: sha512-bEL/yUb/fNNiNTuUz979Z0Yg5L+LzLxGJz8x79lYmR54fmTIb6ob/hNQgkQnIUDWIFjZVQwl9Xs356I6BAMHfw==}
     engines: {node: '>= 6'}
     dependencies:
-      glob: 7.1.6
-      graceful-fs: 4.2.6
-      lazystream: 1.0.0
+      glob: 7.2.0
+      graceful-fs: 4.2.8
+      lazystream: 1.0.1
       lodash.defaults: 4.2.0
       lodash.difference: 4.5.0
       lodash.flatten: 4.4.0
@@ -735,12 +735,12 @@ packages:
       readable-stream: 2.3.7
     dev: true
 
-  /archiver/5.2.0:
-    resolution: {integrity: sha512-QEAKlgQuAtUxKeZB9w5/ggKXh21bZS+dzzuQ0RPBC20qtDCbTyzqmisoeJP46MP39fg4B4IcyvR+yeyEBdblsQ==}
+  /archiver/5.3.0:
+    resolution: {integrity: sha512-iUw+oDwK0fgNpvveEsdQ0Ase6IIKztBJU2U0E9MzszMfmVVUyv1QJhS2ITW9ZCqx8dktAxVAjWWkKehuZE8OPg==}
     engines: {node: '>= 10'}
     dependencies:
       archiver-utils: 2.1.0
-      async: 3.2.0
+      async: 3.2.2
       buffer-crc32: 0.2.13
       readable-stream: 3.6.0
       readdir-glob: 1.1.1
@@ -808,6 +808,10 @@ packages:
 
   /async/3.2.0:
     resolution: {integrity: sha512-TR2mEZFVOj2pLStYxLht7TyfuRzaydfpxr3k9RpHIzMgw7A64dzsdqCxH1WJyQdoe8T10nDXd9wnEigmiuHIZw==}
+    dev: true
+
+  /async/3.2.2:
+    resolution: {integrity: sha512-H0E+qZaDEfx/FY4t7iLRv1W2fFI6+pyCeTw1uN20AQPiwqwM6ojPxHxdLv4z8hi2DtnW9BOckSspLucW7pIE5g==}
     dev: true
 
   /asynckit/0.4.0:
@@ -1269,8 +1273,8 @@ packages:
     resolution: {integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=}
     dev: true
 
-  /compress-commons/4.1.0:
-    resolution: {integrity: sha512-ofaaLqfraD1YRTkrRKPCrGJ1pFeDG/MVCkVVV2FNGeWquSlqw5wOrwOfPQ1xF2u+blpeWASie5EubHz+vsNIgA==}
+  /compress-commons/4.1.1:
+    resolution: {integrity: sha512-QLdDLCKNV2dtoTorqgxngQCMA+gWXkM/Nwu7FpeBhk/RdkzimqC3jueb/FDmaZeXh+uby1jkBqE3xArsLBE5wQ==}
     engines: {node: '>= 10'}
     dependencies:
       buffer-crc32: 0.2.13
@@ -2206,6 +2210,7 @@ packages:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -2322,6 +2327,17 @@ packages:
       path-is-absolute: 1.0.1
     dev: true
 
+  /glob/7.2.0:
+    resolution: {integrity: sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==}
+    dependencies:
+      fs.realpath: 1.0.0
+      inflight: 1.0.6
+      inherits: 2.0.4
+      minimatch: 3.0.4
+      once: 1.4.0
+      path-is-absolute: 1.0.1
+    dev: true
+
   /global-dirs/3.0.0:
     resolution: {integrity: sha512-v8ho2DS5RiCjftj1nD9NmnfaOzTdud7RRnVd9kFNOjqZbISlx5DQ+OrTkywgd0dIt7oFCvKetZSHoHcP3sDdiA==}
     engines: {node: '>=10'}
@@ -2355,18 +2371,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       type-fest: 0.20.2
-    dev: true
-
-  /globby/11.0.2:
-    resolution: {integrity: sha512-2ZThXDvvV8fYFRVIxnrMQBipZQDr7MxKAmQK1vujaj9/7eF0efG7BPUKJ7jP7G5SLF37xKDXvO4S/KKLj/Z0og==}
-    engines: {node: '>=10'}
-    dependencies:
-      array-union: 2.1.0
-      dir-glob: 3.0.1
-      fast-glob: 3.2.5
-      ignore: 5.1.8
-      merge2: 1.4.1
-      slash: 3.0.0
     dev: true
 
   /globby/11.0.4:
@@ -2412,6 +2416,10 @@ packages:
 
   /graceful-fs/4.2.6:
     resolution: {integrity: sha512-nTnJ528pbqxYanhpDYsi4Rd8MAeaBA67+RZ10CM1m3bTAVFEDcd5AuA4a6W5YkGZ1iNXHzZz8T6TBKLeBuNriQ==}
+    dev: true
+
+  /graceful-fs/4.2.8:
+    resolution: {integrity: sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==}
     dev: true
 
   /graceful-readlink/1.0.1:
@@ -3135,8 +3143,8 @@ packages:
       package-json: 6.5.0
     dev: true
 
-  /lazystream/1.0.0:
-    resolution: {integrity: sha1-9plf4PggOS9hOWvolGJAe7dxaOQ=}
+  /lazystream/1.0.1:
+    resolution: {integrity: sha512-b94GiNHQNy6JNTrt5w6zNyffMrNkXZb3KTkCZJb2V1xaEGCk093vkZ2jk3tpaeP33/OiXC+WvK9AxUebnf5nbw==}
     engines: {node: '>= 0.6.3'}
     dependencies:
       readable-stream: 2.3.7
@@ -3478,6 +3486,7 @@ packages:
 
   /moment/2.29.1:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -3507,6 +3516,7 @@ packages:
   /mv/2.1.1:
     resolution: {integrity: sha1-rmzg1vbV4KT32JN5jQPB6pVZtqI=}
     engines: {node: '>=0.8.0'}
+    requiresBuild: true
     dependencies:
       mkdirp: 0.5.5
       ncp: 2.0.0
@@ -4790,6 +4800,7 @@ packages:
 
   /safe-json-stringify/1.2.0:
     resolution: {integrity: sha512-gH8eh2nZudPQO6TytOvbxnuhYBOvDBBLW52tz5q6X58lJcd/tkmqFR+5Z9adS8aJtURSXWThWy/xJtJwixErvg==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5995,13 +6006,13 @@ packages:
       jszip: 3.6.0
     dev: true
 
-  /zip-self/0.3.1:
-    resolution: {integrity: sha512-RBnidt59nKOmKLhoJFylq3qZd9h9GrL8faKz+bxElBiUAV2GGj0I8rbcojP3AUSMJYNUMCFCHYJGwdvzf+K0UA==}
+  /zip-self/0.3.3:
+    resolution: {integrity: sha512-kINZaarFQ7VYm7VGRhqHPE9MQ5xP53Ew1b6Ez6H80FUfPxFdx4bRFF/A3oiopS8iFkzhnOjKPpZDqBc8PgM4PQ==}
     engines: {node: '>=8.0.0'}
     hasBin: true
     dependencies:
-      archiver: 5.2.0
-      globby: 11.0.2
+      archiver: 5.3.0
+      globby: 11.0.4
     dev: true
 
   /zip-stream/4.1.0:
@@ -6009,7 +6020,7 @@ packages:
     engines: {node: '>= 10'}
     dependencies:
       archiver-utils: 2.1.0
-      compress-commons: 4.1.0
+      compress-commons: 4.1.1
       readable-stream: 3.6.0
     dev: true
 
@@ -6017,11 +6028,11 @@ packages:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
 
-  github.com/sveltejs/eslint-config/31fd4faeea88990069502460b023698b1c9c2d13_eslint-plugin-svelte3@3.2.0:
-    resolution: {tarball: https://codeload.github.com/sveltejs/eslint-config/tar.gz/31fd4faeea88990069502460b023698b1c9c2d13}
-    id: github.com/sveltejs/eslint-config/31fd4faeea88990069502460b023698b1c9c2d13
+  github.com/sveltejs/eslint-config/8a67624e4080bd7997606eb34981aa3346bc8de2_eslint-plugin-svelte3@3.2.0:
+    resolution: {tarball: https://codeload.github.com/sveltejs/eslint-config/tar.gz/8a67624e4080bd7997606eb34981aa3346bc8de2}
+    id: github.com/sveltejs/eslint-config/8a67624e4080bd7997606eb34981aa3346bc8de2
     name: '@sveltejs/eslint-config'
-    version: 5.7.0
+    version: 5.8.0
     peerDependencies:
       '@typescript-eslint/eslint-plugin': '>= 3'
       '@typescript-eslint/parser': '>= 3'
