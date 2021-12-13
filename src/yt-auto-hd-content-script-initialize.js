@@ -1,10 +1,7 @@
 "use strict";
 
 import { resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
-import {
-  getElement,
-  prepareToChangeQuality
-} from "./yt-auto-hd-content-script-functions";
+import { getElement, prepareToChangeQuality } from "./yt-auto-hd-content-script-functions";
 
 const gObserverOptions = { childList: true, subtree: true };
 window.ythdLastQualityClicked = null;
