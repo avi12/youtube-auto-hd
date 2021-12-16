@@ -5,27 +5,21 @@ import { initial, qualities } from "./yt-auto-hd-setup";
 
 window.ythdLastUserQualities = { ...initial.qualities };
 
-let gObserverMenuOpen;
-
 export async function prepareToChangeQuality() {
-  changeQualityWhenReady();
+  getElement("buttonSettings").addEventListener("click", listenToWhenSettingsOpen);
 
-  if (!isSettingsMenuOpen()) {
+  if (!getIsSettingsMenuOpen()) {
     toggleSettingsMenu();
   }
 }
 
-function changeQualityWhenReady() {
-  if (!gObserverMenuOpen) {
-    gObserverMenuOpen = new MutationObserver((_, observer) => {
-      if (getElement("optionQuality") || getElement("adSkipIn") || getElement("adSkipOut")) {
-        observer.disconnect();
-        attemptingToChangeQuality();
-      }
-    });
+/**
+ * @param {MouseEvent} e
+ */
+export function listenToWhenSettingsOpen({ isTrusted }) {
+  if (!isTrusted) {
+    attemptingToChangeQuality();
   }
-
-  gObserverMenuOpen.observe(document, window.ythdMutationObserverOptions);
 }
 
 async function attemptingToChangeQuality() {
@@ -115,11 +109,12 @@ function isElementVisible(element) {
 }
 
 /**
- * @returns {string|undefined}
+ * @returns {boolean}
  */
-function isSettingsMenuOpen() {
+function getIsSettingsMenuOpen() {
   const elButtonSettings = getElement("buttonSettings");
-  return elButtonSettings?.ariaExpanded;
+  const { ariaExpanded = "false" } = elButtonSettings ?? {};
+  return ariaExpanded === "true";
 }
 
 /**
