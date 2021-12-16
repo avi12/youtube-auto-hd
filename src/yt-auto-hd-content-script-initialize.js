@@ -1,9 +1,9 @@
 "use strict";
 
 import { resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
-import { getElement, prepareToChangeQuality } from "./yt-auto-hd-content-script-functions";
+import { getElement, listenToWhenSettingsOpen, prepareToChangeQuality } from "./yt-auto-hd-content-script-functions";
 
-export const gObserverOptions = { childList: true, subtree: true };
+window.ythdMutationObserverOptions = { childList: true, subtree: true };
 window.ythdLastQualityClicked = null;
 let gPlayerObserver;
 
@@ -57,18 +57,19 @@ function addTemporaryBodyListener() {
       }
 
       window.ythdLastQualityClicked = null;
+      getElement("buttonSettings").removeEventListener("click", listenToWhenSettingsOpen);
       doVideoAction();
       elVideo.addEventListener("canplay", doVideoAction);
       observer.disconnect();
     });
   }
-  gPlayerObserver.observe(elementToListen, gObserverOptions);
+  gPlayerObserver.observe(elementToListen, window.ythdMutationObserverOptions);
 }
 
 function addGlobalEventListener() {
   new MutationObserver(addTemporaryBodyListener).observe(
     document.querySelector("title"),
-    gObserverOptions
+    window.ythdMutationObserverOptions
   );
 }
 
@@ -98,4 +99,4 @@ new MutationObserver((_, observer) => {
   addGlobalEventListener();
 
   observer.disconnect();
-}).observe(document, gObserverOptions);
+}).observe(document, window.ythdMutationObserverOptions);
