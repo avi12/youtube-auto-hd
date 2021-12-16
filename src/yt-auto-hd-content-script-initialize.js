@@ -1,7 +1,7 @@
 "use strict";
 
 import { resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
-import { getElement, prepareToChangeQuality } from "./yt-auto-hd-content-script-functions";
+import { getElement, listenToWhenSettingsOpen, prepareToChangeQuality } from "./yt-auto-hd-content-script-functions";
 
 window.ythdMutationObserverOptions = { childList: true, subtree: true };
 window.ythdLastQualityClicked = null;
@@ -57,6 +57,7 @@ function addTemporaryBodyListener() {
       }
 
       window.ythdLastQualityClicked = null;
+      getElement("buttonSettings").removeEventListener("click", listenToWhenSettingsOpen);
       doVideoAction();
       elVideo.addEventListener("canplay", doVideoAction);
       observer.disconnect();
