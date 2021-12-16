@@ -2,15 +2,36 @@
 
 import { getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
 import { initial, qualities } from "./yt-auto-hd-setup";
+import { gObserverOptions } from "./yt-auto-hd-content-script-initialize";
 
 window.ythdLastUserQualities = { ...initial.qualities };
 
+let gObserverMenuOpen;
+
 export async function prepareToChangeQuality() {
+  changeQualityWhenReady();
+
   if (!isSettingsMenuOpen()) {
     toggleSettingsMenu();
   }
+}
+
+function changeQualityWhenReady() {
+  if (!gObserverMenuOpen) {
+    gObserverMenuOpen = new MutationObserver((_, observer) => {
+      if (getElement("optionQuality") || getElement("adSkipIn") || getElement("adSkipOut")) {
+        observer.disconnect();
+        attemptingToChangeQuality();
+      }
+    });
+  }
+
+  gObserverMenuOpen.observe(document, gObserverOptions);
+}
+
+async function attemptingToChangeQuality() {
   const elVideo = getElement("video");
-  if (!isLastOptionQuality() || (!isQualityAuto() && !window.ythdLastQualityClicked)) {
+  if (!getIsLastOptionQuality() || (!getIsQualityAuto() && !window.ythdLastQualityClicked)) {
     toggleSettingsMenu();
     elVideo.addEventListener("canplay", prepareToChangeQuality, {
       once: true
@@ -63,6 +84,8 @@ export function getElement(elementName, { isGetAll = false } = {}) {
     optionQuality: ".ytp-menuitem:last-child",
     menuOption: ".ytp-menuitem",
     player: ".html5-video-player",
+    adSkipIn: ".ytp-ad-preview-text",
+    adSkipNow: ".ytp-ad-skip-button-text",
     video: "video"
   };
 
@@ -103,7 +126,7 @@ function isSettingsMenuOpen() {
 /**
  * @returns {boolean}
  */
-function isLastOptionQuality() {
+function getIsLastOptionQuality() {
   const elOptionInSettings = getElement("optionQuality");
   if (!elOptionInSettings) {
     return false;
@@ -123,7 +146,7 @@ function isLastOptionQuality() {
   return numberString.length >= minQualityCharLength;
 }
 
-export function isQualityAuto() {
+export function getIsQualityAuto() {
   return isNaN(parseInt(window.ythdLastQualityClicked));
 }
 
