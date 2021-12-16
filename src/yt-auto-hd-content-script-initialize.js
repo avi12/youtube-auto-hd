@@ -3,7 +3,7 @@
 import { resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
 import { getElement, prepareToChangeQuality } from "./yt-auto-hd-content-script-functions";
 
-const gObserverOptions = { childList: true, subtree: true };
+export const gObserverOptions = { childList: true, subtree: true };
 window.ythdLastQualityClicked = null;
 let gPlayerObserver;
 
@@ -43,8 +43,8 @@ async function saveLastClick({ target: element, isTrusted }) {
 function addTemporaryBodyListener() {
   // Typically - listen to the player div (<video> container)
   // Otherwise, say it's a main channel page that has a channel trailer,
-  // the <video> container wouldn't immediately exist, hence listen to the body
-  const elementToListen = getElement("player") || document.body;
+  // the <video> container wouldn't immediately exist, hence listen to the document
+  const elementToListen = getElement("player") || document;
 
   if (!gPlayerObserver) {
     gPlayerObserver = new MutationObserver((mutations, observer) => {
@@ -98,4 +98,4 @@ new MutationObserver((_, observer) => {
   addGlobalEventListener();
 
   observer.disconnect();
-}).observe(document.body, gObserverOptions);
+}).observe(document, gObserverOptions);
