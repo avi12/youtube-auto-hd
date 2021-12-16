@@ -2,7 +2,6 @@
 
 import { getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
 import { initial, qualities } from "./yt-auto-hd-setup";
-import { gObserverOptions } from "./yt-auto-hd-content-script-initialize";
 
 window.ythdLastUserQualities = { ...initial.qualities };
 
@@ -26,7 +25,7 @@ function changeQualityWhenReady() {
     });
   }
 
-  gObserverMenuOpen.observe(document, gObserverOptions);
+  gObserverMenuOpen.observe(document, window.ythdMutationObserverOptions);
 }
 
 async function attemptingToChangeQuality() {
