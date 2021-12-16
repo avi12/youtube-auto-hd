@@ -2,18 +2,36 @@
 
 import { getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
 import { initial, qualities } from "./yt-auto-hd-setup";
+import { gObserverOptions } from "./yt-auto-hd-content-script-initialize";
 
 window.ythdLastUserQualities = { ...initial.qualities };
 
+let gObserverMenuOpen;
+
 export async function prepareToChangeQuality() {
+  changeQualityWhenReady();
+
   if (!isSettingsMenuOpen()) {
     toggleSettingsMenu();
   }
+}
+
+function changeQualityWhenReady() {
+  if (!gObserverMenuOpen) {
+    gObserverMenuOpen = new MutationObserver((_, observer) => {
+      if (getElement("optionQuality") || getElement("adSkipIn") || getElement("adSkipOut")) {
+        observer.disconnect();
+        attemptingToChangeQuality();
+      }
+    });
+  }
+
+  gObserverMenuOpen.observe(document, gObserverOptions);
+}
+
+async function attemptingToChangeQuality() {
   const elVideo = getElement("video");
-  if (
-    !isLastOptionQuality() ||
-    (!isQualityAuto() && !window.ythdLastQualityClicked)
-  ) {
+  if (!getIsLastOptionQuality() || (!getIsQualityAuto() && !window.ythdLastQualityClicked)) {
     toggleSettingsMenu();
     elVideo.addEventListener("canplay", prepareToChangeQuality, {
       once: true
@@ -37,10 +55,7 @@ async function changeQuality(qualityCustom) {
   const qualitiesUser = await getUserQualities();
 
   const fps = getFpsFromRange(qualitiesUser, fpsCurrent);
-  const i = getIQuality(
-    qualitiesAvailable,
-    qualityCustom || qualitiesUser[fps]
-  );
+  const i = getIQuality(qualitiesAvailable, qualityCustom || qualitiesUser[fps]);
 
   const isQualityExists = i > -1;
   if (isQualityExists) {
@@ -48,9 +63,7 @@ async function changeQuality(qualityCustom) {
   } else if (getIsQualityLower(elQualities[0], qualitiesUser[fps])) {
     elQualities[0].click();
   } else {
-    const iClosestQuality = qualitiesAvailable.findIndex(
-      quality => quality <= qualitiesUser[fps]
-    );
+    const iClosestQuality = qualitiesAvailable.findIndex(quality => quality <= qualitiesUser[fps]);
     const isClosestQualityFound = iClosestQuality > -1;
     if (isClosestQualityFound) {
       elQualities[iClosestQuality].click();
@@ -71,13 +84,13 @@ export function getElement(elementName, { isGetAll = false } = {}) {
     optionQuality: ".ytp-menuitem:last-child",
     menuOption: ".ytp-menuitem",
     player: ".html5-video-player",
+    adSkipIn: ".ytp-ad-preview-text",
+    adSkipNow: ".ytp-ad-skip-button-text",
     video: "video"
   };
 
   if (isGetAll) {
-    return [...document.querySelectorAll(selectors[elementName])].filter(
-      isElementVisible
-    );
+    return [...document.querySelectorAll(selectors[elementName])].filter(isElementVisible);
   }
 
   const elements = [...document.querySelectorAll(selectors[elementName])];
@@ -113,7 +126,7 @@ function isSettingsMenuOpen() {
 /**
  * @returns {boolean}
  */
-function isLastOptionQuality() {
+function getIsLastOptionQuality() {
   const elOptionInSettings = getElement("optionQuality");
   if (!elOptionInSettings) {
     return false;
@@ -133,7 +146,7 @@ function isLastOptionQuality() {
   return numberString.length >= minQualityCharLength;
 }
 
-export function isQualityAuto() {
+export function getIsQualityAuto() {
   return isNaN(parseInt(window.ythdLastQualityClicked));
 }
 
@@ -237,26 +250,23 @@ function getIQuality(qualitiesCurrent, qualityUser) {
   return qualitiesCurrent.findIndex(elQuality => elQuality === qualityUser);
 }
 
-chrome.storage.onChanged.addListener(
-  async ({ qualities, autoResize, size }) => {
-    if (qualities) {
-      window.ythdLastQualityClicked = null;
-      window.ythdLastUserQualities = { ...qualities };
-      prepareToChangeQuality();
-      return;
-    }
+chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
+  if (qualities) {
+    window.ythdLastQualityClicked = null;
+    window.ythdLastUserQualities = { ...qualities };
+    prepareToChangeQuality();
+    return;
+  }
 
+  if (autoResize) {
+    resizePlayerIfNeeded();
+    return;
+  }
+
+  if (size !== undefined) {
+    const autoResize = (await getStorage("sync", "autoResize")) ?? initial.autoResize;
     if (autoResize) {
-      resizePlayerIfNeeded();
-      return;
-    }
-
-    if (size !== undefined) {
-      const autoResize =
-        (await getStorage("sync", "autoResize")) ?? initial.autoResize;
-      if (autoResize) {
-        resizePlayerIfNeeded({ size: size.newValue });
-      }
+      resizePlayerIfNeeded({ size: size.newValue });
     }
   }
-);
+});

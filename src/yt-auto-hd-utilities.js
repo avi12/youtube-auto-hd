@@ -3,18 +3,16 @@
 import { initial } from "./yt-auto-hd-setup";
 
 export async function resizePlayerIfNeeded(sizeObj = {}) {
-  const {
-    size: isLargeRequired = initial.size,
-    autoResize = initial.autoResize
-  } = Object.assign(sizeObj, await getStorage("sync"));
+  const { size: isLargeRequired = initial.size, autoResize = initial.autoResize } = Object.assign(
+    sizeObj,
+    await getStorage("sync")
+  );
 
   if (!autoResize) {
     return;
   }
 
-  const sizeSmall =
-      "m 28,11 0,14 -20,0 0,-14 z m -18,2 16,0 0,10 -16,0 0,-10 z";
-
+  const sizeSmall = "m 28,11 0,14 -20,0 0,-14 z m -18,2 16,0 0,10 -16,0 0,-10 z";
   const sizeLarge = "m 26,13 0,10 -16,0 0,-10 z m -14,2 12,0 0,6 -12,0 0,-6 z";
 
   const elButtonSize = document.body.querySelector(".ytp-size-button");
@@ -36,7 +34,6 @@ export async function resizePlayerIfNeeded(sizeObj = {}) {
     }
   }
 }
-
 
 export async function getStorage(storageArea, key = null) {
   return new Promise(resolve => {
