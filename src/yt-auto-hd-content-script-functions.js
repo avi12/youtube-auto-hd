@@ -1,11 +1,11 @@
 "use strict";
 
 import { getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
-import { initial, qualities } from "./yt-auto-hd-setup";
+import { initial } from "./yt-auto-hd-setup";
 
 window.ythdLastUserQualities = { ...initial.qualities };
 
-export async function prepareToChangeQuality() {
+export function prepareToChangeQuality() {
   getElement("buttonSettings").addEventListener("click", listenToWhenSettingsOpen);
 
   if (!getIsSettingsMenuOpen()) {
@@ -16,18 +16,20 @@ export async function prepareToChangeQuality() {
 /**
  * @param {MouseEvent} e
  */
-export function listenToWhenSettingsOpen({ isTrusted }) {
+export async function listenToWhenSettingsOpen({ isTrusted }) {
   if (!isTrusted) {
-    attemptingToChangeQuality();
+    await attemptingToChangeQuality();
   }
 }
 
 async function attemptingToChangeQuality() {
   const elVideo = getElement("video");
   if (!getIsLastOptionQuality() || (!getIsQualityAuto() && !window.ythdLastQualityClicked)) {
-    toggleSettingsMenu();
-    elVideo.addEventListener("canplay", prepareToChangeQuality, {
-      once: true
+    requestAnimationFrame(() => {
+      toggleSettingsMenu();
+      elVideo.addEventListener("canplay", prepareToChangeQuality, {
+        once: true
+      });
     });
     return;
   }
