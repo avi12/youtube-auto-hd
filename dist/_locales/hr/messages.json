@@ -1,16 +1,16 @@
 {
 "cj_i18n_00354":{"message":"Doniraj"},
-"cj_i18n_01605":{"message":"Pomoћ oko prevoda"},
+"cj_i18n_01605":{"message":"Pomoć oko prevoda"},
 "cj_i18n_02146":{"message":"Automatski postavi video kvalitetu na YouTube-u."},
 "cj_i18n_02147":{"message":"Kvalitet prikaza"},
 "cj_i18n_02148":{"message":"k/s video"},
 "cj_i18n_02149":{"message":"k/s i nizhe"},
-"cj_i18n_02152":{"message":"Video snimtsi ћe se reprodukovati sa 30 k/s za ovaј kvalitet."},
-"cj_i18n_06567":{"message":"Zadrzhite velichinu na"},
-"cj_i18n_06568":{"message":"Automatski promenite velichinu video zapisa"},
+"cj_i18n_02152":{"message":"Za ovaj kvalitet video zapisi će se reprodukovati pri 30 FPS."},
+"cj_i18n_06567":{"message":"Zadržite veličinu na"},
+"cj_i18n_06568":{"message":"Automatski promeni veličinu video zapisa"},
 "cj_i18n_06858":{"message":"Sve brzine kadrova"},
 "cj_i18n_06859":{"message":"Velichina prikazivacha"},
-"cj_i18n_06860":{"message":"Podrshka programeru"},
-"cj_i18n_06861":{"message":"Otsenite proshireњe"},
+"cj_i18n_06860":{"message":"Podrška programeru"},
+"cj_i18n_06861":{"message":"Ocenite proširenje"},
 "cj_i18n_06862":{"message":"Koristite isti kvalitet za sve brzine kadrova"}
 }
