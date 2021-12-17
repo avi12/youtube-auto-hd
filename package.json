@@ -2,11 +2,8 @@
   "name": "youtube-auto-hd-fps",
   "version": "1.3.19",
   "homepage": "https://avi12.com",
-  "repository": "avi12/youtube-auto-hd",
-  "author": {
-    "name": "avi12",
-    "email": "avi6106@gmail.com"
-  },
+  "repository": "https://github.com/avi12/youtube-auto-hd",
+  "author": "avi12 <avi6106@gmail.com>",
   "bugs": {
     "email": "avi6106@gmail.com"
   },
