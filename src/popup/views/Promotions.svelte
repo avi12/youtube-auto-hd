@@ -1,22 +1,17 @@
-<script>
-  import {
-    Icon,
-    List,
-    ListItem
-  } from "svelte-materialify";
+<script lang="ts">
+  import { Icon, List, ListItem } from "svelte-materialify";
   import { mdiHeart, mdiStar, mdiTranslate } from "@mdi/js";
 
-  import { getI18n } from "../yt-auto-hd-utilities";
+  import { getI18n } from "../../shared-scripts/ythd-utilities";
 
-  // prettier-ignore
-  const i18n = {
+  const i18n: { [key: string]: string } = {
     labelSupport: getI18n("cj_i18n_06860", "Support developer"),
     labelRate: getI18n("cj_i18n_06861", "Rate extension"),
     labelDonate: getI18n("cj_i18n_00354", "Donate"),
     labelTranslate: getI18n("cj_i18n_01605", "Help with translations")
   };
 
-  const linkRating = (() => {
+  const linkRating: string = (() => {
     const extensionBaseUrl = chrome.runtime.getURL("");
 
     const isFirefox = extensionBaseUrl.startsWith("moz-extension://");
@@ -45,7 +40,7 @@
     return "https://chrome.google.com/webstore/detail/fcphghnknhkimeagdglkljinmpbagone";
   })();
 
-  const links = [
+  const links: { label: string; url: string; icon: string }[] = [
     {
       label: i18n.labelRate,
       url: linkRating,
@@ -63,9 +58,10 @@
     }
   ];
 
-  function openUrl(url) {
+  function openUrl(url: string): void {
     chrome.tabs.create({ url });
   }
+
 </script>
 
 <div class="mt-3">

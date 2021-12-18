@@ -1,17 +1,18 @@
-<script>
+<script lang="ts">
   import { Slider } from "svelte-materialify";
+  import type { VideoQuality } from "../../types";
 
-  export let label;
-  export let values = [];
-  export let value = [];
+  export let label: string;
+  export let values = [] as VideoQuality[];
+  export let value: VideoQuality;
 
   const iValue = values.indexOf(value);
 
-  function onInput(e) {
+  function onInput(e): void {
     value = values.find((_, i) => i === Number(e.detail.value[0]));
   }
 
-  function getThumb(iValue) {
+  function getThumb(iValue): string {
     const qualityNumber = values[iValue];
     return `${qualityNumber}p`;
   }
@@ -29,6 +30,7 @@
 </Slider>
 
 <style>
+/*noinspection CssUnusedSymbol*/
 :global(.s-slider__tooltip::before) {
   --size: 38px;
 
