@@ -1,7 +1,7 @@
 "use strict";
 
 import { getStorage, resizePlayerIfNeeded } from "./yt-auto-hd-utilities";
-import { initial, qualities } from "./yt-auto-hd-setup";
+import { initial } from "./yt-auto-hd-setup";
 
 window.ythdLastUserQualities = { ...initial.qualities };
 

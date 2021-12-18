@@ -16,7 +16,7 @@
 
   export let qualitiesStored = {};
 
-  let qualitiesSelected = Object.values(qualitiesStored).reverse();
+  const qualitiesSelected = Object.values(qualitiesStored).reverse();
 
   let isSameQualityForAllFps = qualitiesSelected.every(
     (quality, _, array) => quality === array[0]

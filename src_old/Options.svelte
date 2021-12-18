@@ -6,12 +6,12 @@
   import ControlSize from "./views/ControlSize.svelte";
   import "./views/styles/popup.css";
 
-  export let qualitiesStored
+  export let qualitiesStored;
   export let sizeVideo;
   export let isResizeVideo;
 </script>
 
-<div class:i18n--rtl={getI18n('@@bidi_dir') === 'rtl'}>
+<div class:i18n--rtl={getI18n("@@bidi_dir") === "rtl"}>
   <ControlQuality {qualitiesStored} />
 
   <ControlSize {isResizeVideo} {sizeVideo} />
