@@ -113,17 +113,17 @@ async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
   const elQualities = getCurrentQualityElements();
   const qualitiesPreferred = await getPreferredQualities();
 
-  const fpsCurrent = await getFpsFromRange(qualitiesPreferred, fpsVideo);
-  const iQuality = getIQuality(qualitiesAvailable, qualityCustom || qualitiesPreferred[fpsCurrent]);
+  const fpsStep = await getFpsFromRange(qualitiesPreferred, fpsVideo);
+  const iQuality = getIQuality(qualitiesAvailable, qualityCustom || qualitiesPreferred[fpsStep]);
 
   const isQualityExists = iQuality > -1;
   if (isQualityExists) {
     elQualities[iQuality].click();
-  } else if (getIsQualityLower(elQualities[0], qualitiesPreferred[fpsCurrent])) {
+  } else if (getIsQualityLower(elQualities[0], qualitiesPreferred[fpsStep])) {
     elQualities[0].click();
   } else {
     const iClosestQuality = qualitiesAvailable.findIndex(
-      quality => quality <= qualitiesPreferred[fpsCurrent]
+      quality => quality <= qualitiesPreferred[fpsStep]
     );
     const isClosestQualityFound = iClosestQuality > -1;
     if (isClosestQualityFound) {
