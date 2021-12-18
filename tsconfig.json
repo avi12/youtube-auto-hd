@@ -1,0 +1,11 @@
+{
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist/*"],
+  "compilerOptions": {
+    "target": "ES2021",
+    "sourceMap": true,
+    "types": ["svelte", "chrome"],
+    "moduleResolution": "Node"
+  },
+  "extends": "@tsconfig/svelte/tsconfig.json"
+}

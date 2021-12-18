@@ -1,9 +1,14 @@
 {
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2021,
     "sourceType": "module"
   },
   "rules": {
+    "arrow-parens": ["warn", "as-needed"],
+    "prefer-const": "warn",
+    "no-async-promise-executor": "off",
+    "semi": "warn",
     "quotes": [
       "warn",
       "double",
@@ -11,15 +16,32 @@
         "allowTemplateLiterals": true
       }
     ],
-    "semi": "warn",
-    "prefer-const": "warn",
-    "comma-dangle": ["warn", "never"]
+    "indent": [
+      "warn",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["warn"],
+    "@typescript-eslint/no-explicit-any": "off"
   },
-  "plugins": ["svelte3"],
   "overrides": [
     {
       "files": ["*.svelte"],
       "processor": "svelte3/svelte3"
     }
-  ]
+  ],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "webextensions": true
+  },
+  "plugins": ["svelte3", "@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "settings": {
+    "svelte3/typescript": true
+  }
 }
