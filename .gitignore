@@ -20,5 +20,6 @@ node_modules
 /dist_packed-edge
 /dist_packed
 /dist/build/
+/dist/background.js
 
 *.env
