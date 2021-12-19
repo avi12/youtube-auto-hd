@@ -37,8 +37,26 @@ function createConfig(filename, useSvelte = false) {
   };
 }
 
+function createConfigBackground() {
+  return {
+    input: "src/background.ts",
+    output: {
+      format: "cjs",
+      file: "dist/background.js"
+    },
+    plugins: [
+      typescript(),
+      commonjs(),
+      isProduction && terser()
+    ],
+    watch: {
+      clearScreen: true
+    }
+  };
+}
+
 export default [
   createConfig("scripts/ythd-content-script-initialize"),
-  createConfig("background"),
+  createConfigBackground(),
   createConfig("popup/popup", true),
 ];
