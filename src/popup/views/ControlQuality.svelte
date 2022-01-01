@@ -5,7 +5,7 @@
   import SliderYthd from "../components/Slider.svelte";
   import type { FpsList, FpsOptions, VideoQuality } from "../../types";
 
-  const i18n: {[key: string]: string} = {
+  const i18n: { [key: string]: string } = {
     labelQualityHeader: getI18n("cj_i18n_02147", "View quality"),
     labelSwitchSameQuality: getI18n("cj_i18n_06862", "Use the same quality for all frame rates"),
     labelAllFramerates: getI18n("cj_i18n_06858", "All frame rates"),
@@ -37,7 +37,6 @@
     const fps: FpsList = fpsList[i];
     return `${fpsRangeStart}-${fps}`;
   }
-
 </script>
 
 <div class="subheader">{i18n.labelQualityHeader}</div>
