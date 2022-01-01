@@ -6,6 +6,7 @@ import type { FpsOptions } from "../types";
 export const observerOptions = Object.freeze({ childList: true, subtree: true });
 
 export async function resizePlayerIfNeeded(sizeObj = {}): Promise<void> {
+  // TODO: Fix resizing the player
   const { size: isLargeRequired = initial.size, autoResize = initial.autoResize } = Object.assign(
     sizeObj,
     await getStorage("sync")
