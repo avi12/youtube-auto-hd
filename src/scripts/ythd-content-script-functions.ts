@@ -1,11 +1,6 @@
 "use strict";
 
-import {
-  getElement,
-  getElements,
-  getStorage,
-  resizePlayerIfNeeded
-} from "../shared-scripts/ythd-utilities";
+import { getElement, getElements, getStorage } from "../shared-scripts/ythd-utilities";
 import { initial } from "../shared-scripts/ythd-setup";
 import type { AutoResize, FpsList, FpsOptions, QualityLabels, VideoQuality } from "../types";
 
@@ -47,10 +42,6 @@ export async function getPreferredQualities(): Promise<FpsOptions> {
     // the player settings to open when seeking through a video
     return gLastUserQualities;
   }
-}
-
-export function getIsQualityAuto() {
-  return window.ythdLastQualityClicked !== null;
 }
 
 function getIsLastOptionQuality() {
@@ -136,15 +127,12 @@ async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
 
 async function changeQualityWhenPossible(): Promise<void> {
   const elVideo = getElement("video") as HTMLVideoElement;
-  if (!getIsLastOptionQuality() || (!getIsQualityAuto() && !window.ythdLastQualityClicked)) {
-    requestAnimationFrame(() => {
-      toggleSettingsMenu();
-      elVideo.addEventListener("canplay", prepareToChangeQuality, {
-        once: true
-      });
-    });
+  if (!getIsLastOptionQuality()) {
+    toggleSettingsMenu();
+    elVideo.addEventListener("canplay", prepareToChangeQuality, { once: true });
     return;
   }
+
   openQualityMenu();
 
   await changeQuality(window.ythdLastQualityClicked);
@@ -155,12 +143,6 @@ async function changeQualityWhenPossible(): Promise<void> {
   elVideo.focus();
 }
 
-export async function onSettingsMenuOpen({ isTrusted }: MouseEvent): Promise<void> {
-  if (!isTrusted) {
-    await changeQualityWhenPossible();
-  }
-}
-
 function toggleSettingsMenu(): void {
   const elButtonSettings = getElement("buttonSettings") as HTMLButtonElement;
   elButtonSettings?.click();
@@ -168,12 +150,22 @@ function toggleSettingsMenu(): void {
 
 function getIsSettingsMenuOpen(): boolean {
   const elButtonSettings = getElement("buttonSettings") as HTMLButtonElement;
-  const { ariaExpanded = "false" } = elButtonSettings ?? {};
-  return ariaExpanded === "true";
+  return elButtonSettings.ariaExpanded === "true";
 }
 
-export async function prepareToChangeQuality(): Promise<void> {
-  getElement("buttonSettings").addEventListener("click", onSettingsMenuOpen);
+export async function onSettingsMenuOpen({ isTrusted }: MouseEvent): Promise<void> {
+  if (!isTrusted) {
+    await changeQualityWhenPossible();
+  }
+}
+
+export function prepareToChangeQuality(): void {
+  const elSettings = getElement("buttonSettings");
+  if (!elSettings) {
+    return;
+  }
+
+  elSettings.addEventListener("click", onSettingsMenuOpen, { once: true });
 
   if (!getIsSettingsMenuOpen()) {
     toggleSettingsMenu();
@@ -189,14 +181,14 @@ chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => 
   }
 
   if (autoResize) {
-    await resizePlayerIfNeeded();
+    // await resizePlayerIfNeeded();
     return;
   }
 
   if (size !== undefined) {
     const autoResize: AutoResize = (await getStorage("sync", "autoResize")) ?? initial.autoResize;
     if (autoResize) {
-      await resizePlayerIfNeeded({ size: size.newValue });
+      // await resizePlayerIfNeeded({ size: size.newValue });
     }
   }
 });
