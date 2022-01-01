@@ -33,10 +33,7 @@
     "128": "icons/icon-128.png",
     "256": "icons/icon-256.png"
   },
-  "permissions": [
-    "cookies",
-    "storage"
-  ],
+  "permissions": ["cookies", "storage"],
   "host_permissions": [
     "https://www.youtube.com/*",
     "https://www.youtube-nocookie.com/*",
@@ -69,9 +66,7 @@
         "https://www.youtube-nocookie.com/*",
         "https://youtube.googleapis.com/*"
       ],
-      "js": [
-        "build/yt-auto-hd-content-script-initialize.js"
-      ],
+      "js": ["build/scripts/ythd-content-script-initialize.js"],
       "all_frames": true
     }
   ],
