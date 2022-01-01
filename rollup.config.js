@@ -11,6 +11,7 @@ const isProduction = !process.env.ROLLUP_WATCH;
 function createConfig(filename, useSvelte = false) {
   return {
     input: `src/${filename}.ts`,
+    inlineDynamicImports: useSvelte,
     output: {
       format: "cjs",
       file: `dist/build/${filename}.js`
