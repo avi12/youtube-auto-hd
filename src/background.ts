@@ -8,9 +8,14 @@ const installedUrl = landingUrl + "/installed";
 const uninstalledUrl = landingUrl + "/uninstalled";
 const updatedUrl = landingUrl + "/whatsnew?installed=1";
 
-function getMajorVersion(fullVersion: string): string {
-  const [major, minor] = fullVersion.split(".");
-  return `${major}.${minor}`;
+chrome.runtime.onInstalled.addListener(details => {
+  if (details.reason === "update") {
+    removeUnusedStorageKeys();
+  }
+});
+
+function removeUnusedStorageKeys() {
+  chrome.storage.sync.remove(["size", "autoResize"]);
 }
 
 function openUrl(url: string): void {
@@ -31,16 +36,11 @@ function init({
 
   if (typeof storedVersionNumber !== "string") {
     openUrl(installedUrl);
-  } else if (!unreportedUpdateDate) {
-    const majorVersionNumber = getMajorVersion(storedVersionNumber);
-    const newMajorVersionNumber = getMajorVersion(newVersionNumber);
-
-    if (newMajorVersionNumber !== majorVersionNumber) {
-      unreportedUpdateDate = now;
-      chrome.storage.local.set({
-        cj_landing_lastupdated: now
-      });
-    }
+  } else if (!unreportedUpdateDate && newVersionNumber !== storedVersionNumber) {
+    unreportedUpdateDate = now;
+    chrome.storage.local.set({
+      cj_landing_lastupdated: now
+    });
   }
 
   if (unreportedUpdateDate) {
