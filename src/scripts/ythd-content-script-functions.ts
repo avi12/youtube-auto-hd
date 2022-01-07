@@ -6,7 +6,13 @@ import type { FpsList, FpsOptions, QualityLabels, VideoQuality } from "../types"
 
 let gLastUserQualities: FpsOptions = { ...initial.qualities };
 
-function getIsQualityLower(elQuality: HTMLDivElement, qualityPreferred: VideoQuality): boolean {
+function getIsQualityLower(
+  elQuality: HTMLDivElement | undefined,
+  qualityPreferred: VideoQuality
+): boolean {
+  if (!elQuality) {
+    return true;
+  }
   const labelQuality = elQuality.textContent as QualityLabels;
   const qualityVideo = parseInt(labelQuality) as VideoQuality;
   return qualityVideo < qualityPreferred;
@@ -128,8 +134,10 @@ async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
 async function changeQualityWhenPossible(): Promise<void> {
   const elVideo = getElement("video") as HTMLVideoElement;
   if (!getIsLastOptionQuality()) {
-    toggleSettingsMenu();
     elVideo.addEventListener("canplay", changeQualityWhenPossible, { once: true });
+    requestAnimationFrame(() => {
+      toggleSettingsMenu();
+    });
     return;
   }
 
@@ -160,6 +168,7 @@ export async function onSettingsMenuOpen({ isTrusted }: MouseEvent): Promise<voi
 }
 
 export function prepareToChangeQuality(): void {
+  console.log("prepareToChangeQuality");
   const elSettings = getElement("buttonSettings");
   if (!elSettings) {
     return;

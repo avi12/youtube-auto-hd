@@ -9,7 +9,7 @@ Available for:
 - [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom) ![users count](https://img.shields.io/badge/dynamic/json?label=users&query=activeInstallCount&style=flat-square&color=white&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/ggnepcoiimddpmjaoejhdfppjbcnfaom)
 - [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
 
-![2021-04-04_08-53-33](https://user-images.githubusercontent.com/6422804/113500084-e26b2a00-9523-11eb-9e6b-5e25a4c6eba0.png)
+![A screenshot from the extension's pop-up page](https://user-images.githubusercontent.com/6422804/148557807-3cd5c3cb-9d06-456a-bcff-25bf2eecef04.png)
 
 Made by [avi12](https://avi12.com).
 
@@ -17,15 +17,19 @@ Made by [avi12](https://avi12.com).
 
 Due to the way the browsers handle extensions, when an extension receives an update, content scripts in already-open web
 pages cannot use the [Storage API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage),
-until the user reloads those web pages.   
-In the context of this extension, it means that when the extension receives an update, as long as the user doesn't reload YouTube web pages, the extension cannot get the data regarding the user-preferred qualities.
+until the user reloads those web pages.  
+In the context of this extension, it means that when the extension receives an update, as long as the user doesn't
+reload YouTube web pages, the extension cannot get the data regarding the user-preferred qualities.
 
 ### A kind-of working solution
-To provide a smooth user experience, instead of forcing the user to reload all of the already-open web pages, I decided
-to keep track of the last qualities that were fetched, and use them.  
 
-This solution is not perfect, since if the user wants to update the quality of the videos in the currently-open web pages using the popup page (as seen above), it will not update dynamically.  
-However, this is the only viable solution, since the alternative one would be to auto-reload web pages, which would lead to a bad user experience.
+To provide a smooth user experience, instead of forcing the user to reload all of the already-open web pages, I decided
+to keep track of the last qualities that were fetched, and use them.
+
+This solution is not perfect, since if the user wants to update the quality of the videos in the currently-open web
+pages using the popup page (as seen above), it will not update dynamically.  
+However, this is the only viable solution, since the alternative one would be to auto-reload web pages, which would lead
+to a bad user experience.
 
 ## Translating
 
@@ -58,17 +62,36 @@ pnpm dev
 pnpm run-chromium
 ```
 
-### Firefox
+### Edge on Windows 10/11
 
-```shell script
-pnpm run-firefox
+```shell
+pnpm run-edge-windows
 ```
 
-### Other browsers
+### Browsers that don't support Manifest v3
 
-1. Open the extensions page in your browser.
-1. Enable the developer tools (top-right corner usually).
-1. Either drag-drop the `dist` folder onto the browser or click "Load unpacked extension" and choose it.
+1. Build the extension for Firefox/Opera (see below).
+2. Open the extensions page in that browser.
+3. Enable the developer mode (top-right corner usually).
+4. Either drag-drop the browser-compatible ZIP onto the browser or click "Load unpacked extension" and choose it.
+
+## Build & pack
+
+```shell
+pnpm build-pack
+```
+
+### Build for Firefox (first run `pnpm build-pack`)
+
+```shell
+pnpm build-for-firefox
+```
+
+### Build for Opera (first run `pnpm build-pack`)
+
+```shell
+pnpm build-for-opera
+```
 
 ## Contribution
 

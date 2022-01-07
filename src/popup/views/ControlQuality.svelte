@@ -32,7 +32,7 @@
     chrome.storage.local.set({ qualities: qualitiesStored });
   }
 
-  function fpsToRange(i): string {
+  function fpsToRange(i: number): string {
     const fpsRangeStart: number = fpsList[i - 1] + 1;
     const fps: FpsList = fpsList[i];
     return `${fpsRangeStart}-${fps}`;

@@ -1,7 +1,5 @@
 "use strict";
 
-import type { FpsOptions } from "../types";
-
 export const observerOptions = Object.freeze({ childList: true, subtree: true });
 
 export async function getStorage(storageArea: "local" | "sync", key = null): Promise<any> {
@@ -10,10 +8,6 @@ export async function getStorage(storageArea: "local" | "sync", key = null): Pro
       resolve(key ? result[key] : result);
     });
   });
-}
-
-export function getIsFewerQualityValues(qualities1: FpsOptions, qualities2: FpsOptions): boolean {
-  return Object.keys(qualities1).length < Object.keys(qualities2).length;
 }
 
 export function getI18n(id: string, backup = ""): string {
