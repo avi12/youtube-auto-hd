@@ -58,10 +58,10 @@ function addTemporaryBodyListener(): void {
   // Typically - listen to the player div (<video> container)
   // Otherwise, say it's a main channel page that has a channel trailer,
   // the <video> container wouldn't immediately exist, hence listen to the document
-  const elementToListen = getElement("player") || document;
+  const elementToTrack = getElement("player") || document;
 
   if (!gPlayerObserver) {
-    gPlayerObserver = new MutationObserver((mutations, observer) => {
+    gPlayerObserver = new MutationObserver(mutations => {
       // The user has navigated to another page
 
       const elVideo = getElement("video") as HTMLVideoElement;
@@ -69,16 +69,21 @@ function addTemporaryBodyListener(): void {
         return;
       }
 
-      // We need to reset variables, as well as prepare to change the quality of the new video
+      // We need to reset global variables, as well as prepare to change the quality of the new video
       window.ythdLastQualityClicked = null;
       prepareToChangeQuality();
       elVideo.removeEventListener("canplay", prepareToChangeQuality);
+
+      // Used to:
+      // - Change the quality even if a pre-roll or a mid-roll ad is playing
+      // - Change the quality if the video "refreshes", which happens when idling for a while (e.g. a couple of hours) and then resuming
       elVideo.addEventListener("canplay", prepareToChangeQuality);
-      observer.disconnect();
+
+      gPlayerObserver.disconnect();
     });
   }
 
-  gPlayerObserver.observe(elementToListen, observerOptions);
+  gPlayerObserver.observe(elementToTrack, observerOptions);
 }
 
 function addGlobalEventListener(): void {
