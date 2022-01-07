@@ -62,17 +62,36 @@ pnpm dev
 pnpm run-chromium
 ```
 
-### Firefox
+### Edge on Windows 10/11
 
-```shell script
-pnpm run-firefox
+```shell
+pnpm run-edge-windows
 ```
 
-### Other browsers
+### Browsers that don't support Manifest v3
 
-1. Open the extensions page in your browser.
-1. Enable the developer tools (top-right corner usually).
-1. Either drag-drop the `dist` folder onto the browser or click "Load unpacked extension" and choose it.
+1. Build the extension for Firefox/Opera (see below).
+2. Open the extensions page in that browser.
+3. Enable the developer mode (top-right corner usually).
+4. Either drag-drop the browser-compatible ZIP onto the browser or click "Load unpacked extension" and choose it.
+
+## Build & pack
+
+```shell
+pnpm build-pack
+```
+
+### Build for Firefox (first run `pnpm build-pack`)
+
+```shell
+pnpm build-for-firefox
+```
+
+### Build for Opera (first run `pnpm build-pack`)
+
+```shell
+pnpm build-for-opera
+```
 
 ## Contribution
 
