@@ -12,5 +12,11 @@
 "cj_i18n_06859":{"message":"Player size"},
 "cj_i18n_06860":{"message":"Support developer"},
 "cj_i18n_06861":{"message":"Rate extension"},
-"cj_i18n_06862":{"message":"Use the same quality for all frame rates"}
+"cj_i18n_06862":{"message":"Use the same quality for all frame rates"},
+"cj_i18n_07096":{"message":"Open options menu"},
+"cj_i18n_07097":{"message":"Default view"},
+"cj_i18n_07098":{"message":"Cinema view"},
+"cj_i18n_07099":{"message":"__fps_number__ FPS and lower"},
+"cj_i18n_07100":{"message":"__fps_number__ FPS up to __fps_number_b__ FPS"},
+"cj_i18n_07101":{"message":"__fps_number__ FPS and up"}
 }

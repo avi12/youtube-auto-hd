@@ -3,62 +3,59 @@
 const manifest = chrome.runtime.getManifest();
 const newVersionNumber = manifest.version;
 
-let unreportedUpdateDate;
-
 const landingUrl = "https://apps.jeurissen.co/auto-hd-fps-for-youtube";
 const installedUrl = landingUrl + "/installed";
 const uninstalledUrl = landingUrl + "/uninstalled";
 const updatedUrl = landingUrl + "/whatsnew?installed=1";
 
-function executeUpdate() {
-  if (!unreportedUpdateDate) return;
-  unreportedUpdateDate = null;
-  openUrl(updatedUrl);
-  chrome.storage.local.remove("cj_landing_lastupdated");
+chrome.runtime.onInstalled.addListener(details => {
+  if (details.reason === "update") {
+    removeUnusedStorageKeys();
+  }
+});
+
+function removeUnusedStorageKeys() {
+  chrome.storage.sync.remove(["size", "autoResize"]);
 }
 
-function getMajorVersion(fullVersion) {
-  const versionNumbers = fullVersion.split(".");
-  return versionNumbers[0] + "." + versionNumbers[1];
-}
-
-function openUrl(url) {
+function openUrl(url: string): void {
   chrome.tabs.create({ url });
 }
 
-function triggerUpdateOnBrowserActivity() {
-  function callback() {
-    executeUpdate();
-    chrome.windows.onFocusChanged.removeListener(callback);
-    chrome.tabs.onCreated.removeListener(callback);
-  }
-
-  chrome.windows.onFocusChanged.addListener(callback);
-  chrome.tabs.onCreated.addListener(callback);
-}
-
-function init(result) {
+function init({
+  cj_landing_lastupdated,
+  cj_landing_versionnumber
+}: {
+  cj_landing_lastupdated?: number;
+  cj_landing_versionnumber?: string;
+}): void {
   const now = Date.now();
 
-  unreportedUpdateDate = result.cj_landing_lastupdated;
-  const storedVersionNumber = result.cj_landing_versionnumber;
+  let unreportedUpdateDate = cj_landing_lastupdated;
+  const storedVersionNumber = cj_landing_versionnumber;
 
   if (typeof storedVersionNumber !== "string") {
     openUrl(installedUrl);
-  } else if (!unreportedUpdateDate) {
-    const majorVersionNumber = getMajorVersion(storedVersionNumber);
-    const newMajorVersionNumber = getMajorVersion(newVersionNumber);
-
-    if (newMajorVersionNumber !== majorVersionNumber) {
-      unreportedUpdateDate = now;
-      chrome.storage.local.set({
-        cj_landing_lastupdated: now
-      });
-    }
+  } else if (!unreportedUpdateDate && newVersionNumber !== storedVersionNumber) {
+    unreportedUpdateDate = now;
+    chrome.storage.local.set({
+      cj_landing_lastupdated: now
+    });
   }
 
   if (unreportedUpdateDate) {
-    triggerUpdateOnBrowserActivity();
+    const callback = () => {
+      if (unreportedUpdateDate) {
+        unreportedUpdateDate = null;
+        openUrl(updatedUrl);
+        chrome.storage.local.remove("cj_landing_lastupdated");
+      }
+      chrome.windows.onFocusChanged.removeListener(callback);
+      chrome.tabs.onCreated.removeListener(callback);
+    };
+
+    chrome.windows.onFocusChanged.addListener(callback);
+    chrome.tabs.onCreated.addListener(callback);
   }
 
   if (storedVersionNumber !== newVersionNumber) {
@@ -70,9 +67,6 @@ function init(result) {
 
 chrome.runtime.setUninstallURL(uninstalledUrl);
 
-chrome.storage.local.get(
-  ["cj_landing_lastupdated", "cj_landing_versionnumber"],
-  init
-);
+chrome.storage.local.get(["cj_landing_lastupdated", "cj_landing_versionnumber"], init);
 
 export {};

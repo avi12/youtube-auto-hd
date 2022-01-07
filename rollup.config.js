@@ -11,6 +11,7 @@ const isProduction = !process.env.ROLLUP_WATCH;
 function createConfig(filename, useSvelte = false) {
   return {
     input: `src/${filename}.ts`,
+    inlineDynamicImports: useSvelte,
     output: {
       format: "cjs",
       file: `dist/build/${filename}.js`
@@ -37,8 +38,26 @@ function createConfig(filename, useSvelte = false) {
   };
 }
 
+function createConfigBackground() {
+  return {
+    input: "src/background.ts",
+    output: {
+      format: "cjs",
+      file: "dist/background.js"
+    },
+    plugins: [
+      typescript(),
+      commonjs(),
+      isProduction && terser()
+    ],
+    watch: {
+      clearScreen: true
+    }
+  };
+}
+
 export default [
   createConfig("scripts/ythd-content-script-initialize"),
-  createConfig("background"),
+  createConfigBackground(),
   createConfig("popup/popup", true),
 ];
