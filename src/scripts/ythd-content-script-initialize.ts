@@ -72,6 +72,7 @@ function addTemporaryBodyListener(): void {
       // We need to reset variables, as well as prepare to change the quality of the new video
       window.ythdLastQualityClicked = null;
       prepareToChangeQuality();
+      elVideo.removeEventListener("canplay", prepareToChangeQuality);
       elVideo.addEventListener("canplay", prepareToChangeQuality);
       observer.disconnect();
     });
