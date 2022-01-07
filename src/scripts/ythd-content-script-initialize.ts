@@ -15,11 +15,6 @@ window.ythdLastQualityClicked = null;
 let gPlayerObserver: MutationObserver;
 let titleLast = document.title;
 
-function doVideoAction(): void {
-  // resizePlayerIfNeeded();
-  prepareToChangeQuality();
-}
-
 function saveManualQualityChange({ target, isTrusted }: MouseEvent): void {
   // We use programmatic clicks to change quality, but we need to save/respond only to user clicks
   if (!isTrusted) {
@@ -76,8 +71,8 @@ function addTemporaryBodyListener(): void {
 
       // We need to reset variables, as well as prepare to change the quality of the new video
       window.ythdLastQualityClicked = null;
-      doVideoAction();
-      elVideo.addEventListener("canplay", doVideoAction);
+      prepareToChangeQuality();
+      elVideo.addEventListener("canplay", prepareToChangeQuality);
       observer.disconnect();
     });
   }
@@ -106,13 +101,14 @@ new MutationObserver((_, observer) => {
   elPlayer.addEventListener("click", saveManualQualityChange);
   const isEmbed = location.pathname.startsWith("/embed/");
   if (!isEmbed) {
-    doVideoAction();
+    prepareToChangeQuality();
+    elVideo.addEventListener("canplay", prepareToChangeQuality);
     addGlobalEventListener();
     return;
   }
 
   if (!elVideo.paused) {
-    doVideoAction();
+    prepareToChangeQuality();
   }
-  elVideo.addEventListener("canplay", doVideoAction);
+  elVideo.addEventListener("canplay", prepareToChangeQuality);
 }).observe(document, observerOptions);

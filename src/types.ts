@@ -11,11 +11,6 @@ export type FpsOptions = {
   [fps in FpsList]: VideoQuality
 };
 
-export type AutoResize = boolean;
-export type Size = 1 | 0;
-
 export interface Preferences {
   qualities: FpsOptions;
-  autoResize: AutoResize;
-  size: Size;
 }

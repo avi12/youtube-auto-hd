@@ -12,6 +12,4 @@ export const initial: Preferences = {
     50: qualityClosest,
     30: qualityClosest
   },
-  autoResize: true,
-  size: 1
-};
+} as const;

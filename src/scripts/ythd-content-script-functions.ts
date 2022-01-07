@@ -2,7 +2,7 @@
 
 import { getElement, getElements, getStorage } from "../shared-scripts/ythd-utilities";
 import { initial } from "../shared-scripts/ythd-setup";
-import type { AutoResize, FpsList, FpsOptions, QualityLabels, VideoQuality } from "../types";
+import type { FpsList, FpsOptions, QualityLabels, VideoQuality } from "../types";
 
 let gLastUserQualities: FpsOptions = { ...initial.qualities };
 
@@ -129,7 +129,7 @@ async function changeQualityWhenPossible(): Promise<void> {
   const elVideo = getElement("video") as HTMLVideoElement;
   if (!getIsLastOptionQuality()) {
     toggleSettingsMenu();
-    elVideo.addEventListener("canplay", prepareToChangeQuality, { once: true });
+    elVideo.addEventListener("canplay", changeQualityWhenPossible, { once: true });
     return;
   }
 
@@ -172,23 +172,11 @@ export function prepareToChangeQuality(): void {
   }
 }
 
-chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
+chrome.storage.onChanged.addListener(async ({ qualities }) => {
   if (qualities) {
     window.ythdLastQualityClicked = null;
     gLastUserQualities = { ...qualities.newValue };
     await prepareToChangeQuality();
     return;
-  }
-
-  if (autoResize) {
-    // await resizePlayerIfNeeded();
-    return;
-  }
-
-  if (size !== undefined) {
-    const autoResize: AutoResize = (await getStorage("sync", "autoResize")) ?? initial.autoResize;
-    if (autoResize) {
-      // await resizePlayerIfNeeded({ size: size.newValue });
-    }
   }
 });
