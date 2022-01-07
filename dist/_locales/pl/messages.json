@@ -1,16 +1,17 @@
 {
 "cj_i18n_00354":{"message":"Darowizna"},
+"cj_i18n_01440":{"message":"Preferencje"},
 "cj_i18n_01605":{"message":"Pomóż w tłumaczeniu"},
 "cj_i18n_02146":{"message":"Automatycznie ustaw jakość wideo na YouTube zgodnie z FPS!"},
 "cj_i18n_02147":{"message":"Jakość wyświetleń"},
 "cj_i18n_02148":{"message":"FPS wideo"},
 "cj_i18n_02149":{"message":"FPS i mniej"},
 "cj_i18n_02152":{"message":"Dla tej jakości filmy będą odtwarzane z częstotliwością 30 FPS."},
-"cj_i18n_06567":{"message":"Zachowaj rozmiar na"},
-"cj_i18n_06568":{"message":"Automatyczna zmiana rozmiaru filmów"},
+"cj_i18n_06287":{"message":"Kliknij, aby wyświetlić dziennik zmian"},
+"cj_i18n_06288":{"message":"__app_name__ został zaktualizowany"},
 "cj_i18n_06858":{"message":"Wszystkie częstotliwości odświeżania"},
-"cj_i18n_06859":{"message":"Rozmiar odtwarzacza"},
 "cj_i18n_06860":{"message":"Wspomóż twórcę"},
 "cj_i18n_06861":{"message":"Oceń rozszerzenie"},
-"cj_i18n_06862":{"message":"Użyj tej samej jakości dla wszystkich częstotliwości odświeżania"}
+"cj_i18n_06862":{"message":"Użyj tej samej jakości dla wszystkich częstotliwości odświeżania"},
+"cj_i18n_06965":{"message":"Pomóż w lokalizacji"}
 }

@@ -1,15 +1,15 @@
 {
 "cj_i18n_00354":{"message":"贊助"},
+"cj_i18n_01440":{"message":"偏好設定"},
 "cj_i18n_01605":{"message":"協助翻譯"},
 "cj_i18n_02146":{"message":"自動依據其 FPS 設定 YouTube 上的影片畫質！"},
 "cj_i18n_02147":{"message":"觀看畫質"},
 "cj_i18n_02148":{"message":"FPS 影片"},
 "cj_i18n_02149":{"message":"FPS和以下"},
 "cj_i18n_02152":{"message":"對於此畫質，影片會以 30 FPS 播放。"},
-"cj_i18n_06567":{"message":"維持影片大小為"},
-"cj_i18n_06568":{"message":"自動調整影片大小"},
+"cj_i18n_06287":{"message":"按一下檢視更新日誌"},
+"cj_i18n_06288":{"message":"__app_name__ 已更新"},
 "cj_i18n_06858":{"message":"幀數"},
-"cj_i18n_06859":{"message":"播放器大小"},
 "cj_i18n_06860":{"message":"贊助開發者"},
 "cj_i18n_06861":{"message":"評價擴充功能"},
 "cj_i18n_06862":{"message":"對所有幀數使用相同的畫質"}
