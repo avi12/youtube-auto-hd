@@ -25,8 +25,6 @@ export const Selectors = {
   optionQuality: ".ytp-menuitem:last-child",
   menuOption: ".ytp-menuitem",
   player: ".html5-video-player",
-  adSkipIn: ".ytp-ad-preview-text",
-  adSkipNow: ".ytp-ad-skip-button-text",
   video: "video"
 } as const;
 
