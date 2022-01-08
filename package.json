@@ -11,7 +11,7 @@
     "dev": "rollup -c -w",
     "build": "rollup -c",
     "pack": "web-ext build --overwrite-dest --artifacts-dir dist_packed --source-dir dist --filename youtube_auto_hd_fps-{version}.zip",
-    "pack-stores": "webext-store-incompat-fixer -i dist_packed/youtube_auto_hd_fps-{version}.zip --edge-locale-inclusions de,de_CH,de_AT,fr,fr_CA,he,hu,it,ja,id,nl,pl,pt_BR,ru,zh_Hans,zh_Hant --stores chrome,edge,firefox,opera",
+    "pack-stores": "webext-store-incompat-fixer -i dist_packed/youtube_auto_hd_fps-{version}.zip --edge-locale-inclusions de,de_CH,de_AT,fr,fr_CA,hr,he,hu,it,ja,id,nl,pl,pt_BR,ru,zh_Hans,zh_Hant --stores chrome,edge,firefox,opera",
     "pack-self": "zip-self -o dist_packed/youtube_auto_hd_fps-{version}-source.zip",
     "build-pack": "pnpm run build && pnpm run pack && pnpm run pack-stores && pnpm run pack-self",
     "build-for-firefox": "build-for-browser --i dist_packed/youtube_auto_hd_fps-{version}.zip --browser=firefox --source",
