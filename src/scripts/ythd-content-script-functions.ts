@@ -2,7 +2,8 @@
 
 import { getElement, getElements, getStorage } from "../shared-scripts/ythd-utilities";
 import { initial } from "../shared-scripts/ythd-setup";
-import type { FpsList, FpsOptions, QualityLabels, VideoQuality } from "../types";
+import type { FpsList, FpsOptions, QualityLabels, VideoSize, VideoQuality } from "../types";
+import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 
 let gLastUserQualities: FpsOptions = { ...initial.qualities };
 
@@ -117,7 +118,7 @@ async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
   if (isQualityExists) {
     elQualities[iQuality].click();
   } else if (getIsQualityLower(elQualities[0], qualitiesPreferred[fpsStep])) {
-    elQualities[0].click();
+    elQualities[0]?.click();
   } else {
     const iClosestQuality = qualitiesAvailable.findIndex(
       quality => quality <= qualitiesPreferred[fpsStep]
@@ -168,7 +169,6 @@ export async function onSettingsMenuOpen({ isTrusted }: MouseEvent): Promise<voi
 }
 
 export function prepareToChangeQuality(): void {
-  console.log("prepareToChangeQuality");
   const elSettings = getElement("buttonSettings");
   if (!elSettings) {
     return;
@@ -181,11 +181,21 @@ export function prepareToChangeQuality(): void {
   }
 }
 
-chrome.storage.onChanged.addListener(async ({ qualities }) => {
+chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
   if (qualities) {
     window.ythdLastQualityClicked = null;
     gLastUserQualities = { ...qualities.newValue };
     await prepareToChangeQuality();
     return;
+  }
+
+  if (autoResize && autoResize.newValue) {
+    const sizeVideo = await getStorage("sync", "size") as VideoSize;
+    await resizePlayerIfNeeded(sizeVideo);
+  }
+
+  if (size !== undefined) {
+    const sizeNew = size.newValue as VideoSize;
+    await resizePlayerIfNeeded(sizeNew);
   }
 });

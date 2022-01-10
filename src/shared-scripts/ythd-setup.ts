@@ -12,4 +12,6 @@ export const initial: Preferences = {
     50: qualityClosest,
     30: qualityClosest
   },
+  isResizeVideo: false,
+  size: 1
 } as const;

@@ -3,6 +3,7 @@
 import { getElement, observerOptions } from "../shared-scripts/ythd-utilities";
 import { prepareToChangeQuality } from "./ythd-content-script-functions";
 import type { VideoQuality } from "../types";
+import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 
 declare global {
   interface Window {
@@ -69,6 +70,8 @@ function addTemporaryBodyListener(): void {
         return;
       }
 
+      resizePlayerIfNeeded();
+
       // We need to reset global variables, as well as prepare to change the quality of the new video
       window.ythdLastQualityClicked = null;
       prepareToChangeQuality();
@@ -108,6 +111,7 @@ new MutationObserver((_, observer) => {
   const isEmbed = location.pathname.startsWith("/embed/");
   if (!isEmbed) {
     prepareToChangeQuality();
+    resizePlayerIfNeeded();
     elVideo.addEventListener("canplay", prepareToChangeQuality);
     addGlobalEventListener();
     return;
