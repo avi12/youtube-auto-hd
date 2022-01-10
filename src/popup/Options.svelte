@@ -4,12 +4,17 @@
   import ControlQuality from "./views/ControlQuality.svelte";
   import Promotions from "./views/Promotions.svelte";
   import "./views/styles/popup.css";
+  import ControlSize from "./views/ControlSize.svelte";
 
   export let qualitiesStored;
+  export let sizeVideo;
+  export let isResizeVideo;
 </script>
 
 <div class:i18n--rtl={getI18n("@@bidi_dir") === "rtl"}>
   <ControlQuality {qualitiesStored} />
+
+  <ControlSize {isResizeVideo} {sizeVideo} />
 
   <Promotions />
 </div>

@@ -11,6 +11,11 @@ export type FpsOptions = {
   [fps in FpsList]: VideoQuality
 };
 
+export type VideoAutoResize = boolean
+export type VideoSize = 1 | 0;
+
 export interface Preferences {
   qualities: FpsOptions;
+  isResizeVideo: VideoAutoResize;
+  size: VideoSize;
 }
