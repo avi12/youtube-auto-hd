@@ -8,16 +8,6 @@ const installedUrl = landingUrl + "/installed";
 const uninstalledUrl = landingUrl + "/uninstalled";
 const updatedUrl = landingUrl + "/whatsnew?installed=1";
 
-chrome.runtime.onInstalled.addListener(details => {
-  if (details.reason === "update") {
-    removeUnusedStorageKeys();
-  }
-});
-
-function removeUnusedStorageKeys() {
-  chrome.storage.sync.remove(["size", "autoResize"]);
-}
-
 function openUrl(url: string): void {
   chrome.tabs.create({ url });
 }
