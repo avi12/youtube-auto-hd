@@ -1,10 +1,19 @@
+/* Chromium browsers */
+::-webkit-scrollbar {
+  width: 0;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: none;
+}
+
 body {
   overflow: hidden;
   box-sizing: border-box;
   margin: auto;
   width: 250px;
-  padding: 16px;
-  padding-bottom: 4px;
+  padding: 16px 16px 4px;
   font-family: Roboto, Arial, sans-serif;
   font-size: 1rem;
 }
