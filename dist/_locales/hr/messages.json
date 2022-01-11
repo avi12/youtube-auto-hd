@@ -7,9 +7,10 @@
 "cj_i18n_02148":{"message":"k/s video"},
 "cj_i18n_02149":{"message":"k/s i nizhe"},
 "cj_i18n_02152":{"message":"Za ovaj kvalitet video zapisi će se reprodukovati pri 30 FPS."},
-"cj_i18n_06287":{"message":"Klikni da pogledaš promjene"},
-"cj_i18n_06288":{"message":"__app_name__ je ažuriran"},
+"cj_i18n_06567":{"message":"Zadržite veličinu na"},
+"cj_i18n_06568":{"message":"Automatski promeni veličinu video zapisa"},
 "cj_i18n_06858":{"message":"Sve brzine kadrova"},
+"cj_i18n_06859":{"message":"Velichina prikazivacha"},
 "cj_i18n_06860":{"message":"Podrška programeru"},
 "cj_i18n_06861":{"message":"Ocenite proširenje"},
 "cj_i18n_06862":{"message":"Koristite isti kvalitet za sve brzine kadrova"}

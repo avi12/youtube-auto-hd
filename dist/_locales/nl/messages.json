@@ -7,9 +7,10 @@
 "cj_i18n_02148":{"message":"FPS video's"},
 "cj_i18n_02149":{"message":"FPS en lager"},
 "cj_i18n_02152":{"message":"Voor deze kwaliteit worden video's afgespeeld met 30 FPS."},
-"cj_i18n_06287":{"message":"Klik om geregistreerde wijzigingen in het changelog te bekijken"},
-"cj_i18n_06288":{"message":"__app_name__ is bijgewerkt"},
+"cj_i18n_06567":{"message":"Houd formaat op"},
+"cj_i18n_06568":{"message":"Videos automatisch schalen"},
 "cj_i18n_06858":{"message":"Alle framerates"},
+"cj_i18n_06859":{"message":"Spelerformaat"},
 "cj_i18n_06860":{"message":"Ondersteun ontwikkelaar"},
 "cj_i18n_06861":{"message":"Waardeer extensie"},
 "cj_i18n_06862":{"message":"Gebruik dezelfde kwaliteit voor alle framerates"}
