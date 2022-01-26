@@ -16,7 +16,9 @@ export async function resizePlayerIfNeeded(sizeNew?: number) {
 
   const selSizeButtonOld = "button";
   const selSizeButtonNew = Selectors.menuOption;
-  const elSizeToggle = elSizePath.closest(`${selSizeButtonOld}, ${selSizeButtonNew}`) as HTMLDivElement;
+  const elSizeToggle = elSizePath.closest<HTMLButtonElement | HTMLDivElement>(
+    `${selSizeButtonOld}, ${selSizeButtonNew}`
+  );
 
   const isAutoResize = (await getStorage("sync", "autoResize")) ?? initial.isResizeVideo;
   if (!isAutoResize) {
