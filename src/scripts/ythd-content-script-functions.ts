@@ -192,6 +192,7 @@ chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => 
   if (autoResize && autoResize.newValue) {
     const sizeVideo = await getStorage("sync", "size") as VideoSize;
     await resizePlayerIfNeeded(sizeVideo);
+    return;
   }
 
   if (size !== undefined) {
