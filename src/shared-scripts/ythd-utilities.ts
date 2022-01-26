@@ -1,6 +1,6 @@
 "use strict";
 
-export const observerOptions = Object.freeze({ childList: true, subtree: true });
+export const observerOptions: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
 
 export async function getStorage(storageArea: "local" | "sync", key = null): Promise<any> {
   return new Promise(resolve => {
@@ -16,6 +16,7 @@ export function getI18n(id: string, backup = ""): string {
 
 export const Selectors = {
   buttonSettings: ".ytp-settings-button",
+  pathSizeToggle: `path[d*="m 28,"], path[d*="m 26,"]`,
   optionQuality: ".ytp-menuitem:last-child",
   menuOption: ".ytp-menuitem",
   player: ".html5-video-player",
