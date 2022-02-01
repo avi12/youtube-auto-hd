@@ -9,7 +9,7 @@ Available for:
 - [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom) ![users count](https://img.shields.io/badge/dynamic/json?label=users&query=activeInstallCount&style=flat-square&color=white&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/ggnepcoiimddpmjaoejhdfppjbcnfaom)
 - [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
 
-![A screenshot from the extension's pop-up page](https://user-images.githubusercontent.com/6422804/148557807-3cd5c3cb-9d06-456a-bcff-25bf2eecef04.png)
+![A screenshot from the extension's pop-up page](https://user-images.githubusercontent.com/6422804/113500084-e26b2a00-9523-11eb-9e6b-5e25a4c6eba0.png)
 
 Made by [avi12](https://avi12.com).
 
