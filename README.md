@@ -8,6 +8,7 @@ Available for:
 - [Mozilla Firefox](https://addons.mozilla.org/addon/youtube-auto-hd-fps) ![Mozilla Add-on](https://img.shields.io/amo/users/youtube-auto-hd-fps?color=white&label=users&style=flat-square)
 - [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom) ![users count](https://img.shields.io/badge/dynamic/json?label=users&query=activeInstallCount&style=flat-square&color=white&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/ggnepcoiimddpmjaoejhdfppjbcnfaom)
 - [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
+- [Safari](https://apps.apple.com/us/app/id1546729687) - maintained by [carlosjeurissen](https://github.com/carlosjeurissen)
 
 ![A screenshot from the extension's pop-up page](https://user-images.githubusercontent.com/6422804/113500084-e26b2a00-9523-11eb-9e6b-5e25a4c6eba0.png)
 
