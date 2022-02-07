@@ -2,13 +2,14 @@
 
 import { getStorage, Selectors } from "../shared-scripts/ythd-utilities";
 import { initial } from "../shared-scripts/ythd-setup";
+import type { VideoAutoResize, VideoSize } from "../types";
 
 function getCurrentSize() {
   const sizeCurrentMatch = document.cookie.match(/wide=([10])/);
   return sizeCurrentMatch ? Number(sizeCurrentMatch[1]) : 0;
 }
 
-export async function resizePlayerIfNeeded(sizeNew?: number) {
+export async function resizePlayerIfNeeded(sizeNew?: VideoSize): Promise<void> {
   const elSizePath = document.querySelector(Selectors.pathSizeToggle) as SVGPathElement;
   if (!elSizePath) {
     return;
@@ -20,7 +21,7 @@ export async function resizePlayerIfNeeded(sizeNew?: number) {
     `${selSizeButtonOld}, ${selSizeButtonNew}`
   );
 
-  const isAutoResize = (await getStorage("sync", "autoResize")) ?? initial.isResizeVideo;
+  const isAutoResize = (await getStorage<VideoAutoResize>("sync", "autoResize")) ?? initial.isResizeVideo;
   if (!isAutoResize) {
     return;
   }

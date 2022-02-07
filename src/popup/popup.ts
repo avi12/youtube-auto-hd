@@ -2,6 +2,7 @@
 
 import Options from "./Options.svelte";
 import { getStorage } from "../shared-scripts/ythd-utilities";
+import type { FpsOptions } from "../types";
 
 async function init() {
   const { size: sizeVideo, autoResize: isResizeVideo } = await new Promise(resolve =>
@@ -11,7 +12,7 @@ async function init() {
   new Options({
     target: document.body,
     props: {
-      qualitiesStored: await getStorage("local", "qualities"),
+      qualitiesStored: await getStorage<FpsOptions>("local", "qualities"),
       sizeVideo,
       isResizeVideo
     }
