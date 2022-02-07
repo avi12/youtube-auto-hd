@@ -1,6 +1,6 @@
 "use strict";
 
-import { getElement, observerOptions } from "../shared-scripts/ythd-utilities";
+import { getVisibleElement, observerOptions } from "../shared-scripts/ythd-utilities";
 import { prepareToChangeQuality } from "./ythd-content-script-functions";
 import type { VideoQuality } from "../types";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
@@ -59,13 +59,13 @@ function addTemporaryBodyListener(): void {
   // Typically - listen to the player div (<video> container)
   // Otherwise, say it's a main channel page that has a channel trailer,
   // the <video> container wouldn't immediately exist, hence listen to the document
-  const elementToTrack = getElement("player") || document;
+  const elementToTrack = getVisibleElement<HTMLDivElement>("player") || document;
 
   if (!gPlayerObserver) {
     gPlayerObserver = new MutationObserver(mutations => {
       // The user has navigated to another page
 
-      const elVideo = getElement("video") as HTMLVideoElement;
+      const elVideo = getVisibleElement<HTMLVideoElement>("video");
       if (getIsExit(mutations) || !elVideo) {
         return;
       }
@@ -99,8 +99,8 @@ function addGlobalEventListener(): void {
 
 // Runs on page load
 new MutationObserver((_, observer) => {
-  const elVideo = getElement("video") as HTMLVideoElement;
-  const elPlayer = getElement("player") as HTMLDivElement;
+  const elVideo = getVisibleElement<HTMLVideoElement>("video");
+  const elPlayer = getVisibleElement<HTMLDivElement>("player");
   if (!elVideo || !elPlayer) {
     return;
   }
