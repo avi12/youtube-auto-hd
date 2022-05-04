@@ -9,6 +9,8 @@ import type { FpsList, Label, VideoQuality } from "../types";
 import { labelToQuality, qualities } from "../shared-scripts/ythd-setup";
 
 let gPlayerResponse;
+const gEvent = new Event("change", { bubbles: true });
+
 async function getVideoFPS(): Promise<FpsList> {
   return gPlayerResponse.streamingData.adaptiveFormats[0].fps as FpsList;
 }
@@ -21,7 +23,7 @@ function getIsMobileQualityLower(quality1: Label, quality2: typeof qualities[num
   return labelToQuality[quality1] < quality2;
 }
 
-async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
+async function changeQualityOnMobile(qualityCustom?: VideoQuality): Promise<void> {
   const fpsVideo = await getVideoFPS();
   const qualitiesAvailable = getCurrentQualities();
   const qualitiesPreferred = await getPreferredQualities();
@@ -32,7 +34,7 @@ async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
   const applyQuality = (iQuality: number) => {
     const elDropdown = getVisibleElement<HTMLSelectElement>("mobileQualityDropdown");
     elDropdown.value = qualitiesAvailable[iQuality];
-    elDropdown.dispatchEvent(new Event("change", { bubbles: true }));
+    elDropdown.dispatchEvent(gEvent);
   };
 
   const isQualityExists = iQuality > -1;
@@ -66,7 +68,7 @@ export async function prepareToChangeQualityOnMobile(): Promise<void> {
   getVisibleElement("mobileUnmute").click();
   getVisibleElement("mobileButtonSettings").click();
   await getElementByMutationObserver("mobileQualityDropdown");
-  await changeQuality();
+  await changeQualityOnMobile();
   getVisibleElement("mobileOkButton").click();
   getVisibleElement("mobilePlayerControlsBackground").click();
 }
