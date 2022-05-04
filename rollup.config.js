@@ -11,7 +11,7 @@ const isProduction = !process.env.ROLLUP_WATCH;
 function createConfig(filename, useSvelte = false) {
   return {
     input: `src/${filename}.ts`,
-    inlineDynamicImports: useSvelte,
+    inlineDynamicImports: true,
     output: {
       format: "cjs",
       file: `dist/build/${filename}.js`
@@ -45,11 +45,7 @@ function createConfigBackground() {
       format: "cjs",
       file: "dist/background.js"
     },
-    plugins: [
-      typescript(),
-      commonjs(),
-      isProduction && terser()
-    ],
+    plugins: [typescript(), commonjs(), isProduction && terser()],
     watch: {
       clearScreen: true
     }
