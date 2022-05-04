@@ -1,52 +1,17 @@
 "use strict";
 
-import { getVisibleElement, getStorage, Selectors } from "../shared-scripts/ythd-utilities";
-import { initial } from "../shared-scripts/ythd-setup";
-import type { FpsList, FpsOptions, QualityLabels, VideoQuality, VideoSize } from "../types";
+import {
+  getFpsFromRange, getIQuality, getIsQualityLower,
+  getPreferredQualities,
+  getStorage,
+  getVisibleElement,
+  Selectors
+} from "../shared-scripts/ythd-utilities";
+import type { FpsList, QualityLabels, VideoQuality, VideoSize } from "../types";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
+import { prepareToChangeQualityOnMobile } from "./ythd-content-script-functions-mobile";
 
-let gLastUserQualities: FpsOptions = { ...initial.qualities };
-
-function getIsQualityLower(elQuality: HTMLDivElement | undefined, qualityPreferred: VideoQuality): boolean {
-  if (!elQuality) {
-    return true;
-  }
-  const labelQuality = elQuality.textContent as QualityLabels;
-  const qualityVideo = parseInt(labelQuality) as VideoQuality;
-  return qualityVideo < qualityPreferred;
-}
-
-function getIQuality(qualitiesCurrent: VideoQuality[], qualityPreferred: VideoQuality): number {
-  return qualitiesCurrent.findIndex(elQuality => elQuality === qualityPreferred);
-}
-
-function getFpsFromRange(qualities: FpsOptions, fpsToCheck: FpsList): FpsList {
-  const fpsList = Object.keys(qualities)
-    .map(Number)
-    .sort((a, b) => b - a) as FpsList[];
-  while (fpsList.length > 1) {
-    const fpsCurrent = fpsList.pop() as FpsList;
-    if (fpsToCheck <= fpsCurrent) {
-      return fpsCurrent;
-    }
-  }
-  return fpsList[0];
-}
-
-export async function getPreferredQualities(): Promise<FpsOptions> {
-  try {
-    const userQualities = ((await getStorage("local", "qualities")) ?? {}) as FpsOptions;
-    gLastUserQualities = { ...initial.qualities, ...userQualities };
-    return gLastUserQualities;
-  } catch {
-    // Handling "Error: Extension context invalidated"
-
-    // This error typically occurs when the extension updates
-    // but the user hasn't refreshed the page, which typically causes
-    // the player settings to open when seeking through a video
-    return gLastUserQualities;
-  }
-}
+const gIsMobile = location.hostname.startsWith("m.");
 
 function getIsLastOptionQuality() {
   const elOptionInSettings = getVisibleElement("player").querySelector(Selectors.optionQuality);
@@ -157,6 +122,11 @@ function getIsMenuOpen(elPlayer: HTMLDivElement): boolean {
 }
 
 export async function prepareToChangeQuality(): Promise<void> {
+  if (gIsMobile) {
+    await prepareToChangeQualityOnMobile();
+    return;
+  }
+
   const elPlayer = getVisibleElement<HTMLDivElement>("player");
   const elSettings = elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings);
   if (!elSettings) {
@@ -178,7 +148,7 @@ export async function prepareToChangeQuality(): Promise<void> {
 chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
   if (qualities) {
     window.ythdLastQualityClicked = null;
-    gLastUserQualities = { ...qualities.newValue };
+    window.ythdLastUserQualities = { ...qualities.newValue };
     await prepareToChangeQuality();
     return;
   }

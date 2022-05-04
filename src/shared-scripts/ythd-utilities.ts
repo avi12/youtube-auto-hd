@@ -1,6 +1,11 @@
 "use strict";
 
+import type { FpsList, FpsOptions, Label } from "../types";
+import { initial } from "./ythd-setup";
+import type { QualityLabels, VideoQuality } from "../types";
+
 export const observerOptions: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
+window.ythdLastUserQualities = { ...initial.qualities };
 
 export async function getStorage<T>(storageArea: "local" | "sync", key = null): Promise<T> {
   return new Promise(resolve => {
@@ -24,7 +29,13 @@ export const Selectors = {
   panelHeader: ".ytp-panel-header button",
   settingsMenu: ".ytp-settings-menu",
   player: ".html5-video-player",
-  video: "video"
+  video: "video",
+  // Mobile
+  mobileQualityDropdown: "[id*=player-quality-dropdown]",
+  mobileButtonSettings: ".player-settings-icon",
+  mobileUnmute: ".ytp-unmute.ytp-button",
+  mobilePlayerControlsBackground: ".player-controls-background",
+  mobileOkButton: ".dialog-buttons [class*=material-button-button]"
 } as const;
 
 export function getVisibleElement<T extends HTMLElement>(elementName: keyof typeof Selectors): T {
@@ -32,6 +43,61 @@ export function getVisibleElement<T extends HTMLElement>(elementName: keyof type
   return elements.find(isElementVisible);
 }
 
+export async function getElementByMutationObserver(selector: keyof typeof Selectors): Promise<HTMLElement> {
+  return new Promise(resolve => {
+    const observerHtml = new MutationObserver((_, observer) => {
+      const element = getVisibleElement(selector);
+      if (element) {
+        observer.disconnect();
+        resolve(element as HTMLElement);
+      }
+    });
+    observerHtml.observe(document.documentElement, observerOptions);
+  });
+}
+
+
 function isElementVisible(element: HTMLElement): boolean {
   return element?.offsetWidth > 0 && element?.offsetHeight > 0;
+}
+
+export function getFpsFromRange(qualities: FpsOptions, fpsToCheck: FpsList): FpsList {
+  const fpsList = Object.keys(qualities)
+    .map(Number)
+    .sort((a, b) => b - a) as FpsList[];
+  while (fpsList.length > 1) {
+    const fpsCurrent = fpsList.pop() as FpsList;
+    if (fpsToCheck <= fpsCurrent) {
+      return fpsCurrent;
+    }
+  }
+  return fpsList[0];
+}
+
+export async function getPreferredQualities(): Promise<FpsOptions> {
+  try {
+    const userQualities = ((await getStorage("local", "qualities")) ?? {}) as FpsOptions;
+    window.ythdLastUserQualities = { ...initial.qualities, ...userQualities };
+    return window.ythdLastUserQualities;
+  } catch {
+    // Handling "Error: Extension context invalidated"
+
+    // This error typically occurs when the extension updates
+    // but the user hasn't refreshed the page, which typically causes
+    // the player settings to open when seeking through a video
+    return window.ythdLastUserQualities;
+  }
+}
+
+export function getIQuality(qualitiesCurrent: VideoQuality[] | Label[], qualityPreferred: VideoQuality | Label): number {
+  return qualitiesCurrent.findIndex((quality: VideoQuality | Label) => quality === qualityPreferred);
+}
+
+export function getIsQualityLower(elQuality: HTMLElement | undefined, qualityPreferred: VideoQuality): boolean {
+  if (!elQuality) {
+    return true;
+  }
+  const labelQuality = elQuality.textContent as QualityLabels;
+  const qualityVideo = parseInt(labelQuality) as VideoQuality;
+  return qualityVideo < qualityPreferred;
 }

@@ -1,6 +1,8 @@
 import type { fpsSupported, qualities } from "./shared-scripts/ythd-setup";
+import type { qualityToLabel } from "./shared-scripts/ythd-setup";
 
 export type VideoQuality = typeof qualities[number];
+export type Label = typeof qualityToLabel[typeof qualities[number]]; // "highres" | "hd2160" | ...
 export type FpsList = typeof fpsSupported[number];
 export type Progressive = "p";
 export type Spherical = "s";

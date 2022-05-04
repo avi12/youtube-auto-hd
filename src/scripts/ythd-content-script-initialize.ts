@@ -2,12 +2,13 @@
 
 import { getVisibleElement, observerOptions } from "../shared-scripts/ythd-utilities";
 import { prepareToChangeQuality } from "./ythd-content-script-functions";
-import type { VideoQuality } from "../types";
+import type { FpsOptions, VideoQuality } from "../types";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 
 declare global {
   interface Window {
     ythdLastQualityClicked: VideoQuality | null;
+    ythdLastUserQualities: FpsOptions;
   }
 }
 
