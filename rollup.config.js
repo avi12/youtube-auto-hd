@@ -53,7 +53,8 @@ function createConfigBackground() {
 }
 
 export default [
-  createConfig("scripts/ythd-content-script-initialize"),
+  createConfig("scripts/ythd-content-script-initialize-desktop"),
+  createConfig("scripts/ythd-content-script-initialize-mobile"),
   createConfigBackground(),
   createConfig("popup/popup", true),
 ];
