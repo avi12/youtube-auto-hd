@@ -23,7 +23,7 @@ function addTemporaryBodyListenerOnMobile(): void {
   gTitleLast = document.title;
 
   if (!gPlayerObserver) {
-    gPlayerObserver = new MutationObserver(async function temporaryBodyListener() {
+    gPlayerObserver = new MutationObserver(() => {
       const elVideo = getVisibleElement<HTMLVideoElement>("video");
       if (!elVideo) {
         return;
