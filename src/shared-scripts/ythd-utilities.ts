@@ -66,7 +66,7 @@ export function getFpsFromRange(qualities: FpsOptions, fpsToCheck: FpsList): Fps
     .map(Number)
     .sort((a, b) => b - a) as FpsList[];
   while (fpsList.length > 1) {
-    const fpsCurrent = fpsList.pop() as FpsList;
+    const fpsCurrent: FpsList = fpsList.pop();
     if (fpsToCheck <= fpsCurrent) {
       return fpsCurrent;
     }
