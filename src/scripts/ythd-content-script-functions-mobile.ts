@@ -17,7 +17,9 @@ function getVideoFPS(): FpsList {
 }
 
 function getCurrentQualities(): YouTubeLabel[] {
-  const qualityLabels: YouTubeLabel[] = gPlayerResponse.streamingData.adaptiveFormats.map(format => format.quality);
+  const qualityLabels: YouTubeLabel[] = gPlayerResponse.streamingData.adaptiveFormats.map(
+    format => format.quality
+  );
   return [...new Set(qualityLabels)];
 }
 
