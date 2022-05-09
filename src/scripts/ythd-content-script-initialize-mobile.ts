@@ -31,10 +31,7 @@ function addTemporaryBodyListenerOnMobile(): void {
 
       gPlayerObserver.disconnect();
 
-      // We need to reset the global variable
       window.ythdLastQualityClicked = null;
-
-      // Used to change the quality even if a pre-roll or a mid-roll ad is playing
       elVideo.addEventListener("canplay", prepareToChangeQualityOnMobile);
     });
   }
