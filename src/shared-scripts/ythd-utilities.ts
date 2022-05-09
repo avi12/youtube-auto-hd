@@ -1,6 +1,6 @@
 "use strict";
 
-import type { VideoFPS, FpsOptions, YouTubeLabel } from "../types";
+import type { VideoFPS, QualityFpsPreferences, YouTubeLabel } from "../types";
 import { initial } from "./ythd-setup";
 import type { QualityLabels, VideoQuality } from "../types";
 
@@ -61,7 +61,7 @@ function isElementVisible(element: HTMLElement): boolean {
   return element?.offsetWidth > 0 && element?.offsetHeight > 0;
 }
 
-export function getFpsFromRange(qualities: FpsOptions, fpsToCheck: VideoFPS): VideoFPS {
+export function getFpsFromRange(qualities: QualityFpsPreferences, fpsToCheck: VideoFPS): VideoFPS {
   const fpsList = Object.keys(qualities)
     .map(Number)
     .sort((a, b) => b - a) as VideoFPS[];
@@ -74,9 +74,9 @@ export function getFpsFromRange(qualities: FpsOptions, fpsToCheck: VideoFPS): Vi
   return fpsList[0];
 }
 
-export async function getPreferredQualities(): Promise<FpsOptions> {
+export async function getPreferredQualities(): Promise<QualityFpsPreferences> {
   try {
-    const userQualities = ((await getStorage("local", "qualities")) ?? {}) as FpsOptions;
+    const userQualities = ((await getStorage("local", "qualities")) ?? {}) as QualityFpsPreferences;
     window.ythdLastUserQualities = { ...initial.qualities, ...userQualities };
     return window.ythdLastUserQualities;
   } catch {

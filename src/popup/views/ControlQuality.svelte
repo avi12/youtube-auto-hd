@@ -3,7 +3,7 @@
   import { fpsSupported, initial, qualities } from "../../shared-scripts/ythd-setup";
   import { getI18n } from "../../shared-scripts/ythd-utilities";
   import SliderYthd from "../components/Slider.svelte";
-  import type { VideoFPS, FpsOptions, VideoQuality } from "../../types";
+  import type { VideoFPS, QualityFpsPreferences, VideoQuality } from "../../types";
 
   const i18n: { [key: string]: string } = {
     labelQualityHeader: getI18n("cj_i18n_02147", "View quality"),
@@ -14,7 +14,7 @@
     fpsWarning: getI18n("cj_i18n_02152", "Videos will play at 30 FPS for this quality.")
   };
 
-  export let qualitiesStored: FpsOptions = initial.qualities;
+  export let qualitiesStored: QualityFpsPreferences = initial.qualities;
   const qualitiesSelected = Object.values(qualitiesStored).reverse() as VideoQuality[];
   let isSameQualityForAllFps = qualitiesSelected.every((quality, _, array) => quality === array[0]);
   let qualitySelected = qualitiesSelected[0];

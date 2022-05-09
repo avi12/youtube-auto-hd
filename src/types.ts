@@ -9,7 +9,7 @@ export type Spherical = "s";
 
 export type QualityLabels = `${VideoQuality}${Progressive | Spherical}${VideoFPS}`; // "1080p60" | "720s50" ...
 
-export type FpsOptions = {
+export type QualityFpsPreferences = {
   [fps in VideoFPS]: VideoQuality
 };
 
@@ -17,7 +17,7 @@ export type VideoAutoResize = boolean
 export type VideoSize = 1 | 0;
 
 export interface Preferences {
-  qualities: FpsOptions;
+  qualities: QualityFpsPreferences;
   isResizeVideo: VideoAutoResize;
   size: VideoSize;
 }
