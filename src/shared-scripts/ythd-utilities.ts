@@ -37,7 +37,7 @@ export const Selectors = {
   mobileQualityDropdownWrapper: ".player-quality-settings",
   mobileMenuButton: ".mobile-topbar-header-content ytm-menu button",
   mobileOption: "div[role=dialog] ytm-menu-item",
-  mobileOkButton: ".dialog-buttons [class*=material-button-button]",
+  mobileOkButton: ".dialog-buttons [class*=material-button-button]"
 } as const;
 
 export function getVisibleElement<T extends HTMLElement>(elementName: keyof typeof Selectors): T {
@@ -56,7 +56,6 @@ export async function getElementByMutationObserver(selector: keyof typeof Select
     }).observe(document, observerOptions);
   });
 }
-
 
 function isElementVisible(element: HTMLElement): boolean {
   return element?.offsetWidth > 0 && element?.offsetHeight > 0;
@@ -90,11 +89,17 @@ export async function getPreferredQualities(): Promise<FpsOptions> {
   }
 }
 
-export function getIQuality(qualitiesCurrent: VideoQuality[] | Label[], qualityPreferred: VideoQuality | Label): number {
+export function getIQuality(
+  qualitiesCurrent: VideoQuality[] | Label[],
+  qualityPreferred: VideoQuality | Label
+): number {
   return qualitiesCurrent.findIndex((quality: VideoQuality | Label) => quality === qualityPreferred);
 }
 
-export function getIsQualityLower(elQuality: HTMLElement | undefined, qualityPreferred: VideoQuality): boolean {
+export function getIsQualityLower(
+  elQuality: HTMLElement | undefined,
+  qualityPreferred: VideoQuality
+): boolean {
   if (!elQuality) {
     return true;
   }
