@@ -1,6 +1,6 @@
 import { getVisibleElement, observerOptions, Selectors } from "../shared-scripts/ythd-utilities";
 import { prepareToChangeQualityOnMobile } from "./ythd-content-script-functions-mobile";
-import type { Label } from "../types";
+import type { YouTubeLabel } from "../types";
 import { labelToQuality } from "../shared-scripts/ythd-setup";
 
 window.ythdLastQualityClicked = null;
@@ -59,7 +59,7 @@ function saveManualQualityChangeOnMobile({ target, isTrusted }: Event): void {
   }
 
   const elDropdownQuality = element.querySelector<HTMLSelectElement>(Selectors.mobileQualityDropdown);
-  const label = elDropdownQuality.value as Label;
+  const label = elDropdownQuality.value as YouTubeLabel;
   window.ythdLastQualityClicked = labelToQuality[label];
 }
 

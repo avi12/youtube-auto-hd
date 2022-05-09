@@ -6,7 +6,7 @@ import {
   getVisibleElement,
   Selectors
 } from "../shared-scripts/ythd-utilities";
-import type { FpsList, Label, VideoQuality } from "../types";
+import type { FpsList, YouTubeLabel, VideoQuality } from "../types";
 import { labelToQuality, qualities } from "../shared-scripts/ythd-setup";
 
 let gPlayerResponse;
@@ -16,12 +16,12 @@ function getVideoFPS(): FpsList {
   return gPlayerResponse.streamingData.adaptiveFormats[0].fps as FpsList;
 }
 
-function getCurrentQualities(): Label[] {
+function getCurrentQualities(): YouTubeLabel[] {
   const qualityLabels = gPlayerResponse.streamingData.adaptiveFormats.map(format => format.quality);
-  return [...new Set(qualityLabels)] as Label[];
+  return [...new Set(qualityLabels)] as YouTubeLabel[];
 }
 
-function getIsMobileQualityLower(quality1: Label, quality2: typeof qualities[number]): boolean {
+function getIsMobileQualityLower(quality1: YouTubeLabel, quality2: typeof qualities[number]): boolean {
   return labelToQuality[quality1] < quality2;
 }
 

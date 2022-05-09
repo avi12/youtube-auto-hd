@@ -1,6 +1,6 @@
 "use strict";
 
-import type { FpsList, FpsOptions, Label } from "../types";
+import type { FpsList, FpsOptions, YouTubeLabel } from "../types";
 import { initial } from "./ythd-setup";
 import type { QualityLabels, VideoQuality } from "../types";
 
@@ -90,10 +90,10 @@ export async function getPreferredQualities(): Promise<FpsOptions> {
 }
 
 export function getIQuality(
-  qualitiesCurrent: VideoQuality[] | Label[],
-  qualityPreferred: VideoQuality | Label
+  qualitiesCurrent: VideoQuality[] | YouTubeLabel[],
+  qualityPreferred: VideoQuality | YouTubeLabel
 ): number {
-  return qualitiesCurrent.findIndex((quality: VideoQuality | Label) => quality === qualityPreferred);
+  return qualitiesCurrent.findIndex((quality: VideoQuality | YouTubeLabel) => quality === qualityPreferred);
 }
 
 export function getIsQualityLower(
