@@ -3,7 +3,8 @@ import {
   getFpsFromRange,
   getIQuality,
   getPreferredQualities,
-  getVisibleElement
+  getVisibleElement,
+  Selectors
 } from "../shared-scripts/ythd-utilities";
 import type { FpsList, Label, VideoQuality } from "../types";
 import { labelToQuality, qualities } from "../shared-scripts/ythd-setup";
@@ -11,7 +12,7 @@ import { labelToQuality, qualities } from "../shared-scripts/ythd-setup";
 let gPlayerResponse;
 const gEvent = new Event("change", { bubbles: true });
 
-async function getVideoFPS(): Promise<FpsList> {
+function getVideoFPS(): FpsList {
   return gPlayerResponse.streamingData.adaptiveFormats[0].fps as FpsList;
 }
 
@@ -24,31 +25,33 @@ function getIsMobileQualityLower(quality1: Label, quality2: typeof qualities[num
 }
 
 async function changeQualityOnMobile(qualityCustom?: VideoQuality): Promise<void> {
-  const fpsVideo = await getVideoFPS();
+  const fpsVideo = getVideoFPS();
   const qualitiesAvailable = getCurrentQualities();
   const qualitiesPreferred = await getPreferredQualities();
 
-  const fpsStep = await getFpsFromRange(qualitiesPreferred, fpsVideo);
+  const fpsStep = getFpsFromRange(qualitiesPreferred, fpsVideo);
   const iQuality = getIQuality(qualitiesAvailable, qualityCustom || qualitiesPreferred[fpsStep]);
 
-  const applyQuality = (iQuality: number) => {
-    const elDropdown = getVisibleElement<HTMLSelectElement>("mobileQualityDropdown");
-    elDropdown.value = qualitiesAvailable[iQuality];
-    elDropdown.dispatchEvent(gEvent);
+  const applyQuality = async (iQuality: number) => {
+    const elDropdown = (await getElementByMutationObserver("mobileQualityDropdown")) as HTMLSelectElement;
+    if (elDropdown) {
+      elDropdown.value = qualitiesAvailable[iQuality];
+      elDropdown.dispatchEvent(gEvent);
+    }
   };
 
   const isQualityExists = iQuality > -1;
   if (isQualityExists) {
-    applyQuality(iQuality);
+    await applyQuality(iQuality);
   } else if (getIsMobileQualityLower(qualitiesAvailable[0], qualitiesPreferred[fpsStep])) {
-    applyQuality(0);
+    await applyQuality(0);
   } else {
     const iClosestQuality = qualitiesAvailable.findIndex(
       quality => labelToQuality[quality] <= qualitiesPreferred[fpsStep]
     );
     const isClosestQualityFound = iClosestQuality > -1;
     if (isClosestQualityFound) {
-      applyQuality(iClosestQuality);
+      await applyQuality(iClosestQuality);
     }
   }
 }
@@ -62,13 +65,36 @@ async function getPlayerResponse() {
     });
 }
 
+chrome.storage.onChanged.addListener(async ({ qualities }) => {
+  if (qualities) {
+    window.ythdLastQualityClicked = null;
+    window.ythdLastUserQualities = { ...qualities.newValue };
+    await prepareToChangeQualityOnMobile();
+    return;
+  }
+});
+
+async function clickPlaybackSettings() {
+  await getElementByMutationObserver("mobileOption");
+  const elMenuOptions = document.querySelectorAll(Selectors.mobileOption);
+  const elPlaybackSettings = <HTMLButtonElement>elMenuOptions[elMenuOptions.length - 5].firstElementChild;
+  elPlaybackSettings.click();
+}
+
+async function openMenu() {
+  const elMenuButton = getVisibleElement("mobileMenuButton");
+  if (elMenuButton) {
+    elMenuButton.click();
+    return;
+  }
+
+  (await getElementByMutationObserver("mobileMenuButton")).click();
+}
+
 export async function prepareToChangeQualityOnMobile(): Promise<void> {
   gPlayerResponse = await getPlayerResponse();
-  await getElementByMutationObserver("mobileUnmute");
-  getVisibleElement("mobileUnmute").click();
-  getVisibleElement("mobileButtonSettings").click();
-  await getElementByMutationObserver("mobileQualityDropdown");
-  await changeQualityOnMobile();
+  await openMenu();
+  await clickPlaybackSettings();
+  await changeQualityOnMobile(window.ythdLastQualityClicked);
   getVisibleElement("mobileOkButton").click();
-  getVisibleElement("mobilePlayerControlsBackground").click();
 }

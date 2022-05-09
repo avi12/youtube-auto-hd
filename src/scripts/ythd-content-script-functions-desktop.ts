@@ -1,17 +1,15 @@
 "use strict";
 
 import {
-  getFpsFromRange, getIQuality, getIsQualityLower,
-  getPreferredQualities,
-  getStorage,
+  getFpsFromRange,
+  getIQuality,
+  getIsQualityLower,
+  getPreferredQualities, getStorage,
   getVisibleElement,
   Selectors
 } from "../shared-scripts/ythd-utilities";
 import type { FpsList, QualityLabels, VideoQuality, VideoSize } from "../types";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
-import { prepareToChangeQualityOnMobile } from "./ythd-content-script-functions-mobile";
-
-const gIsMobile = location.hostname.startsWith("m.");
 
 function getIsLastOptionQuality() {
   const elOptionInSettings = getVisibleElement("player").querySelector(Selectors.optionQuality);
@@ -73,7 +71,7 @@ async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
   const elQualities = getCurrentQualityElements();
   const qualitiesPreferred = await getPreferredQualities();
 
-  const fpsStep = await getFpsFromRange(qualitiesPreferred, fpsVideo);
+  const fpsStep = getFpsFromRange(qualitiesPreferred, fpsVideo);
   const iQuality = getIQuality(qualitiesAvailable, qualityCustom || qualitiesPreferred[fpsStep]);
 
   const applyQuality = (iQuality: number) => {
@@ -125,12 +123,27 @@ function getIsMenuOpen(elPlayer: HTMLDivElement): boolean {
   return Boolean(elPanelHeader);
 }
 
-export async function prepareToChangeQuality(): Promise<void> {
-  if (gIsMobile) {
-    await prepareToChangeQualityOnMobile();
+chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
+  if (qualities) {
+    window.ythdLastQualityClicked = null;
+    window.ythdLastUserQualities = { ...qualities.newValue };
+    await prepareToChangeQualityOnDesktop();
     return;
   }
 
+  if (autoResize && autoResize.newValue) {
+    const sizeVideo = await getStorage<VideoSize>("sync", "size");
+    await resizePlayerIfNeeded(sizeVideo);
+    return;
+  }
+
+  if (size !== undefined) {
+    const sizeNew = size.newValue as VideoSize;
+    await resizePlayerIfNeeded(sizeNew);
+  }
+});
+
+export async function prepareToChangeQualityOnDesktop(): Promise<void> {
   const elPlayer = getVisibleElement<HTMLDivElement>("player");
   const elSettings = elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings);
   if (!elSettings) {
@@ -148,23 +161,3 @@ export async function prepareToChangeQuality(): Promise<void> {
   elSettings.click();
   await changeQualityAndClose(elPlayer);
 }
-
-chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
-  if (qualities) {
-    window.ythdLastQualityClicked = null;
-    window.ythdLastUserQualities = { ...qualities.newValue };
-    await prepareToChangeQuality();
-    return;
-  }
-
-  if (autoResize && autoResize.newValue) {
-    const sizeVideo = await getStorage<VideoSize>("sync", "size");
-    await resizePlayerIfNeeded(sizeVideo);
-    return;
-  }
-
-  if (size !== undefined) {
-    const sizeNew = size.newValue as VideoSize;
-    await resizePlayerIfNeeded(sizeNew);
-  }
-});
