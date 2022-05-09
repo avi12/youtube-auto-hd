@@ -10,7 +10,13 @@ let gPlayerObserver: MutationObserver;
 function addTemporaryBodyListenerOnMobile(): void {
   // For some reason, the title observer will run as soon as .observer() calls,
   // so we need to prevent it
-  if (gTitleLast === document.title || document.title === "- YouTube") {
+  if (gTitleLast === document.title) {
+    return;
+  }
+
+  // When changing a URL, often the title will change more than once,
+  // so we need to ignore any multiple changes in a row
+  if (document.title === "- YouTube") {
     return;
   }
 
