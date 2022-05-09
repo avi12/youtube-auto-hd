@@ -3,14 +3,14 @@ import type { qualityToLabel } from "./shared-scripts/ythd-setup";
 
 export type VideoQuality = typeof qualities[number];
 export type YouTubeLabel = typeof qualityToLabel[typeof qualities[number]]; // "highres" | "hd2160" | ...
-export type FPS = typeof fpsSupported[number];
+export type VideoFPS = typeof fpsSupported[number];
 export type Progressive = "p";
 export type Spherical = "s";
 
-export type QualityLabels = `${VideoQuality}${Progressive | Spherical}${FPS}`; // "1080p60" | "720s50" ...
+export type QualityLabels = `${VideoQuality}${Progressive | Spherical}${VideoFPS}`; // "1080p60" | "720s50" ...
 
 export type FpsOptions = {
-  [fps in FPS]: VideoQuality
+  [fps in VideoFPS]: VideoQuality
 };
 
 export type VideoAutoResize = boolean

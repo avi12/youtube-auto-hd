@@ -6,13 +6,13 @@ import {
   getVisibleElement,
   Selectors
 } from "../shared-scripts/ythd-utilities";
-import type { FPS, YouTubeLabel, VideoQuality } from "../types";
+import type { VideoFPS, YouTubeLabel, VideoQuality } from "../types";
 import { labelToQuality, qualities } from "../shared-scripts/ythd-setup";
 
 let gPlayerResponse;
 const gEvent = new Event("change", { bubbles: true });
 
-function getVideoFPS(): FPS {
+function getVideoFPS(): VideoFPS {
   return gPlayerResponse.streamingData.adaptiveFormats[0].fps;
 }
 

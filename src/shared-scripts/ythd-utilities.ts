@@ -1,6 +1,6 @@
 "use strict";
 
-import type { FPS, FpsOptions, YouTubeLabel } from "../types";
+import type { VideoFPS, FpsOptions, YouTubeLabel } from "../types";
 import { initial } from "./ythd-setup";
 import type { QualityLabels, VideoQuality } from "../types";
 
@@ -61,12 +61,12 @@ function isElementVisible(element: HTMLElement): boolean {
   return element?.offsetWidth > 0 && element?.offsetHeight > 0;
 }
 
-export function getFpsFromRange(qualities: FpsOptions, fpsToCheck: FPS): FPS {
+export function getFpsFromRange(qualities: FpsOptions, fpsToCheck: VideoFPS): VideoFPS {
   const fpsList = Object.keys(qualities)
     .map(Number)
-    .sort((a, b) => b - a) as FPS[];
+    .sort((a, b) => b - a) as VideoFPS[];
   while (fpsList.length > 1) {
-    const fpsCurrent: FPS = fpsList.pop();
+    const fpsCurrent: VideoFPS = fpsList.pop();
     if (fpsToCheck <= fpsCurrent) {
       return fpsCurrent;
     }

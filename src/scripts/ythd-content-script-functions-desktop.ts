@@ -8,7 +8,7 @@ import {
   getVisibleElement,
   Selectors
 } from "../shared-scripts/ythd-utilities";
-import type { FPS, QualityLabels, VideoQuality, VideoSize } from "../types";
+import type { VideoFPS, QualityLabels, VideoQuality, VideoSize } from "../types";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 
 function getIsLastOptionQuality() {
@@ -50,14 +50,14 @@ function getCurrentQualities(): VideoQuality[] {
   return elQualities.map(convertQualityToNumber);
 }
 
-function getVideoFPS(): FPS {
+function getVideoFPS(): VideoFPS {
   const elQualities = getCurrentQualityElements();
   const labelQuality = elQualities[0]?.textContent as QualityLabels;
   if (!labelQuality) {
     return 30;
   }
   const fpsMatch = labelQuality.match(/[ps](\d+)/);
-  return fpsMatch ? (Number(fpsMatch[1]) as FPS) : 30;
+  return fpsMatch ? (Number(fpsMatch[1]) as VideoFPS) : 30;
 }
 
 function openQualityMenu(): void {
