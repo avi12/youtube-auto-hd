@@ -22,6 +22,8 @@ function addTemporaryBodyListenerOnMobile(): void {
 
   gTitleLast = document.title;
 
+  console.clear();
+
   if (!gPlayerObserver) {
     gPlayerObserver = new MutationObserver(async function temporaryBodyListener() {
       const elVideo = getVisibleElement<HTMLVideoElement>("video");
@@ -31,10 +33,8 @@ function addTemporaryBodyListenerOnMobile(): void {
 
       gPlayerObserver.disconnect();
 
-      // We need to reset the global variable, as well as prepare to change the quality of the new video
+      // We need to reset the global variable
       window.ythdLastQualityClicked = null;
-      await prepareToChangeQualityOnMobile();
-      elVideo.removeEventListener("canplay", prepareToChangeQualityOnMobile);
 
       // Used to change the quality even if a pre-roll or a mid-roll ad is playing
       elVideo.addEventListener("canplay", prepareToChangeQualityOnMobile);
@@ -72,10 +72,16 @@ function init(): void {
   addGlobalEventListenerOnMobile();
   document.addEventListener("change", saveManualQualityChangeOnMobile);
 
+  // When the user visits a /watch page, the video's quality will be changed as soon as it loads
   new MutationObserver((_, observer) => {
+    if (!location.pathname.startsWith("/watch")) {
+      observer.disconnect();
+      return;
+    }
+
     const elVideo = getVisibleElement<HTMLVideoElement>("video");
-    observer.disconnect();
     if (elVideo) {
+      observer.disconnect();
       prepareToChangeQualityOnMobile();
     }
   }).observe(document, observerOptions);

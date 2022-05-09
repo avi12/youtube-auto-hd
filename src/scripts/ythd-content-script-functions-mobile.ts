@@ -82,7 +82,11 @@ async function openMenu() {
   (await getElementByMutationObserver("mobileMenuButton")).click();
 }
 
-export async function prepareToChangeQualityOnMobile(): Promise<void> {
+export async function prepareToChangeQualityOnMobile(e?: Event): Promise<void> {
+  // Removing the event so that the menu will only be opened once
+  (<HTMLVideoElement>e?.target)?.removeEventListener("canplay", prepareToChangeQualityOnMobile);
+
+  // Changing the quality
   gPlayerResponse = await getPlayerResponse();
   await openMenu();
   await clickPlaybackSettings();
