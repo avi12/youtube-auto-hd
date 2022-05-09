@@ -65,14 +65,6 @@ async function getPlayerResponse() {
     });
 }
 
-chrome.storage.onChanged.addListener(async ({ qualities }) => {
-  if (qualities) {
-    window.ythdLastQualityClicked = null;
-    window.ythdLastUserQualities = { ...qualities.newValue };
-    await prepareToChangeQualityOnMobile();
-  }
-});
-
 async function clickPlaybackSettings() {
   await getElementByMutationObserver("mobileOption");
   const elMenuOptions = document.querySelectorAll(Selectors.mobileOption);
@@ -97,3 +89,11 @@ export async function prepareToChangeQualityOnMobile(): Promise<void> {
   await changeQualityOnMobile(window.ythdLastQualityClicked);
   getVisibleElement("mobileOkButton").click();
 }
+
+chrome.storage.onChanged.addListener(async ({ qualities }) => {
+  if (qualities) {
+    window.ythdLastQualityClicked = null;
+    window.ythdLastUserQualities = { ...qualities.newValue };
+    await prepareToChangeQualityOnMobile();
+  }
+});
