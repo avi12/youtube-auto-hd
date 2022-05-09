@@ -70,7 +70,6 @@ chrome.storage.onChanged.addListener(async ({ qualities }) => {
     window.ythdLastQualityClicked = null;
     window.ythdLastUserQualities = { ...qualities.newValue };
     await prepareToChangeQualityOnMobile();
-    return;
   }
 });
 
