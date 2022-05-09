@@ -2,7 +2,7 @@
 
 import type { VideoFPS, QualityFpsPreferences, YouTubeLabel } from "../types";
 import { initial } from "./ythd-setup";
-import type { QualityLabels, VideoQuality } from "../types";
+import type { FullYouTubeLabel, VideoQuality } from "../types";
 
 export const observerOptions: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
 window.ythdLastUserQualities = { ...initial.qualities };
@@ -103,7 +103,7 @@ export function getIsQualityLower(
   if (!elQuality) {
     return true;
   }
-  const labelQuality = elQuality.textContent as QualityLabels;
+  const labelQuality = elQuality.textContent as FullYouTubeLabel;
   const qualityVideo = parseInt(labelQuality) as VideoQuality;
   return qualityVideo < qualityPreferred;
 }

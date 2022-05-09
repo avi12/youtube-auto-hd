@@ -8,7 +8,7 @@ import {
   getVisibleElement,
   Selectors
 } from "../shared-scripts/ythd-utilities";
-import type { VideoFPS, QualityLabels, VideoQuality, VideoSize } from "../types";
+import type { VideoFPS, FullYouTubeLabel, VideoQuality, VideoSize } from "../types";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 
 function getIsLastOptionQuality() {
@@ -25,7 +25,7 @@ function getIsLastOptionQuality() {
   if (!matchNumber) {
     return false;
   }
-  const numberString = matchNumber[0] as QualityLabels;
+  const numberString = matchNumber[0] as FullYouTubeLabel;
   const minQualityCharLength = 3; // e.g. 3 characters in 720p
   return numberString.length >= minQualityCharLength;
 }
@@ -52,7 +52,7 @@ function getCurrentQualities(): VideoQuality[] {
 
 function getVideoFPS(): VideoFPS {
   const elQualities = getCurrentQualityElements();
-  const labelQuality = elQualities[0]?.textContent as QualityLabels;
+  const labelQuality = elQualities[0]?.textContent as FullYouTubeLabel;
   if (!labelQuality) {
     return 30;
   }
