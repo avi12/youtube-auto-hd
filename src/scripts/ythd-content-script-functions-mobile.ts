@@ -13,7 +13,7 @@ let gPlayerResponse;
 const gEvent = new Event("change", { bubbles: true });
 
 function getVideoFPS(): FpsList {
-  return gPlayerResponse.streamingData.adaptiveFormats[0].fps as FpsList;
+  return gPlayerResponse.streamingData.adaptiveFormats[0].fps;
 }
 
 function getCurrentQualities(): YouTubeLabel[] {
