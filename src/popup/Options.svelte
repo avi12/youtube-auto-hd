@@ -9,12 +9,16 @@
   export let qualitiesStored;
   export let sizeVideo;
   export let isResizeVideo;
+
+  const isDesktop = !navigator.userAgent.includes("Android");
 </script>
 
 <div class:i18n--rtl={getI18n("@@bidi_dir") === "rtl"}>
   <ControlQuality {qualitiesStored} />
 
-  <ControlSize {isResizeVideo} {sizeVideo} />
+  {#if isDesktop}
+    <ControlSize {isResizeVideo} {sizeVideo} />
+  {/if}
 
   <Promotions />
 </div>
