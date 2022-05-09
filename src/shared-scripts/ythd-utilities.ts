@@ -20,6 +20,9 @@ export function getI18n(id: string, backup = ""): string {
 }
 
 export const Selectors = {
+  // Global
+  video: "video",
+  // Desktop
   buttonSettings: ".ytp-settings-button",
   pathSizeToggle: `path[d*="m 28,"], path[d*="m 26,"]`,
   optionQuality: ".ytp-menuitem:last-child",
@@ -29,13 +32,12 @@ export const Selectors = {
   panelHeader: ".ytp-panel-header button",
   settingsMenu: ".ytp-settings-menu",
   player: ".html5-video-player",
-  video: "video",
   // Mobile
-  mobileQualityDropdown: "[id*=player-quality-dropdown]",
-  mobileButtonSettings: ".player-settings-icon",
-  mobileUnmute: ".ytp-unmute.ytp-button",
-  mobilePlayerControlsBackground: ".player-controls-background",
-  mobileOkButton: ".dialog-buttons [class*=material-button-button]"
+  mobileQualityDropdown: "select[id^=player-quality-dropdown]",
+  mobileQualityDropdownWrapper: ".player-quality-settings",
+  mobileMenuButton: ".mobile-topbar-header-content ytm-menu button",
+  mobileOption: "div[role=dialog] ytm-menu-item",
+  mobileOkButton: ".dialog-buttons [class*=material-button-button]",
 } as const;
 
 export function getVisibleElement<T extends HTMLElement>(elementName: keyof typeof Selectors): T {
@@ -45,14 +47,13 @@ export function getVisibleElement<T extends HTMLElement>(elementName: keyof type
 
 export async function getElementByMutationObserver(selector: keyof typeof Selectors): Promise<HTMLElement> {
   return new Promise(resolve => {
-    const observerHtml = new MutationObserver((_, observer) => {
+    new MutationObserver((_, observer) => {
       const element = getVisibleElement(selector);
       if (element) {
         observer.disconnect();
-        resolve(element as HTMLElement);
+        resolve(element);
       }
-    });
-    observerHtml.observe(document.documentElement, observerOptions);
+    }).observe(document, observerOptions);
   });
 }
 
