@@ -3,13 +3,22 @@
 import {
   getFpsFromRange,
   getIQuality,
-  getIsQualityLower,
-  getPreferredQualities, getStorage,
+  getPreferredQualities,
+  getStorage,
   getVisibleElement,
   Selectors
 } from "../shared-scripts/ythd-utilities";
-import type { VideoFPS, FullYouTubeLabel, VideoQuality, VideoSize } from "../types";
+import type { FullYouTubeLabel, VideoFPS, VideoQuality, VideoSize } from "../types";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
+
+function getIsQualityLower(elQuality: HTMLElement | undefined, qualityPreferred: VideoQuality): boolean {
+  if (!elQuality) {
+    return true;
+  }
+  const labelQuality = elQuality.textContent as FullYouTubeLabel;
+  const qualityVideo = parseInt(labelQuality) as VideoQuality;
+  return qualityVideo < qualityPreferred;
+}
 
 function getIsLastOptionQuality() {
   const elOptionInSettings = getVisibleElement("player").querySelector(Selectors.optionQuality);
