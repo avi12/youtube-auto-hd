@@ -3,7 +3,7 @@
   import { fpsSupported, initial, qualities } from "../../shared-scripts/ythd-setup";
   import { getI18n } from "../../shared-scripts/ythd-utilities";
   import SliderYthd from "../components/Slider.svelte";
-  import type { FpsList, FpsOptions, VideoQuality } from "../../types";
+  import type { FPS, FpsOptions, VideoQuality } from "../../types";
 
   const i18n: { [key: string]: string } = {
     labelQualityHeader: getI18n("cj_i18n_02147", "View quality"),
@@ -34,7 +34,7 @@
 
   function fpsToRange(i: number): string {
     const fpsRangeStart: number = fpsList[i - 1] + 1;
-    const fps: FpsList = fpsList[i];
+    const fps: FPS = fpsList[i];
     return `${fpsRangeStart}-${fps}`;
   }
 </script>
