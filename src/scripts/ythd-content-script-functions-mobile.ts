@@ -17,8 +17,8 @@ function getVideoFPS(): FpsList {
 }
 
 function getCurrentQualities(): YouTubeLabel[] {
-  const qualityLabels = gPlayerResponse.streamingData.adaptiveFormats.map(format => format.quality);
-  return [...new Set(qualityLabels)] as YouTubeLabel[];
+  const qualityLabels: YouTubeLabel[] = gPlayerResponse.streamingData.adaptiveFormats.map(format => format.quality);
+  return [...new Set(qualityLabels)];
 }
 
 function getIsMobileQualityLower(quality1: YouTubeLabel, quality2: typeof qualities[number]): boolean {
