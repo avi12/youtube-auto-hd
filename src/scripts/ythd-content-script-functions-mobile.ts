@@ -71,7 +71,7 @@ async function getPlayerResponse() {
 async function clickPlaybackSettings() {
   await getElementByMutationObserver("mobileOption");
   const elMenuOptions = document.querySelectorAll(Selectors.mobileOption);
-  const elPlaybackSettings = <HTMLButtonElement>elMenuOptions[elMenuOptions.length - 5].firstElementChild;
+  const elPlaybackSettings = elMenuOptions[elMenuOptions.length - 5].firstElementChild as HTMLButtonElement;
   elPlaybackSettings.click();
 }
 
