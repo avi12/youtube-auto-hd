@@ -68,14 +68,14 @@ async function getPlayerResponse() {
     });
 }
 
-async function clickPlaybackSettings() {
+async function clickPlaybackSettings(): Promise<void> {
   await getElementByMutationObserver("mobileOption");
   const elMenuOptions = document.querySelectorAll(Selectors.mobileOption);
   const elPlaybackSettings = elMenuOptions[elMenuOptions.length - 5].firstElementChild as HTMLButtonElement;
   elPlaybackSettings.click();
 }
 
-async function openMenu() {
+async function openMenu(): Promise<void> {
   const elMenuButton = getVisibleElement("mobileMenuButton");
   if (elMenuButton) {
     elMenuButton.click();
