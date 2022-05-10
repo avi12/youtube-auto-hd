@@ -76,6 +76,37 @@ pnpm run-edge-windows
 3. Enable the developer mode (top-right corner usually).
 4. Either drag-drop the browser-compatible ZIP onto the browser or click "Load unpacked extension" and choose it.
 
+### Mobile/tablet
+
+1. Install [Android Studio](https://developer.android.com/studio) on your operating system
+2. Create an AVD (Android Virtual Device)
+   1. If you're creating a phone emulator, choose one that has [Play Store preinstalled](https://user-images.githubusercontent.com/6422804/167658974-9ec9d13f-d297-4e8b-85d6-376809f34aab.png)
+   2. If you're creating a tablet emulator, after creating, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) to have Play Store preinstalled
+3. Download [Kiwi browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser). I recommend creating a Google account specifically to be used with the emulator
+4. Run `pnpm run pack`
+5. Push the ZIP to the emulator. If using PowerShell:
+   ```powershell
+   $zip = "youtube_auto_hd_fps_{version}.zip"; # where {version} is the version number of the extension
+   $destAndroid = "storage/emulated/Download/$zip";
+   adb shell rm $destAndroid;
+   adb push "dist_packed/$zip" $destAndroid;
+   ```
+   1. If you're running both emulators, use argument `-s ID` to specify the ID of the emulator you want to interact with  
+      E.g. `adb -s ID shell ...`
+   2. Find out the IDs using `adb devices`
+6. <details>
+   <summary>Sideload the extension on Kiwi</summary>
+   <img align="top" src="https://user-images.githubusercontent.com/6422804/167670341-a0cae554-e922-40b3-b8ed-7bec1ebf17bc.png" alt="Choose zip from storage">
+   </details>
+7. Select the ZIP in the Download folder
+8. To reload, you must first remove the extension, re-run `pnpm run pack`, and then load the ZIP again
+
+#### Pro-tip: run the emulator from the CLI:
+
+```shell
+emulator @DEVICE_NAME
+```
+
 ## Build & pack
 
 ```shell

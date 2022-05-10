@@ -5,7 +5,8 @@
     "target": "ES2021",
     "sourceMap": true,
     "types": ["svelte", "chrome"],
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "module": "esnext",
   },
   "extends": "@tsconfig/svelte/tsconfig.json"
 }

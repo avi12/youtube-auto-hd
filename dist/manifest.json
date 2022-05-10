@@ -33,12 +33,16 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.youtube.com/*",
+        "https://www.youtube.com/*",
         "https://www.youtube-nocookie.com/*",
         "https://youtube.googleapis.com/*"
       ],
-      "js": ["build/scripts/ythd-content-script-initialize.js"],
+      "js": ["build/scripts/ythd-content-script-initialize-desktop.js"],
       "all_frames": true
+    },
+    {
+      "matches": ["https://m.youtube.com/*"],
+      "js": ["build/scripts/ythd-content-script-initialize-mobile.js"]
     }
   ],
   "action": {

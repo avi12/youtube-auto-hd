@@ -1,51 +1,23 @@
 "use strict";
 
-import { getVisibleElement, getStorage, Selectors } from "../shared-scripts/ythd-utilities";
-import { initial } from "../shared-scripts/ythd-setup";
-import type { FpsList, FpsOptions, QualityLabels, VideoQuality, VideoSize } from "../types";
+import {
+  getFpsFromRange,
+  getIQuality,
+  getPreferredQualities,
+  getStorage,
+  getVisibleElement,
+  Selectors
+} from "../shared-scripts/ythd-utilities";
+import type { FullYouTubeLabel, VideoFPS, VideoQuality, VideoSize } from "../types";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 
-let gLastUserQualities: FpsOptions = { ...initial.qualities };
-
-function getIsQualityLower(elQuality: HTMLDivElement | undefined, qualityPreferred: VideoQuality): boolean {
+function getIsQualityLower(elQuality: HTMLElement | undefined, qualityPreferred: VideoQuality): boolean {
   if (!elQuality) {
     return true;
   }
-  const labelQuality = elQuality.textContent as QualityLabels;
+  const labelQuality = elQuality.textContent as FullYouTubeLabel;
   const qualityVideo = parseInt(labelQuality) as VideoQuality;
   return qualityVideo < qualityPreferred;
-}
-
-function getIQuality(qualitiesCurrent: VideoQuality[], qualityPreferred: VideoQuality): number {
-  return qualitiesCurrent.findIndex(elQuality => elQuality === qualityPreferred);
-}
-
-function getFpsFromRange(qualities: FpsOptions, fpsToCheck: FpsList): FpsList {
-  const fpsList = Object.keys(qualities)
-    .map(Number)
-    .sort((a, b) => b - a) as FpsList[];
-  while (fpsList.length > 1) {
-    const fpsCurrent = fpsList.pop() as FpsList;
-    if (fpsToCheck <= fpsCurrent) {
-      return fpsCurrent;
-    }
-  }
-  return fpsList[0];
-}
-
-export async function getPreferredQualities(): Promise<FpsOptions> {
-  try {
-    const userQualities = ((await getStorage("local", "qualities")) ?? {}) as FpsOptions;
-    gLastUserQualities = { ...initial.qualities, ...userQualities };
-    return gLastUserQualities;
-  } catch {
-    // Handling "Error: Extension context invalidated"
-
-    // This error typically occurs when the extension updates
-    // but the user hasn't refreshed the page, which typically causes
-    // the player settings to open when seeking through a video
-    return gLastUserQualities;
-  }
 }
 
 function getIsLastOptionQuality() {
@@ -62,7 +34,7 @@ function getIsLastOptionQuality() {
   if (!matchNumber) {
     return false;
   }
-  const numberString = matchNumber[0] as QualityLabels;
+  const numberString = matchNumber[0] as FullYouTubeLabel;
   const minQualityCharLength = 3; // e.g. 3 characters in 720p
   return numberString.length >= minQualityCharLength;
 }
@@ -87,14 +59,14 @@ function getCurrentQualities(): VideoQuality[] {
   return elQualities.map(convertQualityToNumber);
 }
 
-function getVideoFPS(): FpsList {
+function getVideoFPS(): VideoFPS {
   const elQualities = getCurrentQualityElements();
-  const labelQuality = elQualities[0]?.textContent as QualityLabels;
+  const labelQuality = elQualities[0]?.textContent as FullYouTubeLabel;
   if (!labelQuality) {
     return 30;
   }
   const fpsMatch = labelQuality.match(/[ps](\d+)/);
-  return fpsMatch ? (Number(fpsMatch[1]) as FpsList) : 30;
+  return fpsMatch ? (Number(fpsMatch[1]) as VideoFPS) : 30;
 }
 
 function openQualityMenu(): void {
@@ -108,19 +80,23 @@ async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
   const elQualities = getCurrentQualityElements();
   const qualitiesPreferred = await getPreferredQualities();
 
-  const fpsStep = await getFpsFromRange(qualitiesPreferred, fpsVideo);
+  const fpsStep = getFpsFromRange(qualitiesPreferred, fpsVideo);
   const iQuality = getIQuality(qualitiesAvailable, qualityCustom || qualitiesPreferred[fpsStep]);
+
+  const applyQuality = (iQuality: number) => {
+    elQualities[iQuality]?.click();
+  };
 
   const isQualityExists = iQuality > -1;
   if (isQualityExists) {
-    elQualities[iQuality].click();
+    applyQuality(iQuality);
   } else if (getIsQualityLower(elQualities[0], qualitiesPreferred[fpsStep])) {
-    elQualities[0]?.click();
+    applyQuality(0);
   } else {
     const iClosestQuality = qualitiesAvailable.findIndex(quality => quality <= qualitiesPreferred[fpsStep]);
     const isClosestQualityFound = iClosestQuality > -1;
     if (isClosestQualityFound) {
-      elQualities[iClosestQuality].click();
+      applyQuality(iClosestQuality);
     }
   }
 }
@@ -156,7 +132,27 @@ function getIsMenuOpen(elPlayer: HTMLDivElement): boolean {
   return Boolean(elPanelHeader);
 }
 
-export async function prepareToChangeQuality(): Promise<void> {
+chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
+  if (qualities) {
+    window.ythdLastQualityClicked = null;
+    window.ythdLastUserQualities = { ...qualities.newValue };
+    await prepareToChangeQualityOnDesktop();
+    return;
+  }
+
+  if (autoResize && autoResize.newValue) {
+    const sizeVideo = await getStorage<VideoSize>("sync", "size");
+    await resizePlayerIfNeeded(sizeVideo);
+    return;
+  }
+
+  if (size !== undefined) {
+    const sizeNew = size.newValue as VideoSize;
+    await resizePlayerIfNeeded(sizeNew);
+  }
+});
+
+export async function prepareToChangeQualityOnDesktop(): Promise<void> {
   const elPlayer = getVisibleElement<HTMLDivElement>("player");
   const elSettings = elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings);
   if (!elSettings) {
@@ -174,23 +170,3 @@ export async function prepareToChangeQuality(): Promise<void> {
   elSettings.click();
   await changeQualityAndClose(elPlayer);
 }
-
-chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
-  if (qualities) {
-    window.ythdLastQualityClicked = null;
-    gLastUserQualities = { ...qualities.newValue };
-    await prepareToChangeQuality();
-    return;
-  }
-
-  if (autoResize && autoResize.newValue) {
-    const sizeVideo = await getStorage<VideoSize>("sync", "size");
-    await resizePlayerIfNeeded(sizeVideo);
-    return;
-  }
-
-  if (size !== undefined) {
-    const sizeNew = size.newValue as VideoSize;
-    await resizePlayerIfNeeded(sizeNew);
-  }
-});
