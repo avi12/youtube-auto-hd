@@ -84,12 +84,7 @@
 </script>
 
 <div class="subheader">{i18n.labelSubHeaderSize}</div>
-<Switch
-  on:change={getCookiePermission}
-  checked={isResizeVideo}
-  color="red"
-  on:keydown={onTabToSize}
->
+<Switch on:change={getCookiePermission} checked={isResizeVideo} color="red" on:keydown={onTabToSize}>
   {i18n.labelIsResizeVideo}
 </Switch>
 
@@ -145,17 +140,32 @@
     transition: 200ms ease-in-out;
   }
 
+  /*noinspection CssUnusedSymbol*/
+  :global(.theme--dark) .size__box {
+    outline-color: hsl(0, 0%, 80%);
+  }
+
   .size__box-wrapper:focus-within {
     border-color: blue;
   }
 
   .size__box-wrapper--selected {
     border: 1px solid red;
-    background-color: rgba(200, 31, 31, 0.2);
+    background-color: hsla(0, 73%, 45%, 0.2);
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  :global(.theme--dark) .size__box-wrapper--selected {
+    background-color: hsla(0, 73%, 85%, 0.4);
   }
 
   .size__box-wrapper:not(.size__box-wrapper--selected):hover {
-    background: #eaeaea;
+    background: hsl(0, 0%, 92%);
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  :global(.theme--dark) .size__box-wrapper:not(.size__box-wrapper--selected):hover {
+    background: hsl(0, 0%, 25%);
   }
 
   [data-video-size="0"] {
