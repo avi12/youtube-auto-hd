@@ -8,7 +8,7 @@ html {
   scrollbar-width: none;
 }
 
-body {
+.s-app {
   overflow: hidden;
   box-sizing: border-box;
   margin: auto;
@@ -39,8 +39,16 @@ body {
 /* Subheader */
 
 .subheader {
-  color: #194197;
+  color: hsl(221, 72%, 35%);
   font-weight: 600;
+}
+
+.theme--dark .subheader {
+  color: hsl(221, 72%, 85%);
+}
+
+.theme--dark .red-text {
+  color: hsl(0, 100%, 65%) !important;
 }
 
 .subheader:not(:first-child) {

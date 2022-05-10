@@ -48,7 +48,7 @@
 {#if isSameQualityForAllFps}
   {i18n.labelAllFramerates}
   <SliderYthd values={qualitiesReversed} bind:value={qualitySelected}>
-    {qualitySelected}p
+    <span class="red-text">{qualitySelected}p</span>
   </SliderYthd>
 {:else}
   {#each fpsList as fps, iFps}
