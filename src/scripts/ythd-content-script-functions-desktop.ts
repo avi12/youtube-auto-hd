@@ -6,12 +6,17 @@ import {
   getPreferredQualities,
   getStorage,
   getVisibleElement,
+  observerOptions,
   Selectors
 } from "../shared-scripts/ythd-utilities";
 import type { FullYouTubeLabel, VideoFPS, VideoQuality, VideoSize } from "../types";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 
-function getIsQualityLower(elQuality: HTMLElement | undefined, qualityPreferred: VideoQuality): boolean {
+function getPlayerDiv(elVideo: HTMLVideoElement): HTMLDivElement {
+  return elVideo.closest(Selectors.player);
+}
+
+function getIsQualityLower(elQuality: HTMLElement, qualityPreferred: VideoQuality): boolean {
   if (!elQuality) {
     return true;
   }
@@ -20,8 +25,8 @@ function getIsQualityLower(elQuality: HTMLElement | undefined, qualityPreferred:
   return qualityVideo < qualityPreferred;
 }
 
-function getIsLastOptionQuality() {
-  const elOptionInSettings = getVisibleElement("player").querySelector(Selectors.optionQuality);
+function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
+  const elOptionInSettings = getPlayerDiv(elVideo).querySelector(Selectors.optionQuality);
   if (!elOptionInSettings) {
     return false;
   }
@@ -46,7 +51,7 @@ function getIsQualityElement(element: HTMLDivElement): boolean {
 }
 
 function getCurrentQualityElements(): HTMLDivElement[] {
-  const elMenuOptions = [...getVisibleElement("player").querySelectorAll(Selectors.menuOption)];
+  const elMenuOptions = [...getVisibleElement(Selectors.player).querySelectorAll(Selectors.menuOption)];
   return elMenuOptions.filter(getIsQualityElement) as HTMLDivElement[];
 }
 
@@ -69,19 +74,17 @@ function getVideoFPS(): VideoFPS {
   return fpsMatch ? (Number(fpsMatch[1]) as VideoFPS) : 30;
 }
 
-function openQualityMenu(): void {
-  const elSettingQuality = getVisibleElement("player").querySelector<HTMLDivElement>(Selectors.optionQuality);
+function openQualityMenu(elVideo: HTMLVideoElement): void {
+  const elSettingQuality = getPlayerDiv(elVideo).querySelector<HTMLDivElement>(Selectors.optionQuality);
   elSettingQuality.click();
 }
 
-async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
+function changeQuality(qualityCustom?: VideoQuality): void {
   const fpsVideo = getVideoFPS();
   const qualitiesAvailable = getCurrentQualities();
   const elQualities = getCurrentQualityElements();
-  const qualitiesPreferred = await getPreferredQualities();
-
-  const fpsStep = getFpsFromRange(qualitiesPreferred, fpsVideo);
-  const iQuality = getIQuality(qualitiesAvailable, qualityCustom || qualitiesPreferred[fpsStep]);
+  const fpsStep = getFpsFromRange(window.ythdLastUserQualities, fpsVideo);
+  const iQuality = getIQuality(qualitiesAvailable, qualityCustom || window.ythdLastUserQualities[fpsStep]);
 
   const applyQuality = (iQuality: number) => {
     elQualities[iQuality]?.click();
@@ -90,10 +93,12 @@ async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
   const isQualityExists = iQuality > -1;
   if (isQualityExists) {
     applyQuality(iQuality);
-  } else if (getIsQualityLower(elQualities[0], qualitiesPreferred[fpsStep])) {
+  } else if (getIsQualityLower(elQualities[0], window.ythdLastUserQualities[fpsStep])) {
     applyQuality(0);
   } else {
-    const iClosestQuality = qualitiesAvailable.findIndex(quality => quality <= qualitiesPreferred[fpsStep]);
+    const iClosestQuality = qualitiesAvailable.findIndex(
+      quality => quality <= window.ythdLastUserQualities[fpsStep]
+    );
     const isClosestQualityFound = iClosestQuality > -1;
     if (isClosestQualityFound) {
       applyQuality(iClosestQuality);
@@ -101,35 +106,65 @@ async function changeQuality(qualityCustom?: VideoQuality): Promise<void> {
   }
 }
 
-async function changeQualityWhenPossible(): Promise<void> {
-  const elVideo = getVisibleElement<HTMLVideoElement>("video");
-  if (!getIsLastOptionQuality()) {
-    elVideo.addEventListener("canplay", changeQualityWhenPossible, { once: true });
+function changeQualityWhenPossible(elVideo: HTMLVideoElement): void {
+  if (!getIsLastOptionQuality(elVideo)) {
+    elVideo.addEventListener("canplay", () => changeQualityWhenPossible(elVideo), { once: true });
     return;
   }
 
-  openQualityMenu();
-  await changeQuality(window.ythdLastQualityClicked);
+  openQualityMenu(elVideo);
+  changeQuality(window.ythdLastQualityClicked);
 }
 
 function getIsSettingsMenuOpen(): boolean {
-  const elButtonSettings = getVisibleElement<HTMLButtonElement>("buttonSettings");
+  const elButtonSettings = getVisibleElement<HTMLButtonElement>(Selectors.buttonSettings);
   return elButtonSettings?.ariaExpanded === "true";
 }
 
-function closeMenu(elPlayer: HTMLDivElement) {
-  const elPanelHeader = elPlayer.querySelector<HTMLButtonElement>(Selectors.panelHeader);
-  elPanelHeader?.click();
+async function closeMenu(elPlayer: HTMLDivElement): Promise<void> {
+  let elPanelHeader = elPlayer.querySelector<HTMLButtonElement>(Selectors.panelHeader);
+  if (!elPanelHeader) {
+    elPanelHeader = await new Promise(resolve =>
+      new MutationObserver((_, observer) => {
+        const elPanelHeader = elPlayer.querySelector<HTMLButtonElement>(Selectors.panelHeader);
+        if (elPanelHeader) {
+          observer.disconnect();
+          resolve(elPanelHeader);
+        }
+      }).observe(elPlayer, observerOptions)
+    );
+  }
+
+  elPanelHeader.click();
 }
 
-async function changeQualityAndClose(elPlayer: HTMLDivElement): Promise<void> {
-  await changeQualityWhenPossible();
-  closeMenu(elPlayer);
+async function changeQualityAndClose(elVideo: HTMLVideoElement, elPlayer: HTMLDivElement): Promise<void> {
+  changeQualityWhenPossible(elVideo);
+  await closeMenu(elPlayer);
 }
 
-function getIsMenuOpen(elPlayer: HTMLDivElement): boolean {
-  const elPanelHeader = elPlayer.querySelector<HTMLButtonElement>(Selectors.panelHeader);
-  return Boolean(elPanelHeader);
+export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> {
+  window.ythdLastUserQualities = await getPreferredQualities();
+
+  const elVideo = (e?.target ?? getVisibleElement(Selectors.video)) as HTMLVideoElement;
+  const elPlayer = getPlayerDiv(elVideo);
+  const elSettings = elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings);
+
+  const afterQualityChange = () => {
+    elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
+    elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings).blur();
+  };
+
+  if (!elSettings) {
+    return;
+  }
+
+  if (!getIsSettingsMenuOpen()) {
+    elSettings.click();
+  }
+  elSettings.click();
+  await changeQualityAndClose(elVideo, elPlayer);
+  afterQualityChange();
 }
 
 chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
@@ -140,33 +175,17 @@ chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => 
     return;
   }
 
-  if (autoResize && autoResize.newValue) {
-    const sizeVideo = await getStorage<VideoSize>("sync", "size");
-    await resizePlayerIfNeeded(sizeVideo);
+  if (autoResize) {
+    window.ythdPlayerAutoResize = autoResize.newValue;
+    if (autoResize.newValue) {
+      window.ythdPlayerSize = await getStorage<VideoSize>("sync", "size");
+      await resizePlayerIfNeeded();
+    }
     return;
   }
 
   if (size !== undefined) {
-    const sizeNew = size.newValue as VideoSize;
-    await resizePlayerIfNeeded(sizeNew);
+    window.ythdPlayerSize = size.newValue;
+    await resizePlayerIfNeeded();
   }
 });
-
-export async function prepareToChangeQualityOnDesktop(): Promise<void> {
-  const elPlayer = getVisibleElement<HTMLDivElement>("player");
-  const elSettings = elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings);
-  if (!elSettings) {
-    return;
-  }
-
-  if (getIsMenuOpen(elPlayer)) {
-    await changeQualityAndClose(elPlayer);
-    return;
-  }
-
-  if (!getIsSettingsMenuOpen()) {
-    elSettings.click();
-  }
-  elSettings.click();
-  await changeQualityAndClose(elPlayer);
-}

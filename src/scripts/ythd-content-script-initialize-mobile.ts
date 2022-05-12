@@ -1,4 +1,4 @@
-import { getVisibleElement, observerOptions, Selectors } from "../shared-scripts/ythd-utilities";
+import { Selectors, getVisibleElement, observerOptions } from "../shared-scripts/ythd-utilities";
 import { prepareToChangeQualityOnMobile } from "./ythd-content-script-functions-mobile";
 import type { YouTubeLabel } from "../types";
 import { labelToQuality } from "../shared-scripts/ythd-setup";
@@ -24,7 +24,7 @@ function addTemporaryBodyListenerOnMobile(): void {
 
   if (!gPlayerObserver) {
     gPlayerObserver = new MutationObserver(() => {
-      const elVideo = getVisibleElement<HTMLVideoElement>("video");
+      const elVideo = getVisibleElement<HTMLVideoElement>(Selectors.video);
       if (!elVideo) {
         return;
       }
@@ -74,7 +74,7 @@ function init(): void {
       return;
     }
 
-    const elVideo = getVisibleElement<HTMLVideoElement>("video");
+    const elVideo = getVisibleElement<HTMLVideoElement>(Selectors.video);
     if (elVideo) {
       observer.disconnect();
       prepareToChangeQualityOnMobile();

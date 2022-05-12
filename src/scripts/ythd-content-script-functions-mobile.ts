@@ -1,12 +1,12 @@
 import {
+  Selectors,
   getElementByMutationObserver,
   getFpsFromRange,
   getIQuality,
   getPreferredQualities,
-  getVisibleElement,
-  Selectors
+  getVisibleElement
 } from "../shared-scripts/ythd-utilities";
-import type { VideoFPS, YouTubeLabel, VideoQuality } from "../types";
+import type { VideoFPS, VideoQuality, YouTubeLabel } from "../types";
 import { labelToQuality, qualities } from "../shared-scripts/ythd-setup";
 
 let gPlayerResponse;
@@ -36,7 +36,7 @@ async function changeQualityOnMobile(qualityCustom?: VideoQuality): Promise<void
   const iQuality = getIQuality(qualitiesAvailable, qualityCustom || qualitiesPreferred[fpsStep]);
 
   const applyQuality = async (iQuality: number) => {
-    const elDropdown = (await getElementByMutationObserver("mobileQualityDropdown")) as HTMLSelectElement;
+    const elDropdown = (await getElementByMutationObserver(Selectors.mobileQualityDropdown)) as HTMLSelectElement;
     if (elDropdown) {
       elDropdown.value = qualitiesAvailable[iQuality];
       elDropdown.dispatchEvent(gEvent);
@@ -69,20 +69,20 @@ async function getPlayerResponse() {
 }
 
 async function clickPlaybackSettings(): Promise<void> {
-  await getElementByMutationObserver("mobileOption");
+  await getElementByMutationObserver(Selectors.mobileOption);
   const elMenuOptions = document.querySelectorAll(Selectors.mobileOption);
   const elPlaybackSettings = elMenuOptions[elMenuOptions.length - 5].firstElementChild as HTMLButtonElement;
   elPlaybackSettings.click();
 }
 
 async function openMenu(): Promise<void> {
-  const elMenuButton = getVisibleElement("mobileMenuButton");
+  const elMenuButton = getVisibleElement(Selectors.mobileMenuButton);
   if (elMenuButton) {
     elMenuButton.click();
     return;
   }
 
-  (await getElementByMutationObserver("mobileMenuButton")).click();
+  (await getElementByMutationObserver(Selectors.mobileMenuButton)).click();
 }
 
 export async function prepareToChangeQualityOnMobile(e?: Event): Promise<void> {
@@ -94,7 +94,7 @@ export async function prepareToChangeQualityOnMobile(e?: Event): Promise<void> {
   await openMenu();
   await clickPlaybackSettings();
   await changeQualityOnMobile(window.ythdLastQualityClicked);
-  getVisibleElement("mobileOkButton").click();
+  getVisibleElement(Selectors.mobileOkButton).click();
 }
 
 chrome.storage.onChanged.addListener(async ({ qualities }) => {
