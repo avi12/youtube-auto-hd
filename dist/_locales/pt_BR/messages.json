@@ -13,5 +13,10 @@
 "cj_i18n_06859":{"message":"Tamanho do player"},
 "cj_i18n_06860":{"message":"Desenvolvedor de suporte"},
 "cj_i18n_06861":{"message":"Avalie a extenção"},
-"cj_i18n_06862":{"message":"Use a mesma qualidade para todas as taxas de quadros"}
+"cj_i18n_06862":{"message":"Use a mesma qualidade para todas as taxas de quadros"},
+"cj_i18n_07096":{"message":"Abrir menu de opções"},
+"cj_i18n_07097":{"message":"Visualização padrão"},
+"cj_i18n_07098":{"message":"Visualização de cinema"},
+"cj_i18n_07099":{"message":"__fps_numero__ FPS e inferior"},
+"cj_i18n_07100":{"message":"__fps_numero__ FPS ate __fps_numero_b__ FPS"}
 }
