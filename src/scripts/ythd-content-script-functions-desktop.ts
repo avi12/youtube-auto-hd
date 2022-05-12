@@ -134,7 +134,6 @@ async function closeMenu(elPlayer: HTMLDivElement): Promise<void> {
       }).observe(elPlayer, observerOptions)
     );
   }
-
   elPanelHeader.click();
 }
 
