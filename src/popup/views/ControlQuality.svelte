@@ -59,7 +59,7 @@
     {/if}
 
     <SliderYthd values={qualitiesReversed} bind:value={qualitiesStored[fps]}>
-      {qualitiesStored[fps]}p
+      <span class="red-text">{qualitiesStored[fps]}p</span>
     </SliderYthd>
 
     {#if fps > 30 && qualitiesStored[fps] < 720}
