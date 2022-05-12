@@ -1,13 +1,16 @@
-import { getVisibleElement, observerOptions } from "../shared-scripts/ythd-utilities";
+import { Selectors, getVisibleElement, observerOptions } from "../shared-scripts/ythd-utilities";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 import { prepareToChangeQualityOnDesktop } from "./ythd-content-script-functions-desktop";
-import type { QualityFpsPreferences, VideoQuality } from "../types";
+import type { QualityFpsPreferences, VideoAutoResize, VideoQuality, VideoSize } from "../types";
+import { initial } from "../shared-scripts/ythd-setup";
 
 declare global {
   interface Window {
     ythdLastQualityClicked: VideoQuality | null;
     ythdLastUserQualities: QualityFpsPreferences;
     ythdPlayerObserver: MutationObserver;
+    ythdPlayerSize: VideoSize;
+    ythdPlayerAutoResize: VideoAutoResize;
   }
 }
 
@@ -28,23 +31,21 @@ function addTemporaryBodyListenerOnDesktop(): void {
   // Typically - listen to the player div (<video> container)
   // Otherwise, say it's a main channel page that has a channel trailer,
   // the <video> container wouldn't immediately exist, hence listen to the document
-  const elementToTrack = getVisibleElement<HTMLDivElement>("player") || document;
+  const elementToTrack = getVisibleElement<HTMLDivElement>(Selectors.player) || document;
 
   if (!gPlayerObserver) {
-    gPlayerObserver = new MutationObserver(mutations => {
-      // The user has navigated to another page
-
-      const elVideo = getVisibleElement<HTMLVideoElement>("video");
+    gPlayerObserver = new MutationObserver(async mutations => {
+      const elVideo = getVisibleElement<HTMLVideoElement>(Selectors.video);
       if (getIsExit(mutations) || !elVideo) {
         return;
       }
+      console.clear();
 
       resizePlayerIfNeeded();
 
       // We need to reset global variables, as well as prepare to change the quality of the new video
       window.ythdLastQualityClicked = null;
-      prepareToChangeQualityOnDesktop();
-      elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
+      await prepareToChangeQualityOnDesktop();
 
       // Used to:
       // - Change the quality even if a pre-roll or a mid-roll ad is playing
@@ -81,6 +82,10 @@ function saveManualQualityChangeOnDesktop({ target, isTrusted }: MouseEvent): vo
   }
 
   const element = target as HTMLElement;
+  if (!element.closest(Selectors.player)) {
+    return;
+  }
+
   const elQuality = (() => {
     if (element.matches("span")) {
       return element;
@@ -97,28 +102,38 @@ function saveManualQualityChangeOnDesktop({ target, isTrusted }: MouseEvent): vo
   }
 }
 
-new MutationObserver((_, observer) => {
-  const elVideo = getVisibleElement<HTMLVideoElement>("video");
-  const elPlayer = getVisibleElement<HTMLDivElement>("player");
-  if (!elVideo || !elPlayer) {
-    return;
-  }
+async function setPlayerSize() {
+  const { size = initial.size, autoResize = initial.isResizeVideo } = await new Promise(resolve =>
+    chrome.storage.sync.get(["size", "autoResize"], resolve)
+  );
+  window.ythdPlayerSize = size;
+  window.ythdPlayerAutoResize = autoResize;
+}
 
-  observer.disconnect();
+async function init(): Promise<void> {
+  addGlobalEventListenerOnDesktop();
+  document.addEventListener("click", saveManualQualityChangeOnDesktop);
+  await setPlayerSize();
 
-  elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
+  // When the user visits a /watch page, the video's quality will be changed as soon as it loads
+  new MutationObserver(async (_, observer) => {
+    const elVideo = getVisibleElement<HTMLVideoElement>(Selectors.video);
+    if (elVideo) {
+      observer.disconnect();
+    }
 
-  const isEmbed = location.pathname.startsWith("/embed/");
-  if (!isEmbed) {
-    prepareToChangeQualityOnDesktop();
-    resizePlayerIfNeeded();
-    elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
-    addGlobalEventListenerOnDesktop();
-    return;
-  }
+    const isEmbed = location.pathname.startsWith("/embed/");
+    if (!isEmbed) {
+      resizePlayerIfNeeded();
+      await prepareToChangeQualityOnDesktop();
+      elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
+      return;
+    }
 
-  if (!elVideo.paused) {
-    prepareToChangeQualityOnDesktop();
-  }
-  elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
-}).observe(document, observerOptions);
+    if (!elVideo.paused) {
+      await prepareToChangeQualityOnDesktop();
+    }
+  }).observe(document, observerOptions);
+}
+
+init();
