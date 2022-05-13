@@ -118,9 +118,11 @@ async function init(): Promise<void> {
   // When the user visits a /watch page, the video's quality will be changed as soon as it loads
   new MutationObserver(async (_, observer) => {
     const elVideo = getVisibleElement<HTMLVideoElement>(Selectors.video);
-    if (elVideo) {
-      observer.disconnect();
+    if (!elVideo) {
+      return;
     }
+
+    observer.disconnect();
 
     const isEmbed = location.pathname.startsWith("/embed/");
     if (!isEmbed) {
