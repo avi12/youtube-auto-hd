@@ -18,15 +18,12 @@
     theme = matches ? "dark" : "light";
   };
 
-  const classNames = [
-    getI18n("@@bidi_dir") === "rtl" && "it8n--rtl",
-    theme === "dark" && "theme--dark",
-  ].join(" ");
+  $: document.body.className = theme === "dark" && "theme--dark";
 
   const isDesktop = !navigator.userAgent.includes("Android");
 </script>
 
-<MaterialApp class={classNames} {theme}>
+<MaterialApp class={getI18n("@@bidi_dir") === "rtl" && "it8n--rtl"} {theme}>
   <ControlQuality {qualitiesStored} />
 
   {#if isDesktop}
