@@ -61,8 +61,7 @@
   "optional_permissions": ["cookies"],
   "host_permissions": [
     "https://youtube.com/*",
-    "https://*.youtube.com/*",
-    "https://www.youtube-nocookie.com/*",
+    "https://m.youtube.com/*",
     "https://youtube.googleapis.com/*"
   ],
   "applications": {
