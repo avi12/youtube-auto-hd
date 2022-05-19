@@ -39,7 +39,6 @@ function addTemporaryBodyListenerOnDesktop(): void {
       if (getIsExit(mutations) || !elVideo) {
         return;
       }
-      console.clear();
 
       resizePlayerIfNeeded();
 
