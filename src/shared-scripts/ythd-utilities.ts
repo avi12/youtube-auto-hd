@@ -27,7 +27,7 @@ export enum Selectors {
   optionQuality = ".ytp-menuitem:last-child",
   menuOption = ".ytp-menuitem",
   menuOptionContent = ".ytp-menuitem-content",
-  panelHeader = ".ytp-panel-header button",
+  panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player",
   // Mobile
   mobileQualityDropdown = "select[id^=player-quality-dropdown]",

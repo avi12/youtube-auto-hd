@@ -122,19 +122,24 @@ function getIsSettingsMenuOpen(): boolean {
 }
 
 async function closeMenu(elPlayer: HTMLDivElement): Promise<void> {
-  let elPanelHeader = elPlayer.querySelector<HTMLButtonElement>(Selectors.panelHeader);
-  if (!elPanelHeader) {
-    elPanelHeader = await new Promise(resolve =>
-      new MutationObserver((_, observer) => {
-        const elPanelHeader = elPlayer.querySelector<HTMLButtonElement>(Selectors.panelHeader);
-        if (elPanelHeader) {
-          observer.disconnect();
-          resolve(elPanelHeader);
-        }
-      }).observe(elPlayer, observerOptions)
-    );
+  const clickPanelBackIfPossible = (): boolean => {
+    const elPanelHeaderBack = elPlayer.querySelector<HTMLButtonElement>(Selectors.panelHeaderBack);
+    if (elPanelHeaderBack) {
+      elPanelHeaderBack.click();
+      return true;
+    }
+    return false;
+  };
+
+  if (clickPanelBackIfPossible()) {
+    return;
   }
-  elPanelHeader.click();
+
+  new MutationObserver((_, observer) => {
+    if (clickPanelBackIfPossible()) {
+      observer.disconnect();
+    }
+  }).observe(elPlayer, observerOptions);
 }
 
 async function changeQualityAndClose(elVideo: HTMLVideoElement, elPlayer: HTMLDivElement): Promise<void> {
