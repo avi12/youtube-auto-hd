@@ -57,4 +57,5 @@ export default [
   createConfig("scripts/ythd-content-script-initialize-mobile"),
   createConfigBackground(),
   createConfig("popup/popup", true),
+  createConfig("permissions/permissions", true),
 ];
