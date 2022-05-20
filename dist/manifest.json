@@ -33,16 +33,18 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.youtube.com/*",
+        "https://*.youtube.com/*",
         "https://www.youtube-nocookie.com/*",
         "https://youtube.googleapis.com/*"
       ],
       "js": ["build/scripts/ythd-content-script-initialize-desktop.js"],
-      "all_frames": true
+      "all_frames": true,
+      "include_globs": ["www.youtube.com/*", "www.youtube-nocookie.com/embed/*"]
     },
     {
-      "matches": ["https://m.youtube.com/*"],
-      "js": ["build/scripts/ythd-content-script-initialize-mobile.js"]
+      "matches": ["https://*.youtube.com/*"],
+      "js": ["build/scripts/ythd-content-script-initialize-mobile.js"],
+      "include_globs": ["m.youtube.com/*"]
     }
   ],
   "action": {
