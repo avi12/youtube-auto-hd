@@ -33,18 +33,16 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.youtube.com/*",
+        "https://www.youtube.com/*",
         "https://www.youtube-nocookie.com/*",
         "https://youtube.googleapis.com/*"
       ],
       "js": ["build/scripts/ythd-content-script-initialize-desktop.js"],
-      "all_frames": true,
-      "include_globs": ["www.youtube.com/*", "www.youtube-nocookie.com/embed/*"]
+      "all_frames": true
     },
     {
-      "matches": ["https://*.youtube.com/*"],
-      "js": ["build/scripts/ythd-content-script-initialize-mobile.js"],
-      "include_globs": ["m.youtube.com/*"]
+      "matches": ["https://m.youtube.com/*"],
+      "js": ["build/scripts/ythd-content-script-initialize-mobile.js"]
     }
   ],
   "action": {
@@ -61,11 +59,7 @@
   },
   "permissions": ["storage"],
   "optional_permissions": ["cookies"],
-  "host_permissions": [
-    "https://youtube.com/*",
-    "https://*.youtube.com/*",
-    "https://youtube.googleapis.com/*"
-  ],
+  "host_permissions": ["https://youtube.com/*"],
   "applications": {
     "gecko": {
       "id": "avi6106@gmail.com"
