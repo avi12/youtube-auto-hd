@@ -1,5 +1,7 @@
 "use strict";
 
+import { permissions } from "./permissions/permission-utils";
+
 const manifest = chrome.runtime.getManifest();
 const newVersionNumber = manifest.version;
 
@@ -58,5 +60,12 @@ function init({
 chrome.runtime.setUninstallURL(uninstalledUrl);
 
 chrome.storage.local.get(["cj_landing_lastupdated", "cj_landing_versionnumber"], init);
+
+// Asking for permissions, if needed
+chrome.permissions.contains(permissions, hasPermission => {
+  if (!hasPermission) {
+    chrome.tabs.create({ url: chrome.runtime.getURL("permissions.html") });
+  }
+});
 
 export {};
