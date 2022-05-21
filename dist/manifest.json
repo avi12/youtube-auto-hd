@@ -63,6 +63,7 @@
   "host_permissions": [
     "https://youtube.com/*",
     "https://*.youtube.com/*",
+    "https://www.youtube-nocookie.com/*",
     "https://youtube.googleapis.com/*"
   ],
   "applications": {
