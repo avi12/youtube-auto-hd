@@ -60,7 +60,7 @@
   },
   "permissions": ["storage"],
   "optional_permissions": ["cookies"],
-  "host_permissions": ["https://youtube.com/*"],
+  "host_permissions": ["https://youtube.com/*", "https://*.youtube.com/*"],
   "applications": {
     "gecko": {
       "id": "avi6106@gmail.com"
