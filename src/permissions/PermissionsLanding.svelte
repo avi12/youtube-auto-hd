@@ -2,7 +2,7 @@
   import { Button, MaterialAppMin } from "svelte-materialify";
   import { permissions } from "./permission-utils";
 
-  function askForPermissions() {
+  function askForPermissions(): void {
     chrome.permissions.request(permissions, pIsGranted => isGranted = pIsGranted);
   }
 
