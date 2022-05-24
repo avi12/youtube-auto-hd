@@ -154,11 +154,6 @@ export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> 
   const elPlayer = getPlayerDiv(elVideo);
   const elSettings = elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings);
 
-  const afterQualityChange = () => {
-    elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
-    elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings).blur();
-  };
-
   if (!elSettings) {
     return;
   }
@@ -168,7 +163,9 @@ export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> 
   }
   elSettings.click();
   await changeQualityAndClose(elVideo, elPlayer);
-  afterQualityChange();
+
+  elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
+  elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings).blur();
 }
 
 chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {
