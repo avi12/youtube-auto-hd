@@ -64,7 +64,7 @@ chrome.storage.local.get(["cj_landing_lastupdated", "cj_landing_versionnumber"],
 // Asking for permissions, if needed
 chrome.permissions.contains(permissions, hasPermission => {
   if (!hasPermission) {
-    chrome.tabs.create({ url: chrome.runtime.getURL("permissions.html") });
+    openUrl(chrome.runtime.getURL("permissions.html"));
   }
 });
 
