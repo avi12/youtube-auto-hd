@@ -3,7 +3,7 @@
   import type { VideoQuality } from "../../types";
 
   export let label: string;
-  export let values = [] as VideoQuality[];
+  export let values: VideoQuality[] = [];
   export let value: VideoQuality;
 
   const iValue = values.indexOf(value);
@@ -12,7 +12,7 @@
     value = values.find((_, i) => i === Number(e.detail.value[0]));
   }
 
-  function getThumb(iValue): string {
+  function getThumb(iValue: number): string {
     const qualityNumber = values[iValue];
     return `${qualityNumber}p`;
   }
