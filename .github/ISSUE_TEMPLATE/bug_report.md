@@ -22,6 +22,7 @@ Steps to reproduce the behavior:
 
 **Details:** <!-- Required -->
  - Browser: <!-- [e.g. Chrome, Firefox] -->
+ - OS: <!-- [e.g. Windows, MacOS, Linux, Android] -->
  - Version: <!-- [e.g. 1.3.4] -->
 
 **Additional context**
