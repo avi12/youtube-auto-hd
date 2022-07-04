@@ -164,7 +164,6 @@ export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> 
   elSettings.click();
   await changeQualityAndClose(elVideo, elPlayer);
 
-  elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
   elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings).blur();
 }
 
