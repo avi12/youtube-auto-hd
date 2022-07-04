@@ -22,16 +22,16 @@ declare global {
 window.ythdLastQualityClicked = null;
 
 let gTitleLast = document.title;
+let gUrlLast = location.href;
 let gPlayerObserver: MutationObserver;
 
 function addTemporaryBodyListenerOnDesktop(): void {
-  // For some reason, the title observer will run as soon as .observe() calls,
-  // so we need to prevent it
-  if (gTitleLast === document.title) {
+  if (gTitleLast === document.title || gUrlLast === location.href) {
     return;
   }
 
   gTitleLast = document.title;
+  gUrlLast = location.href;
 
   // Typically - listen to the player div (<video> container)
   // Otherwise, say it's a main channel page that has a channel trailer,
