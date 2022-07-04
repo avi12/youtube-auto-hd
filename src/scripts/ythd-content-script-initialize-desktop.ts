@@ -66,8 +66,8 @@ function addTemporaryBodyListenerOnDesktop(): void {
 
 // The ultimate fix for the "notification panel closes" issue
 // I don't know what it has to do with those classes, but it works
-const regexExit = /ytp-tooltip-title|ytp-time-current|ytp-bound-time-right/;
 const getIsExit: (mutations: MutationRecord[]) => boolean = mutations => {
+  const regexExit = /ytp-tooltip-title|ytp-time-current|ytp-bound-time-right/;
   const target = mutations[mutations.length - 1].target as HTMLDivElement;
   return Boolean(target.className.match(regexExit));
 };
