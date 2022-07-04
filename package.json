@@ -18,7 +18,7 @@
     "build-for-opera": "build-for-browser --i dist_packed/youtube_auto_hd_fps-{version}.zip --browser=opera",
     "set-version": "set-json-version -f package.json dist/manifest.json -v",
     "validate": "svelte-check",
-    "run-browser": "web-ext run --no-config-discovery --args=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\" --source-dir dist --verbose --target",
+    "run-browser": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=1E_kBSka_ec --source-dir dist --verbose --target",
     "run-chromium": "pnpm run-browser chromium",
     "run-edge-windows": "\"\"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"\" https://www.youtube.com/watch?v=dQw4w9WgXcQ --load-extension=%cd%\\dist"
   },
