@@ -2,7 +2,7 @@
   "name": "YouTube Auto HD + FPS",
   "short_name": "YT Auto HD",
   "description": "__MSG_cj_i18n_02146__",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "manifest_version": 3,
   "author": "avi12",
   "developer": {
@@ -38,12 +38,7 @@
         "https://youtube.googleapis.com/*"
       ],
       "js": ["build/scripts/ythd-content-script-initialize-desktop.js"],
-      "all_frames": true,
-      "include_globs": [
-        "https://www.youtube.com/*",
-        "https://www.youtube-nocookie.com/embed/*",
-        "https://youtube.googleapis.com/embed/*"
-      ]
+      "all_frames": true
     },
     {
       "matches": ["https://m.youtube.com/*"],
