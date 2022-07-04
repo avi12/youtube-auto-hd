@@ -50,6 +50,7 @@ function addTemporaryBodyListenerOnDesktop(): void {
       // We need to reset global variables, as well as prepare to change the quality of the new video
       window.ythdLastQualityClicked = null;
       await prepareToChangeQualityOnDesktop();
+      elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
 
       // Used to:
       // - Change the quality even if a pre-roll or a mid-roll ad is playing
@@ -129,9 +130,7 @@ async function init(): Promise<void> {
       return;
     }
 
-    if (!elVideo.paused) {
-      await prepareToChangeQualityOnDesktop();
-    }
+    await prepareToChangeQualityOnDesktop();
   }).observe(document, observerOptions);
 }
 
