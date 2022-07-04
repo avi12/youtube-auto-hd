@@ -20,6 +20,7 @@ export function getI18n(id: string, backup = ""): string {
 
 export enum Selectors {
   // Global
+  title = "title",
   video = "video",
   // Desktop
   buttonSettings = ".ytp-settings-button",
@@ -34,7 +35,7 @@ export enum Selectors {
   mobileQualityDropdownWrapper = ".player-quality-settings",
   mobileMenuButton = ".mobile-topbar-header-content ytm-menu button",
   mobileOption = "div[role=dialog] ytm-menu-item",
-  mobileOkButton = ".dialog-buttons [class*=material-button-button]",
+  mobileOkButton = ".dialog-buttons [class*=material-button-button]"
 }
 
 export function getVisibleElement<T extends HTMLElement>(elementName: Selectors): T {
