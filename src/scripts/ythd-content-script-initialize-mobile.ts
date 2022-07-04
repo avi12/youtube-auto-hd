@@ -1,4 +1,9 @@
-import { Selectors, getVisibleElement, observerOptions } from "../shared-scripts/ythd-utilities";
+import {
+  addGlobalEventListener,
+  getVisibleElement,
+  observerOptions,
+  Selectors
+} from "../shared-scripts/ythd-utilities";
 import { prepareToChangeQualityOnMobile } from "./ythd-content-script-functions-mobile";
 import type { YouTubeLabel } from "../types";
 import { labelToQuality } from "../shared-scripts/ythd-setup";
@@ -39,14 +44,6 @@ function addTemporaryBodyListenerOnMobile(): void {
   gPlayerObserver.observe(document, observerOptions);
 }
 
-function addGlobalEventListenerOnMobile(): void {
-  // Fires when navigating to another page
-  new MutationObserver(addTemporaryBodyListenerOnMobile).observe(
-    document.querySelector("title"),
-    observerOptions
-  );
-}
-
 function saveManualQualityChangeOnMobile({ target, isTrusted }: Event): void {
   // We use programmatic "onchange" to change quality on mobile, but we need to save/respond only to <select> onchange
   if (!isTrusted) {
@@ -63,8 +60,8 @@ function saveManualQualityChangeOnMobile({ target, isTrusted }: Event): void {
   window.ythdLastQualityClicked = labelToQuality[label];
 }
 
-function init(): void {
-  addGlobalEventListenerOnMobile();
+async function init(): Promise<void> {
+  await addGlobalEventListener(addTemporaryBodyListenerOnMobile);
   document.addEventListener("change", saveManualQualityChangeOnMobile);
 
   // When the user visits a /watch page, the video's quality will be changed as soon as it loads

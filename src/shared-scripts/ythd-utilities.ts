@@ -54,6 +54,15 @@ export async function getElementByMutationObserver(selector: Selectors): Promise
   });
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+export async function addGlobalEventListener(addTemporaryBodyListener: () => void): Promise<void> {
+  // Fires when navigating to another page
+  const elTItle =
+    document.documentElement.querySelector(Selectors.title) ||
+    (await getElementByMutationObserver(Selectors.title, false));
+  new MutationObserver(addTemporaryBodyListener).observe(elTItle, observerOptions);
+}
+
 function isElementVisible(element: HTMLElement): boolean {
   return element?.offsetWidth > 0 && element?.offsetHeight > 0;
 }

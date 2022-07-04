@@ -1,4 +1,9 @@
-import { Selectors, getVisibleElement, observerOptions } from "../shared-scripts/ythd-utilities";
+import {
+  addGlobalEventListener,
+  getVisibleElement,
+  observerOptions,
+  Selectors
+} from "../shared-scripts/ythd-utilities";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 import { prepareToChangeQualityOnDesktop } from "./ythd-content-script-functions-desktop";
 import type { QualityFpsPreferences, VideoAutoResize, VideoQuality, VideoSize } from "../types";
@@ -66,14 +71,6 @@ const getIsExit: (mutations: MutationRecord[]) => boolean = mutations => {
   return Boolean(target.className.match(regexExit));
 };
 
-function addGlobalEventListenerOnDesktop(): void {
-  // Fires when navigating to another page
-  new MutationObserver(addTemporaryBodyListenerOnDesktop).observe(
-    document.querySelector("title"),
-    observerOptions
-  );
-}
-
 function saveManualQualityChangeOnDesktop({ target, isTrusted }: MouseEvent): void {
   // We use programmatic clicks to change quality on desktop, but we need to save/respond only to user clicks
   if (!isTrusted) {
@@ -110,7 +107,7 @@ async function setPlayerSize() {
 }
 
 async function init(): Promise<void> {
-  addGlobalEventListenerOnDesktop();
+  addGlobalEventListener(addTemporaryBodyListenerOnDesktop);
   document.addEventListener("click", saveManualQualityChangeOnDesktop);
   await setPlayerSize();
 
