@@ -42,10 +42,13 @@ export function getVisibleElement<T extends HTMLElement>(elementName: Selectors)
   return elements.find(isElementVisible);
 }
 
-export async function getElementByMutationObserver(selector: Selectors): Promise<HTMLElement> {
+export async function getElementByMutationObserver(
+  selector: Selectors,
+  isVisible = true
+): Promise<HTMLElement> {
   return new Promise(resolve => {
     new MutationObserver((_, observer) => {
-      const element = getVisibleElement(selector);
+      const element = isVisible ? getVisibleElement(selector) : document.querySelector<HTMLElement>(selector);
       if (element) {
         observer.disconnect();
         resolve(element);
