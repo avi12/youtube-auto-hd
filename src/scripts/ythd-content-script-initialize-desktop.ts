@@ -111,7 +111,8 @@ async function init(): Promise<void> {
   document.addEventListener("click", saveManualQualityChangeOnDesktop);
   await setPlayerSize();
 
-  // When the user visits a /watch page, the video's quality will be changed as soon as it loads
+  // When the user visits a /watch / /embed page,
+  // the video's quality will be changed as soon as it loads
   new MutationObserver(async (_, observer) => {
     const elVideo = getVisibleElement<HTMLVideoElement>(Selectors.video);
     if (!elVideo) {
