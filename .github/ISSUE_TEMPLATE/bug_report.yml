@@ -38,6 +38,8 @@ body:
       - Vivaldi
       - Brave
       - Safari
+    validations:
+      required: true
   - type: dropdown
     id: operating-system
     attributes:
