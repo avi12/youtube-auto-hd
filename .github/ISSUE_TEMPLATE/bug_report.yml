@@ -40,8 +40,6 @@ body:
   - type: dropdown
     id: operating-system
     attributes: What OS does it occur on?
-      validation:
-        required: true
     options:
     - Windows
     - macOS
