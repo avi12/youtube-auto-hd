@@ -12,7 +12,7 @@ body:
       options:
         - "Extension's functionality"
         - "Pop-up settings page"
-    validators:
+    validations:
       required: true
   - type: textarea
     attributs:
