@@ -9,8 +9,8 @@ body:
       label: Describe the bug
       description: A clear and concise description of what the bug is
       placeholder: E.g. "the quality won't change"
-    validations:
-      required: true
+      validations:
+        required: true
   - type: textarea
     id: reproduction
     attributes:
@@ -20,11 +20,11 @@ body:
         required: true
   - type: textarea
     id: expected-behavior
-    validations:
-      required: true
     attributes:
       label: Expected bahavior
       placeholder: E.g. the quality should change to 1080p at 60FPS but is instead 720p
+      validations:
+        required: true
   - type: dropdown
     id: browsers
     attributes: What browser(s) can you reproduce the issue on?
@@ -50,8 +50,8 @@ body:
     attributes:
       label: What's the version you're running?
       description: Go to the extensions page and copy the version number
-    validations:
-      required: true
+      validations:
+        required: true
   - type: textarea
     id: additional-context
     attributes:
