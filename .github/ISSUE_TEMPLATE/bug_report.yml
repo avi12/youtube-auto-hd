@@ -31,7 +31,7 @@ body:
       label: What browser(s) can you reproduce the issue on?
       multiple: true
       options:
-      - Chorme
+      - Chrome
       - Firefox
       - Chromium Edge
       - Opera
