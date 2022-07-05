@@ -1,17 +1,17 @@
 name: Feature request
 description: Suggest a new idea for the extension
-title: '[Feature request] '
-labels: enhancement
+title: "[Feature request] "
+labels: [enhancement]
 body:
   - type: textarea
     attributes:
       label: Is your feature request related to a problem? Please describe
   - type: dropdown
     attributes:
-      label: "Is it a change to the extension's functionality or to the pop-up settings page?"
+      label: Is it a change to the extension's functionality or to the pop-up settings page?
       options:
-        - "Extension's functionality"
-        - "Pop-up settings page"
+        - Extension's functionality
+        - Pop-up settings page
     validations:
       required: true
   - type: textarea
