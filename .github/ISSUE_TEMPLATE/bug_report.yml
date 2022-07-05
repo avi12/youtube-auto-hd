@@ -7,24 +7,24 @@ body:
     id: bug-description
     attributes:
       label: Describe the bug
-      description: "A clear and concise description of what the bug is"
-      placeholder: "E.g. the quality won't change"
-    validation:
+      description: A clear and concise description of what the bug is
+      placeholder: E.g. "the quality won't change"
+    validations:
       required: true
   - type: textarea
     id: reproduction
     attributes:
       label: How to reproduce
-      placeholder: "E.g. go to a /watch page and then click on another video"
-      validation:
+      placeholder: E.g. go to a /watch page and then click on another video
+      validations:
         required: true
   - type: textarea
     id: expected-behavior
-    validation:
+    validations:
       required: true
     attributes:
       label: Expected bahavior
-      placeholder: "E.g. the quality should change to 1080p at 60FPS but is instead 720p"
+      placeholder: E.g. the quality should change to 1080p at 60FPS but is instead 720p
   - type: dropdown
     id: browsers
     attributes: What browser(s) can you reproduce the issue on?
@@ -44,15 +44,15 @@ body:
     - Windows
     - macOS
     - Linux
-    - Android
-  - type: textarea
-    id: additional-context
-    attributes:
-      label: Additional context
+    - Android    
   - type: input
     id: version
     attributes:
       label: What's the version you're running?
-      description: "Go to the extensions page and copy the version number"
-      validation:
-        required: true
+      description: Go to the extensions page and copy the version number
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
