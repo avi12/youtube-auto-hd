@@ -27,24 +27,26 @@ body:
       required: true
   - type: dropdown
     id: browsers
-    attributes: What browser(s) can you reproduce the issue on?
-    multiple: true
-    options:
-    - Chorme
-    - Firefox
-    - Chromium Edge
-    - Opera
-    - Vivaldi
-    - Brave
-    - Safari
+    attributes:
+      label: What browser(s) can you reproduce the issue on?
+      multiple: true
+      options:
+      - Chorme
+      - Firefox
+      - Chromium Edge
+      - Opera
+      - Vivaldi
+      - Brave
+      - Safari
   - type: dropdown
     id: operating-system
-    attributes: What OS does it occur on?
-    options:
-    - Windows
-    - macOS
-    - Linux
-    - Android    
+    attributes:
+      label: What OS does it occur on?
+      options:
+      - Windows
+      - macOS
+      - Linux
+      - Android
   - type: input
     id: version
     attributes:
