@@ -14,7 +14,7 @@ body:
     validations:
       required: true
   - type: textarea
-    attributs:
+    attributes:
       label: If he latter, please propose a new design on Figma or describe it as detailed as possible
   - type: textarea
     attributes:
