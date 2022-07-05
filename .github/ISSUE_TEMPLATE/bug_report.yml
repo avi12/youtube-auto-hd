@@ -16,6 +16,8 @@ body:
     attributes:
       label: How to reproduce
       placeholder: E.g. go to a /watch page and then click on another video
+    validation:
+      required: true
   - type: textarea
     id: expected-behavior
     validation:
