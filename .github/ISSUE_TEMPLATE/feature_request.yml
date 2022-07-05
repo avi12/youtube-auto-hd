@@ -8,7 +8,7 @@ body:
       label: Is your feature request related to a problem? Please describe
   - type: dropdown
     attributes:
-      label: "Is it a change to the extension's functionality or in the pop-up settings page?"
+      label: "Is it a change to the extension's functionality or to the pop-up settings page?"
       options:
         - "Extension's functionality"
         - "Pop-up settings page"
