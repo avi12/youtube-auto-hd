@@ -15,7 +15,6 @@
     "pack-self": "zip-self -o dist_packed/youtube_auto_hd_fps-{version}-source.zip",
     "build-pack": "pnpm run build && pnpm run pack && pnpm run pack-stores && pnpm run pack-self",
     "build-for-firefox": "build-for-browser --i dist_packed/youtube_auto_hd_fps-{version}.zip --browser=firefox --source",
-    "build-for-opera": "build-for-browser --i dist_packed/youtube_auto_hd_fps-{version}.zip --browser=opera",
     "set-version": "set-json-version -f package.json dist/manifest.json -v",
     "validate": "svelte-check",
     "run-browser": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=1E_kBSka_ec --source-dir dist --verbose --target",

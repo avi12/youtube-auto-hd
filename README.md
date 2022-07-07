@@ -119,12 +119,6 @@ pnpm build-pack
 pnpm build-for-firefox
 ```
 
-### Build for Opera (first run `pnpm build-pack`)
-
-```shell
-pnpm build-for-opera
-```
-
 ## Contribution
 
 Feel free to contribute! Keep in mind that the license I chose
