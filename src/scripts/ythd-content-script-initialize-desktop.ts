@@ -44,6 +44,7 @@ function addTemporaryBodyListenerOnDesktop(): void {
       if (getIsExit(mutations) || !elVideo) {
         return;
       }
+      const elPlayer = elVideo.closest(Selectors.player);
 
       resizePlayerIfNeeded();
 
@@ -51,11 +52,13 @@ function addTemporaryBodyListenerOnDesktop(): void {
       window.ythdLastQualityClicked = null;
       await prepareToChangeQualityOnDesktop();
       elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
+      elPlayer.removeEventListener("click", saveManualQualityChangeOnDesktop);
 
       // Used to:
       // - Change the quality even if a pre-roll or a mid-roll ad is playing
       // - Change the quality if the video "refreshes", which happens when idling for a while (e.g. a couple of hours) and then resuming
       elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
+      elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
 
       gPlayerObserver.disconnect();
     });
@@ -72,28 +75,21 @@ const getIsExit: (mutations: MutationRecord[]) => boolean = mutations => {
   return Boolean(target.className.match(regexExit));
 };
 
-function saveManualQualityChangeOnDesktop({ target, isTrusted }: MouseEvent): void {
+function saveManualQualityChangeOnDesktop({ isTrusted, target }: MouseEvent): void {
   // We use programmatic clicks to change quality on desktop, but we need to save/respond only to user clicks
   if (!isTrusted) {
     return;
   }
 
-  const element = target as HTMLElement;
-  if (!element.closest(Selectors.player)) {
+  const elQualityParent = target as HTMLElement;
+  const elQuality = elQualityParent.querySelector("div > span, span");
+  const labelQuality = elQuality?.firstChild.textContent; // 480p, 720s, 1080p60, ...
+  const isContainsQualityLabel = labelQuality?.match(/[ps](\d{2,3})?$/);
+  if (!isContainsQualityLabel) {
     return;
   }
 
-  const elQuality = (() => {
-    if (element.matches("span")) {
-      return element;
-    }
-    if (element.matches("div")) {
-      return element.querySelector("span");
-    }
-    return null;
-  })();
-
-  const quality = parseInt(elQuality?.textContent) as VideoQuality;
+  const quality = parseInt(labelQuality.match(/\d{3,4}/)?.[0]) as VideoQuality;
   if (!isNaN(quality)) {
     window.ythdLastQualityClicked = quality;
   }
@@ -109,7 +105,6 @@ async function setPlayerSize() {
 
 async function init(): Promise<void> {
   addGlobalEventListener(addTemporaryBodyListenerOnDesktop);
-  document.addEventListener("click", saveManualQualityChangeOnDesktop);
   await setPlayerSize();
 
   // When the user visits a /watch / /embed page,
@@ -119,6 +114,7 @@ async function init(): Promise<void> {
     if (!elVideo) {
       return;
     }
+    const elPlayer = elVideo.closest(Selectors.player);
 
     observer.disconnect();
 
@@ -127,6 +123,7 @@ async function init(): Promise<void> {
       resizePlayerIfNeeded();
       await prepareToChangeQualityOnDesktop();
       elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
+      elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
       return;
     }
 
