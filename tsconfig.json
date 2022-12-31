@@ -6,7 +6,7 @@
     "sourceMap": true,
     "types": ["svelte", "chrome"],
     "moduleResolution": "Node",
-    "module": "esnext",
+    "module": "esnext"
   },
   "extends": "@tsconfig/svelte/tsconfig.json"
 }
