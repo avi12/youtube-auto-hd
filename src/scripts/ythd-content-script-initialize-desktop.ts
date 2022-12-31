@@ -33,6 +33,8 @@ function addTemporaryBodyListenerOnDesktop(): void {
   gTitleLast = document.title;
   gUrlLast = location.href;
 
+  injectDonationSectionWhenNeeded();
+
   // Typically - listen to the player div (<video> container)
   // Otherwise, say it's a main channel page that has a channel trailer,
   // the <video> container wouldn't immediately exist, hence listen to the document
@@ -120,6 +122,7 @@ async function init(): Promise<void> {
 
     const isEmbed = location.pathname.startsWith("/embed/");
     if (!isEmbed) {
+      injectDonationSectionWhenNeeded();
       resizePlayerIfNeeded();
       await prepareToChangeQualityOnDesktop();
       elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);

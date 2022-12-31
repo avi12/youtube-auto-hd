@@ -30,6 +30,8 @@ export enum Selectors {
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player",
+  donationSection = ".ythd-donation-section",
+  relatedVideos = "#secondary-inner",
   // Mobile
   mobileQualityDropdown = "select[id^=player-quality-dropdown]",
   mobileQualityDropdownWrapper = ".player-quality-settings",

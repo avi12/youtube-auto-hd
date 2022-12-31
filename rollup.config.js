@@ -52,10 +52,24 @@ function createConfigBackground() {
   };
 }
 
+function createConfigCss() {
+  return {
+    input: "src/styles-injected/main.css",
+    output: {
+      file: "dist/build/styles-injected/main.css"
+    },
+    plugins: [postcss({ extract: true, minimize: true })],
+    watch: {
+      clearScreen: true
+    }
+  };
+}
+
 export default [
   createConfig("scripts/ythd-content-script-initialize-desktop"),
   createConfig("scripts/ythd-content-script-initialize-mobile"),
   createConfigBackground(),
   createConfig("popup/popup", true),
   createConfig("permissions/permissions", true),
+  createConfigCss()
 ];
