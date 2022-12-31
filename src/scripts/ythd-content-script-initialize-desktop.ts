@@ -75,7 +75,7 @@ function addTemporaryBodyListenerOnDesktop(): void {
 const getIsExit: (mutations: MutationRecord[]) => boolean = mutations => {
   const regexExit = /ytp-tooltip-title|ytp-time-current|ytp-bound-time-right/;
   const target = mutations[mutations.length - 1].target as HTMLDivElement;
-  return Boolean(target.className.match(regexExit));
+  return Boolean(target.className?.match(regexExit));
 };
 
 function saveManualQualityChangeOnDesktop({ isTrusted, target }: MouseEvent): void {
