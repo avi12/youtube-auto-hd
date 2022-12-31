@@ -34,6 +34,7 @@
     "build-for-browser": "github:avi12/build-for-browser",
     "dotenv": "^16.0.1",
     "eslint": "^8.22.0",
+    "eslint-config-avi12": "github:avi12/eslint-plugin-avi12",
     "eslint-plugin-svelte3": "^4.0.0",
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",
