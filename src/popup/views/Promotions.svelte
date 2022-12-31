@@ -4,10 +4,10 @@
 
   import { getI18n } from "../../shared-scripts/ythd-utilities";
 
-  const i18n = {
+  const i18n: { [key: string]: string } = {
     labelSupport: getI18n("cj_i18n_06860", "Support developer"),
     labelRate: getI18n("cj_i18n_06861", "Rate extension"),
-    labelTwitter: getI18n("cj_i18n_07157", "Follow me"),
+    labelDonate: getI18n("cj_i18n_00354", "Donate"),
     labelTranslate: getI18n("cj_i18n_01605", "Help with translations")
   };
 
@@ -47,9 +47,9 @@
       icon: mdiStar
     },
     {
-      label: i18n.labelTwitter,
-      url: "https://twitter.com/avi12641",
-      icon: mdiTwitter
+      label: i18n.labelDonate,
+      url: "https://paypal.me/avi12",
+      icon: mdiHeart
     },
     {
       label: i18n.labelTranslate,
