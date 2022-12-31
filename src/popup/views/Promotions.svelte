@@ -1,7 +1,6 @@
 <script lang="ts">
+  import { mdiHeart, mdiStar, mdiTranslate } from "@mdi/js";
   import { Icon, List, ListItem } from "svelte-materialify";
-  import { mdiStar, mdiTranslate, mdiTwitter } from "@mdi/js";
-
   import { getI18n } from "../../shared-scripts/ythd-utilities";
 
   const i18n: { [key: string]: string } = {

@@ -1,13 +1,14 @@
+import { initial } from "../shared-scripts/ythd-setup";
 import {
   addGlobalEventListener,
   getVisibleElement,
   observerOptions,
   Selectors
 } from "../shared-scripts/ythd-utilities";
-import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
-import { prepareToChangeQualityOnDesktop } from "./ythd-content-script-functions-desktop";
 import type { QualityFpsPreferences, VideoAutoResize, VideoQuality, VideoSize } from "../types";
-import { initial } from "../shared-scripts/ythd-setup";
+import { injectDonationSectionWhenNeeded } from "./ythd-content-script-donate";
+import { prepareToChangeQualityOnDesktop } from "./ythd-content-script-functions-desktop";
+import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 
 declare global {
   interface Window {
@@ -97,7 +98,7 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: MouseEvent): vo
   }
 }
 
-async function setPlayerSize() {
+async function setPlayerSize(): Promise<void> {
   const { size = initial.size, autoResize = initial.isResizeVideo } = await new Promise(resolve =>
     chrome.storage.sync.get(["size", "autoResize"], resolve)
   );

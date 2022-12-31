@@ -1,11 +1,11 @@
 <script lang="ts">
+  import { MaterialApp } from "svelte-materialify";
   import { getI18n } from "../shared-scripts/ythd-utilities";
 
   import ControlQuality from "./views/ControlQuality.svelte";
+  import ControlSize from "./views/ControlSize.svelte";
   import Promotions from "./views/Promotions.svelte";
   import "./views/styles/popup.css";
-  import ControlSize from "./views/ControlSize.svelte";
-  import { MaterialApp } from "svelte-materialify";
 
   export let qualitiesStored;
   export let sizeVideo;

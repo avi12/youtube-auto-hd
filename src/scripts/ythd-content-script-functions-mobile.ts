@@ -1,3 +1,4 @@
+import { labelToQuality, qualities } from "../shared-scripts/ythd-setup";
 import {
   Selectors,
   getElementByMutationObserver,
@@ -7,7 +8,6 @@ import {
   getVisibleElement
 } from "../shared-scripts/ythd-utilities";
 import type { VideoFPS, VideoQuality, YouTubeLabel } from "../types";
-import { labelToQuality, qualities } from "../shared-scripts/ythd-setup";
 
 let gPlayerResponse;
 const gEvent = new Event("change", { bubbles: true });
@@ -35,7 +35,7 @@ async function changeQualityOnMobile(qualityCustom?: VideoQuality): Promise<void
   const fpsStep = getFpsFromRange(qualitiesPreferred, fpsVideo);
   const iQuality = getIQuality(qualitiesAvailable, qualityCustom || qualitiesPreferred[fpsStep]);
 
-  const applyQuality = async (iQuality: number) => {
+  const applyQuality = async (iQuality: number): Promise<void> => {
     const elDropdown = (await getElementByMutationObserver(Selectors.mobileQualityDropdown)) as HTMLSelectElement;
     if (elDropdown) {
       elDropdown.value = qualitiesAvailable[iQuality];
@@ -59,7 +59,7 @@ async function changeQualityOnMobile(qualityCustom?: VideoQuality): Promise<void
   }
 }
 
-async function getPlayerResponse() {
+async function getPlayerResponse(): Promise<string> {
   return fetch(location.href)
     .then(response => response.text())
     .then(textContent => {

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { getI18n } from "../../shared-scripts/ythd-utilities";
   import { Switch } from "svelte-materialify";
   import { initial } from "../../shared-scripts/ythd-setup";
+  import { getI18n } from "../../shared-scripts/ythd-utilities";
   import type { VideoAutoResize, VideoSize } from "../../types";
 
   export let sizeVideo: VideoSize = initial.size;
@@ -13,7 +13,7 @@
     labelVideoSize: getI18n("cj_i18n_06567", "Keep size at")
   };
 
-  function resizeVideo(e) {
+  function resizeVideo(e): void {
     switch (e.key) {
       case "Enter":
         {
@@ -38,7 +38,7 @@
     }
   }
 
-  function onTabToSize(e) {
+  function onTabToSize(e): void {
     if (e.key !== "Tab" || e.shiftKey) {
       return;
     }
@@ -63,7 +63,7 @@
   let elSizeSmall: HTMLDivElement;
   let elSizeLarge: HTMLDivElement;
 
-  function getCookiePermission(e: Event) {
+  function getCookiePermission(e: Event): void {
     const { checked } = e.target as HTMLInputElement;
     if (!checked) {
       isResizeVideo = false;

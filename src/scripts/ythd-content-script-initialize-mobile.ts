@@ -1,12 +1,12 @@
+import { labelToQuality } from "../shared-scripts/ythd-setup";
 import {
   addGlobalEventListener,
   getVisibleElement,
   observerOptions,
   Selectors
 } from "../shared-scripts/ythd-utilities";
-import { prepareToChangeQualityOnMobile } from "./ythd-content-script-functions-mobile";
 import type { YouTubeLabel } from "../types";
-import { labelToQuality } from "../shared-scripts/ythd-setup";
+import { prepareToChangeQualityOnMobile } from "./ythd-content-script-functions-mobile";
 
 window.ythdLastQualityClicked = null;
 let gTitleLast = document.title;

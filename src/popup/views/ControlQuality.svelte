@@ -2,8 +2,8 @@
   import { Switch } from "svelte-materialify";
   import { fpsSupported, initial, qualities } from "../../shared-scripts/ythd-setup";
   import { getI18n } from "../../shared-scripts/ythd-utilities";
-  import SliderYthd from "../components/Slider.svelte";
   import type { VideoFPS, QualityFpsPreferences, VideoQuality } from "../../types";
+  import SliderYthd from "../components/Slider.svelte";
 
   const i18n: { [key: string]: string } = {
     labelQualityHeader: getI18n("cj_i18n_02147", "View quality"),

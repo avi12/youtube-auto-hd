@@ -1,9 +1,10 @@
+import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
+import typescript from "@rollup/plugin-typescript";
+import css from "rollup-plugin-css-only";
+import postcss from "rollup-plugin-postcss";
 import svelte from "rollup-plugin-svelte";
 import { terser } from "rollup-plugin-terser";
-import css from "rollup-plugin-css-only";
-import commonjs from "@rollup/plugin-commonjs";
-import typescript from "@rollup/plugin-typescript";
 import sveltePreprocess from "svelte-preprocess";
 
 const isProduction = !process.env.ROLLUP_WATCH;
@@ -20,12 +21,12 @@ function createConfig(filename, useSvelte = false) {
       useSvelte && css({ output: "bundle.css" }),
       typescript(),
       useSvelte &&
-        svelte({
-          compilerOptions: {
-            dev: !isProduction
-          },
-          preprocess: sveltePreprocess()
-        }),
+      svelte({
+        compilerOptions: {
+          dev: !isProduction
+        },
+        preprocess: sveltePreprocess()
+      }),
       commonjs(),
       resolve({
         dedupe: ["svelte"]

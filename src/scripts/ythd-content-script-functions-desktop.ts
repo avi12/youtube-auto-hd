@@ -25,7 +25,7 @@ function getIsQualityLower(elQuality: HTMLElement, qualityPreferred: VideoQualit
   return qualityVideo < qualityPreferred;
 }
 
-function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
+function getIsLastOptionQuality(elVideo: HTMLVideoElement): boolean {
   const elOptionInSettings = getPlayerDiv(elVideo).querySelector(Selectors.optionQuality);
   if (!elOptionInSettings) {
     return false;
@@ -86,7 +86,7 @@ function changeQuality(qualityCustom?: VideoQuality): void {
   const fpsStep = getFpsFromRange(window.ythdLastUserQualities, fpsVideo);
   const iQuality = getIQuality(qualitiesAvailable, qualityCustom || window.ythdLastUserQualities[fpsStep]);
 
-  const applyQuality = (iQuality: number) => {
+  const applyQuality = (iQuality: number): void => {
     elQualities[iQuality]?.click();
   };
 
