@@ -47,13 +47,9 @@ export async function injectDonationSectionWhenNeeded(): Promise<void> {
     return;
   }
 
-  const elSection = getVisibleElement(Selectors.donationSection);
-  if (elSection) {
-    return;
-  }
-
   if (gVideoCount <= 5) {
-    elSection?.remove();
+    const elDonationSection = getVisibleElement(Selectors.donationSection);
+    elDonationSection?.remove();
     return;
   }
 
