@@ -36,7 +36,7 @@
     "eslint": "^8.22.0",
     "eslint-config-avi12": "github:avi12/eslint-plugin-avi12",
     "eslint-plugin-svelte3": "^4.0.0",
-    "postcss": "^8.4.14",
+    "postcss": "^8.4.16",
     "prettier": "^2.7.1",
     "prettier-plugin-svelte": "^2.7.0",
     "rollup": "~2.78.0",
