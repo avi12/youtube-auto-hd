@@ -25,8 +25,8 @@ export enum Selectors {
   // Desktop
   buttonSettings = ".ytp-settings-button",
   pathSizeToggle = `path[d*="m 28,"], path[d*="m 26,"]`,
-  optionQuality = ".ytp-menuitem:last-child",
-  menuOption = ".ytp-menuitem",
+  optionQuality = ".ytp-settings-menu[data-layer] .ytp-menuitem:last-child",
+  menuOption = ".ytp-settings-menu[data-layer] .ytp-menuitem",
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player",
