@@ -10,6 +10,7 @@ import { injectDonationSectionWhenNeeded } from "./ythd-content-script-donate";
 import { prepareToChangeQualityOnDesktop } from "./ythd-content-script-functions-desktop";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 
+// Used to add items to the autocompletion list under `window.`
 declare global {
   interface Window {
     ythdLastQualityClicked: VideoQuality | null;
@@ -37,7 +38,7 @@ function addTemporaryBodyListenerOnDesktop(): void {
   injectDonationSectionWhenNeeded();
 
   // Typically - listen to the player div (<video> container)
-  // Otherwise, say it's a main channel page that has a channel trailer,
+  // Otherwise, suppose it's a main channel page that has a channel trailer,
   // the <video> container wouldn't immediately exist, hence listen to the document
   const elementToTrack = getVisibleElement<HTMLDivElement>(Selectors.player) || document;
 
