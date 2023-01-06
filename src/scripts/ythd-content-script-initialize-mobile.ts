@@ -3,7 +3,7 @@ import {
   addGlobalEventListener,
   getVisibleElement,
   observerOptions,
-  Selectors
+  SELECTORS
 } from "../shared-scripts/ythd-utilities";
 import type { YouTubeLabel } from "../types";
 import { prepareToChangeQualityOnMobile } from "./ythd-content-script-functions-mobile";
@@ -29,7 +29,7 @@ function addTemporaryBodyListenerOnMobile(): void {
 
   if (!gPlayerObserver) {
     gPlayerObserver = new MutationObserver(() => {
-      const elVideo = getVisibleElement<HTMLVideoElement>(Selectors.video);
+      const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
       if (!elVideo) {
         return;
       }
@@ -51,11 +51,11 @@ function saveManualQualityChangeOnMobile({ target, isTrusted }: Event): void {
   }
 
   const element = target as HTMLElement;
-  if (!element.matches(Selectors.mobileQualityDropdownWrapper)) {
+  if (!element.matches(SELECTORS.mobileQualityDropdownWrapper)) {
     return;
   }
 
-  const elDropdownQuality = element.querySelector<HTMLSelectElement>(Selectors.mobileQualityDropdown);
+  const elDropdownQuality = element.querySelector<HTMLSelectElement>(SELECTORS.mobileQualityDropdown);
   const label = elDropdownQuality.value as YouTubeLabel;
   window.ythdLastQualityClicked = labelToQuality[label];
 }
@@ -71,7 +71,7 @@ async function init(): Promise<void> {
       return;
     }
 
-    const elVideo = getVisibleElement<HTMLVideoElement>(Selectors.video);
+    const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
     if (elVideo) {
       observer.disconnect();
       prepareToChangeQualityOnMobile();

@@ -18,7 +18,7 @@ export function getI18n(id: string, backup = ""): string {
   return (id && chrome.i18n.getMessage(id)) || backup;
 }
 
-export enum Selectors {
+export enum SELECTORS {
   // Global
   title = "title",
   video = "video",
@@ -40,13 +40,13 @@ export enum Selectors {
   mobileOkButton = ".dialog-buttons [class*=material-button-button]"
 }
 
-export function getVisibleElement<T extends HTMLElement>(elementName: Selectors): T {
+export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T {
   const elements = [...document.querySelectorAll(elementName)] as T[];
   return elements.find(isElementVisible);
 }
 
 export async function getElementByMutationObserver(
-  selector: Selectors,
+  selector: SELECTORS,
   isVisible = true
 ): Promise<HTMLElement> {
   return new Promise(resolve => {
@@ -63,10 +63,10 @@ export async function getElementByMutationObserver(
 // eslint-disable-next-line @typescript-eslint/ban-types
 export async function addGlobalEventListener(addTemporaryBodyListener: () => void): Promise<void> {
   // Fires when navigating to another page
-  const elTItle =
-    document.documentElement.querySelector(Selectors.title) ||
-    (await getElementByMutationObserver(Selectors.title, false));
-  new MutationObserver(addTemporaryBodyListener).observe(elTItle, observerOptions);
+  const elTitle =
+    document.documentElement.querySelector(SELECTORS.title) ||
+    (await getElementByMutationObserver(SELECTORS.title, false));
+  new MutationObserver(addTemporaryBodyListener).observe(elTitle, observerOptions);
 }
 
 function isElementVisible(element: HTMLElement): boolean {

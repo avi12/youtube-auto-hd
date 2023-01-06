@@ -7,13 +7,13 @@ import {
   getStorage,
   getVisibleElement,
   observerOptions,
-  Selectors
+  SELECTORS
 } from "../shared-scripts/ythd-utilities";
 import type { FullYouTubeLabel, VideoFPS, VideoQuality, VideoSize } from "../types";
 import { resizePlayerIfNeeded } from "./ythd-content-script-resize";
 
 function getPlayerDiv(elVideo: HTMLVideoElement): HTMLDivElement {
-  return elVideo.closest(Selectors.player);
+  return elVideo.closest(SELECTORS.player);
 }
 
 function getIsQualityLower(elQuality: HTMLElement, qualityPreferred: VideoQuality): boolean {
@@ -26,12 +26,12 @@ function getIsQualityLower(elQuality: HTMLElement, qualityPreferred: VideoQualit
 }
 
 function getIsLastOptionQuality(elVideo: HTMLVideoElement): boolean {
-  const elOptionInSettings = getPlayerDiv(elVideo).querySelector(Selectors.optionQuality);
+  const elOptionInSettings = getPlayerDiv(elVideo).querySelector(SELECTORS.optionQuality);
   if (!elOptionInSettings) {
     return false;
   }
 
-  const elQualityName = elOptionInSettings.querySelector<HTMLDivElement>(Selectors.menuOptionContent);
+  const elQualityName = elOptionInSettings.querySelector<HTMLDivElement>(SELECTORS.menuOptionContent);
 
   // If the video is a channel trailer, the last option is initially the speed one,
   // and the speed setting can only be a single digit
@@ -51,7 +51,7 @@ function getIsQualityElement(element: HTMLDivElement): boolean {
 }
 
 function getCurrentQualityElements(): HTMLDivElement[] {
-  const elMenuOptions = [...getVisibleElement(Selectors.player).querySelectorAll(Selectors.menuOption)];
+  const elMenuOptions = [...getVisibleElement(SELECTORS.player).querySelectorAll(SELECTORS.menuOption)];
   return elMenuOptions.filter(getIsQualityElement) as HTMLDivElement[];
 }
 
@@ -75,7 +75,7 @@ function getVideoFPS(): VideoFPS {
 }
 
 function openQualityMenu(elVideo: HTMLVideoElement): void {
-  const elSettingQuality = getPlayerDiv(elVideo).querySelector<HTMLDivElement>(Selectors.optionQuality);
+  const elSettingQuality = getPlayerDiv(elVideo).querySelector<HTMLDivElement>(SELECTORS.optionQuality);
   elSettingQuality.click();
 }
 
@@ -117,13 +117,13 @@ function changeQualityWhenPossible(elVideo: HTMLVideoElement): void {
 }
 
 function getIsSettingsMenuOpen(): boolean {
-  const elButtonSettings = getVisibleElement<HTMLButtonElement>(Selectors.buttonSettings);
+  const elButtonSettings = getVisibleElement<HTMLButtonElement>(SELECTORS.buttonSettings);
   return elButtonSettings?.ariaExpanded === "true";
 }
 
 async function closeMenu(elPlayer: HTMLDivElement): Promise<void> {
   const clickPanelBackIfPossible = (): boolean => {
-    const elPanelHeaderBack = elPlayer.querySelector<HTMLButtonElement>(Selectors.panelHeaderBack);
+    const elPanelHeaderBack = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.panelHeaderBack);
     if (elPanelHeaderBack) {
       elPanelHeaderBack.click();
       return true;
@@ -150,9 +150,9 @@ async function changeQualityAndClose(elVideo: HTMLVideoElement, elPlayer: HTMLDi
 export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> {
   window.ythdLastUserQualities = await getPreferredQualities();
 
-  const elVideo = (e?.target ?? getVisibleElement(Selectors.video)) as HTMLVideoElement;
+  const elVideo = (e?.target ?? getVisibleElement(SELECTORS.video)) as HTMLVideoElement;
   const elPlayer = getPlayerDiv(elVideo);
-  const elSettings = elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings);
+  const elSettings = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings);
 
   if (!elSettings) {
     return;
@@ -164,7 +164,7 @@ export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> 
   elSettings.click();
   await changeQualityAndClose(elVideo, elPlayer);
 
-  elPlayer.querySelector<HTMLButtonElement>(Selectors.buttonSettings).blur();
+  elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings).blur();
 }
 
 chrome.storage.onChanged.addListener(async ({ qualities, autoResize, size }) => {

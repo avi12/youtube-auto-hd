@@ -2,7 +2,7 @@ import {
   getElementByMutationObserver,
   getStorage,
   getVisibleElement,
-  Selectors
+  SELECTORS
 } from "../shared-scripts/ythd-utilities";
 
 function getDonationSection(): HTMLElement {
@@ -42,13 +42,13 @@ export async function injectDonationSectionWhenNeeded(): Promise<void> {
 
   gVideoCount++;
 
-  const elContainer = await getElementByMutationObserver(Selectors.relatedVideos);
+  const elContainer = await getElementByMutationObserver(SELECTORS.relatedVideos);
   if (!elContainer) {
     return;
   }
 
   if (gVideoCount <= 5) {
-    const elDonationSection = getVisibleElement(Selectors.donationSection);
+    const elDonationSection = getVisibleElement(SELECTORS.donationSection);
     elDonationSection?.remove();
     return;
   }

@@ -3,7 +3,7 @@ import {
   addGlobalEventListener,
   getVisibleElement,
   observerOptions,
-  Selectors
+  SELECTORS
 } from "../shared-scripts/ythd-utilities";
 import type { QualityFpsPreferences, VideoAutoResize, VideoQuality, VideoSize } from "../types";
 import { injectDonationSectionWhenNeeded } from "./ythd-content-script-donate";
@@ -40,15 +40,15 @@ function addTemporaryBodyListenerOnDesktop(): void {
   // Typically - listen to the player div (<video> container)
   // Otherwise, suppose it's a main channel page that has a channel trailer,
   // the <video> container wouldn't immediately exist, hence listen to the document
-  const elementToTrack = getVisibleElement<HTMLDivElement>(Selectors.player) || document;
+  const elementToTrack = getVisibleElement<HTMLDivElement>(SELECTORS.player) || document;
 
   if (!gPlayerObserver) {
     gPlayerObserver = new MutationObserver(async mutations => {
-      const elVideo = getVisibleElement<HTMLVideoElement>(Selectors.video);
+      const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
       if (getIsExit(mutations) || !elVideo) {
         return;
       }
-      const elPlayer = elVideo.closest(Selectors.player);
+      const elPlayer = elVideo.closest(SELECTORS.player);
 
       resizePlayerIfNeeded();
 
@@ -114,11 +114,11 @@ async function init(): Promise<void> {
   // When the user visits a /watch / /embed page,
   // the video's quality will be changed as soon as it loads
   new MutationObserver(async (_, observer) => {
-    const elVideo = getVisibleElement<HTMLVideoElement>(Selectors.video);
+    const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
     if (!elVideo) {
       return;
     }
-    const elPlayer = elVideo.closest(Selectors.player);
+    const elPlayer = elVideo.closest(SELECTORS.player);
 
     observer.disconnect();
 

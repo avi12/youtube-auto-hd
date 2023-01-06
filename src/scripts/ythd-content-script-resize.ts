@@ -1,7 +1,7 @@
 "use strict";
 
 import { initial } from "../shared-scripts/ythd-setup";
-import { Selectors } from "../shared-scripts/ythd-utilities";
+import { SELECTORS } from "../shared-scripts/ythd-utilities";
 
 window.ythdPlayerSize = initial.size;
 window.ythdPlayerAutoResize = initial.isResizeVideo;
@@ -12,13 +12,13 @@ function getCurrentSize(): number {
 }
 
 export async function resizePlayerIfNeeded(): Promise<void> {
-  const elSizePath = document.querySelector(Selectors.pathSizeToggle) as SVGPathElement;
+  const elSizePath = document.querySelector(SELECTORS.pathSizeToggle) as SVGPathElement;
   if (!elSizePath) {
     return;
   }
 
   const selSizeButtonOld = "button";
-  const selSizeButtonNew = Selectors.menuOption;
+  const selSizeButtonNew = SELECTORS.menuOption;
   const elSizeToggle = elSizePath.closest<HTMLButtonElement | HTMLDivElement>(
     `${selSizeButtonOld}, ${selSizeButtonNew}`
   );
