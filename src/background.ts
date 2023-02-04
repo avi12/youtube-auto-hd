@@ -12,4 +12,11 @@ chrome.permissions.contains(permissions, hasPermission => {
   }
 });
 
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+  const { version } = chrome.runtime.getManifest();
+  if (reason === "update" && version === "1.6.11") {
+    chrome.tabs.create({ url: "https://forms.gle/LpSumt1jFpeZpeKDA" });
+  }
+});
+
 export {};
