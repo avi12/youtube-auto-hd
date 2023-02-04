@@ -123,16 +123,16 @@ async function init(): Promise<void> {
     observer.disconnect();
 
     const isEmbed = location.pathname.startsWith("/embed/");
-    if (!isEmbed) {
-      injectDonationSectionWhenNeeded();
-      resizePlayerIfNeeded();
+    if (isEmbed) {
       await prepareToChangeQualityOnDesktop();
-      elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
-      elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
       return;
     }
 
+    injectDonationSectionWhenNeeded();
+    resizePlayerIfNeeded();
     await prepareToChangeQualityOnDesktop();
+    elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
+    elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
   }).observe(document, observerOptions);
 }
 

@@ -99,8 +99,7 @@ function changeQuality(qualityCustom?: VideoQuality): void {
     const iClosestQuality = qualitiesAvailable.findIndex(
       quality => quality <= window.ythdLastUserQualities[fpsStep]
     );
-    const isClosestQualityFound = iClosestQuality > -1;
-    if (isClosestQualityFound) {
+    if (iClosestQuality > -1) {
       applyQuality(iClosestQuality);
     }
   }
