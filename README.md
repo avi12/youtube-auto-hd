@@ -10,7 +10,7 @@ Available for:
 - [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
 - [Safari](https://apps.apple.com/us/app/id1546729687) - maintained by [carlosjeurissen](https://github.com/carlosjeurissen)
 
-![A screenshot from the extension's pop-up page](hhttps://user-images.githubusercontent.com/6422804/219903978-9907f412-363b-41ae-b847-00a0ff42914f.png)
+![A screenshot from the extension's pop-up page](https://user-images.githubusercontent.com/6422804/219903978-9907f412-363b-41ae-b847-00a0ff42914f.png)
 
 Made by [avi12](https://avi12.com)
 
