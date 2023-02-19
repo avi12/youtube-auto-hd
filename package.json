@@ -1,63 +1,81 @@
 {
-  "name": "youtube-auto-hd-fps",
-  "version": "1.6.11",
-  "homepage": "https://avi12.com",
-  "repository": "https://github.com/avi12/youtube-auto-hd",
+  "name": "youtube-auto-hd-plasmo",
+  "displayName": "YouTube Auto HD + FPS",
+  "version": "1.7.0",
+  "description": "Automatically set the video quality on YouTube according to its FPS!",
   "author": "avi12 <avi6106@gmail.com>",
-  "bugs": {
-    "email": "avi6106@gmail.com"
-  },
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c",
-    "pack": "web-ext build --overwrite-dest --artifacts-dir dist_packed --source-dir dist --filename youtube_auto_hd_fps-{version}.zip",
-    "pack-stores": "webext-store-incompat-fixer -i dist_packed/youtube_auto_hd_fps-{version}.zip --edge-locale-inclusions de,de_CH,de_AT,es,es_419,fr,fr_CA,hr,he,hu,it,ja,id,nl,pl,pt_BR,ru,zh_Hans,zh_Hant --stores chrome,edge,firefox,opera",
-    "pack-self": "zip-self -o dist_packed/youtube_auto_hd_fps-{version}-source.zip",
-    "build-pack": "pnpm run build && pnpm run pack && pnpm run pack-stores && pnpm run pack-self",
-    "build-for-firefox": "build-for-browser --i dist_packed/youtube_auto_hd_fps-{version}.zip --browser=firefox --source",
-    "set-version": "set-json-version -f package.json dist/manifest.json -v",
-    "validate": "svelte-check",
-    "run-browser": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=LKLuvoY6U0I --source-dir dist --verbose --target",
+    "dev": "plasmo dev --verbose",
+    "dev:firefox": "plasmo dev --verbose --target=firefox-mv3",
+    "build": "plasmo build",
+    "build:firefox": "plasmo build --target firefox-mv3",
+    "package-test": "plasmo package",
+    "package": "web-ext pack --source-dir build/chrome-mv3-dev --overwrite-dest --artifacts-dir dist_pack --filename youtube-auto-hd-fps-{version}.zip",
+    "package:firefox": "web-ext build --source-dir build/firefox-mv3-dev --overwrite-dest --artifacts-dir dist_pack --filename youtube-auto-hd-fps-{version}_adapted_for_firefox.zip",
+    "build-pack": "pnpm build && pnpm package-test",
+    "build-pack:firefox": "pnpm build:firefox && pnpm package",
+    "build-pack:all": "pnpm build-pack && pnpm build-pack:firefox",
+    "run-browser": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=aiSla-5xq3w --source-dir build/chrome-mv3-dev --verbose --target",
     "run-chromium": "pnpm run-browser chromium",
-    "run-edge-windows": "\"\"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"\" https://www.youtube.com/watch?v=dQw4w9WgXcQ --load-extension=%cd%\\dist"
+    "run-chromium:rtl": "pnpm run-browser chromium --args=\"--lang=he\"",
+    "run-firefox": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=aiSla-5xq3w --source-dir build/firefox-mv3-dev --verbose --target firefox-desktop",
+    "run-edge-windows": "pnpm run-browser chromium --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\""
+  },
+  "dependencies": {
+    "@mdi/js": "^7.1.96",
+    "@plasmohq/storage": "^1.0.5",
+    "nouislider": "^15.7.0",
+    "plasmo": "0.65.1-lab.3",
+    "sass": "^1.58.2",
+    "svelte": "3.55.1",
+    "svelte-preprocess": "5.0.1"
   },
   "devDependencies": {
-    "@mdi/js": "^7.0.96",
-    "@rollup/plugin-commonjs": "^22.0.2",
-    "@rollup/plugin-node-resolve": "~13.3.0",
-    "@rollup/plugin-typescript": "^8.3.4",
-    "@sveltejs/eslint-config": "github:sveltejs/eslint-config",
-    "@tsconfig/svelte": "^3.0.0",
-    "@types/chrome": "^0.0.193",
-    "@typescript-eslint/eslint-plugin": "^5.33.1",
-    "@typescript-eslint/parser": "^5.33.1",
-    "build-for-browser": "github:avi12/build-for-browser",
-    "dotenv": "^16.0.1",
-    "eslint": "^8.22.0",
+    "@plasmohq/prettier-plugin-sort-imports": "3.6.1",
+    "@types/chrome": "0.0.213",
+    "@types/node": "18.14.0",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "autoprefixer": "^10.4.13",
+    "eslint": "^8.34.0",
     "eslint-config-avi12": "github:avi12/eslint-config-avi12",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-svelte3": "^4.0.0",
-    "postcss": "^8.4.16",
-    "prettier": "^2.7.1",
-    "prettier-plugin-svelte": "^2.7.0",
-    "rollup": "~2.78.0",
-    "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-css-only": "^3.1.0",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-svelte": "~7.1.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "sass": "^1.54.4",
-    "set-json-version": "^2.1.0",
-    "stylelint": "^14.10.0",
-    "stylelint-config-ccb": "^1.31.1",
-    "svelte": "~3.49.0",
-    "svelte-check": "^2.8.0",
-    "svelte-materialify": "^0.3.11",
-    "svelte-preprocess": "^4.10.7",
-    "tslib": "^2.4.0",
-    "typescript": "^4.7.4",
-    "web-ext": "^7.2.0",
-    "webext-store-incompat-fixer": "0.3.1",
-    "zip-self": "^0.5.2"
+    "postcss": "^8.4.21",
+    "prettier": "2.8.4",
+    "prettier-plugin-svelte": "^2.9.0",
+    "tailwindcss": "^3.2.7",
+    "typescript": "4.9.5",
+    "web-ext": "^7.5.0"
+  },
+  "manifest": {
+    "description": "__MSG_cj_i18n_02146__",
+    "default_locale": "en",
+    "host_permissions": [
+      "https://youtube.com/*",
+      "https://*.youtube.com/*",
+      "https://www.youtube-nocookie.com/*",
+      "https://youtube.googleapis.com/*"
+    ],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "$FIREFOX_EXT_ID"
+      }
+    },
+    "options_ui": {
+      "browser_style": true,
+      "open_in_tab": false
+    },
+    "permissions": [
+      "cookies"
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "assets/*"
+        ],
+        "matches": [
+          "chrome://*/*"
+        ]
+      }
+    ]
   }
 }

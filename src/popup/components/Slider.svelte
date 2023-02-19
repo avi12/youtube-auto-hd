@@ -1,41 +1,103 @@
 <script lang="ts">
-  import { Slider } from "svelte-materialify";
-  import type { VideoQuality } from "../../types";
+  import noUiSlider, { API } from "nouislider";
+  import { onMount } from "svelte";
 
-  export let label: string;
-  export let values: VideoQuality[] = [];
-  export let value: VideoQuality;
+  import "nouislider/dist/nouislider.css";
 
-  const iValue = values.indexOf(value);
+  import type { VideoQuality } from "~types";
 
-  function onInput(e): void {
-    value = values.find((_, i) => i === Number(e.detail.value[0]));
-  }
+  // eslint-disable-next-line
+  export let values: any[] = [];
+  // eslint-disable-next-line
+  export let value: any = 0;
 
-  function getThumb(iValue: number): string {
-    const qualityNumber = values[iValue];
-    return `${qualityNumber}p`;
-  }
+  let index = values.indexOf(value);
+  let elSlider: HTMLDivElement;
+  let slider: API;
+
+  onMount(() => {
+    slider = noUiSlider.create(elSlider, {
+      start: values[0],
+      connect: [true, false],
+      format: {
+        from() {
+          return index;
+        },
+        to(i: number) {
+          return values[i];
+        }
+      },
+      range: {
+        min: 0,
+        max: values.length - 1
+      },
+      step: 1,
+      direction: document.querySelector(".rtl") ? "rtl" : "ltr"
+    });
+    slider.on("update", (pValues: VideoQuality[]) => {
+      value = pValues[0];
+      index = values.indexOf(value);
+    });
+  });
 </script>
 
-<Slider
-  color="red"
-  max={values.length - 1}
-  min={0}
-  on:update={onInput}
-  step={1}
-  thumb={getThumb}
-  value={iValue}>
-  <slot>{label}</slot>
-</Slider>
+<div class="slider">
+  <div class="slider__label">
+    <slot />
+  </div>
+  <!--  prettier-ignore -->
+  <div bind:this={elSlider} class="slider-element"></div>
+</div>
 
-<style>
-/*noinspection CssUnusedSymbol*/
-:global(.s-slider__tooltip::before) {
-  --size: 38px;
+<style global lang="scss">
+  .slider {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 
-  width: var(--size, 38px) !important;
-  height: var(--size, 38px) !important;
-  background: #f44336 !important;
-}
+    .slider-element.slider-element {
+      flex: 1;
+      height: 2px;
+      background: var(--slider-track-uncover-color);
+
+      // Overrides for noUiSlider
+      border: none;
+      box-shadow: none;
+
+      .noUi-connect {
+        background: var(--slider-track-cover-color);
+      }
+
+      .noUi-handle {
+        width: 16px;
+        height: 16px;
+        top: -7px;
+        right: -8px;
+        border-radius: 50%;
+        background: var(--slider-track-cover-color);
+
+        // Overrides for noUiSlider
+        border: none;
+        box-shadow: none;
+
+        // Overrides for noUiSlider
+        &::before,
+        &::after {
+          content: unset;
+        }
+      }
+    }
+
+    &__label {
+      flex: 1;
+    }
+  }
+
+  .noUi-rtl {
+    .noUi-handle {
+      // Overrides for noUiSlider
+      left: unset !important;
+    }
+  }
 </style>

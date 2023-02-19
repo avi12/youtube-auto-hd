@@ -1,182 +1,184 @@
 <script lang="ts">
-  import { Switch } from "svelte-materialify";
-  import { initial } from "../../shared-scripts/ythd-setup";
-  import { getI18n } from "../../shared-scripts/ythd-utilities";
-  import type { VideoAutoResize, VideoSize } from "../../types";
+  import { Storage } from "@plasmohq/storage";
+  import { onMount } from "svelte";
 
-  export let sizeVideo: VideoSize = initial.size;
-  export let isResizeVideo: VideoAutoResize = initial.isResizeVideo;
+
+  import Switch from "~popup/components/Switch.svelte";
+  import { initial } from "~shared-scripts/ythd-setup";
+  import { getI18n } from "~shared-scripts/ythd-utils";
+  import type { VideoAutoResize, VideoSize } from "~types";
 
   const i18n: { [key: string]: string } = {
     labelIsResizeVideo: getI18n("cj_i18n_06568", "Auto-resize videos"),
-    labelSubHeaderSize: getI18n("cj_i18n_06859", "Player size"),
-    labelVideoSize: getI18n("cj_i18n_06567", "Keep size at")
+    labelVideoSize: getI18n("cj_i18n_06567", "Keep size at"),
+    labelSizeSmall: getI18n("cj_i18n_07097", "Default view"),
+    labelSizeLarge: getI18n("cj_i18n_07098", "Cinema view")
   };
 
-  function resizeVideo(e): void {
+  export let isResizeVideo: VideoAutoResize = initial.isResizeVideo;
+  export let sizeVideo: VideoSize = initial.size;
+
+  let elContainer: Element;
+  let isRTL: boolean;
+  onMount(async () => {
+    isRTL = Boolean(document.querySelector(".rtl"));
+  });
+
+  function attachFocusToParent(e: KeyboardEvent): void {
+    // https://web.dev/control-focus-with-tabindex/#create-accessible-components-with-roving-tabindex
     switch (e.key) {
-      case "Enter":
-        {
-          const sizeNew: `${VideoSize}` = e.target.firstElementChild.dataset.videoSize;
-          sizeVideo = Number(sizeNew) as VideoSize;
-        }
-        break;
-
-      case "ArrowRight":
-        {
-          sizeVideo = 1;
-          elSizeLarge.focus();
-        }
-        break;
-
       case "ArrowLeft":
-        {
-          sizeVideo = 0;
-          elSizeSmall.focus();
+        if (isRTL) {
+          focusNextItem();
+        } else {
+          focusPrevItem();
+        }
+        break;
+      case "ArrowRight":
+        if (isRTL) {
+          focusPrevItem();
+        } else {
+          focusNextItem();
         }
         break;
     }
   }
 
-  function onTabToSize(e): void {
-    if (e.key !== "Tab" || e.shiftKey) {
-      return;
-    }
-
-    if (sizeVideo) {
-      elSizeLarge.focus();
-    } else {
-      elSizeSmall.focus();
+  function focusPrevItem(): void {
+    const elBox = document.activeElement.previousElementSibling as HTMLButtonElement;
+    if (elBox) {
+      activate(elBox);
     }
   }
 
-  $: {
-    // noinspection TypeScriptUnresolvedFunction
-    chrome.storage.sync.set({ size: sizeVideo });
-  }
-
-  $: {
-    // noinspection TypeScriptUnresolvedFunction
-    chrome.storage.sync.set({ autoResize: isResizeVideo });
-  }
-
-  let elSizeSmall: HTMLDivElement;
-  let elSizeLarge: HTMLDivElement;
-
-  function getCookiePermission(e: Event): void {
-    const { checked } = e.target as HTMLInputElement;
-    if (!checked) {
-      isResizeVideo = false;
-      return;
+  function focusNextItem(): void {
+    const elBox = document.activeElement.nextElementSibling as HTMLButtonElement;
+    if (elBox) {
+      activate(elBox);
     }
+  }
 
-    chrome.permissions.request({ permissions: ["cookies"] }, isGranted => {
-      if (isGranted) {
-        isResizeVideo = true;
-        chrome.cookies.set({
-          url: "https://youtube.com/",
-          name: "wide",
-          value: sizeVideo.toString()
-        });
-      }
+  function activate(elBox: HTMLButtonElement): void {
+    const elBoxes = [...elContainer.querySelectorAll<HTMLButtonElement[]>(".size__box")];
+    elBoxes.forEach(el => {
+      el.tabIndex = -1;
     });
+
+    elBox.tabIndex = 0;
+    elBox.focus();
+  }
+
+  const STORAGE = new Storage({ area: "sync" });
+
+  $: {
+    chrome.cookies.set({
+      url: "https://youtube.com/",
+      name: "wide",
+      value: sizeVideo.toString()
+    });
+    STORAGE.set("autoResize", isResizeVideo);
+  }
+
+  $: {
+    STORAGE.set("size", sizeVideo);
   }
 </script>
 
-<div class="subheader">{i18n.labelSubHeaderSize}</div>
-<Switch on:change={getCookiePermission} checked={isResizeVideo} color="red" on:keydown={onTabToSize}>
-  {i18n.labelIsResizeVideo}
-</Switch>
+<article class="control-section">
+  <Switch bind:checked={isResizeVideo}>{i18n.labelIsResizeVideo}</Switch>
 
-{#if isResizeVideo}
-  <div class="size">
-    <div class="size__label">{i18n.labelVideoSize}:</div>
-    <div
-      class="size__box-wrapper"
-      class:size__box-wrapper--selected={sizeVideo === 0}
-      on:keydown={resizeVideo}
-      bind:this={elSizeSmall}
-      on:click={() => (sizeVideo = 0)}
-    >
-      <!--suppress CheckEmptyScriptTag -->
-      <div aria-label="Small player size" tabindex="0" class="size__box" data-video-size="0" />
-    </div>
-    <div
-      class="size__box-wrapper"
-      class:size__box-wrapper--selected={sizeVideo === 1}
-      on:keydown={resizeVideo}
-      bind:this={elSizeLarge}
-      on:click={() => (sizeVideo = 1)}
-    >
-      <!--suppress CheckEmptyScriptTag -->
-      <div aria-label="Large player size" tabindex="0" class="size__box" data-video-size="1" />
-    </div>
-  </div>
-{/if}
+  {#if isResizeVideo}
+    <section class="size">
+      <div class="size__label">{i18n.labelVideoSize}</div>
 
-<style>
+      <section class="size__inner" on:keydown={attachFocusToParent} bind:this={elContainer}>
+        <button
+          class="size__box"
+          aria-hidden="true"
+          data-size="small"
+          aria-label={i18n.labelSizeSmall}
+          class:size__box--selected={sizeVideo === 0}
+          on:click={() => (sizeVideo = 0)}
+          tabindex="0">
+          <!--suppress HtmlUnknownTag -->
+          <!-- prettier-ignore -->
+          <div class="size__box-rectangle"></div>
+        </button>
+        <button
+          class="size__box"
+          aria-hidden="true"
+          data-size="large"
+          aria-label={i18n.labelSizeLarge}
+          class:size__box--selected={sizeVideo === 1}
+          on:click={() => (sizeVideo = 1)}
+          tabindex="-1">
+          <!--suppress HtmlUnknownTag -->
+          <!-- prettier-ignore -->
+          <div class="size__box-rectangle"></div>
+        </button>
+      </section>
+    </section>
+  {/if}
+</article>
+
+<style lang="scss">
   .size {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 1rem;
+
+    &__inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &__label {
+      flex: 1;
+      padding-inline-end: 1rem;
+    }
+
+    &__box {
+      display: grid;
+      place-items: center;
+      width: 50px;
+      height: 42px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      background-color: transparent;
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+
+      &:hover {
+        border-color: var(--outline-size-box-wrapper);
+      }
+
+      &-rectangle {
+        border: 1px solid var(--outline-size-box);
+        border-radius: 4px;
+        transition: border-color 0.2s ease-in-out;
+      }
+
+      &--selected {
+        .size__box-rectangle {
+          border-color: var(--outline-size-box-selected);
+        }
+      }
+    }
   }
 
-  .size__label {
-    flex: 1;
-    padding-inline-end: 16px;
+  [data-size="small"] {
+    .size__box-rectangle {
+      width: 21px;
+      height: 14px;
+    }
   }
 
-  .size__box-wrapper {
-    display: flex;
-    flex: none;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 42px;
-    border: 1px solid transparent;
-    border-radius: 5px;
-    background: transparent;
-    cursor: pointer;
-    transition: 200ms ease-in-out;
-  }
-
-  /*noinspection CssUnusedSymbol*/
-  :global(.theme--dark) .size__box {
-    outline-color: hsl(0, 0%, 80%);
-  }
-
-  .size__box-wrapper:focus-within {
-    border-color: blue;
-  }
-
-  .size__box-wrapper--selected {
-    border: 1px solid red;
-    background-color: hsla(0, 73%, 45%, 0.2);
-  }
-
-  /*noinspection CssUnusedSymbol*/
-  :global(.theme--dark) .size__box-wrapper--selected {
-    background-color: hsla(0, 73%, 85%, 0.4);
-  }
-
-  .size__box-wrapper:not(.size__box-wrapper--selected):hover {
-    background: hsl(0, 0%, 92%);
-  }
-
-  /*noinspection CssUnusedSymbol*/
-  :global(.theme--dark) .size__box-wrapper:not(.size__box-wrapper--selected):hover {
-    background: hsl(0, 0%, 25%);
-  }
-
-  [data-video-size="0"] {
-    width: 13px;
-    height: 8px;
-    outline: 2px solid black;
-  }
-
-  [data-video-size="1"] {
-    width: 22px;
-    height: 15px;
-    outline: 3px solid black;
+  [data-size="large"] {
+    .size__box-rectangle {
+      width: 34px;
+      height: 26px;
+    }
   }
 </style>

@@ -5,10 +5,16 @@
     "sourceType": "module",
     "lib": ["dom", "esnext"]
   },
+  "rules": {
+    "@typescript-eslint/no-var-requires": "off"
+  },
   "overrides": [
     {
       "files": ["*.svelte"],
-      "processor": "svelte3/svelte3"
+      "processor": "svelte3/svelte3",
+      "rules": {
+        "security-anchor-rel-noreferrer": "off"
+      }
     }
   ],
   "env": {

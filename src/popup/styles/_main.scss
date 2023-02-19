@@ -1,0 +1,48 @@
+@tailwind utilities;
+
+// Chromium browsers
+::-webkit-scrollbar {
+  width: 0;
+}
+
+// Firefox
+html {
+  scrollbar-width: none;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--hr-color);
+}
+
+// Global
+body {
+  width: 280px;
+  font-size: 0.85rem;
+  font-family: Roboto, Arial, sans-serif;
+  padding: 12px 18px 16px;
+  overflow: hidden;
+  user-select: none;
+  margin: 0 auto;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.control-section {
+  margin-top: 16px;
+}
+
+.options-page {
+  .control-section:first-child {
+    margin-top: 0;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: var(--text-color-primary);
+    background-color: var(--bg-color);
+  }
+}

@@ -10,9 +10,11 @@ Available for:
 - [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
 - [Safari](https://apps.apple.com/us/app/id1546729687) - maintained by [carlosjeurissen](https://github.com/carlosjeurissen)
 
-![A screenshot from the extension's pop-up page](https://user-images.githubusercontent.com/6422804/113500084-e26b2a00-9523-11eb-9e6b-5e25a4c6eba0.png)
+![A screenshot from the extension's pop-up page](hhttps://user-images.githubusercontent.com/6422804/219903978-9907f412-363b-41ae-b847-00a0ff42914f.png)
 
-Made by [avi12](https://avi12.com).
+Made by [avi12](https://avi12.com)
+
+Powered by [Plasmo](https://github.com/plasmohq/plasmo)
 
 ## Known issue
 
@@ -49,7 +51,7 @@ Install [Node.js](https://nodejs.org) and [PNPM](https://pnpm.js.org/en/installa
 pnpm i
 ```
 
-## Start Rollup for development
+## Start the dev server
 
 ```shell script
 pnpm dev
@@ -63,18 +65,23 @@ pnpm dev
 pnpm run-chromium
 ```
 
+### Chromium/Chrome RTL
+
+```shell script
+pnpm run-chromium:rtl
+```
+
 ### Edge on Windows 10/11
 
 ```shell
 pnpm run-edge-windows
 ```
 
-### Browsers that don't support Manifest v3
+### Firefox
 
-1. Build the extension for Firefox/Opera (see below).
-2. Open the extensions page in that browser.
-3. Enable the developer mode (top-right corner usually).
-4. Either drag-drop the browser-compatible ZIP onto the browser or click "Load unpacked extension" and choose it.
+```shell
+pnpm run-firefox
+```
 
 ### Mobile/tablet
 
@@ -83,23 +90,24 @@ pnpm run-edge-windows
    1. If you're creating a phone emulator, choose one that has [Play Store preinstalled](https://user-images.githubusercontent.com/6422804/167658974-9ec9d13f-d297-4e8b-85d6-376809f34aab.png)
    2. If you're creating a tablet emulator, after creating, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) to have Play Store preinstalled
 3. Download [Kiwi browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser). I recommend creating a Google account specifically to be used with the emulator
-4. Run `pnpm run pack`
+4. Run `pnpm build` and `pnpm package-test`
 5. Push the ZIP to the emulator. If using PowerShell:
    ```powershell
-   $zip = "youtube_auto_hd_fps_{version}.zip"; # where {version} is the version number of the extension
-   $destAndroid = "storage/emulated/Download/$zip";
+   $zip = "chrome-mv3-prod.zip";
+   $destAndroid = "/storage/emulated/0/Download/$zip";
    adb shell rm $destAndroid;
-   adb push "dist_packed/$zip" $destAndroid;
+   adb push "build/$zip" $destAndroid;
    ```
    1. If you're running both emulators, use argument `-s ID` to specify the ID of the emulator you want to interact with  
       E.g. `adb -s ID shell ...`
    2. Find out the IDs using `adb devices`
 6. <details>
-   <summary>Sideload the extension on Kiwi</summary>
+   <summary>Side-load the extension on Kiwi</summary>
+   <!--suppress HtmlDeprecatedAttribute -->
    <img align="top" src="https://user-images.githubusercontent.com/6422804/167670341-a0cae554-e922-40b3-b8ed-7bec1ebf17bc.png" alt="Choose zip from storage">
    </details>
 7. Select the ZIP in the Download folder
-8. To reload, you must first remove the extension, re-run `pnpm run pack`, and then load the ZIP again
+8. To reload, you must first remove the extension, re-run `pnpm package-test`, and then load the ZIP again
 
 #### Pro-tip: run the emulator from the CLI:
 
@@ -113,10 +121,10 @@ emulator @DEVICE_NAME
 pnpm build-pack
 ```
 
-### Build for Firefox (first run `pnpm build-pack`)
+### Build & pack for Firefox
 
 ```shell
-pnpm build-for-firefox
+pnpm build-pack:firefox
 ```
 
 ## Contribution
