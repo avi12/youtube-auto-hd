@@ -1,11 +1,7 @@
 {
 "cj_i18n_00354":{"message":"Lahjoita"},
-"cj_i18n_01440":{"message":"Asetukset"},
 "cj_i18n_01605":{"message":"Auta käännöksissä"},
 "cj_i18n_02146":{"message":"Aseta automaattisesti videon laatu."},
-"cj_i18n_02147":{"message":"Näytä laatu"},
-"cj_i18n_06859":{"message":"Soittimen koko"},
 "cj_i18n_06860":{"message":"Tue kehittäjää"},
-"cj_i18n_06861":{"message":"Arvioi lisäosa"},
-"cj_i18n_06965":{"message":"Auta paikallistamisessa"}
+"cj_i18n_06861":{"message":"Arvioi lisäosa"}
 }

@@ -1,24 +1,15 @@
 {
 "cj_i18n_00354":{"message":"Doner"},
-"cj_i18n_01440":{"message":"Præferencer"},
 "cj_i18n_01605":{"message":"Hjelp med oversettelser"},
 "cj_i18n_02146":{"message":"Angi videokvaliteten på YouTube automatisk i henhold til deres FPS!"},
-"cj_i18n_02147":{"message":"Se kvalitet"},
 "cj_i18n_02148":{"message":"FPS videoer"},
 "cj_i18n_02149":{"message":"FPS og under"},
-"cj_i18n_02152":{"message":"Videoer vil spille av på 30 FPS for denne kvaliteten."},
 "cj_i18n_06567":{"message":"Behold størrelse på"},
 "cj_i18n_06568":{"message":"Automatisk endre størrelse på videoer"},
 "cj_i18n_06858":{"message":"Alle framerates"},
-"cj_i18n_06859":{"message":"Spillerstørrelse"},
 "cj_i18n_06860":{"message":"Støtt utvikleren"},
 "cj_i18n_06861":{"message":"Ranger utvidelsen"},
 "cj_i18n_06862":{"message":"Bruk samme kvalitet for alle bildefrekvenser"},
-"cj_i18n_06965":{"message":"Hjelp med å lokalisere"},
-"cj_i18n_07096":{"message":"Åpne meny for alternativer"},
 "cj_i18n_07097":{"message":"Standard visning"},
-"cj_i18n_07098":{"message":"Kino-visning"},
-"cj_i18n_07099":{"message":"__fps_number__ FPS og lavere"},
-"cj_i18n_07100":{"message":"__fps_number__ FPS opp til __fps_number_b__ FPS"},
-"cj_i18n_07101":{"message":"__fps_number__ FPS og opp"}
+"cj_i18n_07098":{"message":"Kino-visning"}
 }
