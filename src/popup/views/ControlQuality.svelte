@@ -13,7 +13,7 @@
     labelAllFramerates: getI18n("cj_i18n_06858", "All frame rates"),
     fpsAndBelow: getI18n("cj_i18n_02149", "FPS and below"),
     labelQualityEnd: getI18n("cj_i18n_02148", "FPS videos"),
-    fpsWarning: getI18n("cj_i18n_02152", "Videos will play at <= 30 FPS for this quality")
+    fpsWarning: getI18n("cj_i18n_07265", "Videos will play at up to 30 FPS for this quality")
   };
 
   export let qualitiesStored: QualityFpsPreferences = initial.qualities;

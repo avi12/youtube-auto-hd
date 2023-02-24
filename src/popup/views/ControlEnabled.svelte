@@ -8,7 +8,7 @@
   const storage = new Storage({ area: "local" });
 
   const i18n: { [key: string]: string } = {
-    labelEnabled: getI18n("", "Extension is on")
+    labelEnabled: getI18n("cj_i18n_07266", "Extension is on")
   };
 
   $: {
