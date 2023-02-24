@@ -71,12 +71,15 @@
   const STORAGE = new Storage({ area: "sync" });
 
   $: {
+    STORAGE.set("autoResize", isResizeVideo);
+  }
+
+  $: if (isResizeVideo) {
     chrome.cookies.set({
       url: "https://youtube.com/",
       name: "wide",
       value: sizeVideo.toString()
     });
-    STORAGE.set("autoResize", isResizeVideo);
   }
 
   $: {
