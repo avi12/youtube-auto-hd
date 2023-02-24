@@ -8,7 +8,8 @@ Available for:
 - [Mozilla Firefox](https://addons.mozilla.org/addon/youtube-auto-hd-fps) ![Mozilla Add-on](https://img.shields.io/amo/users/youtube-auto-hd-fps?color=white&label=users&style=flat-square)
 - [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom) ![users count](https://img.shields.io/badge/dynamic/json?label=users&query=activeInstallCount&style=flat-square&color=white&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/ggnepcoiimddpmjaoejhdfppjbcnfaom)
 - [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
-- [Safari](https://apps.apple.com/us/app/id1546729687) - maintained by [carlosjeurissen](https://github.com/carlosjeurissen)
+- [Safari](https://apps.apple.com/us/app/id1546729687) - maintained
+  by [carlosjeurissen](https://github.com/carlosjeurissen)
 
 ![A screenshot from the extension's pop-up page](https://user-images.githubusercontent.com/6422804/219903978-9907f412-363b-41ae-b847-00a0ff42914f.png)
 
@@ -26,20 +27,18 @@ reload YouTube web pages, the extension cannot get the data regarding the user-p
 
 ### A kind-of working solution
 
-To provide a smooth user experience, instead of forcing the user to reload all of the already-open web pages, I decided
-to keep track of the last qualities that were fetched, and use them.
+To provide a smooth user experience, I decided to use the last qualities that were fetched.
 
 This solution is not perfect, since if the user wants to update the quality of the videos in the currently-open web
-pages using the popup page (as seen above), it will not update dynamically.  
-However, this is the only viable solution, since the alternative one would be to auto-reload web pages, which would lead
-to a bad user experience.
+pages using the popup page, it will not update dynamically.  
+However, this is the only viable solution, as the alternative would be to auto-reload web pages, which would result in a
+bad user experience.
 
 ## Translating
 
 You can translate the extension to your own language by
 filling [this form](https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate).  
-After filling, you will get an email, which will grant you access to a spreadsheet, in which you can contribute your
-translations.
+Filling will grant you access to a Google Sheets spreadsheet via email, in which you can contribute your translations.
 
 ## Requirements for setting up
 
@@ -53,8 +52,16 @@ pnpm i
 
 ## Start the dev server
 
+### Chromium browsers
+
 ```shell script
 pnpm dev
+```
+
+### Firefox
+
+```shell script
+pnpm build:firefox
 ```
 
 ## Running
@@ -87,9 +94,13 @@ pnpm run-firefox
 
 1. Install [Android Studio](https://developer.android.com/studio) on your operating system
 2. Create an AVD (Android Virtual Device)
-   1. If you're creating a phone emulator, choose one that has [Play Store preinstalled](https://user-images.githubusercontent.com/6422804/167658974-9ec9d13f-d297-4e8b-85d6-376809f34aab.png)
-   2. If you're creating a tablet emulator, after creating, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) to have Play Store preinstalled
-3. Download [Kiwi browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser). I recommend creating a Google account specifically to be used with the emulator
+   1. If you're creating a phone emulator, choose one that
+      has [Play Store preinstalled](https://user-images.githubusercontent.com/6422804/167658974-9ec9d13f-d297-4e8b-85d6-376809f34aab.png)
+   2. If you're creating a tablet emulator, after
+      creating, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) to have Play Store
+      preinstalled
+3. Download [Kiwi browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser). I recommend creating
+   a Google account specifically to be used with the emulator
 4. Run `pnpm build` and `pnpm package-test`
 5. Push the ZIP to the emulator. If using PowerShell:
    ```powershell
@@ -98,7 +109,8 @@ pnpm run-firefox
    adb shell rm $destAndroid;
    adb push "build/$zip" $destAndroid;
    ```
-   1. If you're running both emulators, use argument `-s ID` to specify the ID of the emulator you want to interact with  
+   1. If you're running both emulators, use argument `-s ID` to specify the ID of the emulator you want to interact
+      with  
       E.g. `adb -s ID shell ...`
    2. Find out the IDs using `adb devices`
 6. <details>
