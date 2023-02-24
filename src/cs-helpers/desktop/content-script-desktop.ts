@@ -149,6 +149,10 @@ export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> 
   window.ythdLastUserQualities = await getPreferredQualities();
 
   const elVideo = (e?.target ?? getVisibleElement(SELECTORS.video)) as HTMLVideoElement;
+  if (!elVideo) {
+    return;
+  }
+
   const elPlayer = getPlayerDiv(elVideo);
   const elSettings = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings);
 
