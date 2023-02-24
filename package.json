@@ -8,7 +8,7 @@
     "dev": "plasmo dev --verbose",
     "dev:firefox": "plasmo dev --verbose --target=firefox-mv3",
     "build": "plasmo build",
-    "build:firefox": "plasmo build --target firefox-mv3",
+    "build:firefox": "plasmo build --target=firefox-mv3",
     "package-test": "plasmo package",
     "package": "web-ext build --source-dir build/chrome-mv3-prod --overwrite-dest --artifacts-dir dist_pack --filename youtube-auto-hd-fps-{version}.zip",
     "package:firefox": "web-ext build --source-dir build/firefox-mv3-prod --overwrite-dest --artifacts-dir dist_pack --filename youtube-auto-hd-fps-{version}_adapted_for_firefox.zip",
