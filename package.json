@@ -60,7 +60,7 @@
     ],
     "browser_specific_settings": {
       "gecko": {
-        "id": "$FIREFOX_EXT_ID"
+        "id": "$PLASMO_PUBLIC_FIREFOX_EXT_ID"
       }
     },
     "options_ui": {
