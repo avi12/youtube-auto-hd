@@ -10,8 +10,8 @@
     "build": "plasmo build",
     "build:firefox": "plasmo build --target firefox-mv3",
     "package-test": "plasmo package",
-    "package": "web-ext pack --source-dir build/chrome-mv3-dev --overwrite-dest --artifacts-dir dist_pack --filename youtube-auto-hd-fps-{version}.zip",
-    "package:firefox": "web-ext build --source-dir build/firefox-mv3-dev --overwrite-dest --artifacts-dir dist_pack --filename youtube-auto-hd-fps-{version}_adapted_for_firefox.zip",
+    "package": "web-ext build --source-dir build/chrome-mv3-prod --overwrite-dest --artifacts-dir dist_pack --filename youtube-auto-hd-fps-{version}.zip",
+    "package:firefox": "web-ext build --source-dir build/firefox-mv3-prod --overwrite-dest --artifacts-dir dist_pack --filename youtube-auto-hd-fps-{version}_adapted_for_firefox.zip",
     "build-pack": "pnpm build && pnpm package-test",
     "build-pack:firefox": "pnpm build:firefox && pnpm package",
     "build-pack:all": "pnpm build-pack && pnpm build-pack:firefox",
@@ -19,26 +19,29 @@
     "run-chromium": "pnpm run-browser chromium",
     "run-chromium:rtl": "pnpm run-browser chromium --args=\"--lang=he\"",
     "run-firefox": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=aiSla-5xq3w --source-dir build/firefox-mv3-dev --verbose --target firefox-desktop",
-    "run-edge-windows": "pnpm run-browser chromium --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\""
+    "run-edge-windows": "pnpm run-browser chromium --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"",
+    "run-chromium:screenshot": "web-ext run --no-config-discovery --start-url about:blank --source-dir build/chrome-mv3-prod --verbose --target chromium"
   },
   "dependencies": {
     "@mdi/js": "^7.1.96",
     "@plasmohq/storage": "^1.0.5",
     "nouislider": "^15.7.0",
-    "plasmo": "0.65.1-lab.3",
-    "sass": "^1.58.2",
+    "plasmo": "0.65.2",
+    "sass": "^1.58.3",
     "svelte": "3.55.1",
     "svelte-preprocess": "5.0.1"
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.1",
-    "@types/chrome": "0.0.213",
-    "@types/node": "18.14.0",
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
-    "@typescript-eslint/parser": "^5.52.0",
+    "@sveltejs/eslint-config": "github:sveltejs/eslint-config",
+    "@types/chrome": "0.0.217",
+    "@types/node": "18.14.1",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.34.0",
     "eslint-config-avi12": "github:avi12/eslint-config-avi12",
+    "eslint-plugin-svelte3": "^4.0.0",
     "postcss": "^8.4.21",
     "prettier": "2.8.4",
     "prettier-plugin-svelte": "^2.9.0",
@@ -73,7 +76,7 @@
           "assets/*"
         ],
         "matches": [
-          "chrome://*/*"
+          "<all_urls>"
         ]
       }
     ]
