@@ -11,10 +11,7 @@
   "overrides": [
     {
       "files": ["*.svelte"],
-      "processor": "svelte3/svelte3",
-      "rules": {
-        "security-anchor-rel-noreferrer": "off"
-      }
+      "processor": "svelte3/svelte3"
     }
   ],
   "env": {
