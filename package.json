@@ -22,7 +22,8 @@
     "run-firefox": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=aiSla-5xq3w --source-dir build/firefox-mv3-prod --verbose --target firefox-desktop",
     "run-edge:windows": "pnpm run-browser chromium --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"",
     "run-opera:windows": "pnpm run-browser chromium --chromium-binary \"%LocalAppData%\\Programs\\Opera\\opera.exe\"",
-    "run-chromium:screenshot": "web-ext run --no-config-discovery --start-url about:blank --source-dir build/chrome-mv3-prod --verbose --target chromium"
+    "run-chromium:screenshot": "web-ext run --no-config-discovery --start-url about:blank --source-dir build/chrome-mv3-prod --verbose --target chromium",
+    "run-firefox:screenshot": "web-ext run --no-config-discovery --start-url about:blank --source-dir build/firefox-mv3-prod --verbose --target firefox-desktop"
   },
   "dependencies": {
     "@mdi/js": "^7.1.96",
