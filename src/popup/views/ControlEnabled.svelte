@@ -5,14 +5,14 @@
   import { isExtensionEnabled } from "~popup/store";
   import { getI18n } from "~shared-scripts/ythd-utils";
 
-  const storage = new Storage({ area: "local" });
+  const storageLocal = new Storage({ area: "local" });
 
   const i18n: { [key: string]: string } = {
     labelEnabled: getI18n("cj_i18n_07266", "Extension is on")
   };
 
   $: {
-    storage.set("isExtensionEnabled", $isExtensionEnabled);
+    storageLocal.set("isExtensionEnabled", $isExtensionEnabled);
   }
 </script>
 

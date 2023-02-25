@@ -22,8 +22,7 @@
   let qualitySelected = qualitiesSelected[0];
   const qualitiesReversed = qualities.reverse();
   const fpsList = fpsSupported.reverse();
-
-  const STORAGE = new Storage({ area: "local" });
+  const storageLocal = new Storage({ area: "local" });
 
   $: {
     if (isSameQualityForAllFps) {
@@ -32,7 +31,7 @@
       }
     }
 
-    STORAGE.set("qualities", qualitiesStored);
+    storageLocal.set("qualities", qualitiesStored);
   }
 
   function fpsToRange(i: number): string {

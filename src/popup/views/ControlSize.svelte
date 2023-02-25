@@ -18,6 +18,8 @@
   export let isResizeVideo: VideoAutoResize = initial.isResizeVideo;
   export let sizeVideo: VideoSize = initial.size;
 
+  const storageSync = new Storage({ area: "sync" });
+
   let elContainer: Element;
   let isRTL: boolean;
   onMount(async () => {
@@ -68,10 +70,8 @@
     elBox.focus();
   }
 
-  const STORAGE = new Storage({ area: "sync" });
-
   $: {
-    STORAGE.set("autoResize", isResizeVideo);
+    storageSync.set("autoResize", isResizeVideo);
   }
 
   $: if (isResizeVideo) {
@@ -83,7 +83,7 @@
   }
 
   $: {
-    STORAGE.set("size", sizeVideo);
+    storageSync.set("size", sizeVideo);
   }
 </script>
 
