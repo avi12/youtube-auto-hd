@@ -34,6 +34,7 @@ opera.env
 out
 build
 dist
+dist-pack
 
 .idea
 .vscode
