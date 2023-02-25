@@ -94,10 +94,10 @@ pnpm run-firefox
 
 1. Install [Android Studio](https://developer.android.com/studio) on your operating system
 2. Create an AVD (Android Virtual Device)
-   1. If you're creating a phone emulator, choose one that
+   1. For a phone emulator, choose one that
       has [Play Store preinstalled](https://user-images.githubusercontent.com/6422804/167658974-9ec9d13f-d297-4e8b-85d6-376809f34aab.png)
-   2. If you're creating a tablet emulator, after
-      creating, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) to have Play Store
+   2. For a tablet emulator, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) after
+      creating it to have Play Store
       preinstalled
 3. Run the emulator:
    ```shell
