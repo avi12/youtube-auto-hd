@@ -99,10 +99,14 @@ pnpm run-firefox
    2. If you're creating a tablet emulator, after
       creating, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) to have Play Store
       preinstalled
-3. Download [Kiwi browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser). I recommend creating
+3. Run the emulator:
+   ```shell
+    emulator @DEVICE_NAME
+   ```
+4. Download [Kiwi browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser). I recommend creating
    a Google account specifically to be used with the emulator
-4. Run `pnpm build` and `pnpm package-test`
-5. Push the ZIP to the emulator. If using PowerShell:
+5. Run `pnpm build-pack:test`
+6. Push the ZIP to the emulator. If using PowerShell:
    ```powershell
    $zip = "chrome-mv3-prod.zip";
    $destAndroid = "/storage/emulated/0/Download/$zip";
@@ -113,19 +117,13 @@ pnpm run-firefox
       with  
       E.g. `adb -s ID shell ...`
    2. Find out the IDs using `adb devices`
-6. <details>
+7. <details>
    <summary>Side-load the extension on Kiwi</summary>
    <!--suppress HtmlDeprecatedAttribute -->
    <img align="top" src="https://user-images.githubusercontent.com/6422804/167670341-a0cae554-e922-40b3-b8ed-7bec1ebf17bc.png" alt="Choose zip from storage">
    </details>
-7. Select the ZIP in the Download folder
-8. To reload, you must first remove the extension, re-run `pnpm package-test`, and then load the ZIP again
-
-#### Pro-tip: run the emulator from the CLI:
-
-```shell
-emulator @DEVICE_NAME
-```
+8. Select the ZIP in the Download folder
+9. To reload, you must first remove the extension and then repeat steps 4-7
 
 ## Build & pack
 
