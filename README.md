@@ -84,6 +84,12 @@ pnpm run-chromium:rtl
 pnpm run-edge-windows
 ```
 
+### Opera on Windows 10/11
+
+```shell
+pnpm run-opera-windows
+```
+
 ### Firefox
 
 ```shell
