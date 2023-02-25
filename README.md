@@ -81,13 +81,13 @@ pnpm run-chromium:rtl
 ### Edge on Windows 10/11
 
 ```shell
-pnpm run-edge-windows
+pnpm run-edge:windows
 ```
 
 ### Opera on Windows 10/11
 
 ```shell
-pnpm run-opera-windows
+pnpm run-opera:windows
 ```
 
 ### Firefox
