@@ -11,7 +11,7 @@ Available for:
 - [Safari](https://apps.apple.com/us/app/id1546729687) - maintained
   by [carlosjeurissen](https://github.com/carlosjeurissen)
 
-![A screenshot from the extension's pop-up page](https://user-images.githubusercontent.com/6422804/219903978-9907f412-363b-41ae-b847-00a0ff42914f.png)
+![A screenshot from the extension's pop-up page](https://user-images.githubusercontent.com/6422804/221399474-91bdec3c-1777-4b3c-bbd2-e1c839765ef1.png)
 
 Made by [avi12](https://avi12.com)
 
