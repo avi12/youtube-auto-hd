@@ -1,5 +1,4 @@
-import type { fpsSupported, qualities } from "~shared-scripts/ythd-setup";
-import type { qualityToLabel } from "~shared-scripts/ythd-setup";
+import type { fpsSupported, qualities, qualityToLabel } from "~shared-scripts/ythd-setup";
 
 export type VideoQuality = typeof qualities[number];
 export type YouTubeLabel = typeof qualityToLabel[typeof qualities[number]]; // "highres" | "hd2160" | ...
