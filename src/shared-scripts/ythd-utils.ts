@@ -109,10 +109,10 @@ export function addStorageListener(): void {
 // eslint-disable-next-line @typescript-eslint/ban-types
 export async function addGlobalEventListener(addTemporaryBodyListener: () => void): Promise<void> {
   // Fires when navigating to another page
-  const elTItle =
+  const elTitle =
     document.documentElement.querySelector(SELECTORS.title) ||
     (await getElementByMutationObserver(SELECTORS.title, false));
-  new MutationObserver(addTemporaryBodyListener).observe(elTItle, OBSERVER_OPTIONS);
+  new MutationObserver(addTemporaryBodyListener).observe(elTitle, OBSERVER_OPTIONS);
 }
 
 function isElementVisible(element: HTMLElement): boolean {
