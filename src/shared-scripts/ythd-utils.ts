@@ -6,7 +6,7 @@ import { prepareToChangeQualityOnMobile } from "~cs-helpers/mobile/content-scrip
 import type { QualityFpsPreferences, VideoFPS, VideoQuality, YouTubeLabel } from "~types";
 
 
-const STORAGE = new Storage({ area: "local" });
+const storageLocal = new Storage({ area: "local" });
 
 export const OBSERVER_OPTIONS: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
 window.ythdLastUserQualities = { ...initial.qualities };
@@ -90,7 +90,7 @@ export async function getElementByMutationObserver(selector: SELECTORS, isVisibl
 export function addStorageListener(): void {
   const prepareFunc =
     location.hostname === "m.youtube.com" ? prepareToChangeQualityOnMobile : prepareToChangeQualityOnDesktop;
-  STORAGE.watch({
+  storageLocal.watch({
     async isExtensionEnabled({ newValue: isExtEnabled }: { newValue: boolean }) {
       window.ythdExtEnabled = isExtEnabled;
       const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
@@ -106,7 +106,6 @@ export function addStorageListener(): void {
   });
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export async function addGlobalEventListener(addTemporaryBodyListener: () => void): Promise<void> {
   // Fires when navigating to another page
   const elTitle =
