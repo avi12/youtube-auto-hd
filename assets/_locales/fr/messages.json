@@ -11,5 +11,7 @@
 "cj_i18n_06861":{"message":"Noter l'extension"},
 "cj_i18n_06862":{"message":"Utiliser la même qualité pour toutes les fréquences d'images"},
 "cj_i18n_07097":{"message":"Mode par défaut"},
-"cj_i18n_07098":{"message":"Mode cinéma"}
+"cj_i18n_07098":{"message":"Mode cinéma"},
+"cj_i18n_07265":{"message":"Les vidéos seront jouées à 30 IPS maximum pour cette qualité."},
+"cj_i18n_07266":{"message":"L'extension est activée"}
 }
