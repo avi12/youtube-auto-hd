@@ -3,35 +3,21 @@
   <head>
     <meta charset="utf-8" />
 
-    <title>Amstedam, Dam - YouTube^Home</title>
+    <title>TechLinked - YouTube</title>
 
     <link rel="stylesheet" href="local-embed.css" />
   </head>
 
   <body>
-    <h1 class="test-title">Amstedam, Dam - YouTube^Home</h1>
+    <h1 class="test-title">TechLinked - YouTube</h1>
     <div class="test-wrapper">
       <span id="clock" class="test-clock"></span>
     </div>
     <iframe
       class="test-iframe"
-      id="player"
-      allowfullscreen
-      src="https://www.youtube.com/embed/CeYIlky5e_w?enablejsapi=1&autoplay=1*mute=1"
-    ></iframe>
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-      let player;
-
-      function onYouTubeIframeAPIReady() {
-        player = new YT.Player("player", {
-          events: {
-            onReady() {
-              player.playVideo();
-            }
-          }
-        });
-      }
-    </script>
+      src="https://www.youtube.com/embed/CeYIlky5e_w"
+      style="border: none;"
+      allow="autoplay"
+      allowfullscreen></iframe>
   </body>
 </html>

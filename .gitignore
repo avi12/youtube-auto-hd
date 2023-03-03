@@ -1,25 +1,49 @@
-# pnpm
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
 node_modules
+.pnp
+.pnp.js
 
-# WebStorm files
-.idea/*
+# testing
+coverage
 
-# Vim swap files
-*.swp
-*.swo
+#cache
+.turbo
+.next
+.vercel
 
-# Sublime files
-*.sublime-workspace
-*.sublime-project
-
-# Mac and windows files
+# misc
 .DS_Store
-.tmp
+*.pem
 
-# Distribution
-/dist_packed-edge
-/dist_packed
-/dist/build/
-/dist/background.js
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
-*.env
+
+# local env files
+chrome.env
+firefox.env
+edge.env
+opera.env
+
+out
+build
+dist
+dist-pack
+
+.idea
+.vscode
+
+# plasmo - https://www.plasmo.com
+.plasmo
+
+# bpp - http://bpp.browser.market/
+keys.json
+
+# typescript
+.tsbuildinfo

@@ -1,15 +1,26 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2021,
-    "sourceType": "module"
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "lib": ["dom", "esnext"]
   },
+  "rules": {
+    "@typescript-eslint/no-var-requires": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.svelte"],
+      "processor": "svelte3/svelte3"
+    }
+  ],
   "env": {
-    "es6": true,
     "browser": true,
+    "es6": true,
     "node": true,
     "webextensions": true
   },
+  "plugins": ["svelte3", "@typescript-eslint"],
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "avi12"],
   "settings": {
     "svelte3/typescript": true
