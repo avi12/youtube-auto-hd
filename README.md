@@ -44,7 +44,7 @@ Filling will grant you access to a Google Sheets spreadsheet via email, in which
 
 Install [Node.js](https://nodejs.org) and [PNPM](https://pnpm.js.org/en/installation).
 
-## Download dev dependencies:
+## Install dependencies:
 
 ```shell script
 pnpm i
