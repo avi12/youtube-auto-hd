@@ -14,7 +14,7 @@
     "package:firefox": "web-ext build --source-dir build/firefox-mv3-prod --overwrite-dest --artifacts-dir dist-pack --filename youtube-auto-hd-fps-{version}_adapted_for_firefox.zip",
     "build-pack": "pnpm build && pnpm package",
     "build-pack:test": "pnpm build && pnpm package-test",
-    "build-pack:firefox": "pnpm build:firefox && pnpm package",
+    "build-pack:firefox": "pnpm build:firefox && pnpm package:firefox",
     "build-pack:all": "pnpm build-pack && pnpm build-pack:firefox",
     "run-browser": "web-ext run --no-config-discovery --start-url https://www.youtube.com/watch?v=aiSla-5xq3w --source-dir build/chrome-mv3-dev --verbose --target",
     "run-chromium": "pnpm run-browser chromium",
