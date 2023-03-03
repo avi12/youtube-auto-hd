@@ -12,7 +12,9 @@
     "package-test": "plasmo package",
     "package": "web-ext build --source-dir build/chrome-mv3-prod --overwrite-dest --artifacts-dir dist-pack --filename youtube-auto-hd-fps-{version}.zip",
     "package:self": "zip-self -o dist-pack/youtube-auto-hd-fps-{version}-source.zip",
-    "package:firefox": "web-ext build --source-dir build/firefox-mv3-prod --overwrite-dest --artifacts-dir dist-pack --filename youtube-auto-hd-fps-{version}_adapted_for_firefox.zip",
+    "package:stores": "webext-store-incompat-fixer -i dist-pack/youtube-auto-hd-fps-{version}.zip --edge-locale-inclusions en,fr,he,pt_BR,be --stores chrome,edge,opera",
+    "package:stores-firefox": "webext-store-incompat-fixer -i dist-pack/youtube-auto-hd-fps-{version}_adapted_for_firefox.zip --edge-locale-inclusions en,fr,he,pt_BR,be --stores firefox",
+    "package:firefox": "web-ext build --source-dir build/firefox-mv3-prod --overwrite-dest --artifacts-dir dist-pack --filename youtube-auto-hd-fps-{version}_adapted_for_firefox.zip && pnpm package:stores-firefox",
     "build-pack": "pnpm build && pnpm package",
     "build-pack:test": "pnpm build && pnpm package-test",
     "build-pack:firefox": "pnpm build:firefox && pnpm package:firefox && pnpm package:self",
@@ -53,6 +55,7 @@
     "tailwindcss": "^3.2.7",
     "typescript": "4.9.5",
     "web-ext": "^7.5.0",
+    "webext-store-incompat-fixer": "^0.3.3",
     "zip-self": "^0.5.5"
   },
   "manifest": {
