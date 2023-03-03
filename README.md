@@ -129,7 +129,7 @@ pnpm run-firefox
    <img align="top" src="https://user-images.githubusercontent.com/6422804/167670341-a0cae554-e922-40b3-b8ed-7bec1ebf17bc.png" alt="Choose zip from storage">
    </details>
 8. Select the ZIP in the Download folder
-9. To reload, you must first remove the extension and then repeat steps 5-7
+9. To reload, you must first remove the extension and then repeat steps 5-8
 
 ## Build & pack
 
