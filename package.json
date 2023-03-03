@@ -52,7 +52,8 @@
     "prettier-plugin-svelte": "^2.9.0",
     "tailwindcss": "^3.2.7",
     "typescript": "4.9.5",
-    "web-ext": "^7.5.0"
+    "web-ext": "^7.5.0",
+    "zip-self": "^0.5.5"
   },
   "manifest": {
     "description": "__MSG_cj_i18n_02146__",
