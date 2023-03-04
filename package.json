@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@mdi/js": "^7.1.96",
-    "@plasmohq/storage": "^1.2.0",
+    "@plasmohq/storage": "^1.2.1",
     "nouislider": "^15.7.0",
     "plasmo": "0.65.3",
     "sass": "^1.58.3",
@@ -41,8 +41,8 @@
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.1",
     "@sveltejs/eslint-config": "github:sveltejs/eslint-config",
-    "@types/chrome": "0.0.218",
-    "@types/node": "18.14.2",
+    "@types/chrome": "0.0.219",
+    "@types/node": "18.14.6",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "autoprefixer": "^10.4.13",
