@@ -13,7 +13,7 @@
     "package": "web-ext build --source-dir build/chrome-mv3-prod --overwrite-dest --artifacts-dir dist-pack --filename youtube-auto-hd-fps-{version}.zip",
     "package:self": "zip-self -o dist-pack/youtube-auto-hd-fps-{version}-source.zip",
     "package:stores": "webext-store-incompat-fixer -i dist-pack/youtube-auto-hd-fps-{version}.zip --edge-locale-inclusions en,fr,he,pt_BR,be,nl --stores chrome,edge,opera",
-    "package:stores-firefox": "webext-store-incompat-fixer -i dist-pack/youtube-auto-hd-fps-{version}_adapted_for_firefox.zip --edge-locale-inclusions en,fr,he,pt_BR,be,nl --stores firefox",
+    "package:stores-firefox": "webext-store-incompat-fixer -i dist-pack/youtube-auto-hd-fps-{version}_adapted_for_firefox.zip --stores firefox",
     "package:firefox": "web-ext build --source-dir build/firefox-mv3-prod --overwrite-dest --artifacts-dir dist-pack --filename youtube-auto-hd-fps-{version}_adapted_for_firefox.zip && pnpm package:stores-firefox",
     "build-pack": "pnpm build && pnpm package",
     "build-pack:test": "pnpm build && pnpm package-test",
