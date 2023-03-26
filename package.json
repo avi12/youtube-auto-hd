@@ -1,7 +1,7 @@
 {
   "name": "youtube-auto-hd",
   "displayName": "YouTube Auto HD + FPS",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "description": "Automatically set the video quality on YouTube according to its FPS!",
   "author": "avi12 <avi6106@gmail.com>",
   "scripts": {
@@ -68,7 +68,8 @@
     ],
     "browser_specific_settings": {
       "gecko": {
-        "id": "$PLASMO_PUBLIC_FIREFOX_EXT_ID"
+        "id": "$PLASMO_PUBLIC_FIREFOX_EXT_ID",
+        "strict_min_version": "90"
       }
     },
     "options_ui": {
