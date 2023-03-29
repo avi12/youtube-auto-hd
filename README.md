@@ -42,7 +42,7 @@ Filling will grant you access to a Google Sheets spreadsheet via email, in which
 
 ## Requirements for setting up
 
-Install [Node.js](https://nodejs.org) and [PNPM](https://pnpm.js.org/en/installation).
+Install [Node.js](https://nodejs.org) and [PNPM](https://pnpm.io/installation).
 
 ## Install dependencies:
 
