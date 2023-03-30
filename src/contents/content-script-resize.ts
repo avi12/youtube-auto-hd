@@ -1,8 +1,14 @@
 import { Storage } from "@plasmohq/storage";
 import type { PlasmoCSConfig } from "plasmo";
 
+
 import { initial } from "~shared-scripts/ythd-setup";
-import { SELECTORS, addGlobalEventListener, getIsExtensionEnabled } from "~shared-scripts/ythd-utils";
+import {
+  SELECTORS,
+  addGlobalEventListener,
+  getIsExtensionEnabled,
+  getVisibleElement
+} from "~shared-scripts/ythd-utils";
 import type { VideoAutoResize, VideoSize } from "~types";
 
 const storageLocal = new Storage({ area: "local" });
@@ -22,7 +28,7 @@ function getCurrentSize(): VideoSize {
 }
 
 async function resizePlayerIfNeeded(): Promise<void> {
-  const elSizePath = document.querySelector<SVGPathElement>(SELECTORS.pathSizeToggle);
+  const elSizePath = getVisibleElement(SELECTORS.player)?.querySelector<SVGPathElement>(SELECTORS.pathSizeToggle);
   if (!elSizePath) {
     return;
   }
@@ -82,7 +88,8 @@ function addStorageListener(): void {
   storageSync.watch({
     async size({ newValue: size }: { newValue: VideoSize }) {
       const isEnabled = await getIsExtensionEnabled();
-      if (!isEnabled) {
+      const isWatchPage = location.pathname === "/watch";
+      if (!isEnabled || !isWatchPage) {
         return;
       }
       gOptions.size = size;
@@ -92,7 +99,8 @@ function addStorageListener(): void {
     },
     async autoResize({ newValue: isResizeVideo }: { newValue: VideoAutoResize }) {
       const isEnabled = await getIsExtensionEnabled();
-      if (!isEnabled) {
+      const isWatchPage = location.pathname === "/watch";
+      if (!isEnabled || !isWatchPage) {
         return;
       }
       gOptions.isResizeVideo = isResizeVideo;
