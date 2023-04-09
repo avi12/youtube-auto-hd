@@ -5,7 +5,8 @@ FPS.
 Available for:
 
 - [Google Chrome](https://chrome.google.com/webstore/detail/fcphghnknhkimeagdglkljinmpbagone) ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/fcphghnknhkimeagdglkljinmpbagone?color=white&label=users&style=flat-square)
-- [Mozilla Firefox](https://addons.mozilla.org/firefox/addon/youtube-auto-hd-fps) 90+ ![Mozilla Add-on](https://img.shields.io/amo/users/youtube-auto-hd-fps?color=white&label=users&style=flat-square)
+- [Mozilla Firefox](https://addons.mozilla.org/firefox/addon/youtube-auto-hd-fps)
+  90+ ![Mozilla Add-on](https://img.shields.io/amo/users/youtube-auto-hd-fps?color=white&label=users&style=flat-square)
 - [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom) ![users count](https://img.shields.io/badge/dynamic/json?label=users&query=activeInstallCount&style=flat-square&color=white&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/ggnepcoiimddpmjaoejhdfppjbcnfaom)
 - [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
 - [Safari](https://apps.apple.com/us/app/id1546729687) - maintained
@@ -130,6 +131,19 @@ pnpm run-firefox
    </details>
 8. Select the ZIP in the Download folder
 9. To reload, you must first remove the extension and then repeat steps 5-8
+
+### Sideloading onto your daily driver browser
+
+After `pnpm dev`:
+
+- Chromium-based browsers
+  1. Open the extensions page
+  2. Enable "Developer mode"
+  3. Open `youtube-auto-hd/build` on your file system
+  4. Drag-drop `chrome-mv3-dev` onto the extensions page
+- Firefox:
+  1. [Follow this guide](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/#:~:text=To%20install%20an%20extension%20temporarily)
+  2. In the file system window, select `youtube-auto-hd/build/firefox-mv2-dev/manifest.json`
 
 ## Build & pack
 
