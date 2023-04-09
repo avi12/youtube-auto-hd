@@ -62,12 +62,15 @@ export enum SELECTORS {
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player",
+  // Premium
+  logoPremium = "#youtube-red-paths",
+  labelPremium = ".ytp-premium-label",
   // Mobile
   mobileQualityDropdown = "select[id^=player-quality-dropdown]",
   mobileQualityDropdownWrapper = ".player-quality-settings",
   mobileMenuButton = ".mobile-topbar-header-content ytm-menu button",
   mobileOption = "div[role=dialog] ytm-menu-item",
-  mobileOkButton = ".dialog-buttons [class*=material-button-button]"
+  mobileOkButton = ".dialog-buttons [class*=material-button-button]",
 }
 
 export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T {
@@ -141,8 +144,8 @@ export async function getPreferredQualities(): Promise<QualityFpsPreferences> {
 }
 
 export function getIQuality(
-  qualitiesCurrent: VideoQuality[] | YouTubeLabel[],
+  qualitiesCurrent: (VideoQuality | 0)[] | YouTubeLabel[],
   qualityPreferred: VideoQuality | YouTubeLabel
 ): number {
-  return qualitiesCurrent.findIndex((quality: VideoQuality | YouTubeLabel) => quality === qualityPreferred);
+  return qualitiesCurrent.findIndex((quality: VideoQuality | YouTubeLabel | 0) => quality === qualityPreferred);
 }
