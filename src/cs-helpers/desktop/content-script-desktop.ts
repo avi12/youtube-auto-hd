@@ -1,16 +1,17 @@
 import { Storage } from "@plasmohq/storage";
 
 import {
+  OBSERVER_OPTIONS,
+  SELECTORS,
   getFpsFromRange,
   getIQuality,
   getPreferredQualities,
-  getVisibleElement,
-  OBSERVER_OPTIONS,
-  SELECTORS
+  getVisibleElement
 } from "~shared-scripts/ythd-utils";
 import type { FullYouTubeLabel, QualityFpsPreferences, VideoFPS, VideoQuality } from "~types";
 
 const storageLocal = new Storage({ area: "local" });
+const gIsPremiumAccount = Boolean(getVisibleElement(SELECTORS.logoPremium));
 
 function getPlayerDiv(elVideo: HTMLVideoElement): HTMLDivElement {
   return elVideo.closest(SELECTORS.player);
@@ -55,11 +56,16 @@ function getCurrentQualityElements(): HTMLDivElement[] {
   return elMenuOptions.filter(getIsQualityElement) as HTMLDivElement[];
 }
 
-function convertQualityToNumber(elQuality: Element): VideoQuality {
-  return parseInt(elQuality.textContent) as VideoQuality;
+function convertQualityToNumber(elQuality: Element): VideoQuality | 0 {
+  const isPremiumQuality = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
+  const qualityNumber = parseInt(elQuality.textContent) as VideoQuality;
+  if (!isPremiumQuality) {
+    return qualityNumber;
+  }
+  return !gIsPremiumAccount ? 0 : qualityNumber;
 }
 
-function getCurrentQualities(): VideoQuality[] {
+function getCurrentQualities(): (VideoQuality | 0)[] {
   const elQualities = getCurrentQualityElements();
   return elQualities.map(convertQualityToNumber);
 }
@@ -94,7 +100,8 @@ function changeQuality(qualityCustom?: VideoQuality): void {
   if (isQualityExists) {
     applyQuality(iQuality);
   } else if (getIsQualityLower(elQualities[0], window.ythdLastUserQualities[fpsStep])) {
-    applyQuality(0);
+    const iQualityAvailable = qualitiesAvailable.findIndex(quality => quality > 0);
+    applyQuality(iQualityAvailable);
   } else {
     const iClosestQuality = qualitiesAvailable.findIndex(quality => quality <= window.ythdLastUserQualities[fpsStep]);
     const isClosestQualityFound = iClosestQuality > -1;
