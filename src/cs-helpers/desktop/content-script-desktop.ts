@@ -11,7 +11,6 @@ import {
 import type { FullYouTubeLabel, QualityFpsPreferences, VideoFPS, VideoQuality } from "~types";
 
 const storageLocal = new Storage({ area: "local" });
-const gIsPremiumAccount = Boolean(getVisibleElement(SELECTORS.logoPremium));
 
 function getPlayerDiv(elVideo: HTMLVideoElement): HTMLDivElement {
   return elVideo.closest(SELECTORS.player);
@@ -57,12 +56,13 @@ function getCurrentQualityElements(): HTMLDivElement[] {
 }
 
 function convertQualityToNumber(elQuality: Element): VideoQuality | 0 {
+  const isPremiumAccount = Boolean(getVisibleElement(SELECTORS.logoPremium));
   const isPremiumQuality = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
   const qualityNumber = parseInt(elQuality.textContent) as VideoQuality;
   if (!isPremiumQuality) {
     return qualityNumber;
   }
-  return !gIsPremiumAccount ? 0 : qualityNumber;
+  return !isPremiumAccount ? 0 : qualityNumber;
 }
 
 function getCurrentQualities(): (VideoQuality | 0)[] {
