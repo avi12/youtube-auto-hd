@@ -74,7 +74,12 @@ function addTemporaryBodyListenerOnDesktop(): void {
       if (getIsExit(mutations) || !elVideo) {
         return;
       }
+
       const elPlayer = elVideo.closest(SELECTORS.player);
+      if (!elPlayer) {
+        return;
+      }
+
 
       // We need to reset global variables, as well as prepare to change the quality of the new video
       window.ythdLastQualityClicked = null;
@@ -110,7 +115,11 @@ async function init(): Promise<void> {
     if (!elVideo) {
       return;
     }
+
     const elPlayer = elVideo.closest(SELECTORS.player);
+    if (!elPlayer) {
+      return;
+    }
 
     observer.disconnect();
 

@@ -61,7 +61,7 @@ export enum SELECTORS {
   menuOption = ".ytp-settings-menu[data-layer] .ytp-menuitem",
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
-  player = ".html5-video-player",
+  player = ".html5-video-player:not(#inline-preview-player)",
   // Premium
   logoPremium = "#youtube-red-paths",
   labelPremium = ".ytp-premium-label",
