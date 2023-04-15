@@ -58,6 +58,13 @@ body:
       description: Go to the extensions page and copy the version number
     validations:
       required: true
+  - type: checkboxes
+    id: reported
+    attributes:
+      label: Make sure the bug wasn't [reported](https://github.com/avi12/youtube-auto-hd/issues?q=is%3Aissue) before
+      options:
+        - label: I'm the first one to report it
+          required: true
   - type: textarea
     id: additional-context
     attributes:
