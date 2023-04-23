@@ -12,7 +12,7 @@ Available for:
 - [Safari](https://apps.apple.com/us/app/id1546729687) - maintained
   by [carlosjeurissen](https://github.com/carlosjeurissen)
 
-![A screenshot from the extension's pop-up page](https://user-images.githubusercontent.com/31113245/233763096-a0afb84c-9d91-4266-8593-2ee6e900bf72.png)
+<img width="315" alt="A screenshot from the extension's pop-up page" src="https://user-images.githubusercontent.com/31113245/233851402-f97033d4-a111-40e0-8503-8692e07fe7f3.png">
 
 Made by [avi12](https://avi12.com)
 
