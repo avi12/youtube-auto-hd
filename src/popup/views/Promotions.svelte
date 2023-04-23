@@ -65,7 +65,9 @@
 
 <hr class="mt-6" />
 <details class="mt-5">
-  <summary class="mb-1 ml-1 text-secondary cursor-pointer">&nbsp; {i18n.labelSubheader}</summary>
+  <summary class="mb-1 ml-[0.45rem] text-secondary cursor-pointer">
+    <span class="ml-4">{i18n.labelSubheader}</span>
+  </summary>
   <menu>
     {#each links as link}
       <li>
