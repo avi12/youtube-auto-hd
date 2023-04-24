@@ -34,7 +34,7 @@ opera.env
 out
 build
 dist
-dist-pack
+web-ext-artifacts
 
 .idea
 .vscode
