@@ -57,10 +57,6 @@
       icon: mdiTranslate
     }
   ] as const;
-
-  function openUrl(url: string): void {
-    chrome.tabs.create({ url });
-  }
 </script>
 
 <hr class="mt-6" />
@@ -71,7 +67,7 @@
   <menu>
     {#each links as link}
       <li>
-        <a class="link" href={link.url} target="_blank" on:click|preventDefault={() => openUrl(link.url)}>
+        <a class="link" href={link.url} on:click={e => chrome.tabs.create({ url: e.currentTarget.href })}>
           <Icon path={link.icon} />
           <span>{link.label}</span>
         </a>
