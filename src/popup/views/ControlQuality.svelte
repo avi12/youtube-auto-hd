@@ -50,8 +50,8 @@
     <section class="control-section">
       <Slider values={qualitiesReversed} bind:value={qualitySelected}>
         <div class="slider-label">
-          <div class="flex-1">{i18n.labelAllFramerates}</div>
-          <div class="flex-1 text-secondary">{qualitySelected}p</div>
+          <div class="flex-1">{qualitySelected}p</div>
+          <div class="flex-1 text-secondary">{i18n.labelAllFramerates}</div>
         </div>
       </Slider>
 
@@ -64,14 +64,14 @@
       <section class="control-section">
         <Slider values={qualitiesReversed} bind:value={qualitiesStored[fps]}>
           <div class="slider-label">
-            <div class="flex-1">
+            <div class="flex-1">{qualitiesStored[fps]}p</div>
+            <div class="flex-1 text-secondary">
               {#if iFps === 0}
                 {fps} {i18n.fpsAndBelow}
               {:else}
                 {fpsToRange(iFps)} {i18n.labelQualityEnd}
               {/if}
             </div>
-            <div class="flex-1 text-secondary">{qualitiesStored[fps]}p</div>
           </div>
         </Slider>
 

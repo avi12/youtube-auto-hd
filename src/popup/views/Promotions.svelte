@@ -64,8 +64,10 @@
 </script>
 
 <hr class="mt-6" />
-<footer class="mt-5">
-  <div>{i18n.labelSubheader}</div>
+<details class="mt-5">
+  <summary class="mb-1 ml-[0.45rem] text-secondary cursor-pointer">
+    <span class="ml-4">{i18n.labelSubheader}</span>
+  </summary>
   <menu>
     {#each links as link}
       <li>
@@ -76,9 +78,12 @@
       </li>
     {/each}
   </menu>
-</footer>
+</details>
 
 <style lang="scss">
+  .text-secondary {
+    color: var(--text-color-secondary);
+  }
   .link {
     color: var(--text-color-promotion);
     text-decoration: none;
