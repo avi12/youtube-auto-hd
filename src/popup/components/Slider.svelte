@@ -20,12 +20,8 @@
       start: values[0],
       connect: [true, false],
       format: {
-        from() {
-          return index;
-        },
-        to(i: number) {
-          return values[i];
-        }
+        from: () => index,
+        to: i => values[i]
       },
       range: {
         min: 0,
