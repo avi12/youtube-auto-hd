@@ -1,5 +1,3 @@
-import { Storage } from "@plasmohq/storage";
-
 import {
   OBSERVER_OPTIONS,
   SELECTORS,
@@ -8,9 +6,7 @@ import {
   getPreferredQualities,
   getVisibleElement
 } from "~shared-scripts/ythd-utils";
-import type { FullYouTubeLabel, QualityFpsPreferences, VideoFPS, VideoQuality } from "~types";
-
-const storageLocal = new Storage({ area: "local" });
+import type { FullYouTubeLabel, VideoFPS, VideoQuality } from "~types";
 
 function getPlayerDiv(elVideo: HTMLVideoElement): HTMLDivElement {
   return elVideo.closest(SELECTORS.player);
@@ -175,11 +171,3 @@ export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> 
 
   elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings).blur();
 }
-
-storageLocal.watch({
-  async qualities({ newValue: qualities }: { newValue: QualityFpsPreferences }) {
-    window.ythdLastQualityClicked = null;
-    window.ythdLastUserQualities = { ...qualities };
-    await prepareToChangeQualityOnDesktop();
-  }
-});

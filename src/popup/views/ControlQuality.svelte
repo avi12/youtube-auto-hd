@@ -3,9 +3,10 @@
 
   import Slider from "../components/Slider.svelte";
   import Switch from "../components/Switch.svelte";
-  import { fpsSupported, initial, qualities } from "~shared-scripts/ythd-setup";
+  import { qualitiesStored } from "~popup/store";
+  import { fpsSupported, qualities } from "~shared-scripts/ythd-setup";
   import { getI18n } from "~shared-scripts/ythd-utils";
-  import type { QualityFpsPreferences, VideoFPS, VideoQuality } from "~types";
+  import type { VideoFPS, VideoQuality } from "~types";
 
 
   const i18n: { [key: string]: string } = {
@@ -16,22 +17,21 @@
     fpsWarning: getI18n("cj_i18n_07265", "Videos will play at up to 30 FPS for this quality")
   };
 
-  export let qualitiesStored: QualityFpsPreferences = initial.qualities;
-  const qualitiesSelected = Object.values(qualitiesStored).reverse() as VideoQuality[];
+  const qualitiesSelected = Object.values($qualitiesStored).reverse() as VideoQuality[];
   let isSameQualityForAllFps = qualitiesSelected.every((quality, _, array) => quality === array[0]);
   let qualitySelected = qualitiesSelected[0];
-  const qualitiesReversed = qualities.reverse();
-  const fpsList = fpsSupported.reverse();
+  const qualitiesReversed = [...qualities].reverse();
+  const fpsList = [...fpsSupported].reverse();
   const storageLocal = new Storage({ area: "local" });
 
   $: {
     if (isSameQualityForAllFps) {
       for (const fps of fpsList) {
-        qualitiesStored[fps] = qualitySelected;
+        $qualitiesStored[fps] = qualitySelected;
       }
     }
 
-    storageLocal.set("qualities", qualitiesStored);
+    storageLocal.set("qualities", $qualitiesStored);
   }
 
   function fpsToRange(i: number): string {
@@ -62,9 +62,9 @@
   {:else}
     {#each fpsList as fps, iFps}
       <section class="control-section">
-        <Slider values={qualitiesReversed} bind:value={qualitiesStored[fps]}>
+        <Slider values={qualitiesReversed} bind:value={$qualitiesStored[fps]}>
           <div class="slider-label">
-            <div class="flex-1">{qualitiesStored[fps]}p</div>
+            <div class="flex-1">{$qualitiesStored[fps]}p</div>
             <div class="flex-1 text-secondary">
               {#if iFps === 0}
                 {fps} {i18n.fpsAndBelow}
@@ -75,7 +75,7 @@
           </div>
         </Slider>
 
-        {#if fps > 30 && qualitiesStored[fps] < 720}
+        {#if fps > 30 && $qualitiesStored[fps] < 720}
           <div class="warning mt-4">{i18n.fpsWarning}</div>
         {/if}
       </section>
