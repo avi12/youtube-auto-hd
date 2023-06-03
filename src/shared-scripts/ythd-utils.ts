@@ -70,7 +70,7 @@ export enum SELECTORS {
   mobileQualityDropdownWrapper = ".player-quality-settings",
   mobileMenuButton = ".mobile-topbar-header-content ytm-menu button",
   mobileOption = "div[role=dialog] ytm-menu-item",
-  mobileOkButton = ".dialog-buttons [class*=material-button-button]",
+  mobileOkButton = ".dialog-buttons [class*=material-button-button]"
 }
 
 export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T {
@@ -97,9 +97,14 @@ export function addStorageListener(): void {
     async isExtensionEnabled({ newValue: isExtEnabled }: { newValue: boolean }) {
       window.ythdExtEnabled = isExtEnabled;
       const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
-      if (isExtEnabled && elVideo) {
-        await prepareFunc();
+      if (!elVideo) {
+        return;
       }
+      if (!isExtEnabled) {
+        elVideo.removeEventListener("canplay", prepareFunc);
+        return;
+      }
+      await prepareFunc();
     },
     async qualities({ newValue: qualities }: { newValue: QualityFpsPreferences }) {
       window.ythdLastQualityClicked = null;
