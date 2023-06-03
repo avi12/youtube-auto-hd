@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Storage } from "@plasmohq/storage";
 
-  import { isExtensionEnabled } from "~popup/store";
+  import { isExtensionEnabled, isResizeVideo, sizeVideo, qualitiesStored } from "~popup/store";
   import ControlEnabled from "~popup/views/ControlEnabled.svelte";
   import ControlQuality from "~popup/views/ControlQuality.svelte";
   import ControlSize from "~popup/views/ControlSize.svelte";
@@ -12,9 +12,6 @@
   import type { QualityFpsPreferences, VideoAutoResize, VideoSize } from "~types";
 
   export let isOptionsPage = false;
-  let qualitiesStored: QualityFpsPreferences;
-  let isResizeVideo: VideoAutoResize;
-  let sizeVideo: VideoSize;
 
   const storageLocal = new Storage({ area: "local" });
   const storageSync = new Storage({ area: "sync" });
@@ -31,10 +28,10 @@
       size = initial.size,
       autoResize = initial.isResizeVideo
     ]) => {
-      qualitiesStored = qualities;
+      $qualitiesStored = qualities;
       $isExtensionEnabled = isExtEnabled;
-      sizeVideo = size;
-      isResizeVideo = autoResize;
+      $sizeVideo = size;
+      $isResizeVideo = autoResize;
     }
   );
 
@@ -51,12 +48,12 @@
   {/if}
 
   {#if $isExtensionEnabled}
-    {#if qualitiesStored}
-      <ControlQuality {qualitiesStored} />
+    {#if $qualitiesStored !== undefined}
+      <ControlQuality />
     {/if}
 
     {#if isDesktop}
-      <ControlSize {isResizeVideo} {sizeVideo} />
+      <ControlSize />
     {/if}
   {/if}
 
