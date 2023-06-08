@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Storage } from "@plasmohq/storage";
 
-  import { isExtensionEnabled, isResizeVideo, sizeVideo, qualitiesStored } from "~popup/store";
+  import { isDonated, isExtensionEnabled, isResizeVideo, qualitiesStored, sizeVideo } from "~popup/store";
   import ControlEnabled from "~popup/views/ControlEnabled.svelte";
   import ControlQuality from "~popup/views/ControlQuality.svelte";
   import ControlSize from "~popup/views/ControlSize.svelte";
@@ -20,18 +20,21 @@
     storageLocal.get<QualityFpsPreferences>("qualities"),
     storageLocal.get<boolean>("isExtensionEnabled"),
     storageSync.get<VideoSize>("size"),
-    storageSync.get<VideoAutoResize>("autoResize")
+    storageSync.get<VideoAutoResize>("autoResize"),
+    storageSync.get<boolean>("isDonated")
   ]).then(
     ([
       qualities = initial.qualities,
       isExtEnabled = initial.isExtensionEnabled,
       size = initial.size,
-      autoResize = initial.isResizeVideo
+      autoResize = initial.isResizeVideo,
+      pIsDonated = initial.isDonated
     ]) => {
       $qualitiesStored = qualities;
       $isExtensionEnabled = isExtEnabled;
       $sizeVideo = size;
       $isResizeVideo = autoResize;
+      $isDonated = pIsDonated;
     }
   );
 

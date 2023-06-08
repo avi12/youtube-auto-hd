@@ -16,6 +16,7 @@ export type VideoAutoResize = boolean
 export type VideoSize = 1 | 0;
 
 export interface Preferences {
+  isDonated: boolean;
   isExtensionEnabled: boolean;
   isHideDonationSection: boolean;
   qualities: QualityFpsPreferences;
