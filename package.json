@@ -8,8 +8,8 @@
   "scripts": {
     "dev": "plasmo dev --verbose",
     "dev:firefox": "plasmo dev --verbose --target=firefox-mv2",
-    "build": "plasmo build",
-    "build:firefox": "plasmo build --target=firefox-mv2",
+    "build": "plasmo build --minify",
+    "build:firefox": "plasmo build --minify --target=firefox-mv2",
     "package-test": "plasmo package",
     "package": "web-ext build --source-dir build/chrome-mv3-prod --filename youtube-auto-hd-fps-{version}.zip",
     "package:self": "zip-self -o web-ext-artifacts/youtube-auto-hd-fps-{version}-source.zip",
