@@ -5,6 +5,7 @@ import type { PlasmoCSConfig } from "plasmo";
 
 import { initial } from "~shared-scripts/ythd-setup";
 import {
+  OBSERVER_OPTIONS,
   SELECTORS,
   addGlobalEventListener,
   getStorage,
@@ -18,12 +19,11 @@ let observer: MutationObserver;
 let gTitleLast = document.title;
 let gUrlLast = location.href;
 
-let gVideoCount = 0;
-const MAX_COUNT = 5;
-
 function addSupportButtonIfNeeded(): void {
   const elContainer = getVisibleElement(SELECTORS.actionButtonsContainer);
-  let elSupportButton = getVisibleElementInList(document.getElementsByClassName(SELECTORS.donationSection.substring(1)));
+  let elSupportButton = getVisibleElementInList(
+    document.getElementsByClassName(SELECTORS.donationSection.substring(1))
+  );
   if (!elContainer || elSupportButton) {
     return;
   }
@@ -90,11 +90,6 @@ async function addTemporaryBodyListener(): Promise<void> {
   gTitleLast = document.title;
   gUrlLast = location.href;
 
-  if (gVideoCount < MAX_COUNT) {
-    gVideoCount++;
-    return;
-  }
-
   addSupportButtonIfNeeded();
 }
 
@@ -105,6 +100,7 @@ async function init(): Promise<void> {
   }
 
   observer = await addGlobalEventListener(addTemporaryBodyListener);
+  new MutationObserver(addTemporaryBodyListener).observe(document, OBSERVER_OPTIONS);
 
   storageSync.watch({
     isHideDonationSection() {
