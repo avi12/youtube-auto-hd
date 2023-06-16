@@ -1,6 +1,6 @@
 <script lang="ts">
   import PromotionLinks from "~popup/components/PromotionLinks.svelte";
-  import { isDonated } from "~popup/store";
+  import { isHideDonationSection } from "~popup/store";
   import { getI18n } from "~shared-scripts/ythd-utils";
 
   const i18n: { [key: string]: string } = {
@@ -10,7 +10,7 @@
 
 <hr class="mt-6" />
 
-{#if $isDonated}
+{#if $isHideDonationSection}
   <details class="mt-5">
     <summary class="mb-1 ms-[0.45rem] text-secondary cursor-pointer">
       <span class="ms-4">{i18n.labelSubheader}</span>
