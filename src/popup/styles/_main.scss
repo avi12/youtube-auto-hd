@@ -35,6 +35,8 @@ body {
 }
 
 .options-page {
+  margin-bottom: 20px; // For Firefox
+
   .control-section:first-child {
     margin-top: 0;
   }
