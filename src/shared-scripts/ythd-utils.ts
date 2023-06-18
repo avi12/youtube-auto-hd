@@ -62,6 +62,8 @@ export enum SELECTORS {
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player:not(#inline-preview-player)",
+  actionButtonsContainer = "#top-row #owner",
+  donationSection = ".ythd-donation-section",
   // Premium
   logoPremium = "#youtube-red-paths",
   labelPremium = ".ytp-premium-label",
@@ -70,12 +72,16 @@ export enum SELECTORS {
   mobileQualityDropdownWrapper = ".player-quality-settings",
   mobileMenuButton = ".mobile-topbar-header-content ytm-menu button",
   mobileOption = "div[role=dialog] ytm-menu-item",
-  mobileOkButton = ".dialog-buttons [class*=material-button-button]"
+  mobileOkButton = ".dialog-buttons [class*=material-button-button]",
 }
 
 export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T {
   const elements = [...document.querySelectorAll(elementName)] as T[];
   return elements.find(isElementVisible);
+}
+
+export function getVisibleElementInList<T extends HTMLElement>(elements: HTMLElement[] | HTMLCollection): T {
+  return [...elements].find(isElementVisible) as T;
 }
 
 export async function getElementByMutationObserver(selector: SELECTORS, isVisible = true): Promise<HTMLElement> {
@@ -114,12 +120,14 @@ export function addStorageListener(): void {
   });
 }
 
-export async function addGlobalEventListener(addTemporaryBodyListener: () => void): Promise<void> {
+export async function addGlobalEventListener(addTemporaryBodyListener: () => void): Promise<MutationObserver> {
   // Fires when navigating to another page
   const elTitle =
     document.documentElement.querySelector(SELECTORS.title) ||
     (await getElementByMutationObserver(SELECTORS.title, false));
-  new MutationObserver(addTemporaryBodyListener).observe(elTitle, OBSERVER_OPTIONS);
+  const observer = new MutationObserver(addTemporaryBodyListener);
+  observer.observe(elTitle, OBSERVER_OPTIONS);
+  return observer;
 }
 
 function isElementVisible(element: HTMLElement): boolean {

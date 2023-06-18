@@ -1,7 +1,7 @@
 {
   "name": "youtube-auto-hd",
   "displayName": "YouTube Auto HD + FPS",
-  "version": "1.7.12",
+  "version": "1.7.13",
   "description": "Automatically set the video quality on YouTube according to its FPS!",
   "author": "avi12 <avi6106@gmail.com>",
   "homepage": "https://github.com/avi12/youtube-auto-hd",
@@ -45,6 +45,7 @@
     "@plasmohq/prettier-plugin-sort-imports": "3.6.4",
     "@sveltejs/eslint-config": "github:sveltejs/eslint-config",
     "@types/chrome": "0.0.237",
+    "@types/node": "^20.3.1",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
     "@typescript-eslint/parser": "^5.59.9",
     "autoprefixer": "^10.4.14",

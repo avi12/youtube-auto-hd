@@ -4,7 +4,7 @@
   import { Storage } from "@plasmohq/storage";
 
   import Icon from "~popup/components/Icon.svelte";
-  import { isDonated } from "~popup/store";
+  import { isHideDonationSection } from "~popup/store";
   import { getI18n } from "~shared-scripts/ythd-utils";
 
   const storageSync = new Storage({ area: "sync" });
@@ -79,8 +79,8 @@
         on:click={async () => {
           const { url } = link;
           if (url.includes("paypal.me")) {
-            $isDonated = true;
-            await storageSync.set("isDonated", $isDonated);
+            $isHideDonationSection = true;
+            await storageSync.set("isHideDonationSection", $isHideDonationSection);
           }
           if (browserName !== "firefox") {
             await chrome.tabs.create({ url });
