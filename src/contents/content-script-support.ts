@@ -3,18 +3,17 @@ import { Storage } from "@plasmohq/storage";
 import type { PlasmoCSConfig } from "plasmo";
 
 
-import { initial } from "~shared-scripts/ythd-setup";
 import {
   OBSERVER_OPTIONS,
   SELECTORS,
   addGlobalEventListener,
-  getStorage,
+  getIsExtensionEnabled,
   getVisibleElement,
   getVisibleElementInList
 } from "~shared-scripts/ythd-utils";
 
 const storageSync = new Storage({ area: "sync" });
-let observer: MutationObserver;
+let gObserverNavigation: MutationObserver;
 
 let gTitleLast = document.title;
 let gUrlLast = location.href;
@@ -38,6 +37,7 @@ function addSupportButtonIfNeeded(): void {
   });
   elContainer.append(elSupportButton);
 
+  // noinspection CssInvalidHtmlTagReference
   const elButtonShape = elSupportButton.querySelector<HTMLDivElement>("yt-button-shape");
   elButtonShape.insertAdjacentHTML(
     "beforeend",
@@ -50,6 +50,8 @@ function addSupportButtonIfNeeded(): void {
     </a>
     `
   );
+
+  // noinspection CssInvalidHtmlTagReference
   elSupportButton.querySelector("yt-icon").insertAdjacentHTML(
     "beforeend",
     `
@@ -58,6 +60,8 @@ function addSupportButtonIfNeeded(): void {
       </div>
     `
   );
+
+  // noinspection CssInvalidHtmlTagReference
   elSupportButton.querySelector("yt-icon-shape").insertAdjacentHTML(
     "beforeend",
     `
@@ -73,17 +77,7 @@ function addSupportButtonIfNeeded(): void {
 }
 
 async function addTemporaryBodyListener(): Promise<void> {
-  const isExtensionEnabled = await getStorage({
-    area: "local",
-    key: "isExtensionEnabled",
-    updateWindowKey: "ythdExtEnabled",
-    fallback: initial.isExtensionEnabled
-  });
-  if (isExtensionEnabled === false) {
-    return;
-  }
-
-  if (gTitleLast === document.title || gUrlLast === location.href) {
+  if (gTitleLast === document.title || gUrlLast === location.href || !(await getIsExtensionEnabled())) {
     return;
   }
 
@@ -99,12 +93,24 @@ async function init(): Promise<void> {
     return;
   }
 
-  observer = await addGlobalEventListener(addTemporaryBodyListener);
-  new MutationObserver(addTemporaryBodyListener).observe(document, OBSERVER_OPTIONS);
+  gObserverNavigation = await addGlobalEventListener(addTemporaryBodyListener);
+
+  // When the user visits a /watch page, the support button
+  // will be added if the user hasn't clicked on one yet
+  new MutationObserver(async (_, observer) => {
+    const elContainer = getVisibleElement(SELECTORS.actionButtonsContainer);
+    if (!(await getIsExtensionEnabled()) || !elContainer) {
+      return;
+    }
+
+    observer.disconnect();
+
+    addSupportButtonIfNeeded();
+  }).observe(document, OBSERVER_OPTIONS);
 
   storageSync.watch({
     isHideDonationSection() {
-      observer.disconnect();
+      gObserverNavigation.disconnect();
     }
   });
 }
