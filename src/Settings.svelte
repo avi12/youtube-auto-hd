@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Storage } from "@plasmohq/storage";
 
-  import { isHideDonationSection, isExtensionEnabled, isResizeVideo, qualitiesStored, sizeVideo } from "~popup/store";
+  import { isExtensionEnabled, isHideDonationSection, isResizeVideo, qualitiesStored, sizeVideo } from "~popup/store";
   import ControlEnabled from "~popup/views/ControlEnabled.svelte";
   import ControlQuality from "~popup/views/ControlQuality.svelte";
   import ControlSize from "~popup/views/ControlSize.svelte";
@@ -41,7 +41,7 @@
   const isDesktop = !navigator.userAgent.includes("Android");
 </script>
 
-<main class:rtl={getI18n("@@bidi_dir") === "rtl"} class:options-page={isOptionsPage}>
+<main class:options-page={isOptionsPage} class:rtl={getI18n("@@bidi_dir") === "rtl"}>
   {#if !isOptionsPage}
     <Header />
   {/if}
