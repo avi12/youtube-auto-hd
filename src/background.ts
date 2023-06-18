@@ -21,7 +21,8 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 });
 
 function setIcon(isEnabled = true): void {
-  chrome.action.setIcon({
+  const action = chrome.action || chrome.browserAction; // chrome.browserAction for Firefox MV2
+  action.setIcon({
     path: isEnabled ? pathIconOn : pathIconOff
   });
 }
