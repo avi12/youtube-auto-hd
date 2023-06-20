@@ -1,5 +1,6 @@
 import {
   OBSERVER_OPTIONS,
+  QUALITY_TO_NOT_SELECT,
   SELECTORS,
   getFpsFromRange,
   getIQuality,
@@ -51,17 +52,17 @@ function getCurrentQualityElements(): HTMLDivElement[] {
   return elMenuOptions.filter(getIsQualityElement) as HTMLDivElement[];
 }
 
-function convertQualityToNumber(elQuality: Element): VideoQuality | 0 {
+function convertQualityToNumber(elQuality: Element): VideoQuality | typeof QUALITY_TO_NOT_SELECT {
   const isPremiumAccount = Boolean(getVisibleElement(SELECTORS.logo).querySelector(SELECTORS.logoPremium));
   const isPremiumQuality = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
   const qualityNumber = parseInt(elQuality.textContent) as VideoQuality;
   if (!isPremiumQuality) {
     return qualityNumber;
   }
-  return !isPremiumAccount ? 0 : qualityNumber;
+  return !isPremiumAccount ? QUALITY_TO_NOT_SELECT : qualityNumber;
 }
 
-function getCurrentQualities(): (VideoQuality | 0)[] {
+function getCurrentQualities(): (VideoQuality | typeof QUALITY_TO_NOT_SELECT)[] {
   const elQualities = getCurrentQualityElements();
   return elQualities.map(convertQualityToNumber);
 }
@@ -96,7 +97,7 @@ function changeQuality(qualityCustom?: VideoQuality): void {
   if (isQualityExists) {
     applyQuality(iQuality);
   } else if (getIsQualityLower(elQualities[0], window.ythdLastUserQualities[fpsStep])) {
-    const iQualityAvailable = qualitiesAvailable.findIndex(quality => quality > 0);
+    const iQualityAvailable = qualitiesAvailable.findIndex(quality => quality > QUALITY_TO_NOT_SELECT);
     applyQuality(iQualityAvailable);
   } else {
     const iClosestQuality = qualitiesAvailable.findIndex(quality => quality <= window.ythdLastUserQualities[fpsStep]);
