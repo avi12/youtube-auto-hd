@@ -80,7 +80,6 @@ function addTemporaryBodyListenerOnDesktop(): void {
         return;
       }
 
-
       // We need to reset global variables, as well as prepare to change the quality of the new video
       window.ythdLastQualityClicked = null;
       await prepareToChangeQualityOnDesktop();
@@ -112,7 +111,8 @@ async function init(): Promise<void> {
   // the video's quality will be changed as soon as it loads
   new MutationObserver(async (_, observer) => {
     const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
-    if (!elVideo) {
+    const elLogo = getVisibleElement(SELECTORS.logo);
+    if (!elVideo || !elLogo) {
       return;
     }
 
