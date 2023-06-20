@@ -65,6 +65,7 @@ export enum SELECTORS {
   actionButtonsContainer = "#top-row #owner",
   donationSection = ".ythd-donation-section",
   // Premium
+  logo = "ytd-logo",
   logoPremium = "#youtube-red-paths",
   labelPremium = ".ytp-premium-label",
   // Mobile
