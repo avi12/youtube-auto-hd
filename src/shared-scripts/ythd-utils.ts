@@ -9,6 +9,7 @@ import type { QualityFpsPreferences, VideoFPS, VideoQuality, YouTubeLabel } from
 const storageLocal = new Storage({ area: "local" });
 
 export const OBSERVER_OPTIONS: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
+export const QUALITY_TO_NOT_SELECT = 0;
 window.ythdLastUserQualities = { ...initial.qualities };
 
 export async function getStorage<T>({
@@ -65,6 +66,7 @@ export enum SELECTORS {
   actionButtonsContainer = "#top-row #owner",
   donationSection = ".ythd-donation-section",
   // Premium
+  logo = "ytd-logo",
   logoPremium = "#youtube-red-paths",
   labelPremium = ".ytp-premium-label",
   // Mobile
