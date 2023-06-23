@@ -1,0 +1,33 @@
+.ythd-donation-section {
+  background-color: hsl(0, 0%, 20%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: max(1rem, 16px);
+  padding: 2rem;
+  margin-bottom: 10px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+
+  &__title {
+    color: hsl(0, 100%, 70%);
+    font-size: 2rem;
+    margin: 0 auto;
+  }
+
+  &__close {
+    color: hsl(0, 0%, 50%);
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+  }
+
+  &__description {
+    color: hsl(0, 0%, 100%);
+  }
+}

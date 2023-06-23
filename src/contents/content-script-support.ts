@@ -1,5 +1,5 @@
-import { mdiHeartOutline } from "@mdi/js";
 import { Storage } from "@plasmohq/storage";
+import textStyle from "data-text:~cs-helpers/desktop/injected-style.scss";
 import type { PlasmoCSConfig } from "plasmo";
 
 
@@ -8,8 +8,7 @@ import {
   SELECTORS,
   addGlobalEventListener,
   getIsExtensionEnabled,
-  getVisibleElement,
-  getVisibleElementInList
+  getVisibleElement
 } from "~shared-scripts/ythd-utils";
 
 const storageSync = new Storage({ area: "sync" });
@@ -17,63 +16,46 @@ let gObserverNavigation: MutationObserver;
 
 let gTitleLast = document.title;
 let gUrlLast = location.href;
+let gElSupportSection: HTMLElement;
 
 function addSupportButtonIfNeeded(): void {
-  const elContainer = getVisibleElement(SELECTORS.actionButtonsContainer);
-  let elSupportButton = getVisibleElementInList(
-    document.getElementsByClassName(SELECTORS.donationSection.substring(1))
-  );
-  if (!elContainer || elSupportButton) {
+  const elContainer = getVisibleElement(SELECTORS.relatedVideos);
+  gElSupportSection = getVisibleElement(SELECTORS.donationSection);
+  if (!elContainer || gElSupportSection) {
     return;
   }
 
-  elSupportButton = document.createElement("ytd-button-renderer");
-  elSupportButton.style.marginInlineStart = "8px";
-  elSupportButton.classList.add(SELECTORS.donationSection.substring(1), "ytd-menu-renderer");
-  elSupportButton.innerHTML = `<yt-button-shape></yt-button-shape>`;
-  elSupportButton.addEventListener("click", async () => {
-    await storageSync.set("isHideDonationSection", true);
-    elSupportButton.remove();
+  const CLASS_DONATION = SELECTORS.donationSection.substring(1);
+  gElSupportSection = document.createElement("article");
+  gElSupportSection.classList.add(CLASS_DONATION);
+  gElSupportSection.innerHTML = `
+      <section class="${CLASS_DONATION}__header">
+        <h1 class="${CLASS_DONATION}__title">Support YouTube Auto HD</h1>
+        <button class="${CLASS_DONATION}__close" aria-hidden="true" aria-label="Close">╳
+        </button>
+      </section>
+      <p class="${CLASS_DONATION}__description">
+        Hi there! Thank you so much for using my extension. I hope you enjoy using it as much as I enjoy making and maintaining it. I've been doing that for the past six years. Thanks for the many donations! :)
+      </p>
+      <p class="${CLASS_DONATION}__description">
+        I work alone. There is no big fund behind or mandatory payments.
+      </p>
+      <p class="${CLASS_DONATION}__description">
+        Your donations are what make it possible to keep it alive!
+      </p>
+      <p class="${CLASS_DONATION}__description">
+        Please consider donating via <a href="https://paypal.me/avi12" target="_blank" class="yt-core-attributed-string__link" style="color: #3ea6ff">PayPal</a>. Any amount is appreciated :)
+      </p>
+  `;
+  gElSupportSection.addEventListener("click", async ({ target }) => {
+    const element = target as HTMLElement;
+    if (element.matches("button, a")) {
+      // If clicking either the close button or the link, this section will be permanently closed
+      // Clicking the link will also open the donation link in a new tab
+      await storageSync.set("isHideDonationSection", true);
+    }
   });
-  elContainer.append(elSupportButton);
-
-  // noinspection CssInvalidHtmlTagReference
-  const elButtonShape = elSupportButton.querySelector<HTMLDivElement>("yt-button-shape");
-  elButtonShape.insertAdjacentHTML(
-    "beforeend",
-    `
-    <a href="https://paypal.me/avi12" target="_blank" class="yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading">
-      <div class="yt-spec-button-shape-next__icon" aria-hidden="true">
-        <yt-icon style="width: 24px; height: 25px;"></yt-icon>
-      </div>
-      <div><span>Support YTHD</span></div>
-    </a>
-    `
-  );
-
-  // noinspection CssInvalidHtmlTagReference
-  elSupportButton.querySelector("yt-icon").insertAdjacentHTML(
-    "beforeend",
-    `
-      <div style="width: 100%; height: 100%; fill: currentcolor;">
-        <yt-icon-shape class="style-scope yt-icon"></yt-icon-shape>
-      </div>
-    `
-  );
-
-  // noinspection CssInvalidHtmlTagReference
-  elSupportButton.querySelector("yt-icon-shape").insertAdjacentHTML(
-    "beforeend",
-    `
-      <shape-icon>
-        <div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="pointer-events: none; display: block; width: 100%; height: 100%;">
-            <path d="${mdiHeartOutline}"></path>
-          </svg>
-        </div>
-      </shape-icon>
-    `
-  );
+  elContainer.prepend(gElSupportSection);
 }
 
 async function addTemporaryBodyListener(): Promise<void> {
@@ -87,18 +69,25 @@ async function addTemporaryBodyListener(): Promise<void> {
   addSupportButtonIfNeeded();
 }
 
+function injectStyles(): void {
+  const elStyle = document.createElement("style");
+  elStyle.textContent = textStyle;
+  document.head.append(elStyle);
+}
+
 async function init(): Promise<void> {
   const isHideDonationSection = await storageSync.get<boolean>("isHideDonationSection");
   if (isHideDonationSection) {
     return;
   }
 
+  injectStyles();
   gObserverNavigation = await addGlobalEventListener(addTemporaryBodyListener);
 
   // When the user visits a /watch page, the support button
   // will be added if the user hasn't clicked on one yet
   new MutationObserver(async (_, observer) => {
-    const elContainer = getVisibleElement(SELECTORS.actionButtonsContainer);
+    const elContainer = getVisibleElement(SELECTORS.relatedVideos);
     if (!(await getIsExtensionEnabled()) || !elContainer) {
       return;
     }
@@ -111,6 +100,7 @@ async function init(): Promise<void> {
   storageSync.watch({
     isHideDonationSection() {
       gObserverNavigation.disconnect();
+      gElSupportSection?.remove();
     }
   });
 }
