@@ -63,7 +63,7 @@ export enum SELECTORS {
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player:not(#inline-preview-player)",
-  actionButtonsContainer = "#top-row #owner",
+  relatedVideos = "#secondary-inner",
   donationSection = ".ythd-donation-section",
   // Premium
   logo = "ytd-logo",
@@ -80,10 +80,6 @@ export enum SELECTORS {
 export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T {
   const elements = [...document.querySelectorAll(elementName)] as T[];
   return elements.find(isElementVisible);
-}
-
-export function getVisibleElementInList<T extends HTMLElement>(elements: HTMLElement[] | HTMLCollection): T {
-  return [...elements].find(isElementVisible) as T;
 }
 
 export async function getElementByMutationObserver(selector: SELECTORS, isVisible = true): Promise<HTMLElement> {
