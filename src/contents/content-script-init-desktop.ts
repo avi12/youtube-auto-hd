@@ -111,8 +111,7 @@ async function init(): Promise<void> {
   // the video's quality will be changed as soon as it loads
   new MutationObserver(async (_, observer) => {
     const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
-    const elLogo = getVisibleElement(SELECTORS.logo);
-    if (!elVideo || !elLogo) {
+    if (!elVideo) {
       return;
     }
 
@@ -121,13 +120,20 @@ async function init(): Promise<void> {
       return;
     }
 
-    observer.disconnect();
-
     const isEmbed = location.pathname.startsWith("/embed/");
     if (isEmbed) {
+      observer.disconnect();
       await prepareToChangeQualityOnDesktop();
       return;
     }
+
+    // The logo is loaded in non-/embed pages
+    const elLogo = getVisibleElement(SELECTORS.logo);
+    if (!elLogo) {
+      return;
+    }
+
+    observer.disconnect();
 
     await prepareToChangeQualityOnDesktop();
     elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
