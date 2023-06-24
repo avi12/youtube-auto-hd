@@ -53,7 +53,7 @@ function getCurrentQualityElements(): HTMLDivElement[] {
 }
 
 function convertQualityToNumber(elQuality: Element): VideoQuality | typeof QUALITY_TO_NOT_SELECT {
-  const isPremiumAccount = Boolean(getVisibleElement(SELECTORS.logo).querySelector(SELECTORS.logoPremium));
+  const isPremiumAccount = Boolean(getVisibleElement(SELECTORS.logo)?.querySelector(SELECTORS.logoPremium));
   const isPremiumQuality = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
   const qualityNumber = parseInt(elQuality.textContent) as VideoQuality;
   if (!isPremiumQuality) {
