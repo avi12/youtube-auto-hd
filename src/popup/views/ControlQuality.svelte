@@ -18,7 +18,7 @@
     fpsWarning: getI18n("cj_i18n_07265", "Videos will play at up to 30 FPS for this quality")
   };
 
-  const qualitiesSelected = Object.values($qualitiesStored).reverse() as VideoQuality[];
+  const qualitiesSelected = [...Object.values($qualitiesStored)].reverse() as VideoQuality[];
 
   let isSameQualityForAllFps = qualitiesSelected.every((quality, _, array) => quality === array[0]);
   $: isSameEnhancedBitrateForAllFps = Object.values($isEnhancedBitrates).every(Boolean);
@@ -40,7 +40,6 @@
   }
 
   $: {
-    // TODO: Simplify the Switch events to this single code block
     storageLocal.set("isEnhancedBitrates", $isEnhancedBitrates);
   }
 
