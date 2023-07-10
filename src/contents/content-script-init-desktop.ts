@@ -9,12 +9,13 @@ import {
   getIsExtensionEnabled,
   getVisibleElement
 } from "~shared-scripts/ythd-utils";
-import type { QualityFpsPreferences, VideoQuality } from "~types";
+import type { EnhancedBitrateFpsPreferences, EnhancedBitratePreferences, VideoFPS, VideoQuality } from "~types";
 
 declare global {
   interface Window {
-    ythdLastQualityClicked: VideoQuality | null;
-    ythdLastUserQualities: QualityFpsPreferences;
+    ythdLastQualityClicked?: VideoQuality;
+    ythdLastUserQualities: EnhancedBitrateFpsPreferences;
+    ythdLastUserEnhancedBitrates: EnhancedBitratePreferences;
     ythdPlayerObserver: MutationObserver;
     ythdExtEnabled: boolean;
   }
@@ -40,8 +41,15 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: MouseEvent): vo
   }
 
   const quality = parseInt(labelQuality.match(/\d{3,4}/)?.[0]) as VideoQuality;
-  if (!isNaN(quality)) {
-    window.ythdLastQualityClicked = quality;
+  if (isNaN(quality)) {
+    return;
+  }
+
+  window.ythdLastQualityClicked = quality;
+  const fps = Number(labelQuality?.match(/[ps](\d+)/)?.[1]) as VideoFPS;
+  const isEnhancedBitrate = elQuality.querySelector(SELECTORS.labelPremium);
+  if (isEnhancedBitrate) {
+    window.ythdLastUserEnhancedBitrates[fps] = true;
   }
 }
 

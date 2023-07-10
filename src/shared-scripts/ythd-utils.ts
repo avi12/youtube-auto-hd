@@ -3,14 +3,19 @@ import { Storage } from "@plasmohq/storage";
 import { initial } from "./ythd-setup";
 import { prepareToChangeQualityOnDesktop } from "~cs-helpers/desktop/content-script-desktop";
 import { prepareToChangeQualityOnMobile } from "~cs-helpers/mobile/content-script-mobile";
-import type { QualityFpsPreferences, VideoFPS, VideoQuality, YouTubeLabel } from "~types";
+import type {
+  EnhancedBitrateFpsPreferences,
+  EnhancedBitratePreferences,
+  QualityFpsPreferences,
+  VideoFPS
+} from "~types";
 
 
 const storageLocal = new Storage({ area: "local" });
 
 export const OBSERVER_OPTIONS: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
-export const QUALITY_TO_NOT_SELECT = 0;
 window.ythdLastUserQualities = { ...initial.qualities };
+export const IS_DESKTOP = !navigator.userAgent.includes("Android");
 
 export async function getStorage<T>({
   area,
@@ -39,7 +44,7 @@ export async function getStorage<T>({
 }
 
 export async function getIsExtensionEnabled(): Promise<boolean> {
-  return getStorage<boolean>({
+  return getStorage({
     area: "local",
     key: "isExtensionEnabled",
     fallback: initial.isExtensionEnabled,
@@ -67,14 +72,12 @@ export enum SELECTORS {
   donationSection = ".ythd-donation-section",
   // Premium
   logo = "ytd-logo",
-  logoPremium = "#youtube-red-paths",
   labelPremium = ".ytp-premium-label",
   // Mobile
   mobileQualityDropdown = "select[id^=player-quality-dropdown]",
   mobileQualityDropdownWrapper = ".player-quality-settings",
-  mobileMenuButton = ".mobile-topbar-header-content ytm-menu button",
-  mobileOption = "div[role=dialog] ytm-menu-item",
-  mobileOkButton = ".dialog-buttons [class*=material-button-button]",
+  mobileMenuButton = "button.player-settings-icon",
+  mobileOkButton = ".dialog-buttons [class*=material-button-button]"
 }
 
 export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T {
@@ -114,6 +117,10 @@ export function addStorageListener(): void {
       window.ythdLastQualityClicked = null;
       window.ythdLastUserQualities = qualities;
       await prepareFunc();
+    },
+    async isEnhancedBitrates({ newValue: isEnhancedBitrates }: { newValue: EnhancedBitratePreferences }) {
+      window.ythdLastUserEnhancedBitrates = isEnhancedBitrates;
+      await prepareToChangeQualityOnDesktop();
     }
   });
 }
@@ -132,17 +139,14 @@ function isElementVisible(element: HTMLElement): boolean {
   return element?.offsetWidth > 0 && element?.offsetHeight > 0;
 }
 
-export function getFpsFromRange(qualities: QualityFpsPreferences, fpsToCheck: VideoFPS): VideoFPS {
+export function getFpsFromRange(
+  qualities: QualityFpsPreferences | EnhancedBitrateFpsPreferences,
+  fpsToCheck: VideoFPS
+): VideoFPS {
   const fpsList = Object.keys(qualities)
-    .map(Number)
+    .map(parseInt)
     .sort((a, b) => b - a) as VideoFPS[];
-  while (fpsList.length > 1) {
-    const fpsCurrent: VideoFPS = fpsList.pop();
-    if (fpsToCheck <= fpsCurrent) {
-      return fpsCurrent;
-    }
-  }
-  return fpsList[0];
+  return fpsList.find(fps => fpsToCheck <= fps) || fpsList.at(-1);
 }
 
 export async function getPreferredQualities(): Promise<QualityFpsPreferences> {
@@ -152,11 +156,4 @@ export async function getPreferredQualities(): Promise<QualityFpsPreferences> {
     fallback: initial.qualities,
     updateWindowKey: "ythdLastUserQualities"
   });
-}
-
-export function getIQuality(
-  qualitiesCurrent: (VideoQuality | 0)[] | YouTubeLabel[],
-  qualityPreferred: VideoQuality | YouTubeLabel
-): number {
-  return qualitiesCurrent.findIndex((quality: VideoQuality | YouTubeLabel | 0) => quality === qualityPreferred);
 }
