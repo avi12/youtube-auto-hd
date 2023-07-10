@@ -14,7 +14,7 @@
     labelAllFramerates: getI18n("cj_i18n_06858", "All frame rates"),
     fpsAndBelow: getI18n("cj_i18n_02149", "FPS and below"),
     labelQualityEnd: getI18n("cj_i18n_02148", "FPS videos"),
-    preferEnhancedBitrate: getI18n("", "Use enhanced bitrate when it's the highest quality"),
+    preferEnhancedBitrate: getI18n("cj_i18n_07392", "Use enhanced bitrate when it's the highest quality"),
     fpsWarning: getI18n("cj_i18n_07265", "Videos will play at up to 30 FPS for this quality")
   };
 
