@@ -120,6 +120,8 @@
   {/if}
 </article>
 
+<hr class="mt-5" />
+
 <style lang="scss">
   .size {
     display: flex;

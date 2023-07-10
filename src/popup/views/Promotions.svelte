@@ -8,8 +8,6 @@
   };
 </script>
 
-<hr class="mt-6" />
-
 {#if $isHideDonationSection}
   <details class="mt-5">
     <summary class="mb-1 ms-[0.45rem] text-secondary cursor-pointer">

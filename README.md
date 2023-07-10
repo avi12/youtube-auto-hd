@@ -97,40 +97,46 @@ pnpm run-opera:windows
 pnpm run-firefox
 ```
 
-### Mobile/tablet
+### Phone/tablet
 
 1. Install [Android Studio](https://developer.android.com/studio) on your operating system
 2. Create an AVD (Android Virtual Device)
-   1. For a phone emulator, choose one that
-      has [Play Store preinstalled](https://user-images.githubusercontent.com/6422804/167658974-9ec9d13f-d297-4e8b-85d6-376809f34aab.png)
-   2. For a tablet emulator, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) after
-      creating it to have Play Store
-      preinstalled
-3. Run the emulator:
+3. For a phone emulator, choose one that
+   has [Play Store preinstalled](https://user-images.githubusercontent.com/6422804/167658974-9ec9d13f-d297-4e8b-85d6-376809f34aab.png)
+4. For a tablet emulator, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) after
+   creating it to have Play Store
+   preinstalled
+5. Run the emulator:
    ```shell
     emulator @DEVICE_NAME
    ```
-4. Download [Kiwi browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser). I recommend creating
+6. Download [Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser). I recommend creating
    a Google account specifically to be used with the emulator
-5. Run `pnpm build-pack:test`
-6. Push the ZIP to the emulator. If using PowerShell:
-   ```powershell
-   $zip = "chrome-mv3-prod.zip";
-   $destAndroid = "/storage/emulated/0/Download/$zip";
-   adb shell rm $destAndroid;
-   adb push "build/$zip" $destAndroid;
-   ```
-   1. If you're running both emulators, use argument `-s ID` to specify the ID of the emulator you want to interact
-      with  
-      E.g. `adb -s ID shell ...`
-   2. Find out the IDs using `adb devices`
-7. <details>
+7. - If you're using a single emulator while on Windows, you can run:
+     ```shell
+     pnpm build-pack:test-push
+     ```
+   - If you're testing on multiple emulators, and you're on PowerShell:
+     First find the emulator ID:
+     ```powershell
+     adb devices
+     ```
+     Then:
+     ```powershell
+     pnpm build-pack:test; `
+     $zip = "chrome-mv3-prod.zip"; `
+     $destAndroid = "/storage/emulated/0/Download/$zip"; `
+     adb -s ID shell rm $destAndroid; `
+     adb -s ID push "build/$zip" $destAndroid;
+     ```
+     where you replace `ID` with the emulator ID
+8. <details>
    <summary>Side-load the extension on Kiwi</summary>
    <!--suppress HtmlDeprecatedAttribute -->
    <img align="top" src="https://user-images.githubusercontent.com/6422804/167670341-a0cae554-e922-40b3-b8ed-7bec1ebf17bc.png" alt="Choose zip from storage">
    </details>
-8. Select the ZIP in the Download folder
-9. To reload, you must first remove the extension and then repeat steps 5-8
+9. Select the ZIP in the Download folder
+10. To reload, you must first remove the extension and then repeat steps 5-8
 
 ### Sideloading onto your daily driver browser
 
