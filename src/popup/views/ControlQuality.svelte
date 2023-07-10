@@ -113,7 +113,6 @@
         {/if}
       </section>
     {/each}
-
   {/if}
 </article>
 

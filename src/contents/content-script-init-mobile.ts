@@ -80,11 +80,15 @@ async function initMobile(): Promise<void> {
       return;
     }
 
-    const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
-    if (elVideo) {
-      observer.disconnect();
-      prepareToChangeQualityOnMobile();
+    const elVideo = document.querySelector<HTMLVideoElement>(SELECTORS.video);
+    const elMenuButton = document.querySelector(SELECTORS.mobileMenuButton);
+    if (!elVideo || !elMenuButton) {
+      return;
     }
+
+    observer.disconnect();
+    prepareToChangeQualityOnMobile();
+    elVideo.addEventListener("canplay", prepareToChangeQualityOnMobile);
   }).observe(document, OBSERVER_OPTIONS);
 }
 
