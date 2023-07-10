@@ -1,7 +1,7 @@
 # YouTube Auto HD + FPS
 
 A browser extension that sets the quality of YouTube videos according to the user's preference, based on the video's
-FPS.  
+FPS.
 Available for:
 
 - [Google Chrome](https://chrome.google.com/webstore/detail/fcphghnknhkimeagdglkljinmpbagone) ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/fcphghnknhkimeagdglkljinmpbagone?color=white&label=users&style=flat-square)
@@ -12,7 +12,7 @@ Available for:
 - [Safari](https://apps.apple.com/us/app/id1546729687) - maintained
   by [carlosjeurissen](https://github.com/carlosjeurissen)
 
-<img width="315" alt="A screenshot from the extension's pop-up page" src="https://user-images.githubusercontent.com/31113245/233851402-f97033d4-a111-40e0-8503-8692e07fe7f3.png">
+![A screenshot from the extension's pop-up page](https://github.com/avi12/youtube-auto-hd/assets/6422804/fc7a4581-0162-427c-a6bc-7d96e68a3961)
 
 Made by [avi12](https://avi12.com)
 
@@ -22,7 +22,7 @@ Powered by [Plasmo](https://github.com/plasmohq/plasmo)
 
 Due to the way the browsers handle extensions, when an extension receives an update, content scripts in already-open web
 pages cannot use the [Storage API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage),
-until the user reloads those web pages.  
+until the user reloads those web pages.
 In the context of this extension, it means that when the extension receives an update, as long as the user doesn't
 reload YouTube web pages, the extension cannot get the data regarding the user-preferred qualities.
 
@@ -31,14 +31,14 @@ reload YouTube web pages, the extension cannot get the data regarding the user-p
 To provide a smooth user experience, I decided to use the last qualities that were fetched.
 
 This solution is not perfect, since if the user wants to update the quality of the videos in the currently-open web
-pages using the popup page, it will not update dynamically.  
+pages using the popup page, it will not update dynamically.
 However, this is the only viable solution, as the alternative would be to auto-reload web pages, which would result in a
 bad user experience.
 
 ## Translating
 
 You can translate the extension to your own language by
-filling [this form](https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate).  
+filling [this form](https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate).
 Filling will grant you access to a Google Sheets spreadsheet via email, in which you can contribute your translations.
 
 ## Requirements for setting up
@@ -160,5 +160,5 @@ pnpm build-pack:firefox
 ## Contribution
 
 Feel free to contribute! Keep in mind that the license I chose
-is [GPL v3](https://github.com/avi12/youtube-auto-hd/blob/main/LICENSE).  
+is [GPL v3](https://github.com/avi12/youtube-auto-hd/blob/main/LICENSE).
 If you want to fork, make sure to credit [avi12](https://avi12.com) and link to this repository.

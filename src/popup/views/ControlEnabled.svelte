@@ -16,6 +16,6 @@
   }
 </script>
 
-<article class="control-section">
+<article>
   <Switch bind:checked={$isExtensionEnabled}>{i18n.labelEnabled}</Switch>
 </article>

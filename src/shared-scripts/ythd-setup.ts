@@ -39,6 +39,12 @@ export const initial: Preferences = {
     50: qualityClosest,
     30: qualityClosest
   },
+  isEnhancedBitrates: {
+    // Defaulting to "false" because it's unknown whether the user has premium or not
+    60: false,
+    50: false,
+    30: false
+  },
   isResizeVideo: false,
   size: 1
 } as const;

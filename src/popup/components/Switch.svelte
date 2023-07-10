@@ -1,10 +1,14 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
+
   export let checked = false;
+
+  const dispatch = createEventDispatcher();
 </script>
 
-<label>
-  <input bind:checked role="switch" type="checkbox" />
-  <slot />
+<label {...$$restProps}>
+  <input bind:checked on:change={e => dispatch("change", { checked: e.currentTarget.checked })} role="switch" type="checkbox"/>
+  <slot/>
 </label>
 
 <style lang="scss">

@@ -3,9 +3,9 @@
 
   import Slider from "../components/Slider.svelte";
   import Switch from "../components/Switch.svelte";
-  import { qualitiesStored } from "~popup/store";
+  import { isEnhancedBitrates, qualitiesStored } from "~popup/store";
   import { fpsSupported, qualities } from "~shared-scripts/ythd-setup";
-  import { getI18n } from "~shared-scripts/ythd-utils";
+  import { IS_DESKTOP, getI18n } from "~shared-scripts/ythd-utils";
   import type { VideoFPS, VideoQuality } from "~types";
 
 
@@ -14,12 +14,17 @@
     labelAllFramerates: getI18n("cj_i18n_06858", "All frame rates"),
     fpsAndBelow: getI18n("cj_i18n_02149", "FPS and below"),
     labelQualityEnd: getI18n("cj_i18n_02148", "FPS videos"),
+    preferEnhancedBitrate: getI18n("", "Use enhanced bitrate when it's the highest quality"),
     fpsWarning: getI18n("cj_i18n_07265", "Videos will play at up to 30 FPS for this quality")
   };
 
   const qualitiesSelected = Object.values($qualitiesStored).reverse() as VideoQuality[];
+
   let isSameQualityForAllFps = qualitiesSelected.every((quality, _, array) => quality === array[0]);
-  let qualitySelected = qualitiesSelected[0];
+  $: isSameEnhancedBitrateForAllFps = Object.values($isEnhancedBitrates).every(Boolean);
+
+  let qualityForAllSelected = qualitiesSelected[0];
+
   const qualitiesReversed = [...qualities].reverse();
   const fpsList = [...fpsSupported].reverse();
   const storageLocal = new Storage({ area: "local" });
@@ -27,11 +32,16 @@
   $: {
     if (isSameQualityForAllFps) {
       for (const fps of fpsList) {
-        $qualitiesStored[fps] = qualitySelected;
+        $qualitiesStored[fps] = qualityForAllSelected;
       }
     }
 
     storageLocal.set("qualities", $qualitiesStored);
+  }
+
+  $: {
+    // TODO: Simplify the Switch events to this single code block
+    storageLocal.set("isEnhancedBitrates", $isEnhancedBitrates);
   }
 
   function fpsToRange(i: number): string {
@@ -48,19 +58,34 @@
 
   {#if isSameQualityForAllFps}
     <section class="control-section">
-      <Slider values={qualitiesReversed} bind:value={qualitySelected}>
+      <Slider values={qualitiesReversed} bind:value={qualityForAllSelected}>
         <div class="slider-label">
-          <div class="flex-1">{qualitySelected}p</div>
+          <div class="flex-1">{qualityForAllSelected}p</div>
           <div class="flex-1 text-secondary">{i18n.labelAllFramerates}</div>
         </div>
       </Slider>
 
-      {#if qualitySelected < 720}
+      {#if qualityForAllSelected >= 1080 && IS_DESKTOP}
+        <Switch
+          on:change={e => {
+            fpsList.forEach(fps => {
+              $isEnhancedBitrates[fps] = e.detail.checked;
+            });
+          }}
+          checked={isSameEnhancedBitrateForAllFps}
+          class="mt-3">{i18n.preferEnhancedBitrate}</Switch>
+      {/if}
+
+      {#if qualityForAllSelected < 720}
         <div class="warning mt-4">{i18n.fpsWarning}</div>
       {/if}
     </section>
   {:else}
     {#each fpsList as fps, iFps}
+      {#if iFps > 0 && IS_DESKTOP}
+        <hr class="mt-4" />
+      {/if}
+
       <section class="control-section">
         <Slider values={qualitiesReversed} bind:value={$qualitiesStored[fps]}>
           <div class="slider-label">
@@ -75,13 +100,25 @@
           </div>
         </Slider>
 
-        {#if fps > 30 && $qualitiesStored[fps] < 720}
+        {#if $qualitiesStored[fps] >= 1080 && IS_DESKTOP}
+          <Switch
+            on:change={e => {
+              $isEnhancedBitrates[fps] = e.detail.checked;
+            }}
+            checked={$isEnhancedBitrates[fps]}
+            class="mt-3">{i18n.preferEnhancedBitrate}</Switch>
+        {/if}
+
+        {#if $qualitiesStored[fps] < 720 && fps > 30}
           <div class="warning mt-4">{i18n.fpsWarning}</div>
         {/if}
       </section>
     {/each}
+
   {/if}
 </article>
+
+<hr class="mt-4" />
 
 <style lang="scss">
   .slider-label {
