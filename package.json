@@ -37,7 +37,7 @@
     "@mdi/js": "^7.2.96",
     "@plasmohq/storage": "^1.6.2",
     "nouislider": "^15.7.1",
-    "plasmo": "0.77.5",
+    "plasmo": "0.79.0",
     "sass": "1.63.6",
     "svelte": "4.0.5",
     "svelte-preprocess": "5.0.4"
