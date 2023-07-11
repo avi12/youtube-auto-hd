@@ -1,7 +1,7 @@
 {
   "name": "youtube-auto-hd",
   "displayName": "YouTube Auto HD + FPS",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "Automatically set the video quality on YouTube according to its FPS!",
   "author": "avi12 <avi6106@gmail.com>",
   "homepage": "https://github.com/avi12/youtube-auto-hd",
@@ -37,7 +37,7 @@
     "@mdi/js": "^7.2.96",
     "@plasmohq/storage": "^1.6.2",
     "nouislider": "^15.7.1",
-    "plasmo": "0.77.5",
+    "plasmo": "0.79.0",
     "sass": "1.63.6",
     "svelte": "4.0.5",
     "svelte-preprocess": "5.0.4"

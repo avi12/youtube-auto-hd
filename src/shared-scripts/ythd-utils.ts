@@ -146,7 +146,7 @@ export function getFpsFromRange(
   const fpsList = Object.keys(qualities)
     .map(parseInt)
     .sort((a, b) => b - a) as VideoFPS[];
-  return fpsList.find(fps => fpsToCheck <= fps) || fpsList.at(-1);
+  return fpsList.find(fps => fps <= fpsToCheck) || fpsList.at(-1);
 }
 
 export async function getPreferredQualities(): Promise<QualityFpsPreferences> {
