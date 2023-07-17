@@ -141,7 +141,7 @@ function isElementVisible(element: HTMLElement): boolean {
 
 export function getFpsFromRange(
   qualities: QualityFpsPreferences | EnhancedBitrateFpsPreferences,
-  fpsToCheck: VideoFPS
+  fpsToCheck: number
 ): VideoFPS {
   const fpsList = Object.keys(qualities)
     .map(fps => parseInt(fps))
