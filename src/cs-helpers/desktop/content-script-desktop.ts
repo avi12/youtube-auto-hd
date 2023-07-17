@@ -58,7 +58,7 @@ function getAvailableQualities(): (VideoQuality | EnhancedVideoQuality)[] {
   return elQualities.map(convertQualityToNumber);
 }
 
-function getVideoFPS(): VideoFPS {
+function getVideoFPS(): number {
   const elQualities = getCurrentQualityElements();
   const labelQuality = elQualities[0]?.textContent as FullYouTubeLabel;
   if (!labelQuality) {
@@ -75,8 +75,8 @@ function openQualityMenu(elVideo: HTMLVideoElement): void {
 
 function changeQuality(qualityCustom?: VideoQuality | EnhancedVideoQuality): void {
   const fpsVideo = getVideoFPS();
-  const elQualities = getCurrentQualityElements();
   const fpsStep = getFpsFromRange(window.ythdLastUserQualities, fpsVideo);
+  const elQualities = getCurrentQualityElements();
   const qualitiesAvailable = getAvailableQualities();
   const qualityPreferred = qualityCustom || window.ythdLastUserQualities[fpsStep];
 
