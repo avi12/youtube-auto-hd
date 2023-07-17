@@ -1,5 +1,6 @@
 import { Storage } from "@plasmohq/storage";
 
+import { initial } from "./ythd-setup";
 import { prepareToChangeQualityOnDesktop } from "~cs-helpers/desktop/content-script-desktop";
 import { prepareToChangeQualityOnMobile } from "~cs-helpers/mobile/content-script-mobile";
 import type {
@@ -9,7 +10,6 @@ import type {
   VideoFPS
 } from "~types";
 
-import { initial } from "./ythd-setup";
 
 const storageLocal = new Storage({ area: "local" });
 
