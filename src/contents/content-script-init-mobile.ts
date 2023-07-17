@@ -1,4 +1,4 @@
-import type { PlasmoContentScript } from "plasmo";
+import type { PlasmoContentScript, PlasmoCSConfig } from "plasmo";
 
 import { prepareToChangeQualityOnMobile } from "~cs-helpers/mobile/content-script-mobile";
 import { labelToQuality } from "~shared-scripts/ythd-setup";
@@ -94,6 +94,6 @@ async function initMobile(): Promise<void> {
 
 initMobile();
 
-export const config: PlasmoContentScript = {
+export const config: PlasmoCSConfig = {
   matches: ["https://m.youtube.com/*"]
 };
