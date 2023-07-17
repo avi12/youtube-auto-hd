@@ -1,6 +1,5 @@
 import { Storage } from "@plasmohq/storage";
 
-import { initial } from "./ythd-setup";
 import { prepareToChangeQualityOnDesktop } from "~cs-helpers/desktop/content-script-desktop";
 import { prepareToChangeQualityOnMobile } from "~cs-helpers/mobile/content-script-mobile";
 import type {
@@ -10,6 +9,7 @@ import type {
   VideoFPS
 } from "~types";
 
+import { initial } from "./ythd-setup";
 
 const storageLocal = new Storage({ area: "local" });
 
@@ -144,7 +144,7 @@ export function getFpsFromRange(
   fpsToCheck: VideoFPS
 ): VideoFPS {
   const fpsList = Object.keys(qualities)
-    .map(parseInt)
+    .map(fps => parseInt(fps))
     .sort((a, b) => b - a) as VideoFPS[];
   return fpsList.find(fps => fps <= fpsToCheck) || fpsList.at(-1);
 }
