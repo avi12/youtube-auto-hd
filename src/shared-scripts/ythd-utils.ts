@@ -141,10 +141,10 @@ function isElementVisible(element: HTMLElement): boolean {
 
 export function getFpsFromRange(
   qualities: QualityFpsPreferences | EnhancedBitrateFpsPreferences,
-  fpsToCheck: VideoFPS
+  fpsToCheck: number
 ): VideoFPS {
   const fpsList = Object.keys(qualities)
-    .map(parseInt)
+    .map(fps => parseInt(fps))
     .sort((a, b) => b - a) as VideoFPS[];
   return fpsList.find(fps => fps <= fpsToCheck) || fpsList.at(-1);
 }

@@ -18,20 +18,19 @@
     fpsWarning: getI18n("cj_i18n_07265", "Videos will play at up to 30 FPS for this quality")
   };
 
-  const qualitiesSelected = [...Object.values($qualitiesStored)].reverse() as VideoQuality[];
-
+  const fpsList = [...fpsSupported].sort((a, b) => a - b);
+  const qualitiesSelected = fpsList.map<VideoQuality>(fps => $qualitiesStored[fps]);
   let isSameQualityForAllFps = qualitiesSelected.every((quality, _, array) => quality === array[0]);
   $: isSameEnhancedBitrateForAllFps = Object.values($isEnhancedBitrates).every(Boolean);
 
   let qualityForAllSelected = qualitiesSelected[0];
 
   const qualitiesReversed = [...qualities].reverse();
-  const fpsList = [...fpsSupported].reverse();
   const storageLocal = new Storage({ area: "local" });
 
   $: {
     if (isSameQualityForAllFps) {
-      for (const fps of fpsList) {
+      for (const fps in $qualitiesStored) {
         $qualitiesStored[fps] = qualityForAllSelected;
       }
     }
@@ -80,7 +79,7 @@
       {/if}
     </section>
   {:else}
-    {#each fpsList as fps, iFps}
+    {#each Object.keys($qualitiesStored) as fps, iFps}
       {#if iFps > 0 && IS_DESKTOP}
         <hr class="mt-4" />
       {/if}
@@ -101,9 +100,7 @@
 
         {#if $qualitiesStored[fps] >= 1080 && IS_DESKTOP}
           <Switch
-            on:change={e => {
-              $isEnhancedBitrates[fps] = e.detail.checked;
-            }}
+            on:change={e => ($isEnhancedBitrates[fps] = e.detail.checked)}
             checked={$isEnhancedBitrates[fps]}
             class="mt-3">{i18n.preferEnhancedBitrate}</Switch>
         {/if}

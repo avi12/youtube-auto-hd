@@ -64,6 +64,15 @@ async function openMenu(): Promise<void> {
 }
 
 export async function prepareToChangeQualityOnMobile(e?: Event): Promise<void> {
+  const storageLocal = new Storage({ area: "local" });
+  storageLocal.watch({
+    async qualities({ newValue: qualities }: { newValue: QualityFpsPreferences }) {
+      window.ythdLastQualityClicked = null;
+      window.ythdLastUserQualities = { ...qualities };
+      await prepareToChangeQualityOnMobile();
+    }
+  });
+
   // Removing the event so that the menu will only be opened once
   const elVideo = e?.target as HTMLVideoElement;
   elVideo?.removeEventListener("canplay", prepareToChangeQualityOnMobile);
@@ -74,12 +83,3 @@ export async function prepareToChangeQualityOnMobile(e?: Event): Promise<void> {
   await changeQualityOnMobile(window.ythdLastQualityClicked);
   document.querySelector<HTMLButtonElement>(SELECTORS.mobileOkButton).click();
 }
-
-const storageLocal = new Storage({ area: "local" });
-storageLocal.watch({
-  async qualities({ newValue: qualities }: { newValue: QualityFpsPreferences }) {
-    window.ythdLastQualityClicked = null;
-    window.ythdLastUserQualities = { ...qualities };
-    await prepareToChangeQualityOnMobile();
-  }
-});
