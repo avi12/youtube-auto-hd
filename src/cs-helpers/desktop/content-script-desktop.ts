@@ -7,8 +7,14 @@ import {
   OBSERVER_OPTIONS,
   SELECTORS
 } from "~shared-scripts/ythd-utils";
-import type { EnhancedVideoQuality, FullYouTubeLabel, VideoFPS, VideoQuality } from "~types";
-import { EBR } from "~types";
+import type {
+  EnhancedBitratePreferences,
+  EnhancedVideoQuality,
+  FullYouTubeLabel,
+  VideoFPS,
+  VideoQuality
+} from "~types";
+import { SUFFIX_EBR } from "~types";
 
 function getPlayerDiv(elVideo: HTMLVideoElement): HTMLDivElement {
   return elVideo.closest(SELECTORS.player);
@@ -48,7 +54,7 @@ function convertQualityToNumber(elQuality: Element): VideoQuality | EnhancedVide
   const isPremiumQuality = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
   const qualityNumber = parseInt(elQuality.textContent);
   if (isPremiumQuality) {
-    return (qualityNumber + EBR) as EnhancedVideoQuality;
+    return (qualityNumber + SUFFIX_EBR) as EnhancedVideoQuality;
   }
   return qualityNumber as VideoQuality;
 }
@@ -73,19 +79,22 @@ function openQualityMenu(elVideo: HTMLVideoElement): void {
   elSettingQuality.click();
 }
 
-function changeQuality(qualityCustom?: VideoQuality | EnhancedVideoQuality): void {
+function changeQuality(
+  qualityCustom?: VideoQuality | EnhancedVideoQuality,
+  isEnhancedBitrateCustom?: Partial<EnhancedBitratePreferences>
+): void {
   const fpsVideo = getVideoFPS();
   const fpsStep = getFpsFromRange(window.ythdLastUserQualities, fpsVideo);
   const elQualities = getCurrentQualityElements();
   const qualitiesAvailable = getAvailableQualities();
   const qualityPreferred = qualityCustom || window.ythdLastUserQualities[fpsStep];
+  const isEnhancedBitrate = { ...window.ythdLastUserEnhancedBitrates, ...isEnhancedBitrateCustom };
 
   const applyQuality = (iQuality: number): void => {
     elQualities[iQuality]?.click();
   };
 
-  const isQualityPreferredEBR =
-    qualitiesAvailable[0].toString().endsWith(EBR) && window.ythdLastUserEnhancedBitrates[fpsStep];
+  const isQualityPreferredEBR = qualitiesAvailable[0].toString().endsWith(SUFFIX_EBR) && isEnhancedBitrate[fpsStep];
   if (isQualityPreferredEBR) {
     applyQuality(0);
     return;
@@ -97,7 +106,7 @@ function changeQuality(qualityCustom?: VideoQuality | EnhancedVideoQuality): voi
     return;
   }
 
-  const iQualityFallback = qualitiesAvailable.findIndex(quality => !quality.toString().endsWith(EBR));
+  const iQualityFallback = qualitiesAvailable.findIndex(quality => !quality.toString().endsWith(SUFFIX_EBR));
   applyQuality(iQualityFallback);
 }
 
@@ -108,7 +117,7 @@ function changeQualityWhenPossible(elVideo: HTMLVideoElement): void {
   }
 
   openQualityMenu(elVideo);
-  changeQuality(window.ythdLastQualityClicked);
+  changeQuality(window.ythdLastQualityClicked, window.ythdLastEnhancedBitrateClicked);
 }
 
 function getIsSettingsMenuOpen(): boolean {

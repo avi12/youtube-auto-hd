@@ -2,18 +2,19 @@ import type { PlasmoCSConfig } from "plasmo";
 
 import { prepareToChangeQualityOnDesktop } from "~cs-helpers/desktop/content-script-desktop";
 import {
-  OBSERVER_OPTIONS,
-  SELECTORS,
   addGlobalEventListener,
   addStorageListener,
   getIsExtensionEnabled,
-  getVisibleElement
+  getVisibleElement,
+  OBSERVER_OPTIONS,
+  SELECTORS
 } from "~shared-scripts/ythd-utils";
 import type { EnhancedBitrateFpsPreferences, EnhancedBitratePreferences, VideoFPS, VideoQuality } from "~types";
 
 declare global {
   interface Window {
     ythdLastQualityClicked?: VideoQuality;
+    ythdLastEnhancedBitrateClicked: Partial<EnhancedBitratePreferences>;
     ythdLastUserQualities: EnhancedBitrateFpsPreferences;
     ythdLastUserEnhancedBitrates: EnhancedBitratePreferences;
     ythdPlayerObserver: MutationObserver;
@@ -21,6 +22,7 @@ declare global {
   }
 }
 window.ythdLastQualityClicked = null;
+window.ythdLastEnhancedBitrateClicked = {};
 
 let gTitleLast = document.title;
 let gUrlLast = location.href;
@@ -32,27 +34,30 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: MouseEvent): vo
     return;
   }
 
-  const elQualityParent = target as HTMLElement;
-  const elQuality = elQualityParent.querySelector("div > span, span");
-  const labelQuality = elQuality?.firstChild.textContent; // 480p, 720s, 1080p60, ...
-  const isContainsQualityLabel = labelQuality?.match(/[ps](\d{2,3})?$/);
-  if (!isContainsQualityLabel) {
+  function getQualityParentElement(): HTMLSpanElement {
+    const elQualityParent = target as HTMLElement;
+    if (elQualityParent.matches(SELECTORS.labelPremium) || elQualityParent.matches("sup")) {
+      return elQualityParent.parentElement;
+    }
+
+    if (elQualityParent.matches("span")) {
+      return elQualityParent;
+    }
+
+    return elQualityParent.querySelector("span, div > span");
+  }
+
+  const elQuality = getQualityParentElement();
+  const labelQuality = elQuality?.textContent; // 480p, 720s, 1440p60, 1080p Premium, ...
+  const fpsMatch = labelQuality?.match(/[ps](\d*)/);
+  if (!fpsMatch) {
     return;
   }
 
-  const quality = parseInt(labelQuality.match(/\d{3,4}/)?.[0]) as VideoQuality;
-  if (isNaN(quality)) {
-    return;
-  }
-
-  window.ythdLastQualityClicked = quality;
-  const fps = Number(labelQuality?.match(/[ps](\d+)/)?.[1]) as VideoFPS;
-  const isEnhancedBitrate = elQuality.querySelector(SELECTORS.labelPremium);
-  if (isEnhancedBitrate) {
-    window.ythdLastUserEnhancedBitrates[fps] = true;
-  }
+  const fps = Number(fpsMatch[1] || 30) as VideoFPS;
+  window.ythdLastQualityClicked = parseInt(labelQuality);
+  window.ythdLastEnhancedBitrateClicked[fps] = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
 }
-
 function getIsExit(mutations: MutationRecord[]): boolean {
   const regexExit = /ytp-tooltip-title|ytp-time-current|ytp-bound-time-right/;
   const target = mutations[mutations.length - 1].target as HTMLDivElement;
@@ -90,6 +95,7 @@ function addTemporaryBodyListenerOnDesktop(): void {
 
       // We need to reset global variables, as well as prepare to change the quality of the new video
       window.ythdLastQualityClicked = null;
+      window.ythdLastEnhancedBitrateClicked = {};
       await prepareToChangeQualityOnDesktop();
       elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
       elPlayer.removeEventListener("click", saveManualQualityChangeOnDesktop);

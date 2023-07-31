@@ -119,6 +119,7 @@ export function addStorageListener(): void {
       await prepareFunc();
     },
     async isEnhancedBitrates({ newValue: isEnhancedBitrates }: { newValue: EnhancedBitratePreferences }) {
+      window.ythdLastEnhancedBitrateClicked = {};
       window.ythdLastUserEnhancedBitrates = isEnhancedBitrates;
       await prepareToChangeQualityOnDesktop();
     }
