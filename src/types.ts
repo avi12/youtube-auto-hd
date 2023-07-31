@@ -1,8 +1,8 @@
 import type { fpsSupported, qualities, qualityToLabel } from "~shared-scripts/ythd-setup";
 
-export const EBR = "ebr";
+export const SUFFIX_EBR = "ebr";
 export type VideoQuality = (typeof qualities)[number];
-export type EnhancedVideoQuality = `${Exclude<VideoQuality, 720 | 480 | 360 | 240 | 144>}${typeof EBR}`; // "4320ebr" | "2160ebr" | "1440ebr" | "1080ebr" | ...
+export type EnhancedVideoQuality = `${Exclude<VideoQuality, 720 | 480 | 360 | 240 | 144>}${typeof SUFFIX_EBR}`; // "4320ebr" | "2160ebr" | "1440ebr" | "1080ebr" | ...
 export type YouTubeLabel = (typeof qualityToLabel)[(typeof qualities)[number]]; // "highres" | "hd2160" | ...
 export type VideoFPS = (typeof fpsSupported)[number];
 export type IsEnhancedBitrate = boolean;
