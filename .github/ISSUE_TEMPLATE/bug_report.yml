@@ -65,6 +65,13 @@ body:
       options:
         - label: I'm the first one to [report](https://github.com/avi12/youtube-auto-hd/issues?q=is%3Aissue) it
           required: true
+  - type: checkboxes
+    id: isolated
+    attributes:
+      label: Make sure that YouTube Auto HD + FPS is the only extension running on YouTube
+      options:
+        - label: The issue still persists after disabling any other YouTube extension
+          required: true
   - type: textarea
     id: additional-context
     attributes:
