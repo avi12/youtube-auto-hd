@@ -54,7 +54,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: What's the version you're running?
+      label: What's the extension version you're running?
       description: Go to the extensions page and copy the version number
     validations:
       required: true
