@@ -17,7 +17,7 @@
     "package:firefox": "web-ext build --source-dir build/firefox-mv2-prod --filename youtube-auto-hd-fps-{version}-firefox.zip && pnpm package:stores-firefox",
     "package:self": "zip-self -o web-ext-artifacts/youtube-auto-hd-fps-{version}-source.zip",
     "package:stores": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}.zip --stores chrome,opera",
-    "package:stores-edge": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-edge.zip --edge-locale-inclusions en,he,be,tr,cmn_CN --stores edge",
+    "package:stores-edge": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-edge.zip --edge-locale-inclusions en,he,be,de,tr,cmn_CN --stores edge",
     "package:stores-firefox": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-firefox.zip --stores firefox",
     "build-pack": "pnpm build && pnpm package && pnpm package:stores",
     "build-pack:test": "pnpm build && pnpm package-test",
