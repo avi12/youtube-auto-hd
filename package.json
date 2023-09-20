@@ -1,6 +1,6 @@
 {
   "name": "youtube-auto-hd",
-  "version": "1.8.4",
+  "version": "1.8.5",
   "description": "Automatically set the video quality on YouTube according to its FPS!",
   "author": "avi12 <avi6106@gmail.com>",
   "homepage": "https://github.com/avi12/youtube-auto-hd",
@@ -33,7 +33,7 @@
     "run-opera:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary \"%LocalAppData%\\Programs\\Opera\\opera.exe\"",
     "run-browser:screenshot": "web-ext run --start-url about:blank --target",
     "run-firefox:screenshot": "pnpm run-browser:screenshot firefox-desktop --source-dir build/firefox-mv2-prod",
-    "run-chromium:screenshot": "pnpm run-browser:screenshot chromium --source-dir build/chrome-mv3-dev",
+    "run-chromium:screenshot": "pnpm run-browser:screenshot chromium --args=\"--lang=en\" --source-dir build/chrome-mv3-dev",
     "run-opera:screenshot": "pnpm run-browser:screenshot chromium --source-dir build/chrome-mv3-prod --chromium-binary \"%LocalAppData%\\Programs\\Opera\\opera.exe\"",
     "run-edge:windows-embed": "web-ext run --start-url file:///%cd%/tests/local-embed.html --source-dir build/edge-mv3-dev --target chromium --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\""
   },
