@@ -89,11 +89,11 @@
   {#if $isResizeVideo}
     <section class="size">
       <div class="size__label">{i18n.labelVideoSize}</div>
-
+      
+      <!-- svelte-ignore a11y-no-static-element-interactions -->
       <section class="size__inner" on:keydown={attachFocusToParent} bind:this={elContainer}>
         <button
           class="size__box"
-          aria-hidden="true"
           data-size="small"
           aria-label={i18n.labelSizeSmall}
           class:size__box--selected={$sizeVideo === 0}
@@ -105,7 +105,6 @@
         </button>
         <button
           class="size__box"
-          aria-hidden="true"
           data-size="large"
           aria-label={i18n.labelSizeLarge}
           class:size__box--selected={$sizeVideo === 1}
