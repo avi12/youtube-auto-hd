@@ -16,14 +16,14 @@
   import Promotions from "~popup/views/Promotions.svelte";
   import { initial } from "~shared-scripts/ythd-setup";
   import { getI18n, IS_DESKTOP } from "~shared-scripts/ythd-utils";
-  import type { QualityFpsPreferences, VideoAutoResize, VideoSize } from "~types";
+  import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "~types";
 
   const storageLocal = new Storage({ area: "local" });
   const storageSync = new Storage({ area: "sync" });
 
   Promise.all([
     storageLocal.get<QualityFpsPreferences>("qualities"),
-    storageLocal.get<boolean>("isEnhancedBitrates"),
+    storageLocal.get<EnhancedBitratePreferences>("isEnhancedBitrates"),
     storageLocal.get<boolean>("isExtensionEnabled"),
     storageSync.get<VideoSize>("size"),
     storageSync.get<VideoAutoResize>("autoResize"),

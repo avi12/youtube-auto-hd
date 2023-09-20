@@ -55,7 +55,7 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: MouseEvent): vo
   }
 
   const fps = Number(fpsMatch[1] || 30) as VideoFPS;
-  window.ythdLastQualityClicked = parseInt(labelQuality);
+  window.ythdLastQualityClicked = parseInt(labelQuality) as VideoQuality;
   window.ythdLastEnhancedBitrateClicked[fps] = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
 }
 function getIsExit(mutations: MutationRecord[]): boolean {
