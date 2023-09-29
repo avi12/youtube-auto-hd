@@ -11,7 +11,10 @@
   "overrides": [
     {
       "files": ["*.svelte"],
-      "processor": "svelte3/svelte3"
+      "parser": "svelte-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser"
+      }
     }
   ],
   "env": {
@@ -20,9 +23,6 @@
     "node": true,
     "webextensions": true
   },
-  "plugins": ["svelte3", "@typescript-eslint"],
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "avi12"],
-  "settings": {
-    "svelte3/typescript": true
-  }
+  "plugins": ["svelte", "@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:svelte/recommended"]
 }
