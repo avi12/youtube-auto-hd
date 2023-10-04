@@ -61,11 +61,11 @@
       border: none;
       box-shadow: none;
 
-      .noUi-connect {
+      :global(.noUi-connect) {
         background: var(--slider-track-cover-color);
       }
 
-      .noUi-handle {
+      :global(.noUi-handle) {
         width: 16px;
         height: 16px;
         top: -7px;
