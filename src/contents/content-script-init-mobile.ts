@@ -1,3 +1,4 @@
+import textStyle from "data-text:~cs-helpers/mobile/injected-style.scss";
 import type { PlasmoCSConfig } from "plasmo";
 
 import {
@@ -7,14 +8,12 @@ import {
 import {
   addGlobalEventListener,
   addStorageListener,
-  getElementByMutationObserver,
   getIsExtensionEnabled,
   getVisibleElement,
   OBSERVER_OPTIONS,
   SELECTORS,
   toggleMobileModal
 } from "~shared-scripts/ythd-utils";
-import textStyle from "data-text:~cs-helpers/mobile/injected-style.scss";
 
 window.ythdLastQualityClicked = null;
 let gTitleLast = document.title;
