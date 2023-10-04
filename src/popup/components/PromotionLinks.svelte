@@ -15,34 +15,6 @@
     labelTranslate: getI18n("cj_i18n_01605", "Help with translations")
   };
 
-  const browserName: "chrome" | "firefox" | "edge" | "opera" | "safari" = (() => {
-    const extensionBaseUrl = chrome.runtime.getURL("");
-
-    const isFirefox = extensionBaseUrl.startsWith("moz-extension://");
-    if (isFirefox) {
-      return "firefox";
-    }
-
-    const { userAgent } = navigator;
-
-    const isOpera = userAgent.includes("OPR");
-    if (isOpera) {
-      return "opera";
-    }
-
-    const isEdge = userAgent.includes("Edg");
-    if (isEdge) {
-      return "edge";
-    }
-
-    const isSafari = userAgent.match(/^((?!chrome|android).)*safari/i);
-    if (isSafari) {
-      return "safari";
-    }
-
-    return "chrome";
-  })();
-
   const linkRatingMapper = {
     chrome: "https://chrome.google.com/webstore/detail/fcphghnknhkimeagdglkljinmpbagone",
     firefox: "https://addons.mozilla.org/firefox/addon/youtube-auto-hd-fps",
@@ -59,7 +31,7 @@
     },
     {
       label: i18n.labelRate,
-      url: linkRatingMapper[browserName],
+      url: linkRatingMapper[process.env.PLASMO_BROWSER],
       icon: mdiStarOutline
     },
     {
@@ -67,7 +39,10 @@
       url: "https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate",
       icon: mdiTranslate
     }
-  ] as const;
+  ];
+
+  const isAndroid = navigator.userAgent.includes("Android");
+  const isFirefox = process.env.PLASMO_BROWSER === "firefox";
 </script>
 
 <menu>
@@ -76,17 +51,23 @@
       <a
         class="link"
         href={link.url}
-        on:click={async () => {
+        on:click={async e => {
           const { url } = link;
           if (url.includes("paypal.me")) {
             $isHideDonationSection = true;
             await storageSync.set("isHideDonationSection", $isHideDonationSection);
           }
-          if (browserName !== "firefox") {
+
+          if (isFirefox || isAndroid) {
+            e.preventDefault();
             await chrome.tabs.create({ url });
+            if (isFirefox) {
+              close();
+            }
             return;
           }
-          close();
+
+          await chrome.tabs.create({ url });
         }}>
         <Icon path={link.icon} />
         <span>{link.label}</span>
