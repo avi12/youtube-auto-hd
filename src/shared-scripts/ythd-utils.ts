@@ -2,14 +2,16 @@ import { Storage } from "@plasmohq/storage";
 
 import { initial } from "./ythd-setup";
 import { prepareToChangeQualityOnDesktop } from "~cs-helpers/desktop/content-script-desktop";
-import { prepareToChangeQualityOnMobile } from "~cs-helpers/mobile/content-script-mobile";
+import {
+  prepareToChangeQualityOnMobile,
+  saveManualQualityChangeOnMobile
+} from "~cs-helpers/mobile/content-script-mobile";
 import type {
   EnhancedBitrateFpsPreferences,
   EnhancedBitratePreferences,
   QualityFpsPreferences,
   VideoFPS
 } from "~types";
-
 
 const storageLocal = new Storage({ area: "local" });
 
@@ -70,14 +72,15 @@ export enum SELECTORS {
   player = ".html5-video-player:not(#inline-preview-player)",
   relatedVideos = "#secondary-inner",
   donationSection = ".ythd-donation-section",
-  // Premium
   logo = "ytd-logo",
+  // Premium
   labelPremium = ".ytp-premium-label",
   // Mobile
+  mobileOverlayDialog = ".dialog-container > .modern-overlay",
+  mobileOverlayMain = "bottom-sheet-container",
+  mobileMainMenuButton = "button.yt-spec-button-shape-next:nth-child(2)",
+  mobileMenuItemPlaybackSettings = "ytm-menu-item button",
   mobileQualityDropdown = "select[id^=player-quality-dropdown]",
-  mobileQualityDropdownWrapper = ".player-quality-settings",
-  mobileMenuButton = "button.player-settings-icon",
-  mobileOkButton = ".dialog-buttons [class*=material-button-button]"
 }
 
 export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T {
@@ -85,10 +88,13 @@ export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS)
   return elements.find(isElementVisible);
 }
 
-export async function getElementByMutationObserver(selector: SELECTORS, isVisible = true): Promise<HTMLElement> {
+export async function getElementByMutationObserver<T extends HTMLElement>(
+  selector: SELECTORS,
+  isVisible = true
+): Promise<T> {
   return new Promise(resolve => {
     new MutationObserver((_, observer) => {
-      const element = isVisible ? getVisibleElement(selector) : document.querySelector<HTMLElement>(selector);
+      const element = isVisible ? getVisibleElement<T>(selector) : document.querySelector<T>(selector);
       if (element) {
         observer.disconnect();
         resolve(element);
@@ -108,10 +114,13 @@ export function addStorageListener(): void {
         return;
       }
       if (!isExtEnabled) {
+        document.removeEventListener("change", saveManualQualityChangeOnMobile, { capture: true });
         elVideo.removeEventListener("canplay", prepareFunc);
+        toggleMobileModal(true);
         return;
       }
       await prepareFunc();
+      document.addEventListener("change", saveManualQualityChangeOnMobile, { capture: true });
     },
     async qualities({ newValue: qualities }: { newValue: QualityFpsPreferences }) {
       window.ythdLastQualityClicked = null;
@@ -130,7 +139,7 @@ export async function addGlobalEventListener(addTemporaryBodyListener: () => voi
   // Fires when navigating to another page
   const elTitle =
     document.documentElement.querySelector(SELECTORS.title) ||
-    (await getElementByMutationObserver(SELECTORS.title, false));
+    (await getElementByMutationObserver<HTMLTitleElement>(SELECTORS.title, false));
   const observer = new MutationObserver(addTemporaryBodyListener);
   observer.observe(elTitle, OBSERVER_OPTIONS);
   return observer;
@@ -157,4 +166,19 @@ export async function getPreferredQualities(): Promise<QualityFpsPreferences> {
     fallback: initial.qualities,
     updateWindowKey: "ythdLastUserQualities"
   });
+}
+
+export function toggleMobileModal(isVisible: boolean): void {
+  const className = "ythd-modal-shown";
+  const elements = [
+    document.documentElement,
+    document.querySelector(SELECTORS.mobileOverlayMain)
+  ];
+
+  if (isVisible) {
+    elements.forEach(element => element.classList.add(className));
+    return;
+  }
+
+  elements.forEach(element => element.classList.remove(className));
 }

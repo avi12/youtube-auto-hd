@@ -1,0 +1,7 @@
+html:not(.ythd-modal-shown) {
+  .dialog-container,
+  bottom-sheet-container {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

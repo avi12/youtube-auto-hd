@@ -1,20 +1,30 @@
-import type { PlasmoContentScript, PlasmoCSConfig } from "plasmo";
+import type { PlasmoCSConfig } from "plasmo";
 
-import { prepareToChangeQualityOnMobile } from "~cs-helpers/mobile/content-script-mobile";
-import { labelToQuality } from "~shared-scripts/ythd-setup";
 import {
-  OBSERVER_OPTIONS,
-  SELECTORS,
+  prepareToChangeQualityOnMobile,
+  saveManualQualityChangeOnMobile
+} from "~cs-helpers/mobile/content-script-mobile";
+import {
   addGlobalEventListener,
   addStorageListener,
+  getElementByMutationObserver,
   getIsExtensionEnabled,
-  getVisibleElement
+  getVisibleElement,
+  OBSERVER_OPTIONS,
+  SELECTORS,
+  toggleMobileModal
 } from "~shared-scripts/ythd-utils";
-import type { YouTubeLabel } from "~types";
+import textStyle from "data-text:~cs-helpers/mobile/injected-style.scss";
 
 window.ythdLastQualityClicked = null;
 let gTitleLast = document.title;
 let gPlayerObserver: MutationObserver;
+
+function injectStyles(): void {
+  const elStyle = document.createElement("style");
+  elStyle.textContent = textStyle;
+  document.head.append(elStyle);
+}
 
 function addTemporaryBodyListenerOnMobile(): void {
   // For some reason, the title observer will run as soon as .observer() calls,
@@ -32,7 +42,7 @@ function addTemporaryBodyListenerOnMobile(): void {
   gTitleLast = document.title;
 
   if (!gPlayerObserver) {
-    gPlayerObserver = new MutationObserver(() => {
+    gPlayerObserver = new MutationObserver(async () => {
       const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
       if (!elVideo) {
         return;
@@ -41,27 +51,13 @@ function addTemporaryBodyListenerOnMobile(): void {
       gPlayerObserver.disconnect();
 
       window.ythdLastQualityClicked = null;
+      toggleMobileModal(false);
+      elVideo.removeEventListener("canplay", prepareToChangeQualityOnMobile);
       elVideo.addEventListener("canplay", prepareToChangeQualityOnMobile);
     });
   }
 
   gPlayerObserver.observe(document, OBSERVER_OPTIONS);
-}
-
-function saveManualQualityChangeOnMobile({ target, isTrusted }: Event): void {
-  // We use programmatic "onchange" to change quality on mobile, but we need to save/respond only to <select> onchange
-  if (!isTrusted) {
-    return;
-  }
-
-  const element = target as HTMLElement;
-  if (!element.matches(SELECTORS.mobileQualityDropdownWrapper)) {
-    return;
-  }
-
-  const elDropdownQuality = element.querySelector<HTMLSelectElement>(SELECTORS.mobileQualityDropdown);
-  const label = elDropdownQuality.value as YouTubeLabel;
-  window.ythdLastQualityClicked = labelToQuality[label];
 }
 
 async function initMobile(): Promise<void> {
@@ -71,24 +67,23 @@ async function initMobile(): Promise<void> {
   if (!(await getIsExtensionEnabled())) {
     return;
   }
-  document.addEventListener("change", saveManualQualityChangeOnMobile);
+
+  injectStyles();
+
+  document.addEventListener("change", saveManualQualityChangeOnMobile, { capture: true });
+
+  if (!location.pathname.startsWith("/watch")) {
+    return;
+  }
 
   // When the user visits a /watch page, the video's quality will be changed as soon as it loads
   new MutationObserver((_, observer) => {
-    if (!location.pathname.startsWith("/watch")) {
-      observer.disconnect();
-      return;
-    }
-
     const elVideo = document.querySelector<HTMLVideoElement>(SELECTORS.video);
-    const elMenuButton = document.querySelector(SELECTORS.mobileMenuButton);
-    if (!elVideo || !elMenuButton) {
-      return;
+    const isPlayable = Boolean(elVideo.src);
+    if (isPlayable) {
+      elVideo.addEventListener("canplay", prepareToChangeQualityOnMobile, { once: true });
+      observer.disconnect();
     }
-
-    observer.disconnect();
-    prepareToChangeQualityOnMobile();
-    elVideo.addEventListener("canplay", prepareToChangeQualityOnMobile);
   }).observe(document, OBSERVER_OPTIONS);
 }
 
