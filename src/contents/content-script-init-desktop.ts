@@ -17,7 +17,6 @@ declare global {
     ythdLastEnhancedBitrateClicked: Partial<EnhancedBitratePreferences>;
     ythdLastUserQualities: EnhancedBitrateFpsPreferences;
     ythdLastUserEnhancedBitrates: EnhancedBitratePreferences;
-    ythdPlayerObserver: MutationObserver;
     ythdExtEnabled: boolean;
   }
 }
