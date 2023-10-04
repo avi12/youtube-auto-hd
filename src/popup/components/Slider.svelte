@@ -1,5 +1,5 @@
 <script lang="ts">
-  import noUiSlider, { API } from "nouislider";
+  import noUiSlider, { type API } from "nouislider";
   import { onMount } from "svelte";
 
   import "nouislider/dist/nouislider.css";
