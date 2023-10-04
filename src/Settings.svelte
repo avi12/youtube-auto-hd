@@ -47,6 +47,8 @@
   );
 </script>
 
+<svelte:head><title>YouTube Auto HD + FPS</title></svelte:head>
+
 <main class:rtl={getI18n("@@bidi_dir") === "rtl"}>
   {#if !IS_DESKTOP}
     <Header />

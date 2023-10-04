@@ -1,6 +1,6 @@
 {
   "name": "youtube-auto-hd",
-  "version": "1.8.5",
+  "version": "1.8.8",
   "description": "Automatically set the video quality on YouTube according to its FPS!",
   "author": "avi12 <avi6106@gmail.com>",
   "homepage": "https://github.com/avi12/youtube-auto-hd",
@@ -11,7 +11,6 @@
     "build": "plasmo build --minify",
     "build:edge": "pnpm build --target=edge-mv3",
     "build:firefox": "pnpm build --target=firefox-mv2",
-    "package-test": "plasmo package",
     "package": "web-ext build --source-dir build/chrome-mv3-prod --filename youtube-auto-hd-fps-{version}.zip",
     "package:edge": "web-ext build --source-dir build/edge-mv3-prod --filename youtube-auto-hd-fps-{version}-edge.zip && pnpm package:stores-edge",
     "package:firefox": "web-ext build --source-dir build/firefox-mv2-prod --filename youtube-auto-hd-fps-{version}-firefox.zip && pnpm package:stores-firefox",
@@ -20,13 +19,14 @@
     "package:stores-edge": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-edge.zip --edge-locale-inclusions en,he,be,de,tr,cmn_CN --stores edge",
     "package:stores-firefox": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-firefox.zip --stores firefox",
     "build-pack": "pnpm build && pnpm package && pnpm package:stores",
-    "build-pack:test": "pnpm build && pnpm package-test",
-    "build-pack:test-push": "cmd /V /C \"set zip=chrome-mv3-prod.zip & set dest_android=/storage/emulated/0/Download/!zip! & pnpm build-pack:test & adb shell rm !dest_android! & adb push build/!zip! !dest_android!\"",
+    "build-pack:test": "plasmo build && plasmo package",
+    "build-pack:test-push": "cmd /V /C \"set zip=chrome-mv3-prod.zip & set dest_android=/storage/emulated/0/Download/!zip! & pnpm build-pack:test & adb -s %id% shell rm !dest_android! & adb -s %id% push build/!zip! !dest_android!\"",
     "build-pack:edge": "pnpm build:edge && pnpm package:edge",
     "build-pack:firefox": "pnpm build:firefox && pnpm package:firefox && pnpm package:self",
     "build-pack:all": "pnpm build-pack && pnpm build-pack:edge && pnpm build-pack:firefox",
     "run-browser": "web-ext run --start-url https://www.youtube.com/watch?v=aiSla-5xq3w --target",
     "run-firefox": "pnpm run-browser firefox-desktop --source-dir build/firefox-mv2-dev",
+    "run-firefox:android": "pnpm run-browser firefox-android --source-dir build/firefox-mv2-dev --adb-remove-old-artifacts",
     "run-chromium": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev",
     "run-chromium:rtl": "pnpm run-browser chromium --source-dir build/chrome-mv3-prod --args=\"--lang=he\"",
     "run-edge:windows": "pnpm run-browser chromium --source-dir build/edge-mv3-dev --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"",
@@ -42,7 +42,7 @@
     "@plasmohq/storage": "^1.8.0",
     "nouislider": "^15.7.1",
     "plasmo": "0.83.0",
-    "sass": "1.67.0",
+    "sass": "1.68.0",
     "svelte": "4.2.1",
     "svelte-preprocess": "5.0.4"
   },
@@ -50,22 +50,21 @@
     "@plasmohq/prettier-plugin-sort-imports": "4.0.1",
     "@sveltejs/eslint-config": "github:sveltejs/eslint-config",
     "@types/chrome": "0.0.246",
-    "@types/node": "^20.6.3",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
-    "autoprefixer": "^10.4.15",
-    "eslint": "^8.49.0",
-    "eslint-config-avi12": "github:avi12/eslint-config-avi12",
-    "eslint-plugin-svelte3": "^4.0.0",
-    "postcss": "^8.4.30",
+    "@types/node": "^20.8.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.50.0",
+    "eslint-plugin-svelte": "^2.34.0",
+    "postcss": "^8.4.31",
     "prettier": "3.0.3",
     "prettier-plugin-svelte": "^3.0.3",
     "tailwindcss": "^3.3.3",
     "tailwindcss-rtl": "^0.9.0",
     "typescript": "5.2.2",
-    "web-ext": "^7.7.0",
-    "webext-store-incompat-fixer": "^0.4.2",
-    "zip-self": "^0.5.9"
+    "web-ext": "^7.8.0",
+    "webext-store-incompat-fixer": "^0.4.3",
+    "zip-self": "^0.5.10"
   },
   "manifest": {
     "name": "$PLASMO_PUBLIC_EXT_NAME",
@@ -81,6 +80,9 @@
       "gecko": {
         "id": "$PLASMO_PUBLIC_FIREFOX_EXT_ID",
         "strict_min_version": "90.0"
+      },
+      "gecko_android": {
+        "strict_min_version": "117.0"
       }
     },
     "options_ui": {

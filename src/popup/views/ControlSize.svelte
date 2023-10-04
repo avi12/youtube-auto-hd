@@ -2,7 +2,6 @@
   import { Storage } from "@plasmohq/storage";
   import { onMount } from "svelte";
 
-
   import Switch from "~popup/components/Switch.svelte";
   import { isResizeVideo, sizeVideo } from "~popup/store";
   import { getI18n } from "~shared-scripts/ythd-utils";
@@ -57,7 +56,7 @@
   }
 
   function activate(elBox: HTMLButtonElement): void {
-    const elBoxes = [...elContainer.querySelectorAll<HTMLButtonElement[]>(".size__box")];
+    const elBoxes = [...elContainer.querySelectorAll(".size__box")] as HTMLButtonElement[];
     elBoxes.forEach(el => {
       el.tabIndex = -1;
     });
@@ -89,7 +88,7 @@
   {#if $isResizeVideo}
     <section class="size">
       <div class="size__label">{i18n.labelVideoSize}</div>
-      
+
       <!-- svelte-ignore a11y-no-static-element-interactions -->
       <section class="size__inner" on:keydown={attachFocusToParent} bind:this={elContainer}>
         <button

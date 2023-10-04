@@ -5,13 +5,13 @@
     "sourceType": "module",
     "lib": ["dom", "esnext"]
   },
-  "rules": {
-    "@typescript-eslint/no-var-requires": "off"
-  },
   "overrides": [
     {
       "files": ["*.svelte"],
-      "processor": "svelte3/svelte3"
+      "parser": "svelte-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser"
+      }
     }
   ],
   "env": {
@@ -20,9 +20,53 @@
     "node": true,
     "webextensions": true
   },
-  "plugins": ["svelte3", "@typescript-eslint"],
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "avi12"],
-  "settings": {
-    "svelte3/typescript": true
+  "globals": {
+    "chrome": true
+  },
+  "plugins": ["svelte", "@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:svelte/recommended"],
+  "rules": {
+    "indent": ["warn", 2, { "SwitchCase": 1 }],
+    "semi": ["warn", "always"],
+    "quote-props": ["warn", "as-needed"],
+    "comma-spacing": [
+      "warn",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "key-spacing": [
+      "warn",
+      {
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ],
+    "@typescript-eslint/type-annotation-spacing": "warn",
+    "space-infix-ops": "warn",
+    "space-in-parens": ["warn", "never"],
+    "array-bracket-spacing": ["warn", "never"],
+    "quotes": [
+      "warn",
+      "double",
+      {
+        "allowTemplateLiterals": true
+      }
+    ],
+    "no-trailing-spaces": [
+      "warn",
+      {
+        "skipBlankLines": true
+      }
+    ],
+    "eol-last": ["warn", "always"],
+    "no-multiple-empty-lines": [
+      "warn",
+      {
+        "max": 2
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": "warn"
   }
 }

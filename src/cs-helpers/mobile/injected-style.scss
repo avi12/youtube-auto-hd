@@ -1,0 +1,8 @@
+html:not(.ythd-modal-shown) {
+  //noinspection CssInvalidHtmlTagReference
+  .dialog-container,
+  bottom-sheet-container {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
