@@ -115,7 +115,6 @@ export async function prepareToChangeQualityOnMobile(): Promise<void> {
   elOverlay.addEventListener(
     "click",
     () => {
-
       // Account for pre-roll/mid-roll ads
       const elVideo = document.querySelector<HTMLVideoElement>(SELECTORS.video);
       elVideo.addEventListener("canplay", prepareToChangeQualityOnMobile, { once: true });
