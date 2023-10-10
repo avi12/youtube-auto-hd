@@ -2,7 +2,6 @@ import { Storage } from "@plasmohq/storage";
 import textStyle from "data-text:~cs-helpers/desktop/injected-style.scss";
 import type { PlasmoCSConfig } from "plasmo";
 
-
 import {
   OBSERVER_OPTIONS,
   SELECTORS,
@@ -30,26 +29,32 @@ function addSupportButtonIfNeeded(): void {
   gElSupportSection.classList.add(CLASS_DONATION);
   gElSupportSection.innerHTML = `
       <section class="${CLASS_DONATION}__header">
-        <h1 class="${CLASS_DONATION}__title">Support YouTube Auto HD</h1>
+        <h1 class="${CLASS_DONATION}__title">YouTube Auto HD</h1>
         <button class="${CLASS_DONATION}__close" aria-hidden="true" aria-label="Close">╳
         </button>
       </section>
       <p class="${CLASS_DONATION}__description">
-        Hi there! Thank you so much for using my extension. I hope you enjoy using it as much as I enjoy making and maintaining it. I've been doing that for the past six years. Thanks for the many donations! :)
+        Hi there,
+      </p>
+      <p class="${CLASS_DONATION}__description" style="margin-top: 10px;">
+        As an Israeli citizen, I am currently facing the <a href="https://en.wikipedia.org/wiki/2023_Israel%E2%80%93Hamas_war" target="_blank" class="yt-core-attributed-string__link" style="color: #3ea6ff">worst war</a> in my country's history.
       </p>
       <p class="${CLASS_DONATION}__description">
-        I work alone. There is no big fund behind or mandatory payments.
+        More than 1,000 innocent citizens have already been slaughtered by Hamas terrorists and more than a hundred citizens are being held in captivity in the Gaza Strip as of Oct 11, 2023.
+      </p>
+      <p class="${CLASS_DONATION}__description" style="margin-top: 10px;">
+        In this time of crisis, your support can make a significant difference. Please consider donating via <a href="https://paypal.me/avi12" target="_blank" class="yt-core-attributed-string__link" style="color: #3ea6ff">PayPal</a> to help me secure basic necessities during this difficult period.
       </p>
       <p class="${CLASS_DONATION}__description">
-        Your donations are what make it possible to keep it alive!
+        Alternatively, sharing information about what's happening here can also be incredibly impactful.
       </p>
-      <p class="${CLASS_DONATION}__description">
-        Please consider donating via <a href="https://paypal.me/avi12" target="_blank" class="yt-core-attributed-string__link" style="color: #3ea6ff">PayPal</a>. Any amount is appreciated :)
+      <p class="${CLASS_DONATION}__description" style="margin-top: 10px;">
+        Thank you for taking the time to read this message and for any support you can provide.
       </p>
   `;
   gElSupportSection.addEventListener("click", async ({ target }) => {
     const element = target as HTMLElement;
-    if (element.matches("button, a")) {
+    if (element.matches("button, a[href*=paypal]")) {
       // If clicking either the close button or the link, this section will be permanently closed
       // Clicking the link will also open the donation link in a new tab
       await storageSync.set("isHideDonationSection", true);

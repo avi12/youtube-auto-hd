@@ -71,7 +71,7 @@ export enum SELECTORS {
   panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player:not(#inline-preview-player)",
   relatedVideos = "#secondary-inner",
-  donationSection = ".ythd-donation-section",
+  donationSection = ".ythd-israel-support",
   logo = "ytd-logo",
   // Premium
   labelPremium = ".ytp-premium-label",
