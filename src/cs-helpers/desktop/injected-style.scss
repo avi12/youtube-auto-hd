@@ -22,10 +22,12 @@
   }
 
   &__close {
-    color: hsl(0, 0%, 50%);
+    color: black;
     cursor: pointer;
-    background-color: transparent;
+    background-color: lightgray;
     border: none;
+    border-radius: 50%;
+    aspect-ratio: 1;
   }
 
   &__description {
