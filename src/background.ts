@@ -8,12 +8,6 @@ const storage = {
   sync: new Storage({ area: "sync" })
 };
 
-chrome.runtime.onInstalled.addListener(async ({ reason }) => {
-  if (reason === "update" && chrome.runtime.getManifest().version === "1.8.9") {
-    await storage.sync.set("isHideDonationSection", false);
-  }
-});
-
 function setIcon(isEnabled = true): void {
   const action = chrome.action || chrome.browserAction; // chrome.browserAction for Firefox MV2
   action.setIcon({
