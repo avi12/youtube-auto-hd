@@ -37,19 +37,13 @@ function addSupportButtonIfNeeded(): void {
         Hi there,
       </p>
       <p class="${CLASS_DONATION}__description" style="margin-top: 10px;">
-        As an Israeli citizen, I am currently facing the <a href="https://en.wikipedia.org/wiki/2023_Israel%E2%80%93Hamas_war" target="_blank" class="yt-core-attributed-string__link" style="color: #3ea6ff">worst war</a> in my country's history.
+        If you've been enjoying this extension, you might be interested to know that maintaining this project requires both time and resources. Your support can make a significant difference.
       </p>
       <p class="${CLASS_DONATION}__description">
-        More than 1,000 innocent citizens have already been slaughtered by Hamas terrorists and more than a hundred citizens are being held in captivity in the Gaza Strip as of Oct 11, 2023.
+        To continue offering you a high-quality experience, a donation via <a href="https://paypal.me/avi12" target="_blank" class="yt-core-attributed-string__link" style="color: #3ea6ff">PayPal</a> would be greatly appreciated. These contributions go directly into maintaining and improving this and future projects.
       </p>
       <p class="${CLASS_DONATION}__description" style="margin-top: 10px;">
-        In this time of crisis, your support can make a significant difference. Please consider donating via <a href="https://paypal.me/avi12" target="_blank" class="yt-core-attributed-string__link" style="color: #3ea6ff">PayPal</a> to help me secure basic necessities during this difficult period.
-      </p>
-      <p class="${CLASS_DONATION}__description">
-        Alternatively, sharing information about what's happening here can also be incredibly impactful.
-      </p>
-      <p class="${CLASS_DONATION}__description" style="margin-top: 10px;">
-        Thank you for taking the time to read this message and for any support you can provide.
+        Thank you for your time and for considering this request. Your support helps keep it up and running.
       </p>
   `;
   gElSupportSection.addEventListener("click", async ({ target }) => {
