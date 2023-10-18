@@ -2,11 +2,11 @@ import { Storage } from "@plasmohq/storage";
 import pathIconOff from "url:~assets/icon-off.png";
 import pathIconOn from "url:~assets/icon-on.png";
 
+if (process.env.NODE_ENV === "production") {
+  chrome.runtime.setUninstallURL("https://bit.ly/ythd-flot-ai");
+}
 
-const storage = {
-  local: new Storage({ area: "local" }),
-  sync: new Storage({ area: "sync" })
-};
+const storageLocal = new Storage({ area: "local" });
 
 function setIcon(isEnabled = true): void {
   const action = chrome.action || chrome.browserAction; // chrome.browserAction for Firefox MV2
@@ -15,12 +15,12 @@ function setIcon(isEnabled = true): void {
   });
 }
 
-storage.local.watch({
+storageLocal.watch({
   isExtensionEnabled({ newValue: isEnabled }: { newValue: boolean }) {
     setIcon(isEnabled);
   }
 });
 
-storage.local.get<boolean>("isExtensionEnabled").then(setIcon);
+storageLocal.get<boolean>("isExtensionEnabled").then(setIcon);
 
 export {};
