@@ -3,8 +3,14 @@ import pathIconOff from "url:~assets/icon-off.png";
 import pathIconOn from "url:~assets/icon-on.png";
 
 if (process.env.NODE_ENV === "production") {
-  chrome.runtime.setUninstallURL("https://bit.ly/ythd-flot-ai");
+  chrome.runtime.setUninstallURL("https://bit.ly/ythd-flot-ai-uninstall");
 }
+
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+  if (reason === "install") {
+    chrome.tabs.create({ url: "https://bit.ly/ythd-flot-ai-install" });
+  }
+});
 
 const storageLocal = new Storage({ area: "local" });
 
