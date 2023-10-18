@@ -2,9 +2,16 @@ import { Storage } from "@plasmohq/storage";
 import pathIconOff from "url:~assets/icon-off.png";
 import pathIconOn from "url:~assets/icon-on.png";
 
-if (process.env.NODE_ENV === "production") {
-  chrome.runtime.setUninstallURL("https://bit.ly/ythd-flot-ai");
+const isProduction = process.env.NODE_ENV === "production";
+if (isProduction) {
+  chrome.runtime.setUninstallURL("https://bit.ly/ythd-flot-ai-uninstall");
 }
+
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+  if (reason === "install" && isProduction) {
+    chrome.tabs.create({ url: "https://bit.ly/ythd-flot-ai-install" });
+  }
+});
 
 const storageLocal = new Storage({ area: "local" });
 
