@@ -23,7 +23,8 @@
     safari: "https://apps.apple.com/app/id1546729687"
   };
 
-  const links: { label: string; url: string; icon: string }[] = [
+  type PromotionalLink = { label: string; url: string; icon: string };
+  const links: PromotionalLink[] = [
     {
       label: i18n.labelDonate,
       url: "https://paypal.me/avi12",
@@ -41,8 +42,9 @@
     }
   ];
 
-  const isAndroid = navigator.userAgent.includes("Android");
-  const isFirefox = process.env.PLASMO_BROWSER === "firefox";
+  $: if ($isHideDonationSection) {
+    storageSync.set("isHideDonationSection", $isHideDonationSection);
+  }
 </script>
 
 <menu>
@@ -55,19 +57,10 @@
           const { url } = link;
           if (url.includes("paypal.me")) {
             $isHideDonationSection = true;
-            await storageSync.set("isHideDonationSection", $isHideDonationSection);
           }
-
-          if (isFirefox || isAndroid) {
-            e.preventDefault();
-            await chrome.tabs.create({ url });
-            if (isFirefox) {
-              close();
-            }
-            return;
-          }
-
           await chrome.tabs.create({ url });
+          e.preventDefault();
+          close();
         }}>
         <Icon path={link.icon} />
         <span>{link.label}</span>
