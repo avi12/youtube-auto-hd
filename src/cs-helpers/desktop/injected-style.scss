@@ -27,7 +27,10 @@
     background-color: lightgray;
     border: none;
     border-radius: 50%;
-    aspect-ratio: 1;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
   }
 
   &__description {
