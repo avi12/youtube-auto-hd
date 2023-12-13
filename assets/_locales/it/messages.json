@@ -12,5 +12,7 @@
 "cj_i18n_06862":{"message":"Imposta la stessa qualità per tutti i frame rate"},
 "cj_i18n_07097":{"message":"Vista predefinita"},
 "cj_i18n_07098":{"message":"Vista cinema"},
-"cj_i18n_07265":{"message":"I video pagheranno fino a 30 FPS per questa qualità."}
+"cj_i18n_07265":{"message":"I video pagheranno fino a 30 FPS per questa qualità."},
+"cj_i18n_07266":{"message":"L'estensione è attiva"},
+"cj_i18n_07392":{"message":"Quando è della massima qualità usa il bitrate avanzato"}
 }
