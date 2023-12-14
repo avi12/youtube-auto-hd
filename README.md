@@ -11,6 +11,8 @@ Available for:
 - [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
 - [Safari](https://apps.apple.com/us/app/id1546729687) - maintained
   by [carlosjeurissen](https://github.com/carlosjeurissen)
+- [Naver Whale](https://store.whale.naver.com/detail/njejcbikjebbmiggdpdggelmoifodjhh) - maintained
+  by [carlosjeurissen](https://github.com/carlosjeurissen)
 
 ![A screenshot from the extension's pop-up page](https://github.com/avi12/youtube-auto-hd/assets/6422804/fc7a4581-0162-427c-a6bc-7d96e68a3961)
 
@@ -88,7 +90,8 @@ pnpm run-edge:windows
 ### Opera on Windows 10/11
 
 As of Sep 30th, 2023, Opera 102's
-installer [automatically sets itself as the default browser](https://www.reddit.com/r/assholedesign/comments/j2j85x), and
+installer [automatically sets itself as the default browser](https://www.reddit.com/r/assholedesign/comments/j2j85x),
+and
 therefore I recommend installing it on a virtual machine
 like [Windows Sandbox](https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/windows-sandbox/windows-sandbox-overview).
 Of course, if you decide to go through the virtual machine route, you'll need
@@ -108,83 +111,83 @@ pnpm run-firefox
 
 1. Install [Android Studio](https://developer.android.com/studio) on your operating system
 2. Create an AVD (Android Virtual Device)
-   - For a phone emulator, choose one that
-     has [Play Store preinstalled](https://user-images.githubusercontent.com/6422804/167658974-9ec9d13f-d297-4e8b-85d6-376809f34aab.png)
-   - For a tablet emulator, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) after
-     creating it to have Play Store
-     preinstalled
+  - For a phone emulator, choose one that
+    has [Play Store preinstalled](https://user-images.githubusercontent.com/6422804/167658974-9ec9d13f-d297-4e8b-85d6-376809f34aab.png)
+  - For a tablet emulator, [follow these steps](https://aamnah.com/android/play_store_emulator_install_missing) after
+    creating it to have Play Store
+    preinstalled
 3. Run the emulator:
    ```shell
     emulator @DEVICE_NAME
    ```
 4. I recommend creating a Google account specifically to be used with the emulator
 5. ### Chromium for Android testing
-   1. Download [Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser)
-   2. First get the emulator ID:
+  1. Download [Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser)
+  2. First get the emulator ID:
+     ```shell
+     adb devices
+     ```
+     Then:
+    - On Windows 10/11, you can run:
       ```shell
-      adb devices
+      set id=ID & pnpm build-pack:test-push
       ```
-      Then:
-      - On Windows 10/11, you can run:
-        ```shell
-        set id=ID & pnpm build-pack:test-push
-        ```
-      - Otherwise, if you're using PowerShell, run:
-        ```shell
-        pnpm build-pack:test; `
-        $zip = "chrome-mv3-prod.zip"; `
-        $destAndroid = "/storage/emulated/0/Download/$zip"; `
-        $ID = "emulator-####"; `
-        adb -s $ID shell rm $destAndroid; `
-        adb -s $ID push "build/$zip" $destAndroid;
-        ```
-        where you assign `$ID` with the emulator ID
-   3. <details>
-      <summary>Side-load the extension on Kiwi</summary>
-      <!--suppress HtmlDeprecatedAttribute -->
-      <img align="top" src="https://user-images.githubusercontent.com/6422804/167670341-a0cae554-e922-40b3-b8ed-7bec1ebf17bc.png" alt="Choose zip from storage">
-      </details>
-   4. Select the ZIP in the Downloads folder
-   5. To reload, you must first remove the extension and then repeat steps ii-iv
-   6. To debug, enter `chrome://inspect/#devices`
+    - Otherwise, if you're using PowerShell, run:
+      ```shell
+      pnpm build-pack:test; `
+      $zip = "chrome-mv3-prod.zip"; `
+      $destAndroid = "/storage/emulated/0/Download/$zip"; `
+      $ID = "emulator-####"; `
+      adb -s $ID shell rm $destAndroid; `
+      adb -s $ID push "build/$zip" $destAndroid;
+      ```
+      where you assign `$ID` with the emulator ID
+  3. <details>
+     <summary>Side-load the extension on Kiwi</summary>
+     <!--suppress HtmlDeprecatedAttribute -->
+     <img align="top" src="https://user-images.githubusercontent.com/6422804/167670341-a0cae554-e922-40b3-b8ed-7bec1ebf17bc.png" alt="Choose zip from storage">
+     </details>
+  4. Select the ZIP in the Downloads folder
+  5. To reload, you must first remove the extension and then repeat steps ii-iv
+  6. To debug, enter `chrome://inspect/#devices`
 6. ### Firefox for Android testing
 
-   1. Download [Firefox](https://play.google.com/store/apps/details?id=org.mozilla.firefox)
-   2. In the terminal:
+  1. Download [Firefox](https://play.google.com/store/apps/details?id=org.mozilla.firefox)
+  2. In the terminal:
+     ```shell
+     adb shell pm grant org.mozilla.firefox android.permission.READ_EXTERNAL_STORAGE
+     ```
+  3. In the app:
+    1. Press ⋮ (menu button) → Settings → Enable "Remote debugging via USB"
+    2. Get the emulator ID via
+       ```shell
+       adb devices
+       ```
+  4. Create 2 terminals
+    - In the first one, run `dev:firefox`
+    - In the second one, run
       ```shell
-      adb shell pm grant org.mozilla.firefox android.permission.READ_EXTERNAL_STORAGE
+      pnpm run-firefox:android --android-device=ID
       ```
-   3. In the app:
-      1. Press ⋮ (menu button) → Settings → Enable "Remote debugging via USB"
-      2. Get the emulator ID via
-         ```shell
-         adb devices
-         ```
-   4. Create 2 terminals
-      - In the first one, run `dev:firefox`
-      - In the second one, run
-        ```shell
-        pnpm run-firefox:android --android-device=ID
-        ```
-        where you replace `ID` with the emulator ID
-   5. To reload:
+      where you replace `ID` with the emulator ID
+  5. To reload:
 
-      1. Modify a script
-      2. Wait until the extension is re-added
-      3. Reload the web page
+    1. Modify a script
+    2. Wait until the extension is re-added
+    3. Reload the web page
 
-         Notice that due
-         to [web-ext run](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/#web-ext-run)
-         using the same files that Plasmo uses to convert the development files into extension-usable script files,
-         Plasmo might crash and so you'll have to restart it every time that you modify a script
+       Notice that due
+       to [web-ext run](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/#web-ext-run)
+       using the same files that Plasmo uses to convert the development files into extension-usable script files,
+       Plasmo might crash and so you'll have to restart it every time that you modify a script
 
-   6. To debug:
-      1. Open Firefox on your desktop
-      2. In the terminal of `run-firefox:android`, find the remote Firefox debugger port (search "TCP port")
-      3. Open `about:debugging#/setup` in Firefox
-      4. Type in the text box: `localhost:PORT`
-      5. In the left sidebar, next to `localhost:PORT`, click <kbd>Connect</kbd> and then click on that list item
-      6. Under "Tabs" click <kbd>Inspect</kbd>
+  6. To debug:
+    1. Open Firefox on your desktop
+    2. In the terminal of `run-firefox:android`, find the remote Firefox debugger port (search "TCP port")
+    3. Open `about:debugging#/setup` in Firefox
+    4. Type in the text box: `localhost:PORT`
+    5. In the left sidebar, next to `localhost:PORT`, click <kbd>Connect</kbd> and then click on that list item
+    6. Under "Tabs" click <kbd>Inspect</kbd>
 
 ### Sideloading onto your daily driver browser
 
