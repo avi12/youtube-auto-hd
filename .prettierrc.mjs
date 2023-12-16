@@ -1,7 +1,7 @@
 /**
  * @type {import('prettier').Options}
  */
-module.exports = {
+export default {
   printWidth: 120,
   tabWidth: 2,
   useTabs: false,
@@ -10,7 +10,7 @@ module.exports = {
   trailingComma: "none",
   bracketSpacing: true,
   bracketSameLine: true,
-  plugins: [require.resolve("@plasmohq/prettier-plugin-sort-imports"), "prettier-plugin-svelte"],
+  plugins: ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-svelte"],
   importOrder: ["^@plasmohq/(.*)$", "^~(.*)$", "^[./]"],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
