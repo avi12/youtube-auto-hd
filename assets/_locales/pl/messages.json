@@ -1,17 +1,18 @@
 {
-"cj_i18n_00354":{"message":"Wspomóż Rozwój"},
+"cj_i18n_00354":{"message":"Przekaż darowiznę"},
 "cj_i18n_01605":{"message":"Pomóż w tłumaczeniu"},
 "cj_i18n_02146":{"message":"Automatycznie ustaw jakość filmu na YouTube zgodnie z jego FPS!"},
 "cj_i18n_02148":{"message":"FPS wideo"},
 "cj_i18n_02149":{"message":"FPS i mniej"},
-"cj_i18n_06567":{"message":"Zachowaj rozmiar na"},
-"cj_i18n_06568":{"message":"Automatyczna zmiana rozmiaru filmów"},
-"cj_i18n_06858":{"message":"Wszystkie częstotliwości odświeżania"},
+"cj_i18n_06567":{"message":"Utrzymaj rozmiar na"},
+"cj_i18n_06568":{"message":"Automatycznie zmień rozmiar filmów"},
+"cj_i18n_06858":{"message":"Wszystkie FPS"},
 "cj_i18n_06860":{"message":"Wspomóż twórcę"},
 "cj_i18n_06861":{"message":"Oceń rozszerzenie"},
-"cj_i18n_06862":{"message":"Użyj tej samej jakości dla wszystkich częstotliwości odświeżania"},
+"cj_i18n_06862":{"message":"Użyj tej samej jakości dla wszystkich FPS"},
 "cj_i18n_07097":{"message":"Widok domyślny"},
 "cj_i18n_07098":{"message":"Widok kinowy"},
 "cj_i18n_07265":{"message":"Filmy będą odtwarzane z prędkością do 30 FPS dla tej jakości."},
 "cj_i18n_07266":{"message":"Rozszerzenie jest włączone"}
+"cj_i18n_07392":{"message":"Użyj zwiększonej szybkości transmisji bitów, gdy jest to najwyższa jakość"}
 }
