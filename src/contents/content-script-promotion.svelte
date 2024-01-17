@@ -59,6 +59,12 @@
   new MutationObserver(() => {
     theme = getTheme();
   }).observe(document.documentElement, { attributes: true, attributeFilter: ["dark"] });
+
+  const promotion = {
+    chrome: "https://chrome.google.com/webstore/detail/fpoooibdndpjcnoodfionoeakeojdjaj",
+    firefox: "https://addons.mozilla.org/en-US/firefox/addon/youtube-time-manager",
+    opera: "https://addons.opera.com/en/extensions/details/youtube-time-manager"
+  } as const;
 </script>
 
 {#if !isHidePromotionSection}
@@ -70,7 +76,7 @@
 
     <p class="{CLASS_PROMOTION}__description">
       I've crafted something you might like – <a
-            href="https://chrome.google.com/webstore/detail/fpoooibdndpjcnoodfionoeakeojdjaj"
+            href={promotion[process.env.PLASMO_BROWSER] || promotion.chrome}
             target="_blank"
             class="{CLASS_PROMOTION}__link"
             on:click={hidePromotionSection}>YouTube Time
