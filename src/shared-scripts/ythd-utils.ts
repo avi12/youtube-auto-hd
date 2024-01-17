@@ -70,8 +70,8 @@ export enum SELECTORS {
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player:not(#inline-preview-player)",
-  relatedVideos = "#secondary-inner",
-  donationSection = ".ythd-israel-support",
+  promotionInjectParent = "ytd-comments",
+  promotionSection = ".ythd-promotion",
   logo = "ytd-logo",
   // Premium
   labelPremium = ".ytp-premium-label",
