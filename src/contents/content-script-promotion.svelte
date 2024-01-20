@@ -50,16 +50,6 @@
     storageSync.set("isHidePromotionSection", true);
   }
 
-  // Theme stuff
-  function getTheme(): "light" | "dark" {
-    return document.documentElement.getAttribute("dark") === null ? "light" : "dark";
-  }
-
-  let theme = getTheme();
-  new MutationObserver(() => {
-    theme = getTheme();
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ["dark"] });
-
   const promotion = {
     chrome: "https://chrome.google.com/webstore/detail/fpoooibdndpjcnoodfionoeakeojdjaj",
     firefox: "https://addons.mozilla.org/en-US/firefox/addon/youtube-time-manager",
@@ -68,19 +58,18 @@
 </script>
 
 {#if !isHidePromotionSection}
-  <article class={CLASS_PROMOTION} class:dark={theme === "dark"}>
-    <section class="{CLASS_PROMOTION}__header">
-      <h1 class="{CLASS_PROMOTION}__title">Hi there!</h1>
-      <button class="{CLASS_PROMOTION}__close" on:click={hidePromotionSection} aria-hidden="true" aria-label="Close"></button>
-    </section>
+  <article class={CLASS_PROMOTION}>
+    <h1 class="{CLASS_PROMOTION}__title">YouTube Auto HD</h1>
 
     <p class="{CLASS_PROMOTION}__description">
-      I've crafted something you might like – <a
+      Hi there! I've crafted something you might like – <a
             href={promotion[process.env.PLASMO_BROWSER] || promotion.chrome}
             target="_blank"
             class="{CLASS_PROMOTION}__link"
             on:click={hidePromotionSection}>YouTube Time
       Manager</a>. It's all about offering a breezy insight into your YouTube habits.
     </p>
+
+    <button class="{CLASS_PROMOTION}__close" on:click={hidePromotionSection}>Don't show again</button>
   </article>
 {/if}
