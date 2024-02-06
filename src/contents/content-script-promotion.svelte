@@ -53,7 +53,8 @@
   const promotion = {
     chrome: "https://chrome.google.com/webstore/detail/fpoooibdndpjcnoodfionoeakeojdjaj",
     firefox: "https://addons.mozilla.org/en-US/firefox/addon/youtube-time-manager",
-    opera: "https://addons.opera.com/en/extensions/details/youtube-time-manager"
+    opera: "https://addons.opera.com/en/extensions/details/youtube-time-manager",
+    edge: "https://microsoftedge.microsoft.com/addons/detail/iillglbdjgjdogpiagcbmfcdgmpmmaio"
   } as const;
 </script>
 
@@ -62,12 +63,12 @@
     <h1 class="{CLASS_PROMOTION}__title">YouTube Auto HD</h1>
 
     <p class="{CLASS_PROMOTION}__description">
-      Hi there! I've crafted something you might like – <a
-            href={promotion[process.env.PLASMO_BROWSER] || promotion.chrome}
-            target="_blank"
-            class="{CLASS_PROMOTION}__link"
-            on:click={hidePromotionSection}>YouTube Time
-      Manager</a>. It's all about offering a breezy insight into your YouTube habits.
+      If you enjoy using this extension, you can support me by checking out <a
+        href={promotion[process.env.PLASMO_BROWSER] || promotion.chrome}
+        target="_blank"
+        class="{CLASS_PROMOTION}__link"
+        on:click={hidePromotionSection}>YouTube Time Manager</a
+      >, a productivity extension that helps you manage your time on YouTube.
     </p>
 
     <button class="{CLASS_PROMOTION}__close" on:click={hidePromotionSection}>Don't show again</button>
