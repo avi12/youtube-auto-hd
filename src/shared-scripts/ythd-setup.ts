@@ -34,6 +34,7 @@ export const fpsSupported = [60, 50, 30] as const;
 export const initial: Preferences = {
   isExtensionEnabled: true,
   isHideDonationSection: false,
+  isHidePromotionSection: false,
   qualities: {
     60: qualityClosest,
     50: qualityClosest,
