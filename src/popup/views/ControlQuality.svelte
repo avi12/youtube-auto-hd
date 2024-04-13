@@ -105,8 +105,8 @@
             class="mt-3">{i18n.preferEnhancedBitrate}</Switch>
         {/if}
 
-        {#if $qualitiesStored[fps] < 720 && fps > 30}
-          <div class="warning mt-4">{i18n.fpsWarning}</div>
+        {#if $qualitiesStored[fps] < 720 && +fps > 30}
+          <div class="warning">{i18n.fpsWarning}</div>
         {/if}
       </section>
     {/each}
@@ -128,5 +128,6 @@
   .warning {
     background-color: var(--bg-color-warning);
     padding: 10px;
+    margin-top: 1rem;
   }
 </style>
