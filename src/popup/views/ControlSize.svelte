@@ -17,13 +17,13 @@
 
   let elContainer: Element;
   let isRTL: boolean;
-  onMount(async () => {
+  onMount(() => {
     isRTL = Boolean(document.querySelector(".rtl"));
   });
 
   function attachFocusToParent(e: KeyboardEvent): void {
     // https://web.dev/control-focus-with-tabindex/#create-accessible-components-with-roving-tabindex
-    switch (e.key) {
+    switch (e.code) {
       case "ArrowLeft":
         if (isRTL) {
           focusNextItem();
