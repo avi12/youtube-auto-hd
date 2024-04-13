@@ -10,7 +10,7 @@
 
 {#if $isHideDonationSection}
   <details class="mt-5">
-    <summary class="mb-1 ms-[0.45rem] text-secondary cursor-pointer">
+    <summary class="mb-1 ms-[0.45rem] text-[var(--text-color-secondary)] cursor-pointer">
       <span class="ms-4">{i18n.labelSubheader}</span>
     </summary>
     <PromotionLinks />
@@ -21,9 +21,3 @@
     <PromotionLinks />
   </footer>
 {/if}
-
-<style lang="scss">
-  .text-secondary {
-    color: var(--text-color-secondary);
-  }
-</style>
