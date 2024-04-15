@@ -15,6 +15,7 @@
     fpsAndBelow: getI18n("cj_i18n_02149", "FPS and below"),
     labelQualityEnd: getI18n("cj_i18n_02148", "FPS videos"),
     preferEnhancedBitrate: getI18n("cj_i18n_07392", "Use enhanced bitrate when it's the highest quality"),
+    requiresYouTubePremium: getI18n("cj_i18n_07584", "Requires YouTube Premium"),
     fpsWarning: getI18n("cj_i18n_07265", "Videos will play at up to 30 FPS for this quality")
   };
 
@@ -71,11 +72,12 @@
             });
           }}
           checked={isSameEnhancedBitrateForAllFps}
-          class="mt-3">{i18n.preferEnhancedBitrate}</Switch>
+          class="mt-5">{i18n.preferEnhancedBitrate}</Switch>
+        <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
       {/if}
 
       {#if qualityForAllSelected < 720}
-        <div class="warning mt-4">{i18n.fpsWarning}</div>
+        <div class="warning">{i18n.fpsWarning}</div>
       {/if}
     </section>
   {:else}
@@ -102,7 +104,8 @@
           <Switch
             on:change={e => ($isEnhancedBitrates[fps] = e.detail.checked)}
             checked={$isEnhancedBitrates[fps]}
-            class="mt-3">{i18n.preferEnhancedBitrate}</Switch>
+            class="mt-5">{i18n.preferEnhancedBitrate}</Switch>
+          <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
         {/if}
 
         {#if $qualitiesStored[fps] < 720 && +fps > 30}
@@ -123,6 +126,7 @@
 
   .text-secondary {
     color: var(--text-color-secondary);
+    margin-top: 0.5rem;
   }
 
   .warning {

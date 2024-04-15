@@ -14,5 +14,6 @@
 "cj_i18n_07098":{"message":"Cinema view"},
 "cj_i18n_07265":{"message":"Videos will play at up to 30 FPS for this quality."},
 "cj_i18n_07266":{"message":"Extension is on"},
-"cj_i18n_07392":{"message":"Use enhanced bitrate when it’s the highest quality"}
+"cj_i18n_07392":{"message":"Use enhanced bitrate when it’s the highest quality"},
+"cj_i18n_07584":{"message":"Requires YouTube Premium"}
 }
