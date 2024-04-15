@@ -2,7 +2,7 @@
 "cj_i18n_00354":{"message":"Doneren"},
 "cj_i18n_01605":{"message":"Draag bij aan vertalingen"},
 "cj_i18n_02146":{"message":"Pas videokwaliteit op YouTube automatisch aan op basis van de FPS!"},
-"cj_i18n_02148":{"message":"FPS video's"},
+"cj_i18n_02148":{"message":"FPS video’s"},
 "cj_i18n_02149":{"message":"FPS en lager"},
 "cj_i18n_06567":{"message":"Houd formaat op"},
 "cj_i18n_06568":{"message":"Videos automatisch schalen"},
@@ -12,5 +12,6 @@
 "cj_i18n_06862":{"message":"Gebruik dezelfde kwaliteit voor alle framerates"},
 "cj_i18n_07098":{"message":"Theatermodus"},
 "cj_i18n_07265":{"message":"Videos worden maximaal met 30 FPS afgespeeld met deze kwaliteit."},
-"cj_i18n_07266":{"message":"Extensie staat aan"}
+"cj_i18n_07266":{"message":"Extensie staat aan"},
+"cj_i18n_07584":{"message":"YouTube Premium is hiervoor nodig"}
 }

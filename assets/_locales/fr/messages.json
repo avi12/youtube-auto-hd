@@ -13,5 +13,6 @@
 "cj_i18n_07097":{"message":"Mode par défaut"},
 "cj_i18n_07098":{"message":"Mode cinéma"},
 "cj_i18n_07265":{"message":"Les vidéos seront jouées à 30 images/sec. maximum pour cette qualité."},
-"cj_i18n_07266":{"message":"L'extension est activée"}
+"cj_i18n_07266":{"message":"L'extension est activée"},
+"cj_i18n_07392":{"message":"Utiliser le bitrate amélioré lorsque la qualité est supérieure"}
 }
