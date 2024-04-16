@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
-    "@plasmohq/storage": "^1.9.3",
+    "@plasmohq/storage": "^1.10.0",
     "nouislider": "^15.7.1",
     "plasmo": "0.85.2",
     "sass": "1.75.0",
@@ -63,7 +63,7 @@
     "tailwindcss": "^3.4.3",
     "tailwindcss-rtl": "^0.9.0",
     "typescript": "5.4.5",
-    "typescript-eslint": "^7.6.0",
+    "typescript-eslint": "^7.7.0",
     "web-ext": "^7.11.0",
     "webext-store-incompat-fixer": "^0.7.1",
     "zip-self": "^0.6.1"
