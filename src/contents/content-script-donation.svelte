@@ -59,7 +59,7 @@
     <h1 class="{CLASS_DONATION}__title">YouTube Auto HD</h1>
 
     <p class="{CLASS_DONATION}__description">
-      If you enjoy using this extension, you can support me by donating via <a
+      Please consider supporting me via <a
         href="https://paypal.me/avi12"
         target="_blank"
         class="{CLASS_DONATION}__link"
