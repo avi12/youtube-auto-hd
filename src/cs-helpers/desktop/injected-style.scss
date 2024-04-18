@@ -44,5 +44,12 @@
     background: none;
     cursor: pointer;
     float: right;
+    overflow: clip;
+    max-height: 0;
+    transition: max-height 1s ease-in-out;
+
+    &--show {
+      max-height: 100px;
+    }
   }
 }

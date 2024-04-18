@@ -35,6 +35,10 @@
   const storageSync = new Storage({ area: "sync" });
 
   let isHideDonationSection = true;
+  let isShowDismissButton = false;
+  const timeoutShow = setTimeout(() => {
+    isShowDismissButton = true;
+  }, 5000);
 
   Promise.all([
     storageSync.get<typeof initial.isHidePromotionSection>("isHidePromotionSection"),
@@ -50,6 +54,7 @@
   });
 
   function hideDonationSection() {
+    clearTimeout(timeoutShow);
     storageSync.set("isHideDonationSection", true);
   }
 </script>
@@ -63,10 +68,9 @@
         href="https://paypal.me/avi12"
         target="_blank"
         class="{CLASS_DONATION}__link"
-        on:click={hideDonationSection}>PayPal</a
-      > :)
+        on:click={hideDonationSection}>PayPal</a> :)
     </p>
 
-    <button class="{CLASS_DONATION}__close" on:click={hideDonationSection}>Don't show again</button>
+    <button class="{CLASS_DONATION}__close {isShowDismissButton && `${CLASS_DONATION}__close--show`}" on:click={hideDonationSection}>Don't show again</button>
   </article>
 {/if}
