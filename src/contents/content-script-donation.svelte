@@ -36,9 +36,17 @@
 
   let isHideDonationSection = true;
   let isShowDismissButton = false;
-  const timeoutShow = setTimeout(() => {
-    isShowDismissButton = true;
-  }, 5000);
+  let timeoutShow: ReturnType<typeof setTimeout>;
+
+  new IntersectionObserver((entries, observer) => {
+    if (!entries[0].isIntersecting) {
+      return;
+    }
+    observer.disconnect();
+    timeoutShow = setTimeout(() => {
+      isShowDismissButton = true;
+    }, 5000);
+  }).observe(document.querySelector(SELECTORS.donationInjectParent));
 
   Promise.all([
     storageSync.get<typeof initial.isHidePromotionSection>("isHidePromotionSection"),
