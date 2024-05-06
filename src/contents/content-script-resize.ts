@@ -43,17 +43,9 @@ async function resizePlayerIfNeeded(): Promise<void> {
     return;
   }
 
-  if (getCurrentSize() === gOptions.size) {
-    return;
-  }
-
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    await new Promise(resolve => setTimeout(resolve, 100));
-    if (getCurrentSize() === gOptions.size) {
-      break;
-    }
+  while (getCurrentSize() !== gOptions.size) {
     elSizeToggle.click();
+    await new Promise(resolve => setTimeout(resolve, 100));
   }
 }
 
