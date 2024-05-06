@@ -8,7 +8,7 @@
   };
 
   export const mountShadowHost: PlasmoMountShadowHost = async ({ shadowHost, anchor, mountState }) => {
-    const elSupportSection = document.querySelector(`#${CLASS_DONATION}`);
+    const elSupportSection = document.querySelector("#ythd-donation");
     if (!(await getIsExtensionEnabled()) || elSupportSection) {
       return;
     }
@@ -24,8 +24,6 @@
   };
 
   export const getInlineAnchor: PlasmoGetInlineAnchor = () => document.querySelector(SELECTORS.donationInjectParent);
-
-  const CLASS_DONATION = SELECTORS.donationSection.substring(1);
 </script>
 
 <script lang="ts">
@@ -68,17 +66,68 @@
 </script>
 
 {#if !isHideDonationSection}
-  <article class={CLASS_DONATION}>
-    <h1 class="{CLASS_DONATION}__title">YouTube Auto HD</h1>
+  <article class="ythd-donation">
+    <h1 class="ythd-donation__title">YouTube Auto HD</h1>
 
-    <p class="{CLASS_DONATION}__description">
+    <p class="ythd-donation__description">
       Please consider supporting me via <a
         href="https://paypal.me/avi12"
         target="_blank"
-        class="{CLASS_DONATION}__link"
+        class="ythd-donation__link"
         on:click={hideDonationSection}>PayPal</a> :)
     </p>
 
-    <button class="{CLASS_DONATION}__close {isShowDismissButton && `${CLASS_DONATION}__close--show`}" on:click={hideDonationSection}>Don't show again</button>
+    <button
+      class="ythd-donation__close"
+      class:ythd-donation__close--show={isShowDismissButton}
+      on:click={hideDonationSection}>Don't show again</button>
   </article>
 {/if}
+
+<style lang="scss">
+  .ythd-donation {
+    background-color: var(--yt-spec-additive-background, rgba(0, 0, 0, 0.5));
+    padding: 12px;
+    margin-bottom: 10px;
+    direction: ltr;
+    border-radius: 8px;
+
+    &__title {
+      color: var(--yt-spec-text-primary, #0f0f0f);
+      margin: 0 0 4px 0;
+      font-size: 1.4rem;
+    }
+
+    &__description {
+      color: var(--yt-spec-text-secondary, #606060);
+      margin: 0;
+      font-size: 1.4rem;
+      line-height: 1.8rem;
+
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+    }
+
+    &__link {
+      color: var(--yt-spec-call-to-action, #3ea6ff);
+      text-decoration: none;
+    }
+
+    &__close {
+      color: var(--yt-spec-call-to-action, #3ea6ff);
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+      float: right;
+      overflow: clip;
+      max-height: 0;
+      transition: max-height 1s ease-in-out;
+
+      &--show {
+        max-height: 100px;
+      }
+    }
+  }
+</style>
