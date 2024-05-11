@@ -4,6 +4,8 @@ import pathIconOn from "url:~assets/icon-on.png";
 
 const storageLocal = new Storage({ area: "local" });
 
+chrome.runtime.setUninstallURL("");
+
 function setIcon(isEnabled = true): void {
   const action = chrome.action || chrome.browserAction; // chrome.browserAction for Firefox MV2
   action.setIcon({
