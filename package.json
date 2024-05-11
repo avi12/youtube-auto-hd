@@ -30,7 +30,7 @@
     "run-firefox:android": "pnpm run-browser firefox-android --source-dir build/firefox-mv2-dev --adb-remove-old-artifacts",
     "run-chromium": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev",
     "run-chromium:rtl": "pnpm run-browser chromium --source-dir build/chrome-mv3-prod --args=\"--lang=he\"",
-    "run-edge:windows": "pnpm run-browser chromium --source-dir build/edge-mv3-dev --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"",
+    "run-edge:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"",
     "run-opera:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary \"%LocalAppData%\\Programs\\Opera\\opera.exe\"",
     "run-browser:screenshot": "web-ext run --start-url about:blank --target",
     "run-firefox:screenshot": "pnpm run-browser:screenshot firefox-desktop --source-dir build/firefox-mv2-prod",
