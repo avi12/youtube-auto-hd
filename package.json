@@ -1,6 +1,6 @@
 {
   "name": "youtube-auto-hd",
-  "version": "1.8.25",
+  "version": "1.8.26",
   "description": "Automatically set the video quality on YouTube according to its FPS!",
   "author": "avi12 <avi6106@gmail.com>",
   "type": "module",
@@ -17,7 +17,7 @@
     "package:firefox": "web-ext build --config web-ext-config.cjs --source-dir build/firefox-mv2-prod --filename youtube-auto-hd-fps-{version}-firefox.zip && pnpm package:stores-firefox",
     "package:self": "zip-self -o web-ext-artifacts/youtube-auto-hd-fps-{version}-source.zip",
     "package:stores": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}.zip --stores chrome,opera",
-    "package:stores-edge": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-edge.zip --edge-locale-inclusions en,he,nl,it --stores edge",
+    "package:stores-edge": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-edge.zip --edge-locale-inclusions en,he,nl,it,pl,be --stores edge",
     "package:stores-firefox": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-firefox.zip --stores firefox",
     "build-pack": "pnpm build && pnpm package && pnpm package:stores",
     "build-pack:test": "plasmo build && plasmo package",
@@ -29,7 +29,7 @@
     "run-firefox": "pnpm run-browser firefox-desktop --source-dir build/firefox-mv2-dev",
     "run-firefox:android": "pnpm run-browser firefox-android --source-dir build/firefox-mv2-dev --adb-remove-old-artifacts",
     "run-chromium": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev",
-    "run-chromium:rtl": "pnpm run-browser chromium --source-dir build/chrome-mv3-prod --args=\"--lang=he\"",
+    "run-chromium:rtl": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --args=\"--lang=he\"",
     "run-edge:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"",
     "run-opera:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary \"%LocalAppData%\\Programs\\Opera\\opera.exe\"",
     "run-browser:screenshot": "web-ext run --start-url about:blank --target",
@@ -95,13 +95,13 @@
     "web_accessible_resources": [
       {
         "resources": [
-          "assets/*",
-          "*.map"
+          "assets/*"
         ],
         "matches": [
-          "<all_urls>"
+          "https://www.youtube.com/*"
         ]
       }
     ]
-  }
+  },
+  "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
 }
