@@ -1,7 +1,10 @@
-import sveltePreprocess from "svelte-preprocess";
+import autoprefixer from "autoprefixer";
+import nesting from "postcss-nesting";
+import { sveltePreprocess } from "svelte-preprocess";
 
 export default {
-  // Consult https://github.com/sveltejs/svelte-preprocess
-  // for more information about preprocessors
-  preprocess: sveltePreprocess()
+  preprocess: sveltePreprocess(),
+  postcss: {
+    plugins: [autoprefixer, nesting()]
+  }
 };
