@@ -1,6 +1,6 @@
 import { Storage } from "@plasmohq/storage";
-import pathIconOff from "url:~assets/icon-off.png";
-import pathIconOn from "url:~assets/icon-on.png";
+import pathIconOff from "url:./assets/icon-off.png";
+import pathIconOn from "url:./assets/icon-on.png";
 
 const storageLocal = new Storage({ area: "local" });
 
