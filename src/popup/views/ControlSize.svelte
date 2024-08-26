@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Storage } from "@plasmohq/storage";
   import { onMount } from "svelte";
-
   import Switch from "~popup/components/Switch.svelte";
   import { isResizeVideo, sizeVideo } from "~popup/store";
   import { getI18n } from "~shared-scripts/ythd-utils";
@@ -87,58 +86,56 @@
 
   {#if $isResizeVideo}
     <section class="size">
-      <div class="size__label">{i18n.labelVideoSize}</div>
+      <div class="label">{i18n.labelVideoSize}</div>
 
       <!-- svelte-ignore a11y-no-static-element-interactions -->
-      <section class="size__inner" on:keydown={attachFocusToParent} bind:this={elContainer}>
+      <div class="inner" on:keydown={attachFocusToParent} bind:this={elContainer}>
         <button
-          class="size__box"
+          class="box"
           data-size="small"
           aria-label={i18n.labelSizeSmall}
-          class:size__box--selected={$sizeVideo === 0}
+          class:selected={$sizeVideo === 0}
           on:click={() => ($sizeVideo = 0)}
           tabindex="0">
           <!--suppress HtmlUnknownTag -->
-          <!-- prettier-ignore -->
-          <div class="size__box-rectangle"></div>
+          <div class="rectangle"></div>
         </button>
         <button
-          class="size__box"
+          class="box"
           data-size="large"
           aria-label={i18n.labelSizeLarge}
-          class:size__box--selected={$sizeVideo === 1}
+          class:selected={$sizeVideo === 1}
           on:click={() => ($sizeVideo = 1)}
           tabindex="-1">
           <!--suppress HtmlUnknownTag -->
-          <!-- prettier-ignore -->
-          <div class="size__box-rectangle"></div>
+          <div class="rectangle"></div>
         </button>
-      </section>
+      </div>
     </section>
   {/if}
 </article>
 
-<hr class="mt-5" />
+<hr />
 
-<style lang="scss">
+<style>
   .size {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 1rem;
 
-    &__inner {
+    & .label {
+      flex: 1;
+      padding-inline-end: 1rem;
+    }
+
+    & .inner {
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    &__label {
-      flex: 1;
-      padding-inline-end: 1rem;
-    }
-
-    &__box {
+    & .box {
       display: grid;
       place-items: center;
       width: 50px;
@@ -153,14 +150,14 @@
         border-color: var(--outline-size-box-wrapper);
       }
 
-      &-rectangle {
+      & .rectangle {
         border: 1px solid var(--outline-size-box);
         border-radius: 4px;
         transition: border-color 0.2s ease-in-out;
       }
 
-      &--selected {
-        .size__box-rectangle {
+      &.selected {
+        & .rectangle {
           border-color: var(--outline-size-box-selected);
         }
       }
@@ -168,16 +165,20 @@
   }
 
   [data-size="small"] {
-    .size__box-rectangle {
+    & .rectangle {
       width: 21px;
       height: 14px;
     }
   }
 
   [data-size="large"] {
-    .size__box-rectangle {
+    & .rectangle {
       width: 34px;
       height: 26px;
     }
+  }
+
+  hr {
+    margin-top: 1.25rem;
   }
 </style>

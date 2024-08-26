@@ -9,7 +9,7 @@
   <path {d} />
 </svg>
 
-<style lang="scss">
+<style>
   svg {
     margin-inline-end: 10px;
   }

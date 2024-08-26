@@ -7,11 +7,15 @@
 </script>
 
 <label {...$$restProps}>
-  <input bind:checked on:change={e => dispatch("change", { checked: e.currentTarget.checked })} role="switch" type="checkbox"/>
-  <slot/>
+  <input
+    bind:checked
+    on:change={e => dispatch("change", { checked: e.currentTarget.checked })}
+    role="switch"
+    type="checkbox" />
+  <slot />
 </label>
 
-<style lang="scss">
+<style>
   label {
     display: flex;
     flex-direction: row-reverse;
@@ -21,17 +25,17 @@
     cursor: pointer;
   }
 
-  // https://www.youtube.com/watch?v=_KqccADghcA
+  /* https://www.youtube.com/watch?v=_KqccADghcA */
   [role="switch"] {
     --thumb-position: 0%;
     --isLTR: 1;
-    $width: 2rem;
-    $thumb-width: 1rem;
-    $height: 1rem;
+    --width: 2rem;
+    --thumb-width: 1rem;
+    --height: 1rem;
 
     padding: 2px;
     background-color: var(--switch-off-bg-color);
-    inline-size: $width;
+    inline-size: var(--width);
     border-radius: 4rem;
 
     appearance: none;
@@ -53,12 +57,14 @@
       cursor: pointer;
       pointer-events: auto;
       grid-area: track;
-      inline-size: $thumb-width;
-      block-size: $height;
+      inline-size: var(--thumb-width);
+      block-size: var(--height);
       background-color: var(--switch-off-thumb-color);
       border-radius: 50%;
       translate: var(--thumb-position);
-      transition: translate 0.25s ease, background-color 0.25s ease;
+      transition:
+        translate 0.25s ease,
+        background-color 0.25s ease;
     }
 
     &:checked {
@@ -72,7 +78,7 @@
   }
 
   :global(.rtl) {
-    [role="switch"] {
+    & [role="switch"] {
       --isLTR: -1;
     }
   }

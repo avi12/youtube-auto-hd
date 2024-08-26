@@ -71,7 +71,7 @@
   <Promotions />
 </main>
 
-<style global lang="scss">
-  @use "./popup/styles/main";
-  @use "./popup/styles/variables";
+<style global>
+  @import "./popup/styles/_main.css";
+  @import "./popup/styles/_variables.css";
 </style>

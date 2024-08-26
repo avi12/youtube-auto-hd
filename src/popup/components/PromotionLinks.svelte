@@ -1,8 +1,6 @@
 <script lang="ts">
   import { mdiHeartOutline, mdiStarOutline, mdiTranslate } from "@mdi/js";
-
   import { Storage } from "@plasmohq/storage";
-
   import Icon from "~popup/components/Icon.svelte";
   import { isHideDonationSection } from "~popup/store";
   import { getI18n } from "~shared-scripts/ythd-utils";
@@ -23,7 +21,7 @@
     safari: "https://apps.apple.com/app/id1546729687"
   };
 
-  const browserName: "chrome" | "firefox" | "edge" | "opera" | "safari" = (() => {
+  const browserName = (() => {
     const extensionBaseUrl = chrome.runtime.getURL("");
 
     const isFirefox = extensionBaseUrl.startsWith("moz-extension://");
@@ -81,13 +79,12 @@
       <a
         class="link"
         href={link.url}
-        on:click={async e => {
+        on:click|preventDefault={async () => {
           const { url } = link;
           if (url.includes("paypal.me")) {
             $isHideDonationSection = true;
           }
           await chrome.tabs.create({ url });
-          e.preventDefault();
           close();
         }}>
         <Icon path={link.icon} />
@@ -97,14 +94,14 @@
   {/each}
 </menu>
 
-<style lang="scss">
+<style>
   .link {
     color: var(--text-color-promotion);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
 
-    span {
+    & span {
       position: relative;
 
       &::after {
@@ -128,8 +125,8 @@
   }
 
   :global(.rtl) {
-    .link {
-      span {
+    & .link {
+      & span {
         &::after {
           transform-origin: bottom left;
         }
@@ -146,7 +143,7 @@
     padding-inline-start: 0;
     margin-bottom: 0;
 
-    li:not(:last-child) {
+    & li:not(:last-child) {
       margin-bottom: 0.5rem;
     }
   }

@@ -1,5 +1,4 @@
 <script lang="ts">
-  // noinspection TypeScriptCheckImport
   import srcLogo from "data-base64:~assets/icon512.png";
 </script>
 
@@ -9,7 +8,7 @@
 </header>
 <hr class="mb-6" />
 
-<style lang="scss">
+<style>
   header {
     display: flex;
     align-items: center;

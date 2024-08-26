@@ -1,11 +1,9 @@
-@tailwind utilities;
-
-// Chromium browsers
+/* Chromium browsers */
 ::-webkit-scrollbar {
   width: 0;
 }
 
-// Firefox
+/* Firefox */
 html {
   scrollbar-width: none;
 }
@@ -15,7 +13,7 @@ hr {
   border-top: 1px solid var(--hr-color);
 }
 
-// Global
+/* Global */
 body {
   width: 280px;
   font-size: max(0.85rem, 13px);
@@ -34,7 +32,7 @@ body {
 }
 
 .options-page {
-  margin-bottom: 20px; // For Firefox
+  margin-bottom: 20px; /* For Firefox */
 
   .control-section:first-child {
     margin-top: 0;

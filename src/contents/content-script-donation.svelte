@@ -67,24 +67,21 @@
 
 {#if !isHideDonationSection}
   <article class="ythd-donation">
-    <h1 class="ythd-donation__title">YouTube Auto HD</h1>
+    <h1 class="title">YouTube Auto HD</h1>
 
-    <p class="ythd-donation__description">
+    <p class="description">
       Please consider supporting me via <a
         href="https://paypal.me/avi12"
         target="_blank"
-        class="ythd-donation__link"
+        class="link"
         on:click={hideDonationSection}>PayPal</a> :)
     </p>
 
-    <button
-      class="ythd-donation__close"
-      class:ythd-donation__close--show={isShowDismissButton}
-      on:click={hideDonationSection}>Don't show again</button>
+    <button class="close" class:show={isShowDismissButton} on:click={hideDonationSection}>Don't show again</button>
   </article>
 {/if}
 
-<style lang="scss">
+<style>
   .ythd-donation {
     background-color: var(--yt-spec-additive-background, rgba(0, 0, 0, 0.5));
     padding: 12px;
@@ -92,13 +89,13 @@
     direction: ltr;
     border-radius: 8px;
 
-    &__title {
+    & .title {
       color: var(--yt-spec-text-primary, #0f0f0f);
       margin: 0 0 4px 0;
       font-size: 1.4rem;
     }
 
-    &__description {
+    & .description {
       color: var(--yt-spec-text-secondary, #606060);
       margin: 0;
       font-size: 1.4rem;
@@ -109,12 +106,12 @@
       }
     }
 
-    &__link {
+    & .link {
       color: var(--yt-spec-call-to-action, #3ea6ff);
       text-decoration: none;
     }
 
-    &__close {
+    & .close {
       color: var(--yt-spec-call-to-action, #3ea6ff);
       border: none;
       padding: 0;
@@ -125,7 +122,7 @@
       max-height: 0;
       transition: max-height 1s ease-in-out;
 
-      &--show {
+      &.show {
         max-height: 100px;
       }
     }

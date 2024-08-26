@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Storage } from "@plasmohq/storage";
-
   import Switch from "~popup/components/Switch.svelte";
   import { isExtensionEnabled } from "~popup/store";
   import { getI18n } from "~shared-scripts/ythd-utils";

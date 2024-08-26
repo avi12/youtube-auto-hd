@@ -1,13 +1,11 @@
 <script lang="ts">
   import { Storage } from "@plasmohq/storage";
-
   import Slider from "../components/Slider.svelte";
   import Switch from "../components/Switch.svelte";
   import { isEnhancedBitrates, qualitiesStored } from "~popup/store";
   import { fpsSupported, qualities } from "~shared-scripts/ythd-setup";
-  import { IS_DESKTOP, getI18n } from "~shared-scripts/ythd-utils";
+  import { getI18n, IS_DESKTOP } from "~shared-scripts/ythd-utils";
   import type { VideoFPS, VideoQuality } from "~types";
-
 
   const i18n: { [key: string]: string } = {
     labelSwitchSameQuality: getI18n("cj_i18n_06862", "Use the same quality for all frame rates"),
@@ -59,8 +57,8 @@
     <section class="control-section">
       <Slider values={qualitiesReversed} bind:value={qualityForAllSelected}>
         <div class="slider-label">
-          <div class="flex-1">{qualityForAllSelected}p</div>
-          <div class="flex-1 text-secondary">{i18n.labelAllFramerates}</div>
+          <div>{qualityForAllSelected}p</div>
+          <div class="text-secondary">{i18n.labelAllFramerates}</div>
         </div>
       </Slider>
 
@@ -72,7 +70,7 @@
             });
           }}
           checked={isSameEnhancedBitrateForAllFps}
-          class="mt-5">{i18n.preferEnhancedBitrate}</Switch>
+          class="switch">{i18n.preferEnhancedBitrate}</Switch>
         <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
       {/if}
 
@@ -89,8 +87,8 @@
       <section class="control-section">
         <Slider values={qualitiesReversed} bind:value={$qualitiesStored[fps]}>
           <div class="slider-label">
-            <div class="flex-1">{$qualitiesStored[fps]}p</div>
-            <div class="flex-1 text-secondary">
+            <div>{$qualitiesStored[fps]}p</div>
+            <div class="text-secondary">
               {#if iFps === 0}
                 {fps} {i18n.fpsAndBelow}
               {:else}
@@ -104,7 +102,7 @@
           <Switch
             on:change={e => ($isEnhancedBitrates[fps] = e.detail.checked)}
             checked={$isEnhancedBitrates[fps]}
-            class="mt-5">{i18n.preferEnhancedBitrate}</Switch>
+            class="switch">{i18n.preferEnhancedBitrate}</Switch>
           <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
         {/if}
 
@@ -118,10 +116,20 @@
 
 <hr class="mt-4" />
 
-<style lang="scss">
+<style>
+  .control-section {
+    & .switch {
+      margin-top: 1.25rem;
+    }
+  }
+
   .slider-label {
     display: flex;
     flex-direction: column;
+
+    & div {
+      flex: 1;
+    }
   }
 
   .text-secondary {

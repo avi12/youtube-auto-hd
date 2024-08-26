@@ -9,15 +9,32 @@
 </script>
 
 {#if $isHideDonationSection}
-  <details class="mt-5">
-    <summary class="mb-1 ms-[0.45rem] text-[var(--text-color-secondary)] cursor-pointer">
-      <span class="ms-4">{i18n.labelSubheader}</span>
+  <details class="promotion-section">
+    <summary class="summary">
+      <span>{i18n.labelSubheader}</span>
     </summary>
     <PromotionLinks />
   </details>
 {:else}
-  <footer class="mt-5">
+  <footer class="promotion-section">
     <div>{i18n.labelSubheader}</div>
     <PromotionLinks />
   </footer>
 {/if}
+
+<style>
+  .promotion-section {
+    margin-top: 1.25rem;
+
+    & .summary {
+      margin-bottom: 0.25rem;
+      margin-inline-start: 0.45rem;
+      color: var(--text-color-secondary);
+      cursor: pointer;
+
+      & span {
+        margin-inline-start: 1rem;
+      }
+    }
+  }
+</style>

@@ -1,9 +1,7 @@
 <script lang="ts">
   import noUiSlider, { type API } from "nouislider";
   import { onMount } from "svelte";
-
   import "nouislider/dist/nouislider.css";
-
   import type { VideoQuality } from "~types";
 
   // eslint-disable-next-line
@@ -38,34 +36,35 @@
 </script>
 
 <div class="slider">
-  <div class="slider__label">
+  <div class="label">
     <slot />
   </div>
-  <!--  prettier-ignore -->
   <div bind:this={elSlider} class="slider-element"></div>
 </div>
 
-<style global lang="scss">
+<style global>
   .slider {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
 
-    .slider-element.slider-element {
+    & .slider-element.slider-element {
       flex: 1;
       height: 2px;
       background: var(--slider-track-uncover-color);
 
-      // Overrides for noUiSlider
+      /* Overrides for noUiSlider */
       border: none;
       box-shadow: none;
 
-      :global(.noUi-connect) {
+      /*noinspection CssUnusedSymbol*/
+      & .noUi-connect {
         background: var(--slider-track-cover-color);
       }
 
-      :global(.noUi-handle) {
+      /*noinspection CssUnusedSymbol*/
+      & .noUi-handle {
         width: 16px;
         height: 16px;
         top: -7px;
@@ -73,11 +72,11 @@
         border-radius: 50%;
         background: var(--slider-track-cover-color);
 
-        // Overrides for noUiSlider
+        /* Overrides for noUiSlider */
         border: none;
         box-shadow: none;
 
-        // Overrides for noUiSlider
+        /* Overrides for noUiSlider */
         &::before,
         &::after {
           content: unset;
@@ -85,14 +84,17 @@
       }
     }
 
-    &__label {
+    /*noinspection CssUnusedSymbol*/
+    &.label {
       flex: 1;
     }
   }
 
+  /*noinspection CssUnusedSymbol*/
   .noUi-rtl {
-    .noUi-handle {
-      // Overrides for noUiSlider
+    /*noinspection CssUnusedSymbol*/
+    & .noUi-handle {
+      /* Overrides for noUiSlider */
       left: unset !important;
     }
   }
