@@ -40,9 +40,9 @@
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
-    "@plasmohq/storage": "^1.11.0",
+    "@plasmohq/storage": "^1.12.0",
     "nouislider": "^15.8.1",
-    "plasmo": "0.88.0",
+    "plasmo": "0.89.1",
     "svelte": "^4.2.19",
     "svelte-preprocess": "6.0.2"
   },
@@ -50,7 +50,7 @@
     "@eslint/js": "^9.9.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
     "@types/chrome": "0.0.270",
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.5.1",
     "autoprefixer": "^10.4.20",
     "concurrently": "^8.2.2",
     "eslint": "^9.9.1",
