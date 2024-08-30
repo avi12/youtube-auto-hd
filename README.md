@@ -109,7 +109,7 @@ pnpm run-firefox
    ```
 4. I recommend creating a Google account specifically to be used with the emulator
 ### Chromium for Android testing
-  1. Download [Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser)
+  1. Install [Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser)
   2. First get the emulator ID:
      ```shell
      adb devices
@@ -139,7 +139,7 @@ pnpm run-firefox
    6. To debug, enter `chrome://inspect/#devices`
 
 ### Firefox for Android testing
-  1. Download [Firefox](https://play.google.com/store/apps/details?id=org.mozilla.firefox)
+  1. Install [Firefox](https://play.google.com/store/apps/details?id=org.mozilla.firefox)
   2. In the terminal:
      ```shell
      adb shell pm grant org.mozilla.firefox android.permission.READ_EXTERNAL_STORAGE
