@@ -21,7 +21,7 @@
     "package:stores-firefox": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-firefox.zip --stores firefox",
     "build-pack": "pnpm build && pnpm package && pnpm package:stores",
     "build-pack:test": "plasmo build && plasmo package",
-    "build-pack:test-push": "cmd /V /C \"set zip=chrome-mv3-prod.zip & set dest_android=/storage/emulated/0/Download/!zip! & pnpm build-pack:test & adb -s %id% shell rm !dest_android! & adb -s %id% push build/!zip! !dest_android!\"",
+    "build-pack:test-push": "cmd /V /C \"set zip=chrome-mv3-prod.zip & set dest_android=/storage/emulated/0/TestYTHD/!zip! & pnpm build-pack:test & adb -s %id% shell rm !dest_android! & adb -s %id% push build/!zip! !dest_android!\"",
     "build-pack:edge": "pnpm build:edge && pnpm package:edge",
     "build-pack:firefox": "concurrently \"pnpm build:firefox && pnpm package:firefox\" \"pnpm package:self\" --names \"Firefox build & pack,Firefox source pack\"",
     "build-pack:all": "concurrently \"pnpm build-pack\" \"pnpm build-pack:edge\" \"pnpm build-pack:firefox\" --names Chromium,Edge,Firefox",

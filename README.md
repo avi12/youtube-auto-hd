@@ -123,7 +123,7 @@ pnpm run-firefox
         ```shell
         pnpm build-pack:test; `
         $zip = "chrome-mv3-prod.zip"; `
-        $destAndroid = "/storage/emulated/0/Download/$zip"; `
+        $destAndroid = "/storage/emulated/0/TestYTHD/$zip"; `
         $ID = "emulator-####"; `
         adb -s $ID shell rm $destAndroid; `
         adb -s $ID push "build/$zip" $destAndroid;
@@ -134,7 +134,7 @@ pnpm run-firefox
       <!--suppress HtmlDeprecatedAttribute -->
       <img align="top" src="https://user-images.githubusercontent.com/6422804/167670341-a0cae554-e922-40b3-b8ed-7bec1ebf17bc.png" alt="Choose zip from storage">
       </details>
-   4. Select the ZIP in the Download folder
+   4. Select the ZIP in the TestYTHD folder
    5. To reload, you must first remove the extension and then repeat steps 2-4
    6. To debug, enter `chrome://inspect/#devices`
 
