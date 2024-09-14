@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { mdiHeartOutline, mdiStarOutline, mdiTranslate } from "@mdi/js";
+  import { mdiGithub, mdiHeartOutline, mdiStarOutline, mdiTranslate } from "@mdi/js";
   import { Storage } from "@plasmohq/storage";
   import Icon from "~popup/components/Icon.svelte";
   import { isHideDonationSection } from "~popup/store";
@@ -10,7 +10,8 @@
   const i18n: Record<string, string> = {
     labelRate: getI18n("cj_i18n_06861", "Rate extension"),
     labelDonate: getI18n("cj_i18n_00354", "Donate"),
-    labelTranslate: getI18n("cj_i18n_01605", "Help with translations")
+    labelTranslate: getI18n("cj_i18n_01605", "Help with translations"),
+    contact: getI18n("", "Contact me")
   };
 
   const linkRatingMapper = {
@@ -51,6 +52,11 @@
 
   type PromotionalLink = { label: string; url: string; icon: string };
   const links: PromotionalLink[] = [
+    {
+      label: i18n.contact,
+      url: "https://github.com/avi12/youtube-auto-hd",
+      icon: mdiGithub
+    },
     {
       label: i18n.labelDonate,
       url: "https://paypal.me/avi12",
