@@ -20,6 +20,11 @@ Made by [avi12](https://avi12.com)
 
 Powered by [Plasmo](https://github.com/plasmohq/plasmo)
 
+## Contact me
+
+You can [suggest a feature](https://github.com/avi12/youtube-auto-hd/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%5BFeature+request%5D+)
+or [report a bug](https://github.com/avi12/youtube-auto-hd/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml&title=%5BBug%5D+)
+
 ## Known issue
 
 Due to the way the browsers handle extensions, when an extension receives an update, content scripts in previously-open web
