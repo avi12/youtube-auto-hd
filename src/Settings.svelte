@@ -128,6 +128,7 @@
   /* Firefox */
   html {
     scrollbar-width: none;
+    color-scheme: light dark;
   }
 
   hr {
@@ -145,6 +146,7 @@
     padding: 12px 18px 16px;
     user-select: none;
     margin: 0 auto;
+    color-scheme: light dark;
   }
 
   .rtl {
