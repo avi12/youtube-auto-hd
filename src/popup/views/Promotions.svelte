@@ -3,7 +3,7 @@
   import { isHideDonationSection } from "~popup/store";
   import { getI18n } from "~shared-scripts/ythd-utils";
 
-  const i18n: { [key: string]: string } = {
+  const i18n: Record<string, string> = {
     labelSubheader: getI18n("cj_i18n_06860", "Support developer")
   };
 </script>

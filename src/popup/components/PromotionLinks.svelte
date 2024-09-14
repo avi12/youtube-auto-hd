@@ -7,7 +7,7 @@
 
   const storageSync = new Storage({ area: "sync" });
 
-  const i18n: { [key: string]: string } = {
+  const i18n: Record<string, string> = {
     labelRate: getI18n("cj_i18n_06861", "Rate extension"),
     labelDonate: getI18n("cj_i18n_00354", "Donate"),
     labelTranslate: getI18n("cj_i18n_01605", "Help with translations")

@@ -6,7 +6,7 @@
 
   const storageLocal = new Storage({ area: "local" });
 
-  const i18n: { [key: string]: string } = {
+  const i18n: Record<string, string> = {
     labelEnabled: getI18n("cj_i18n_07266", "Extension is on")
   };
 

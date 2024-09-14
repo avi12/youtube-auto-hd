@@ -7,7 +7,7 @@
   import { getI18n, IS_DESKTOP } from "~shared-scripts/ythd-utils";
   import type { VideoFPS, VideoQuality } from "~types";
 
-  const i18n: { [key: string]: string } = {
+  const i18n: Record<string, string> = {
     labelSwitchSameQuality: getI18n("cj_i18n_06862", "Use the same quality for all frame rates"),
     labelAllFramerates: getI18n("cj_i18n_06858", "All frame rates"),
     fpsAndBelow: getI18n("cj_i18n_02149", "FPS and below"),
