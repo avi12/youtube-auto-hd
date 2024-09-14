@@ -5,6 +5,10 @@
   "author": "avi12 <avi6106@gmail.com>",
   "type": "module",
   "homepage": "https://github.com/avi12/youtube-auto-hd",
+  "config": {
+    "pathEdgeWindows": "\"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"",
+    "pathOperaWindows": "\"%LocalAppData%\\Programs\\Opera\\opera.exe\""
+  },
   "scripts": {
     "dev": "plasmo dev --verbose",
     "dev:edge": "pnpm dev --target=edge-mv3",
@@ -30,13 +34,13 @@
     "run-firefox:android": "pnpm run-browser firefox-android --source-dir build/firefox-mv2-dev --adb-remove-old-artifacts",
     "run-chromium": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev",
     "run-chromium:rtl": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --args=\"--lang=he\"",
-    "run-edge:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"",
-    "run-opera:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary \"%LocalAppData%\\Programs\\Opera\\opera.exe\"",
+    "run-edge:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary %npm_package_config_pathEdgeWindows%",
+    "run-opera:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary %npm_package_config_pathOperaWindows%",
     "run-browser:screenshot": "web-ext run --start-url about:blank --target",
     "run-firefox:screenshot": "pnpm run-browser:screenshot firefox-desktop --source-dir build/firefox-mv2-prod",
     "run-chromium:screenshot": "pnpm run-browser:screenshot chromium --args=\"--lang=en\" --source-dir build/chrome-mv3-dev",
-    "run-opera:screenshot": "pnpm run-browser:screenshot chromium --source-dir build/chrome-mv3-prod --chromium-binary \"%LocalAppData%\\Programs\\Opera\\opera.exe\"",
-    "run-edge:windows-embed": "web-ext run --start-url file:///%cd%/tests/local-embed.html --source-dir build/edge-mv3-dev --target chromium --chromium-binary \"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\""
+    "run-opera:screenshot": "pnpm run-browser:screenshot chromium --source-dir build/chrome-mv3-prod --chromium-binary %npm_package_config_pathOperaWindows%",
+    "run-edge:windows-embed": "web-ext run --start-url file:///%cd%/tests/local-embed.html --source-dir build/edge-mv3-dev --target chromium --chromium-binary %npm_package_config_pathEdgeWindows%"
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
