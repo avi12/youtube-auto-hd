@@ -73,7 +73,7 @@
 
 <style global>
   :root {
-    --bg-color: hsl(0, 0%, 18%);
+    --bg-color: hsl(0, 0%, 100%);
     --text-color-primary: hsl(0, 0%, 0%);
     --text-color-secondary: hsl(0, 0%, 53%);
     --text-color-warning: hsl(0, 0%, 0%);
