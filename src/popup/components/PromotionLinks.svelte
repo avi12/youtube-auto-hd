@@ -11,7 +11,7 @@
     labelRate: getI18n("cj_i18n_06861", "Rate extension"),
     labelDonate: getI18n("cj_i18n_00354", "Donate"),
     labelTranslate: getI18n("cj_i18n_01605", "Help with translations"),
-    contact: getI18n("", "Contact me")
+    contact: getI18n("cj_i18n_07669", "Contact me")
   };
 
   const linkRatingMapper = {
@@ -130,6 +130,7 @@
     }
   }
 
+  /*noinspection CssUnusedSymbol*/
   :global(.rtl) {
     & .link {
       & span {
