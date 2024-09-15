@@ -6,7 +6,6 @@
 "cj_i18n_02149":{"message":"FPS e meno"},
 "cj_i18n_06567":{"message":"Mantieni dimensione su"},
 "cj_i18n_06568":{"message":"Auto-ridimensiona video"},
-"cj_i18n_06858":{"message":"Tutti i frame rate"},
 "cj_i18n_06860":{"message":"Supporta lo sviluppatore"},
 "cj_i18n_06861":{"message":"Valuta estensione"},
 "cj_i18n_06862":{"message":"Imposta la stessa qualità per tutti i frame rate"},
@@ -15,6 +14,5 @@
 "cj_i18n_07265":{"message":"I video pagheranno fino a 30 FPS per questa qualità."},
 "cj_i18n_07266":{"message":"L'estensione è attiva"},
 "cj_i18n_07392":{"message":"Quando è della massima qualità usa il bitrate avanzato"},
-"cj_i18n_07584":{"message":"Richiede YouTube Premium"},
-"cj_i18n_07588":{"message":"Usa bitrate avanzato quando disponibile"}
+"cj_i18n_07584":{"message":"Richiede YouTube Premium"}
 }
