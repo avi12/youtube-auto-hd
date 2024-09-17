@@ -72,7 +72,6 @@ export enum SELECTORS {
   player = ".html5-video-player:not(#inline-preview-player)",
   donationInjectParent = "ytd-comments",
   donationSection = ".ythd-donation",
-  logo = "ytd-logo",
   // Premium
   labelPremium = ".ytp-premium-label",
   // Mobile

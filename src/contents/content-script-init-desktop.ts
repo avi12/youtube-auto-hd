@@ -140,12 +140,6 @@ async function init(): Promise<void> {
       return;
     }
 
-    // The logo is loaded in non-/embed pages
-    const elLogo = getVisibleElement(SELECTORS.logo);
-    if (!elLogo) {
-      return;
-    }
-
     observer.disconnect();
 
     await prepareToChangeQualityOnDesktop();
