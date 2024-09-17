@@ -71,7 +71,6 @@ export enum SELECTORS {
   panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player:not(#inline-preview-player)",
   donationInjectParent = "ytd-comments",
-  donationSection = ".ythd-donation",
   // Premium
   labelPremium = ".ytp-premium-label",
   // Mobile
