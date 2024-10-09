@@ -78,8 +78,9 @@ pnpm dev:opera
 
 ### Firefox
 
-Currently [unsupported](https://github.com/wxt-dev/wxt/issues/230#issuecomment-1806881653)  
-Instead, after building you can follow [this guide](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox)
+```shell
+pnpm dev:firefox
+```
 
 ## Build
 
