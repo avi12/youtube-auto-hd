@@ -1,29 +1,15 @@
-
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
 node_modules
-.pnp
-.pnp.js
-
-# testing
-coverage
-
-#cache
-.turbo
-.next
-.vercel
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+stats.html
+stats-*.json
+.wxt
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
-
+pnpm-debug.log*
+lerna-debug.log*
 
 # local env files
 chrome.env
@@ -31,19 +17,14 @@ firefox.env
 edge.env
 opera.env
 
-out
 build
-dist
-web-ext-artifacts
 
+# Editor directories and files
 .idea
 .vscode
-
-# plasmo - https://www.plasmo.com
-.plasmo
-
-# bpp - http://bpp.browser.market/
-keys.json
-
-# typescript
-.tsbuildinfo
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

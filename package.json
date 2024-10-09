@@ -1,112 +1,64 @@
 {
   "name": "youtube-auto-hd",
-  "version": "1.8.32",
   "description": "Automatically set the video quality on YouTube according to its FPS!",
-  "author": "avi12 <avi6106@gmail.com>",
+  "private": true,
+  "version": "1.9.0",
   "type": "module",
+  "license": "GPL-3.0-or-later",
+  "repository": "https://github.com/avi12/youtube-auto-hd",
   "homepage": "https://github.com/avi12/youtube-auto-hd",
-  "config": {
-    "pathEdgeWindows": "\"%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe\"",
-    "pathOperaWindows": "\"%LocalAppData%\\Programs\\Opera\\opera.exe\""
-  },
+  "author": "Avi <avi6106@gmail.com>",
   "scripts": {
-    "dev": "plasmo dev --verbose",
-    "dev:edge": "pnpm dev --target=edge-mv3",
-    "dev:firefox": "pnpm dev --target=firefox-mv2",
-    "build": "plasmo build --minify",
-    "build:edge": "pnpm build --target=edge-mv3",
-    "build:firefox": "pnpm build --target=firefox-mv2",
-    "package": "web-ext build --config web-ext-config.cjs --source-dir build/chrome-mv3-prod --filename youtube-auto-hd-fps-{version}.zip",
-    "package:edge": "web-ext build --config web-ext-config.cjs --source-dir build/edge-mv3-prod --filename youtube-auto-hd-fps-{version}-edge.zip && pnpm package:stores-edge",
-    "package:firefox": "web-ext build --config web-ext-config.cjs --source-dir build/firefox-mv2-prod --filename youtube-auto-hd-fps-{version}-firefox.zip && pnpm package:stores-firefox",
-    "package:self": "zip-self -o web-ext-artifacts/youtube-auto-hd-fps-{version}-source.zip",
-    "package:stores": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}.zip --stores chrome,opera",
-    "package:stores-edge": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-edge.zip --edge-locale-inclusions en,he,nl,it,pl,be --stores edge",
-    "package:stores-firefox": "webext-store-incompat-fixer -i web-ext-artifacts/youtube-auto-hd-fps-{version}-firefox.zip --stores firefox",
-    "build-pack": "pnpm build && pnpm package && pnpm package:stores",
-    "build-pack:test": "plasmo build && plasmo package",
-    "build-pack:test-push": "cmd /V /C \"set zip=chrome-mv3-prod.zip & set dest_android=/storage/emulated/0/TestYTHD/!zip! & pnpm build-pack:test & adb -s %id% shell rm !dest_android! & adb -s %id% push build/!zip! !dest_android!\"",
-    "build-pack:edge": "pnpm build:edge && pnpm package:edge",
-    "build-pack:firefox": "concurrently \"pnpm build:firefox && pnpm package:firefox\" \"pnpm package:self\" --names \"Firefox build & pack,Firefox source pack\"",
-    "build-pack:all": "concurrently \"pnpm build-pack\" \"pnpm build-pack:edge\" \"pnpm build-pack:firefox\" --names Chromium,Edge,Firefox",
-    "run-browser": "web-ext run --start-url https://www.youtube.com/watch?v=aiSla-5xq3w --target",
-    "run-firefox": "pnpm run-browser firefox-desktop --source-dir build/firefox-mv2-dev",
-    "run-firefox:android": "pnpm run-browser firefox-android --source-dir build/firefox-mv2-dev --adb-remove-old-artifacts",
-    "run-chromium": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev",
-    "run-chromium:rtl": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --args=\"--lang=he\"",
-    "run-edge:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary %npm_package_config_pathEdgeWindows%",
-    "run-opera:windows": "pnpm run-browser chromium --source-dir build/chrome-mv3-dev --chromium-binary %npm_package_config_pathOperaWindows%",
-    "run-browser:screenshot": "web-ext run --start-url about:blank --target",
-    "run-firefox:screenshot": "pnpm run-browser:screenshot firefox-desktop --source-dir build/firefox-mv2-prod",
-    "run-chromium:screenshot": "pnpm run-browser:screenshot chromium --args=\"--lang=en\" --source-dir build/chrome-mv3-dev",
-    "run-opera:screenshot": "pnpm run-browser:screenshot chromium --source-dir build/chrome-mv3-prod --chromium-binary %npm_package_config_pathOperaWindows%",
-    "run-edge:windows-embed": "web-ext run --start-url file:///%cd%/tests/local-embed.html --source-dir build/edge-mv3-dev --target chromium --chromium-binary %npm_package_config_pathEdgeWindows%"
+    "dev": "wxt",
+    "dev:rtl": "set VITE_LANG=he && wxt",
+    "dev:edge": "pnpm dev -b edge",
+    "dev:opera": "pnpm dev -b opera",
+    "dev:firefox": "pnpm dev -b firefox --mv2",
+    "build": "wxt build",
+    "build:edge": "pnpm build -b edge",
+    "build:opera": "pnpm build -b opera",
+    "build:firefox": "pnpm build -b firefox --mv2",
+    "package": "wxt zip",
+    "package:edge": "pnpm package -b edge",
+    "package:opera": "pnpm package -b opera",
+    "package:firefox": "pnpm package -b firefox --mv2",
+    "build:package": "pnpm build && pnpm package",
+    "build:package:edge": "pnpm build:edge && pnpm package:edge",
+    "build:package:opera": "pnpm build:opera && pnpm package:opera",
+    "build:package:firefox": "pnpm build:firefox && pnpm package:firefox",
+    "build:package:all": "concurrently \"pnpm build:package\" \"pnpm build:package:edge\" \"pnpm build:package:opera\" \"pnpm build:package:firefox\" --names Chrome,Edge,Opera,Firefox",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "postinstall": "wxt prepare"
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
-    "@plasmohq/storage": "^1.12.0",
-    "nouislider": "^15.8.1",
-    "plasmo": "0.89.2",
-    "svelte": "^4.2.19",
-    "svelte-preprocess": "6.0.2"
+    "nouislider": "^15.8.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.10.0",
-    "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
-    "@types/chrome": "0.0.271",
-    "@types/node": "^22.5.5",
+    "@eslint/js": "^9.12.0",
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@tsconfig/svelte": "^5.0.4",
+    "@types/chrome": "^0.0.277",
+    "@wxt-dev/module-svelte": "^1.0.1",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.0.1",
-    "eslint": "^9.10.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.12.0",
     "eslint-config-avi12": "github:avi12/eslint-config-avi12",
-    "globals": "^15.9.0",
-    "postcss": "^8.4.47",
+    "eslint-plugin-svelte": "^2.44.1",
+    "globals": "^15.11.0",
     "postcss-nesting": "^13.0.0",
     "prettier": "^3.3.3",
-    "prettier-plugin-svelte": "^3.2.6",
+    "prettier-plugin-svelte": "^3.2.7",
+    "svelte": "^4.2.19",
+    "svelte-check": "^4.0.4",
     "svelte-eslint-parser": "^0.41.1",
-    "typescript": "5.6.2",
-    "typescript-eslint": "^8.6.0",
-    "web-ext": "^8.3.0",
+    "svelte-preprocess": "^6.0.3",
+    "tslib": "^2.7.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.8.1",
     "webext-store-incompat-fixer": "^0.8.2",
-    "zip-self": "^0.6.3"
+    "wxt": "^0.19.11"
   },
-  "manifest": {
-    "name": "$PLASMO_PUBLIC_EXT_NAME",
-    "description": "__MSG_cj_i18n_02146__",
-    "default_locale": "en",
-    "host_permissions": [
-      "https://youtube.com/*",
-      "https://*.youtube.com/*",
-      "https://www.youtube-nocookie.com/*",
-      "https://youtube.googleapis.com/*"
-    ],
-    "browser_specific_settings": {
-      "gecko": {
-        "id": "$PLASMO_PUBLIC_FIREFOX_EXT_ID",
-        "strict_min_version": "90.0"
-      },
-      "gecko_android": {
-        "strict_min_version": "117.0"
-      }
-    },
-    "options_ui": {
-      "browser_style": true,
-      "open_in_tab": false
-    },
-    "permissions": [
-      "cookies"
-    ],
-    "web_accessible_resources": [
-      {
-        "resources": [
-          "assets/*"
-        ],
-        "matches": [
-          "https://www.youtube.com/*"
-        ]
-      }
-    ]
-  },
-  "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
+  "packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
 }

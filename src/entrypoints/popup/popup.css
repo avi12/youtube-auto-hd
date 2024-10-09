@@ -1,0 +1,91 @@
+:root {
+  --bg-color: hsl(0, 0%, 100%);
+  --text-color-primary: hsl(0, 0%, 0%);
+  --text-color-secondary: hsl(0, 0%, 53%);
+  --text-color-warning: hsl(0, 0%, 0%);
+  --bg-color-warning: hsl(0, 0%, 90%);
+  --text-color-promotion: hsl(210, 60%, 53%);
+
+  --switch-on-thumb-color: hsl(0, 93%, 61%);
+  --switch-on-bg-color: hsl(0, 100%, 90%);
+  --switch-off-thumb-color: hsl(0, 93%, 61%);
+  --switch-off-bg-color: hsl(0, 0%, 92%);
+
+  --slider-track-cover-color: hsl(0, 93%, 61%);
+  --slider-track-uncover-color: hsl(0, 0%, 90%);
+
+  --outline-size-box-wrapper: hsl(0, 0%, 83%);
+  --outline-size-box: hsl(0, 0%, 78%);
+  --outline-size-box-selected: hsl(0, 93%, 61%);
+
+  --hr-color: hsl(0, 0%, 90%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: hsl(0, 0%, 7%);
+    --text-color-primary: hsl(0, 0%, 100%);
+    --text-color-secondary: hsl(0, 0%, 55%);
+    --text-color-warning: hsl(0, 0%, 100%);
+    --bg-color-warning: hsl(0, 0%, 25%);
+    --text-color-promotion: hsl(210, 50%, 53%);
+
+    --switch-on-thumb-color: hsl(0, 100%, 50%);
+    --switch-on-bg-color: hsl(0, 15%, 31%);
+    --switch-off-thumb-color: hsl(0, 0%, 85%);
+    --switch-off-bg-color: hsl(0, 0%, 27%);
+
+    --slider-track-cover-color: hsl(0, 0%, 80%);
+    --slider-track-uncover-color: hsl(0, 0%, 27%);
+
+    --outline-size-box-wrapper: hsl(0, 0%, 50%);
+    --outline-size-box: hsl(0, 0%, 35%);
+    --outline-size-box-selected: hsl(0, 0%, 81%);
+
+    --hr-color: hsl(0, 0%, 27%);
+  }
+}
+
+/* Chromium browsers */
+::-webkit-scrollbar {
+  width: 0;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: none;
+  color-scheme: light dark;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--hr-color);
+}
+
+/* Global */
+body {
+  color: var(--text-color-primary);
+  background-color: var(--bg-color);
+  width: 280px;
+  font-size: max(0.85rem, 13px);
+  font-family: Roboto, Arial, sans-serif;
+  padding: 12px 18px 16px;
+  user-select: none;
+  margin: 0 auto;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.control-section {
+  margin-top: 20px;
+}
+
+.options-page {
+  margin-bottom: 20px; /* For Firefox */
+
+  & .control-section:first-child {
+    margin-top: 0;
+  }
+}
