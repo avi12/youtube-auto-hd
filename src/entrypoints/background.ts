@@ -30,11 +30,10 @@ export default defineBackground(() => {
         }
       };
 
-      const keyValuePairs: Array<{ key: StorageItemKey; value: any }> = Object.entries(Storage).map(([key, value]) => ({
-        key: `${area}:${key}`,
-        value: getValue(value)
-      }));
-      await storage.setItems(keyValuePairs);
+      const storageSets = Object.entries(Storage).map(async ([key, value]) =>
+        storage.setItem(`${area}:${key}`, getValue(value))
+      );
+      await Promise.all(storageSets);
     }
 
     await iconActions();
