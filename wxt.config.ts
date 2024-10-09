@@ -81,6 +81,7 @@ export default defineConfig({
   outDir: "build",
   zip: {
     excludeSources: ["*.env", ".env*"],
+    artifactTemplate: "youtube-auto-hd-fps-{{version}}-{{browser}}.zip",
     sourcesTemplate: "youtube-auto-hd-fps-{{version}}-{{browser}}-source.zip"
   },
   modules: ["@wxt-dev/module-svelte"],
