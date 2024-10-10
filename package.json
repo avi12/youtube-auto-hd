@@ -2,7 +2,7 @@
   "name": "youtube-auto-hd",
   "description": "Automatically set the video quality on YouTube according to its FPS!",
   "private": true,
-  "version": "1.9.3",
+  "version": "1.9.4",
   "type": "module",
   "license": "GPL-3.0-or-later",
   "repository": "https://github.com/avi12/youtube-auto-hd",
