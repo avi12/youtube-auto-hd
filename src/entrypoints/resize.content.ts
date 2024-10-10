@@ -1,7 +1,13 @@
 import { storage } from "wxt/storage";
 import type { VideoAutoResize, VideoSize } from "@/lib/types";
 import { initial } from "@/lib/ythd-setup";
-import { addGlobalEventListener, getIsExtensionEnabled, getVisibleElement, SELECTORS } from "@/lib/ythd-utils";
+import {
+  addGlobalEventListener,
+  getIsExtensionEnabled,
+  getValue,
+  getVisibleElement,
+  SELECTORS
+} from "@/lib/ythd-utils";
 
 let gOptions: {
   size: VideoSize;
@@ -39,10 +45,12 @@ async function resizePlayerIfNeeded() {
 }
 
 async function getPlayerSize() {
-  const [size, isResizeVideo] = await Promise.all([
+  let [size, isResizeVideo] = await Promise.all([
     storage.getItem<VideoSize>("sync:size", { fallback: initial.size }),
     storage.getItem<VideoAutoResize>("sync:autoResize", { fallback: initial.isResizeVideo })
   ]);
+  size = getValue(size);
+  isResizeVideo = getValue(isResizeVideo);
   return { size, isResizeVideo };
 }
 

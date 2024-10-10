@@ -2,7 +2,7 @@
   import { slide } from "svelte/transition";
   import { storage } from "wxt/storage";
   import { initial } from "@/lib/ythd-setup";
-  import { SELECTORS } from "@/lib/ythd-utils";
+  import { getValue, SELECTORS } from "@/lib/ythd-utils";
 
   let isHideDonationSection: boolean = true;
   let isShowDismissButton: boolean = false;
@@ -26,7 +26,7 @@
       fallback: initial.isHideDonationSection
     })
   ]).then(([pIsHidePromotionSection, pIsHideDonationSection]) => {
-    isHideDonationSection = pIsHidePromotionSection || pIsHideDonationSection;
+    isHideDonationSection = getValue(pIsHidePromotionSection || pIsHideDonationSection);
   });
 
   storage.watch<typeof initial.isHideDonationSection>("sync:isHideDonationSection", pIsHideDonationSection => {

@@ -24,7 +24,7 @@ export async function getStorage<T>({
 }): Promise<T> {
   let value: T;
   try {
-    value = await storage.getItem<T>(`${area}:${key}`, { fallback });
+    value = getValue(await storage.getItem<T>(`${area}:${key}`, { fallback }));
   } catch {
     value = fallback;
   }
@@ -38,6 +38,15 @@ export async function getStorage<T>({
   }
   return value;
 }
+
+export function getValue(value: any) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
+}
+
 
 export async function getIsExtensionEnabled(): Promise<boolean> {
   return getStorage({

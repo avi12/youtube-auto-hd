@@ -14,7 +14,7 @@
   import Promotions from "@/entrypoints/popup/views/Promotions.svelte";
   import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/types";
   import { initial } from "@/lib/ythd-setup";
-  import { getI18n } from "@/lib/ythd-utils";
+  import { getI18n, getValue } from "@/lib/ythd-utils";
 
   Promise.all([
     storage.getItem<QualityFpsPreferences>("local:qualities", { fallback: initial.qualities }),
@@ -26,12 +26,12 @@
     storage.getItem<VideoAutoResize>("sync:autoResize", { fallback: initial.isResizeVideo }),
     storage.getItem<boolean>("sync:isHideDonationSection", { fallback: initial.isHideDonationSection })
   ]).then(([qualities, pIsEnhancedBitrates, isExtEnabled, size, autoResize, pIsHideDonationSection]) => {
-    $qualitiesStored = qualities;
-    $isEnhancedBitrates = pIsEnhancedBitrates;
-    $isExtensionEnabled = isExtEnabled;
-    $sizeVideo = size;
-    $isResizeVideo = autoResize;
-    $isHideDonationSection = pIsHideDonationSection;
+    $qualitiesStored = getValue(qualities);
+    $isEnhancedBitrates = getValue(pIsEnhancedBitrates);
+    $isExtensionEnabled = getValue(isExtEnabled);
+    $sizeVideo = getValue(size);
+    $isResizeVideo = getValue(autoResize);
+    $isHideDonationSection = getValue(pIsHideDonationSection);
   });
 </script>
 
