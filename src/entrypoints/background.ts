@@ -16,7 +16,11 @@ async function iconActions() {
 
 export default defineBackground(() => {
   chrome.runtime.setUninstallURL("");
-  chrome.runtime.onInstalled.addListener(async () => {
+  chrome.runtime.onInstalled.addListener(async ({ reason }) => {
+    if (reason !== chrome.runtime.OnInstalledReason.UPDATE) {
+      return;
+    }
+
     const storageAreas: Array<StorageArea> = ["local", "sync"];
 
     for (const area of storageAreas) {
