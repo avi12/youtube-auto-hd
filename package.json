@@ -38,7 +38,7 @@
     "@eslint/js": "^9.12.0",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "@tsconfig/svelte": "^5.0.4",
-    "@types/chrome": "^0.0.277",
+    "@types/chrome": "^0.0.278",
     "@wxt-dev/module-svelte": "^1.0.1",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.0.1",
@@ -51,14 +51,14 @@
     "prettier": "^3.3.3",
     "prettier-plugin-svelte": "^3.2.7",
     "svelte": "^4.2.19",
-    "svelte-check": "^4.0.4",
+    "svelte-check": "^4.0.5",
     "svelte-eslint-parser": "^0.41.1",
     "svelte-preprocess": "^6.0.3",
-    "tslib": "^2.7.0",
+    "tslib": "^2.8.0",
     "typescript": "^5.6.3",
-    "typescript-eslint": "^8.8.1",
+    "typescript-eslint": "^8.9.0",
     "webext-store-incompat-fixer": "^0.8.2",
     "wxt": "^0.19.11"
   },
-  "packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
+  "packageManager": "pnpm@9.12.1"
 }
