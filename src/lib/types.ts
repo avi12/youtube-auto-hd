@@ -1,4 +1,4 @@
-import { fpsSupported, qualities, qualityToLabel } from "./ythd-setup";
+import { fpsSupported, qualities } from "./ythd-setup";
 
 export const SUFFIX_EBR = "ebr";
 export type VideoQuality = (typeof qualities)[number];
