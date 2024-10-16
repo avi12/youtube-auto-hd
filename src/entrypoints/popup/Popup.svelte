@@ -12,9 +12,10 @@
   import ControlQuality from "@/entrypoints/popup/views/ControlQuality.svelte";
   import ControlSize from "@/entrypoints/popup/views/ControlSize.svelte";
   import Promotions from "@/entrypoints/popup/views/Promotions.svelte";
+  import { getValue } from "@/lib/shared-utils";
   import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/types";
   import { initial } from "@/lib/ythd-setup";
-  import { getI18n, getValue } from "@/lib/ythd-utils";
+  import { getI18n } from "@/lib/ythd-utils";
 
   Promise.all([
     storage.getItem<QualityFpsPreferences>("local:qualities", { fallback: initial.qualities }),
