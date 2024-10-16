@@ -1,8 +1,9 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
   import { storage } from "wxt/storage";
+  import { getValue } from "@/lib/shared-utils";
   import { initial } from "@/lib/ythd-setup";
-  import { getValue, SELECTORS } from "@/lib/ythd-utils";
+  import { SELECTORS } from "@/lib/ythd-utils";
 
   let isHideDonationSection: boolean = true;
   let isShowDismissButton: boolean = false;

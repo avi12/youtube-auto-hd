@@ -1,10 +1,10 @@
 import { storage } from "wxt/storage";
+import { getValue } from "@/lib/shared-utils";
 import type { VideoAutoResize, VideoSize } from "@/lib/types";
 import { initial } from "@/lib/ythd-setup";
 import {
   addGlobalEventListener,
   getIsExtensionEnabled,
-  getValue,
   getVisibleElement,
   SELECTORS
 } from "@/lib/ythd-utils";
