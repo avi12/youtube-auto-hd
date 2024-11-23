@@ -50,7 +50,7 @@ export async function getIsExtensionEnabled(): Promise<boolean> {
 }
 
 export function getI18n(id: string, backup = ""): string {
-  return (id && chrome.i18n.getMessage(id)) || backup;
+  return (id && browser.i18n.getMessage(id)) || backup;
 }
 
 export enum SELECTORS {
