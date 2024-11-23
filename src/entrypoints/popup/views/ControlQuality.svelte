@@ -19,26 +19,28 @@
 
   const fpsList = [...fpsSupported].sort((a, b) => a - b);
   const qualitiesSelected = fpsList.map<VideoQuality>(fps => $qualitiesStored[fps]);
-  let isSameQualityForAllFps = qualitiesSelected.every((quality, _, array) => quality === array[0]);
-  $: isSameEnhancedBitrateForAllFps = Object.values($isEnhancedBitrates).every(Boolean);
+  let isSameQualityForAllFps = $state(qualitiesSelected.every((quality, _, array) => quality === array[0]));
+  const isSameEnhancedBitrateForAllFps = $derived(Object.values($isEnhancedBitrates).every(Boolean));
 
-  let qualityForAllSelected = qualitiesSelected[0];
+  let qualityForAllSelected = $state(qualitiesSelected[0]);
 
   const qualitiesReversed = [...qualities].reverse();
 
-  $: {
+  $effect(() => {
     if (isSameQualityForAllFps) {
-      for (const fps in $qualitiesStored) {
+      for (const fps of fpsList) {
         $qualitiesStored[fps] = qualityForAllSelected;
       }
     }
+  });
 
+  $effect(() => {
     storage.setItem("local:qualities", $qualitiesStored);
-  }
+  });
 
-  $: {
+  $effect(() => {
     storage.setItem("local:isEnhancedBitrates", $isEnhancedBitrates);
-  }
+  });
 
   function fpsToRange(i: number): string {
     const fpsRangeStart: number = fpsList[i - 1] + 1;
@@ -63,13 +65,13 @@
 
       {#if qualityForAllSelected >= 1080}
         <Switch
-          on:change={e => {
+          change={isEnableEnhancedBitRate => {
             fpsList.forEach(fps => {
-              $isEnhancedBitrates[fps] = e.detail.checked;
+              $isEnhancedBitrates[fps] = isEnableEnhancedBitRate;
             });
           }}
           checked={isSameEnhancedBitrateForAllFps}
-          class="switch">{i18n.preferEnhancedBitrate}</Switch>
+          className="switch">{i18n.preferEnhancedBitrate}</Switch>
         <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
       {/if}
 
@@ -99,9 +101,9 @@
 
         {#if $qualitiesStored[fps] >= 1080}
           <Switch
-            on:change={e => ($isEnhancedBitrates[fps] = e.detail.checked)}
+            change={isEnableEnhancedBitRate => ($isEnhancedBitrates[fps] = isEnableEnhancedBitRate)}
             checked={$isEnhancedBitrates[fps]}
-            class="switch">{i18n.preferEnhancedBitrate}</Switch>
+            className="switch">{i18n.preferEnhancedBitrate}</Switch>
           <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
         {/if}
 
@@ -117,7 +119,8 @@
 
 <style>
   .control-section {
-    & .switch {
+    /*noinspection CssUnusedSymbol*/
+    & :global(.switch) {
       margin-top: 1.25rem;
     }
   }

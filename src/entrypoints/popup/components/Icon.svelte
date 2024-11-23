@@ -1,5 +1,9 @@
 <script lang="ts">
-  export let path = "";
+  interface Props {
+    path?: string;
+  }
+
+  const { path = "" }: Props = $props();
   const d = path;
 
   const SIZE = 24;

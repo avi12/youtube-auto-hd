@@ -1,10 +1,19 @@
 <script lang="ts">
-  export let checked = false;
+  import type { Snippet } from "svelte";
+
+  interface Props {
+    checked?: boolean;
+    change?: (isChecked: boolean) => void;
+    children?: Snippet;
+    className?: string;
+  }
+
+  let { checked = $bindable(false), children, className, change }: Props = $props();
 </script>
 
-<label {...$$restProps}>
-  <input bind:checked role="switch" type="checkbox" />
-  <slot />
+<label class={className}>
+  <input bind:checked role="switch" type="checkbox" onchange={e => change?.(e.currentTarget.checked)} />
+  {@render children?.()}
 </label>
 
 <style>

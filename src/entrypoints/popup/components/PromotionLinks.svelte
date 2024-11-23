@@ -1,5 +1,6 @@
 <script lang="ts">
   import { mdiGithub, mdiHeartOutline, mdiStarOutline, mdiTranslate } from "@mdi/js";
+
   import { storage } from "wxt/storage";
   import Icon from "@/entrypoints/popup/components/Icon.svelte";
   import { isHideDonationSection } from "@/entrypoints/popup/store";
@@ -21,7 +22,7 @@
   };
 
   const browserName = (() => {
-    const extensionBaseUrl = chrome.runtime.getURL("");
+    const extensionBaseUrl = browser.runtime.getURL("");
 
     const isFirefox = extensionBaseUrl.startsWith("moz-extension://");
     if (isFirefox) {
@@ -72,9 +73,11 @@
     }
   ];
 
-  $: if ($isHideDonationSection) {
-    storage.setItem("sync:isHideDonationSection", $isHideDonationSection);
-  }
+  $effect(() => {
+    if ($isHideDonationSection) {
+      storage.setItem("sync:isHideDonationSection", $isHideDonationSection);
+    }
+  });
 </script>
 
 <menu>
@@ -83,12 +86,13 @@
       <a
         class="link"
         href={link.url}
-        on:click|preventDefault={async () => {
+        onclick={async e => {
+          e.preventDefault();
           const { url } = link;
           if (url.includes("paypal.me")) {
             $isHideDonationSection = true;
           }
-          await chrome.tabs.create({ url });
+          await browser.tabs.create({ url });
           close();
         }}>
         <Icon path={link.icon} />

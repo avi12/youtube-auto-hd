@@ -2,17 +2,24 @@
   import noUiSlider, { type API } from "nouislider";
   import { onMount } from "svelte";
   import "nouislider/dist/nouislider.css";
+  import type { Snippet } from "svelte";
   import type { VideoQuality } from "@/lib/types";
 
-  export let values: Array<VideoQuality> = [];
-  export let value: VideoQuality;
+  interface Props {
+    values?: Array<VideoQuality>;
+    value: VideoQuality;
+    children?: Snippet;
+  }
+
+  // eslint-disable-next-line prefer-const
+  let { values = [], value = $bindable(), children }: Props = $props();
 
   let index = values.indexOf(value);
-  let elSlider: HTMLDivElement;
+  let elSlider = $state<HTMLDivElement>();
   let slider: API;
 
   onMount(() => {
-    slider = noUiSlider.create(elSlider, {
+    slider = noUiSlider.create(elSlider!, {
       start: values[0],
       connect: [true, false],
       format: {
@@ -35,12 +42,12 @@
 
 <div class="slider">
   <div class="label">
-    <slot />
+    {@render children?.()}
   </div>
   <div bind:this={elSlider} class="slider-element"></div>
 </div>
 
-<style global>
+<style>
   .slider {
     display: flex;
     align-items: center;
@@ -58,13 +65,13 @@
 
       /*noinspection CssUnusedSymbol*/
 
-      & .noUi-connect {
+      & :global(.noUi-connect) {
         background: var(--slider-track-cover-color);
       }
 
       /*noinspection CssUnusedSymbol*/
 
-      & .noUi-handle {
+      & :global(.noUi-handle) {
         --width: 16px;
         --height: var(--width);
         --top: calc(-1 * var(--height) / 2 + 1px);
@@ -91,13 +98,13 @@
 
     /*noinspection CssUnusedSymbol*/
 
-    &.label {
+    & .label {
       flex: 1;
     }
   }
 
   /*noinspection CssUnusedSymbol*/
-  .noUi-rtl {
+  :global(.noUi-rtl) {
     /*noinspection CssUnusedSymbol*/
 
     & .noUi-handle {

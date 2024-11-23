@@ -11,7 +11,7 @@
     labelSizeLarge: getI18n("cj_i18n_07098", "Cinema view")
   };
 
-  let elContainer: Element;
+  let elContainer = $state<Element>();
   const isRTL = Boolean(document.querySelector(".rtl"));
 
   function focusPrevItem() {
@@ -29,7 +29,7 @@
   }
 
   function activate(elBox: HTMLElement) {
-    const elBoxes = [...elContainer.querySelectorAll<HTMLButtonElement>(".size__box")];
+    const elBoxes = [...elContainer!.querySelectorAll<HTMLButtonElement>(".size__box")];
     elBoxes.forEach(el => {
       el.tabIndex = -1;
     });
@@ -38,21 +38,23 @@
     elBox.focus();
   }
 
-  $: {
+  $effect(() => {
     storage.setItem("sync:autoResize", $isResizeVideo);
-  }
+  });
 
-  $: if ($isResizeVideo) {
-    chrome.cookies.set({
-      url: "https://youtube.com/",
-      name: "wide",
-      value: $sizeVideo.toString()
-    });
-  }
+  $effect(() => {
+    if ($isResizeVideo) {
+      browser.cookies.set({
+        url: "https://youtube.com/",
+        name: "wide",
+        value: $sizeVideo.toString()
+      });
+    }
+  });
 
-  $: {
+  $effect(() => {
     storage.setItem("sync:size", $sizeVideo);
-  }
+  });
 </script>
 
 <article class="control-section">
@@ -62,10 +64,10 @@
     <section class="size">
       <div class="label">{i18n.labelVideoSize}</div>
 
-      <!-- svelte-ignore a11y-no-static-element-interactions -->
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div
         class="inner"
-        on:keydown={e => {
+        onkeydown={e => {
           // https://web.dev/control-focus-with-tabindex/#create-accessible-components-with-roving-tabindex
           switch (e.code) {
             case "ArrowLeft":
@@ -90,7 +92,7 @@
           data-size="small"
           aria-label={i18n.labelSizeSmall}
           class:selected={$sizeVideo === 0}
-          on:click={() => ($sizeVideo = 0)}
+          onclick={() => ($sizeVideo = 0)}
           tabindex="0">
           <!--suppress HtmlUnknownTag -->
           <div class="rectangle"></div>
@@ -100,7 +102,7 @@
           data-size="large"
           aria-label={i18n.labelSizeLarge}
           class:selected={$sizeVideo === 1}
-          on:click={() => ($sizeVideo = 1)}
+          onclick={() => ($sizeVideo = 1)}
           tabindex="-1">
           <!--suppress HtmlUnknownTag -->
           <div class="rectangle"></div>

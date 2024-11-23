@@ -8,9 +8,9 @@
     labelEnabled: getI18n("cj_i18n_07266", "Extension is on")
   };
 
-  $: {
+  $effect(() => {
     storage.setItem("local:isExtensionEnabled", $isExtensionEnabled);
-  }
+  });
 </script>
 
 <article>

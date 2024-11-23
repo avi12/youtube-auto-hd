@@ -5,8 +5,8 @@
   import { initial } from "@/lib/ythd-setup";
   import { SELECTORS } from "@/lib/ythd-utils";
 
-  let isHideDonationSection: boolean = true;
-  let isShowDismissButton: boolean = false;
+  let isHideDonationSection = $state<boolean>(true);
+  let isShowDismissButton = $state<boolean>(false);
   let timeoutShow: ReturnType<typeof setTimeout>;
 
   new IntersectionObserver((entries, observer) => {
@@ -49,11 +49,11 @@
         href="https://paypal.me/avi12"
         target="_blank"
         class="link"
-        on:click={hideDonationSection}>PayPal</a> :)
+        onclick={hideDonationSection}>PayPal</a> :)
     </p>
 
     {#if isShowDismissButton}
-      <button class="close" transition:slide on:click={hideDonationSection}>Don't show again</button>
+      <button class="close" transition:slide onclick={hideDonationSection}>Don't show again</button>
     {/if}
   </article>
 {/if}
