@@ -8,12 +8,12 @@ import fs from "fs";
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   srcDir: "src",
-  manifest({ browser, manifestVersion }) {
+  manifest({ browser }) {
     const url = process.env.npm_package_repository;
     // @ts-expect-error Handling the input correctly
     const [, author, email] = process.env.npm_package_author!.match(/(.+) <(.+)>/);
     let manifest: UserManifest = {
-      name: "YouTube Auto HD + FPS",
+      name: browser === "edge" ? "Auto HD for YouTube" : "YouTube Auto HD + FPS",
       description: "__MSG_cj_i18n_02146__",
       homepage_url: url,
       default_locale: "en",
@@ -24,20 +24,9 @@ export default defineConfig({
         "https://youtube.googleapis.com/*"
       ],
       permissions: ["cookies", "storage"],
-      options_ui: {
-        page: "popup.html",
-        browser_style: true
-      }
+      // @ts-expect-error https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/author
+      author: browser === "opera" || browser === "firefox" ? process.env.npm_package_author : { email }
     };
-    if (browser === "opera") {
-      // @ts-expect-error Two possible values, depending on the browser
-      manifest.author = process.env.npm_package_author;
-    } else if (manifestVersion === 3) {
-      manifest.author = { email };
-    }
-    if (browser === "edge") {
-      manifest.name = "Auto HD for YouTube";
-    }
     if (browser === "firefox") {
       manifest = {
         ...manifest,
@@ -60,13 +49,18 @@ export default defineConfig({
   },
   hooks: {
     "build:manifestGenerated"(_, manifest) {
-      (manifest.action || manifest.browser_action)!.default_icon = manifest.icons;
+      const action = manifest.action || manifest.browser_action;
+      action!.default_icon = manifest.icons;
+      manifest.options_ui = {
+        page: action?.default_popup ?? "popup.html",
+        browser_style: true
+      };
     },
     "zip:extension:done"(_, zipPath) {
       if (zipPath.match(/chrome|opera/)) {
         execSync(`webext-store-incompat-fixer -i ${zipPath} --stores chrome,opera`);
       } else if (zipPath.includes("edge")) {
-        const supportedLocales = ["en", "he", "it"];
+        const supportedLocales = ["en", "fr", "he", "it", "be"];
         execSync(
           `webext-store-incompat-fixer -i ${zipPath} --stores edge --edge-locale-inclusions ${supportedLocales}`
         );
@@ -79,6 +73,7 @@ export default defineConfig({
     }
   },
   outDir: "build",
+  outDirTemplate: "{{browser}}-mv{{manifestVersion}}-{{mode}}",
   zip: {
     excludeSources: ["*.env", ".env*"],
     artifactTemplate: "youtube-auto-hd-fps-{{version}}-{{browser}}.zip",
@@ -89,12 +84,21 @@ export default defineConfig({
     vite: {
       preprocess: [
         vitePreprocess({
+          script: true,
           style: {
-            // @ts-expect-error Incompatible types
-            plugins: [autoprefixer, nesting()]
+            css: {
+              preprocessorOptions: {
+                plugins: [autoprefixer, nesting()]
+              }
+            }
           }
         })
       ]
     }
-  }
+  },
+  vite: () => ({
+    build: {
+      sourcemap: "inline"
+    }
+  })
 });
