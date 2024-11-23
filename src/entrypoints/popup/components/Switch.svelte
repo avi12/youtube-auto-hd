@@ -8,6 +8,7 @@
     className?: string;
   }
 
+  // eslint-disable-next-line prefer-const
   let { checked = $bindable(false), children, className, change }: Props = $props();
 </script>
 
@@ -78,6 +79,7 @@
     }
   }
 
+  /*noinspection CssUnusedSymbol*/
   :global(.rtl) {
     & [role="switch"] {
       --isLTR: -1;
