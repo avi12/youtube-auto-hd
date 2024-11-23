@@ -1,6 +1,6 @@
 {
-  "cj_i18n_00354": { "message": "Donà" },
-  "cj_i18n_02146": { "message": "Estableix automàticament la qualitat del vídeo a YouTube segons el seu FPS!" },
-  "cj_i18n_06858": { "message": "Totes les velocitats de fotogrames" },
-  "cj_i18n_06862": { "message": "Utilitzeu la mateixa qualitat per a totes les velocitats de fotogrames" }
+"cj_i18n_00354":{"message":"Donà"},
+"cj_i18n_02146":{"message":"Estableix automàticament la qualitat del vídeo a YouTube segons el seu FPS!"},
+"cj_i18n_06858":{"message":"Totes les velocitats de fotogrames"},
+"cj_i18n_06862":{"message":"Utilitzeu la mateixa qualitat per a totes les velocitats de fotogrames"}
 }
