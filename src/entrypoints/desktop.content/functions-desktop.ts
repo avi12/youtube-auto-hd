@@ -99,7 +99,9 @@ function changeQuality(
     return;
   }
 
-  const iQualityFallback = qualitiesAvailable.findIndex(quality => !quality.toString().endsWith(SUFFIX_EBR));
+  const iQualityFallback = qualitiesAvailable.findIndex(
+    quality => !quality.toString().endsWith(SUFFIX_EBR) && quality < qualityPreferred
+  );
   applyQuality(iQualityFallback);
 }
 
