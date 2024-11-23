@@ -22,6 +22,6 @@ export default defineRunnerConfig({
     edge: env.VITE_PATH_EDGE,
     opera: env.VITE_PATH_OPERA.replace("USERPROFILE", process.env.HOME!)
   },
-  startUrls: ["https://www.youtube.com/watch?v=aiSla-5xq3w"],
+  startUrls: ["https://www.youtube.com/watch?v=itygsQuKqIE"],
   chromiumArgs: [`--lang=${VITE_LANG}`]
 });
