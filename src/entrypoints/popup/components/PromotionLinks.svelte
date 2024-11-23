@@ -22,7 +22,7 @@
   };
 
   const browserName = (() => {
-    const extensionBaseUrl = browser.runtime.getURL("");
+    const extensionBaseUrl = chrome.runtime.getURL("");
 
     const isFirefox = extensionBaseUrl.startsWith("moz-extension://");
     if (isFirefox) {
@@ -92,7 +92,7 @@
           if (url.includes("paypal.me")) {
             $isHideDonationSection = true;
           }
-          await browser.tabs.create({ url });
+          await chrome.tabs.create({ url });
           close();
         }}>
         <Icon path={link.icon} />

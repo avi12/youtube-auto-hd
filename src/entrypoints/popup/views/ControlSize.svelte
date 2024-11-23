@@ -44,7 +44,7 @@
 
   $effect(() => {
     if ($isResizeVideo) {
-      browser.cookies.set({
+      chrome.cookies.set({
         url: "https://youtube.com/",
         name: "wide",
         value: $sizeVideo.toString()
