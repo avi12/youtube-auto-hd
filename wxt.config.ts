@@ -95,10 +95,5 @@ export default defineConfig({
         })
       ]
     }
-  },
-  vite: () => ({
-    build: {
-      sourcemap: "inline"
-    }
-  })
+  }
 });
