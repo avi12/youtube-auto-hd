@@ -32,8 +32,7 @@ export default defineConfig({
         ...manifest,
         browser_specific_settings: {
           gecko: {
-            id: "avi6106@gmail.com",
-            strict_min_version: "90.0"
+            id: "avi6106@gmail.com"
           }
         },
         developer: {
@@ -49,11 +48,13 @@ export default defineConfig({
   },
   hooks: {
     "build:manifestGenerated"(_, manifest) {
-      const action = manifest.action || manifest.browser_action;
-      action!.default_icon = manifest.icons;
+      manifest.action!.default_icon = manifest.icons;
       manifest.options_ui = {
-        page: action?.default_popup ?? "popup.html",
-        browser_style: true
+        page: manifest.action?.default_popup ?? "popup.html",
+        // If not Firefox
+        ...(!manifest.browser_specific_settings && {
+          browser_style: true
+        })
       };
     },
     "zip:extension:done"(_, zipPath) {

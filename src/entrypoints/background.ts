@@ -4,9 +4,8 @@ import pathIconOn from "@/public/icon-128.png";
 import pathIconOff from "@/public/icon-off.png";
 
 function iconActions() {
-  const action = chrome.action || chrome.browserAction; // chrome.browserAction for Firefox MV2
   storage.watch<boolean>("local:isExtensionEnabled", isEnabled =>
-    action.setIcon({
+    chrome.action.setIcon({
       path: isEnabled! ? pathIconOn : pathIconOff
     })
   );
