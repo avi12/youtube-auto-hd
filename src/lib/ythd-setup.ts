@@ -19,5 +19,6 @@ export const initial = {
     30: false
   },
   isResizeVideo: false,
-  size: 1
+  size: 1,
+  isExcludeVertical: false
 } as const;

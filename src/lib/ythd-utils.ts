@@ -57,7 +57,7 @@ export enum SELECTORS {
   title = "title",
   video = "video",
   buttonSettings = ".ytp-settings-button",
-  pathSizeToggle = `path[d*="m 28,"], path[d*="m 26,"]`,
+  sizeToggle = `.ytp-size-button`,
   optionQuality = ".ytp-settings-menu[data-layer] .ytp-menuitem:last-child",
   menuOption = ".ytp-settings-menu[data-layer] .ytp-menuitem",
   menuOptionContent = ".ytp-menuitem-content",

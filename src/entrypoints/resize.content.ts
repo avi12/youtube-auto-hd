@@ -2,60 +2,66 @@ import { storage } from "wxt/storage";
 import { getValue } from "@/lib/shared-utils";
 import type { VideoAutoResize, VideoSize } from "@/lib/types";
 import { initial } from "@/lib/ythd-setup";
-import {
-  addGlobalEventListener,
-  getIsExtensionEnabled,
-  getVisibleElement,
-  SELECTORS
-} from "@/lib/ythd-utils";
+import { addGlobalEventListener, getIsExtensionEnabled, getVisibleElement, SELECTORS } from "@/lib/ythd-utils";
 
-let gOptions: {
-  size: VideoSize;
-  isResizeVideo: VideoAutoResize;
-} = {
-  size: initial.size,
-  isResizeVideo: initial.isResizeVideo
+let preferences = {
+  viewMode: initial.size as VideoSize,
+  isResizeVideo: initial.isResizeVideo as VideoAutoResize,
+  isExcludeVertical: initial.isExcludeVertical as boolean
 };
 
-function getCurrentSize() {
+function getCurrentViewMode() {
   const sizeCurrentMatch = document.cookie.match(/wide=([10])/);
   return sizeCurrentMatch ? (Number(sizeCurrentMatch[1]) as VideoSize) : 0;
 }
 
 async function resizePlayerIfNeeded() {
-  const elSizePath = getVisibleElement(SELECTORS.player)?.querySelector<SVGPathElement>(SELECTORS.pathSizeToggle);
-  if (!elSizePath) {
+  const elSizeToggle = getVisibleElement<HTMLButtonElement>(SELECTORS.sizeToggle);
+  const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
+
+  if (!preferences.isResizeVideo) {
     return;
   }
 
-  const selSizeButtonOld = "button";
-  const selSizeButtonNew = SELECTORS.menuOption;
-  const elSizeToggle = elSizePath.closest<HTMLButtonElement | HTMLDivElement>(
-    `${selSizeButtonOld}, ${selSizeButtonNew}`
-  );
+  const isWidescreen = elVideo.clientWidth > elVideo.clientHeight;
 
-  if (!gOptions.isResizeVideo) {
+  let viewModePreferred: VideoSize;
+  if (preferences.isExcludeVertical) {
+    if (isWidescreen) {
+      viewModePreferred = preferences.viewMode;
+    } else {
+      viewModePreferred = 0;
+    }
+  } else {
+    viewModePreferred = preferences.viewMode;
+  }
+
+  const viewModeCurrent = getCurrentViewMode();
+  if (viewModeCurrent === viewModePreferred) {
     return;
   }
 
-  while (getCurrentSize() !== gOptions.size) {
-    elSizeToggle?.click();
+  while (getCurrentViewMode() !== viewModePreferred) {
+    elSizeToggle.click();
+
     await new Promise(resolve => setTimeout(resolve, 100));
   }
 }
 
 async function getPlayerSize() {
-  let [size, isResizeVideo] = await Promise.all([
+  let [isResizeVideo, size, isExcludeVertical] = await Promise.all([
+    storage.getItem<VideoAutoResize>("sync:autoResize", { fallback: initial.isResizeVideo }),
     storage.getItem<VideoSize>("sync:size", { fallback: initial.size }),
-    storage.getItem<VideoAutoResize>("sync:autoResize", { fallback: initial.isResizeVideo })
+    storage.getItem<boolean>("sync:isExcludeVertical", { fallback: initial.isExcludeVertical })
   ]);
   size = getValue(size);
   isResizeVideo = getValue(isResizeVideo);
-  return { size, isResizeVideo };
+  isExcludeVertical = getValue(isExcludeVertical);
+  return { viewMode: size, isResizeVideo, isExcludeVertical };
 }
 
 async function addTemporaryBodyListenerOnDesktop() {
-  const elSize = document.querySelector<SVGPathElement>(SELECTORS.pathSizeToggle);
+  const elSize = document.querySelector<HTMLButtonElement>(SELECTORS.sizeToggle);
   if (!elSize) {
     return;
   }
@@ -68,19 +74,7 @@ function addStorageListener() {
     if (!isEnabled) {
       return;
     }
-    gOptions = { ...gOptions, ...(await getPlayerSize()) };
-    await resizePlayerIfNeeded();
-  });
-  storage.watch<VideoSize>("sync:size", async size => {
-    const isEnabled = await getIsExtensionEnabled();
-    const isWatchPage = location.pathname === "/watch";
-    if (!isEnabled || !isWatchPage) {
-      return;
-    }
-    gOptions.size = size as VideoSize;
-    gOptions.isResizeVideo = await storage.getItem<VideoAutoResize>("sync:autoResize", {
-      fallback: initial.isResizeVideo
-    });
+    preferences = { ...preferences, ...(await getPlayerSize()) };
     await resizePlayerIfNeeded();
   });
   storage.watch<VideoAutoResize>("sync:autoResize", async isResizeVideo => {
@@ -89,8 +83,33 @@ function addStorageListener() {
     if (!isEnabled || !isWatchPage) {
       return;
     }
-    gOptions.isResizeVideo = isResizeVideo as VideoAutoResize;
-    gOptions.size = await storage.getItem<VideoSize>("sync:size", { fallback: initial.size });
+    preferences.isResizeVideo = isResizeVideo as VideoAutoResize;
+    preferences.viewMode = await storage.getItem<VideoSize>("sync:size", { fallback: initial.size });
+    await resizePlayerIfNeeded();
+  });
+  storage.watch<VideoSize>("sync:size", async size => {
+    const isEnabled = await getIsExtensionEnabled();
+    const isWatchPage = location.pathname === "/watch";
+    if (!isEnabled || !isWatchPage) {
+      return;
+    }
+    preferences.viewMode = size as VideoSize;
+    preferences.isResizeVideo = await storage.getItem<VideoAutoResize>("sync:autoResize", {
+      fallback: initial.isResizeVideo
+    });
+    preferences.isExcludeVertical = await storage.getItem<boolean>("sync:isExcludeVertical", {
+      fallback: initial.isExcludeVertical
+    });
+    await resizePlayerIfNeeded();
+  });
+  storage.watch<boolean>("sync:isExcludeVertical", async isExcludeVertical => {
+    const isEnabled = await getIsExtensionEnabled();
+    const isWatchPage = location.pathname === "/watch";
+    if (!isEnabled || !isWatchPage) {
+      return;
+    }
+    preferences.isExcludeVertical = isExcludeVertical as boolean;
+    preferences.viewMode = await storage.getItem<VideoSize>("sync:size", { fallback: initial.size });
     await resizePlayerIfNeeded();
   });
 }
@@ -103,7 +122,7 @@ async function initPlayerResize() {
     return;
   }
 
-  gOptions = await getPlayerSize();
+  preferences = await getPlayerSize();
 
   await resizePlayerIfNeeded();
 }

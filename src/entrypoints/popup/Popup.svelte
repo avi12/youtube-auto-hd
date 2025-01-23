@@ -4,6 +4,7 @@
     isEnhancedBitrates,
     isExtensionEnabled,
     isHideDonationSection,
+    isExcludeVertical,
     isResizeVideo,
     qualitiesStored,
     sizeVideo
@@ -23,17 +24,29 @@
     storage.getItem<typeof initial.isExtensionEnabled>("local:isExtensionEnabled", {
       fallback: initial.isExtensionEnabled
     }),
-    storage.getItem<VideoSize>("sync:size", { fallback: initial.size }),
     storage.getItem<VideoAutoResize>("sync:autoResize", { fallback: initial.isResizeVideo }),
+    storage.getItem<VideoSize>("sync:size", { fallback: initial.size }),
+    storage.getItem<boolean>("sync:isExcludeVertical", { fallback: initial.isExcludeVertical }),
     storage.getItem<boolean>("sync:isHideDonationSection", { fallback: initial.isHideDonationSection })
-  ]).then(([qualities, pIsEnhancedBitrates, isExtEnabled, size, autoResize, pIsHideDonationSection]) => {
-    $qualitiesStored = getValue(qualities);
-    $isEnhancedBitrates = getValue(pIsEnhancedBitrates);
-    $isExtensionEnabled = getValue(isExtEnabled);
-    $sizeVideo = getValue(size);
-    $isResizeVideo = getValue(autoResize);
-    $isHideDonationSection = getValue(pIsHideDonationSection);
-  });
+  ]).then(
+    ([
+      qualities,
+      pIsEnhancedBitrates,
+      isExtEnabled,
+      autoResize,
+      size,
+      pisExcludeVertical,
+      pIsHideDonationSection
+    ]) => {
+      $qualitiesStored = getValue(qualities);
+      $isEnhancedBitrates = getValue(pIsEnhancedBitrates);
+      $isExtensionEnabled = getValue(isExtEnabled);
+      $isResizeVideo = getValue(autoResize);
+      $sizeVideo = getValue(size);
+      $isExcludeVertical = getValue(pisExcludeVertical);
+      $isHideDonationSection = getValue(pIsHideDonationSection);
+    }
+  );
 </script>
 
 <main class:rtl={getI18n("@@bidi_dir") === "rtl"}>

@@ -1,12 +1,13 @@
 <script lang="ts">
   import { storage } from "wxt/storage";
   import Switch from "@/entrypoints/popup/components/Switch.svelte";
-  import { isResizeVideo, sizeVideo } from "@/entrypoints/popup/store";
+  import { isExcludeVertical, isResizeVideo, sizeVideo } from "@/entrypoints/popup/store";
   import { getI18n } from "@/lib/ythd-utils";
 
   const i18n: Record<string, string> = {
     labelIsResizeVideo: getI18n("cj_i18n_06568", "Auto-resize videos"),
     labelVideoSize: getI18n("cj_i18n_06567", "Keep size at"),
+    labelOExcludeVertical: getI18n("cj_i18n_07754", "Except for vertical videos"),
     labelSizeSmall: getI18n("cj_i18n_07097", "Default view"),
     labelSizeLarge: getI18n("cj_i18n_07098", "Cinema view")
   };
@@ -43,7 +44,7 @@
   });
 
   $effect(() => {
-    if ($isResizeVideo) {
+    if ($isResizeVideo && !$isExcludeVertical) {
       chrome.cookies.set({
         url: "https://youtube.com/",
         name: "wide",
@@ -54,6 +55,10 @@
 
   $effect(() => {
     storage.setItem("sync:size", $sizeVideo);
+  });
+
+  $effect(() => {
+    storage.setItem("sync:isExcludeVertical", $isExcludeVertical);
   });
 </script>
 
@@ -109,6 +114,8 @@
         </button>
       </div>
     </section>
+
+    <Switch bind:checked={$isExcludeVertical}>{i18n.labelOExcludeVertical}</Switch>
   {/if}
 </article>
 
