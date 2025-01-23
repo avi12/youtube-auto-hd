@@ -9,9 +9,9 @@ import fs from "fs";
 export default defineConfig({
   srcDir: "src",
   manifest({ browser }) {
-    const url = process.env.npm_package_repository;
-    // @ts-expect-error Handling the input correctly
-    const [, author, email] = process.env.npm_package_author!.match(/(.+) <(.+)>/);
+    const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
+    const url = packageJson.repository;
+    const [, author, email] = packageJson.author!.match(/(.+) <(.+)>/);
     let manifest: UserManifest = {
       name: browser === "edge" ? "Auto HD for YouTube" : "YouTube Auto HD + FPS",
       description: "__MSG_cj_i18n_02146__",
@@ -24,8 +24,7 @@ export default defineConfig({
         "https://youtube.googleapis.com/*"
       ],
       permissions: ["cookies", "storage"],
-      // @ts-expect-error https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/author
-      author: browser === "opera" || browser === "firefox" ? process.env.npm_package_author : { email }
+      author: browser === "opera" || browser === "firefox" ? packageJson.author : { email }
     };
     if (browser === "firefox") {
       manifest = {
@@ -61,7 +60,7 @@ export default defineConfig({
       if (zipPath.match(/chrome|opera/)) {
         execSync(`webext-store-incompat-fixer -i ${zipPath} --stores chrome,opera`);
       } else if (zipPath.includes("edge")) {
-        const supportedLocales = ["en", "fr", "he", "it", "be"];
+        const supportedLocales = ["en", "he", "be"];
         execSync(
           `webext-store-incompat-fixer -i ${zipPath} --stores edge --edge-locale-inclusions ${supportedLocales}`
         );
@@ -88,8 +87,8 @@ export default defineConfig({
           script: true,
           style: {
             css: {
-              preprocessorOptions: {
-                plugins: [autoprefixer, nesting()]
+              postcss: {
+                plugins: [nesting, autoprefixer]
               }
             }
           }
