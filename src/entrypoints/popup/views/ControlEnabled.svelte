@@ -13,6 +13,4 @@
   });
 </script>
 
-<article>
-  <Switch bind:checked={$isExtensionEnabled}>{i18n.labelEnabled}</Switch>
-</article>
+<Switch bind:checked={$isExtensionEnabled}>{i18n.labelEnabled}</Switch>

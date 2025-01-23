@@ -3,7 +3,7 @@
   import { storage } from "wxt/storage";
   import { getValue } from "@/lib/shared-utils";
   import { initial } from "@/lib/ythd-setup";
-  import { SELECTORS } from "@/lib/ythd-utils";
+  import { addGlobalEventListener, SELECTORS } from "@/lib/ythd-utils";
 
   let isHideDonationSection = $state<boolean>(true);
   let isShowDismissButton = $state<boolean>(false);
@@ -38,9 +38,14 @@
     clearTimeout(timeoutShow);
     storage.setItem("sync:isHideDonationSection", true);
   }
+
+  let pathname = $state<string>(location.pathname);
+  addGlobalEventListener(() => {
+    pathname = location.pathname;
+  });
 </script>
 
-{#if !isHideDonationSection}
+{#if !isHideDonationSection && pathname === "/watch"}
   <article class="ythd-donation">
     <h1 class="title">YouTube Auto HD</h1>
 
