@@ -49,7 +49,7 @@ export async function getIsExtensionEnabled(): Promise<boolean> {
   });
 }
 
-export function getI18n(id: string, backup = ""): string {
+export function getI18n(id: Parameters<typeof browser.i18n.getMessage>[0], backup = "") {
   return (id && browser.i18n.getMessage(id)) || backup;
 }
 
@@ -114,14 +114,13 @@ export function addStorageListener(): void {
   });
 }
 
-export async function addGlobalEventListener(addTemporaryBodyListener: () => void): Promise<MutationObserver> {
+export async function addGlobalEventListener(addTemporaryBodyListener: () => void) {
   // Fires when navigating to another page
   const elTitle =
     document.documentElement.querySelector(SELECTORS.title) ||
     (await getElementByMutationObserver<HTMLTitleElement>(SELECTORS.title, false));
   const observer = new MutationObserver(addTemporaryBodyListener);
   observer.observe(elTitle, OBSERVER_OPTIONS);
-  return observer;
 }
 
 function isElementVisible(element: HTMLElement): boolean {
