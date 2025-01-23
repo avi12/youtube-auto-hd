@@ -15,13 +15,13 @@ const env = dotenv.configDotenv({ path }).parsed as {
   VITE_PATH_OPERA: string;
 };
 
-const { VITE_LANG = "en" } = process.env;
+const { VITE_LANG = "en", VITE_BLANK = "" } = process.env;
 
 export default defineRunnerConfig({
   binaries: {
     edge: env.VITE_PATH_EDGE,
     opera: env.VITE_PATH_OPERA.replace("USERPROFILE", process.env.HOME!)
   },
-  startUrls: ["https://www.youtube.com/watch?v=itygsQuKqIE"],
+  startUrls: [VITE_BLANK ? "about:blank" : `https://www.youtube.com/watch?v=itygsQuKqIE`],
   chromiumArgs: [`--lang=${VITE_LANG}`]
 });
