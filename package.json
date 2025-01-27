@@ -38,7 +38,7 @@
     "nouislider": "^15.8.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.18.0",
+    "@eslint/js": "^9.19.0",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@tsconfig/svelte": "^5.0.4",
     "@types/chrome": "^0.0.299",
@@ -47,22 +47,22 @@
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
-    "eslint": "^9.18.0",
+    "eslint": "^9.19.0",
     "eslint-config-avi12": "github:avi12/eslint-config-avi12",
     "eslint-plugin-svelte": "^2.46.1",
     "globals": "^15.14.0",
     "postcss-nesting": "^13.0.1",
     "prettier": "^3.4.2",
     "prettier-plugin-svelte": "^3.3.3",
-    "svelte": "^5.19.2",
+    "svelte": "^5.19.3",
     "svelte-check": "^4.1.4",
     "svelte-eslint-parser": "^0.43.0",
     "svelte-preprocess": "^6.0.3",
     "tslib": "^2.8.1",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.21.0",
+    "typescript-eslint": "^8.22.0",
     "webext-store-incompat-fixer": "^0.10.0",
     "wxt": "^0.19.25"
   },
-  "packageManager": "pnpm@10.0.0"
+  "packageManager": "pnpm@10.1.0"
 }
