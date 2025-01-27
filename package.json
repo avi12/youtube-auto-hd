@@ -64,5 +64,5 @@
     "webext-store-incompat-fixer": "^0.10.0",
     "wxt": "^0.19.25"
   },
-  "packageManager": "pnpm@10.1.0"
+  "packageManager": "pnpm@10.0.0"
 }
