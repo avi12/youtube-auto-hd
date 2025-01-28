@@ -1,7 +1,6 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
   import { storage } from "wxt/storage";
-  import { getValue } from "@/lib/shared-utils";
   import { initial } from "@/lib/ythd-setup";
   import { addGlobalEventListener, SELECTORS } from "@/lib/ythd-utils";
 
@@ -27,7 +26,7 @@
       fallback: initial.isHideDonationSection
     })
   ]).then(([pIsHidePromotionSection, pIsHideDonationSection]) => {
-    isHideDonationSection = getValue(pIsHidePromotionSection || pIsHideDonationSection);
+    isHideDonationSection = pIsHidePromotionSection || pIsHideDonationSection;
   });
 
   storage.watch<typeof initial.isHideDonationSection>("sync:isHideDonationSection", pIsHideDonationSection => {
@@ -51,10 +50,10 @@
 
     <p class="description">
       Please consider supporting me via <a
-        href="https://paypal.me/avi12"
-        target="_blank"
-        class="link"
-        onclick={hideDonationSection}>PayPal</a> :)
+            href="https://paypal.me/avi12"
+            target="_blank"
+            class="link"
+            onclick={hideDonationSection}>PayPal</a> :)
     </p>
 
     {#if isShowDismissButton}

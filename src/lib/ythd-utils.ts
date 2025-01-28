@@ -7,7 +7,6 @@ import type {
 } from "./types";
 import { initial } from "./ythd-setup";
 import { prepareToChangeQualityOnDesktop } from "@/entrypoints/desktop.content/functions-desktop";
-import { getValue } from "@/lib/shared-utils";
 
 export const OBSERVER_OPTIONS: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
 window.ythdLastUserQualities = { ...initial.qualities };
@@ -25,7 +24,7 @@ export async function getStorage<T>({
 }): Promise<T> {
   let value: T;
   try {
-    value = getValue(await storage.getItem<T>(`${area}:${key}`, { fallback }));
+    value = await storage.getItem<T>(`${area}:${key}`, { fallback });
   } catch {
     value = fallback;
   }

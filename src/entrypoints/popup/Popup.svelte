@@ -2,9 +2,9 @@
   import { storage } from "wxt/storage";
   import {
     isEnhancedBitrates,
+    isExcludeVertical,
     isExtensionEnabled,
     isHideDonationSection,
-    isExcludeVertical,
     isResizeVideo,
     qualitiesStored,
     sizeVideo
@@ -13,7 +13,6 @@
   import ControlQuality from "@/entrypoints/popup/views/ControlQuality.svelte";
   import ControlSize from "@/entrypoints/popup/views/ControlSize.svelte";
   import Promotions from "@/entrypoints/popup/views/Promotions.svelte";
-  import { getValue } from "@/lib/shared-utils";
   import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/types";
   import { initial } from "@/lib/ythd-setup";
   import { getI18n } from "@/lib/ythd-utils";
@@ -29,22 +28,14 @@
     storage.getItem<boolean>("sync:isExcludeVertical", { fallback: initial.isExcludeVertical }),
     storage.getItem<boolean>("sync:isHideDonationSection", { fallback: initial.isHideDonationSection })
   ]).then(
-    ([
-      qualities,
-      pIsEnhancedBitrates,
-      isExtEnabled,
-      autoResize,
-      size,
-      pisExcludeVertical,
-      pIsHideDonationSection
-    ]) => {
-      $qualitiesStored = getValue(qualities);
-      $isEnhancedBitrates = getValue(pIsEnhancedBitrates);
-      $isExtensionEnabled = getValue(isExtEnabled);
-      $isResizeVideo = getValue(autoResize);
-      $sizeVideo = getValue(size);
-      $isExcludeVertical = getValue(pisExcludeVertical);
-      $isHideDonationSection = getValue(pIsHideDonationSection);
+    ([qualities, pIsEnhancedBitrates, isExtEnabled, autoResize, size, pisExcludeVertical, pIsHideDonationSection]) => {
+      $qualitiesStored = qualities;
+      $isEnhancedBitrates = pIsEnhancedBitrates;
+      $isExtensionEnabled = isExtEnabled;
+      $isResizeVideo = autoResize;
+      $sizeVideo = size;
+      $isExcludeVertical = pisExcludeVertical;
+      $isHideDonationSection = pIsHideDonationSection;
     }
   );
 </script>
