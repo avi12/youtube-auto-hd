@@ -56,7 +56,7 @@ export enum SELECTORS {
   title = "title",
   video = "video",
   buttonSettings = ".ytp-settings-button",
-  sizeToggle = `.ytp-size-button#original-size`,
+  sizeToggle = ".ytp-size-button#original-size, .ytp-size-button", // .ytp-size-button#original-size is to avoid a collision with https://chromewebstore.google.com/detail/youtube-windowed-fullscre/gkkmiofalnjagdcjheckamobghglpdpm
   optionQuality = ".ytp-settings-menu[data-layer] .ytp-menuitem:last-child",
   menuOption = ".ytp-settings-menu[data-layer] .ytp-menuitem",
   menuOptionContent = ".ytp-menuitem-content",
