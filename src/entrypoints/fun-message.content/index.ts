@@ -1,5 +1,5 @@
 import { mount, unmount } from "svelte";
-import CsuiDonation from "@/entrypoints/donation.content/CsuiDonation.svelte";
+import CsuiFunMessage from "@/entrypoints/fun-message.content/CsuiFunMessage.svelte";
 import { getElementByMutationObserver, getIsExtensionEnabled, SELECTORS } from "@/lib/ythd-utils";
 
 export default defineContentScript({
@@ -21,7 +21,7 @@ export default defineContentScript({
       position: "inline",
       append: "first",
       anchor: SELECTORS.donationInjectParent,
-      onMount: container => mount(CsuiDonation, { target: container }),
+      onMount: container => mount(CsuiFunMessage, { target: container }),
       onRemove: app => unmount(app!)
     });
 

@@ -4,10 +4,13 @@
   import { initial } from "@/lib/ythd-setup";
   import { addGlobalEventListener, SELECTORS } from "@/lib/ythd-utils";
 
-  let isHideDonationSection = $state<boolean>(true);
+  let isHideDonationSection = $state<boolean>(initial.isHideDonationSection);
+  let isHideFunMessageSection = $state<boolean>(initial.isHideFunMessageSection);
   let isShowDismissButton = $state<boolean>(false);
+
   let timeoutShow: ReturnType<typeof setTimeout>;
 
+  // Intersection observer to show the dismiss button after 5 seconds
   new IntersectionObserver((entries, observer) => {
     if (!entries[0].isIntersecting) {
       return;
@@ -24,18 +27,36 @@
     }),
     storage.getItem<typeof initial.isHideDonationSection>("sync:isHideDonationSection", {
       fallback: initial.isHideDonationSection
+    }),
+    storage.getItem<typeof initial.isHideFunMessageSection>("sync:isHideFunMessageSection", {
+      fallback: initial.isHideFunMessageSection
     })
-  ]).then(([pIsHidePromotionSection, pIsHideDonationSection]) => {
+  ]).then(([pIsHidePromotionSection, pIsHideDonationSection, pIsHideFunMessageSection]) => {
     isHideDonationSection = pIsHidePromotionSection || pIsHideDonationSection;
+    isHideFunMessageSection = pIsHideFunMessageSection;
   });
 
   storage.watch<typeof initial.isHideDonationSection>("sync:isHideDonationSection", pIsHideDonationSection => {
     isHideDonationSection = pIsHideDonationSection !== null ? pIsHideDonationSection : initial.isHideDonationSection;
   });
 
-  function hideDonationSection() {
+  storage.watch<typeof initial.isHideDonationSection>("sync:isHideFunMessageSection", pIsHideFunMessageSection => {
+    isHideFunMessageSection =
+      pIsHideFunMessageSection !== null ? pIsHideFunMessageSection : initial.isHideFunMessageSection;
+  });
+
+  function closeSections() {
     clearTimeout(timeoutShow);
-    storage.setItem("sync:isHideDonationSection", true);
+    storage.setItems([
+      {
+        key: "sync:isHideDonationSection",
+        value: true
+      },
+      {
+        key: "sync:isHideFunMessageSection",
+        value: true
+      }
+    ]);
   }
 
   let pathname = $state<string>(location.pathname);
@@ -44,22 +65,30 @@
   });
 </script>
 
-{#if !isHideDonationSection && pathname === "/watch"}
-  <article class="ythd-donation">
-    <h1 class="title">YouTube Auto HD</h1>
-
-    <p class="description">
-      Please consider supporting me via <a
-            href="https://paypal.me/avi12"
-            target="_blank"
-            class="link"
-            onclick={hideDonationSection}>PayPal</a> :)
-    </p>
-
-    {#if isShowDismissButton}
-      <button class="close" transition:slide onclick={hideDonationSection}>Don't show again</button>
-    {/if}
-  </article>
+{#if pathname === "/watch"}
+  {#if !isHideFunMessageSection}
+    <article class="ythd-fun-message">
+      <h1 class="title">YouTube Auto HD</h1>
+      <p class="description">Since it's March 14th, I wish you to have a happy Pi Day :)</p>
+      {#if isShowDismissButton}
+        <button class="close" transition:slide onclick={closeSections}>Close</button>
+      {/if}
+    </article>
+  {:else if !isHideDonationSection}
+    <article class="ythd-donation">
+      <h1 class="title">YouTube Auto HD</h1>
+      <p class="description">
+        Please consider supporting me via <a
+          href="https://paypal.me/avi12"
+          target="_blank"
+          class="link"
+          onclick={closeSections}>PayPal</a> :)
+      </p>
+      {#if isShowDismissButton}
+        <button class="close" transition:slide onclick={closeSections}>Don't show again</button>
+      {/if}
+    </article>
+  {/if}
 {/if}
 
 <style>
@@ -67,11 +96,11 @@
     margin: 0;
   }
 
-  .ythd-donation {
+  .ythd-donation,
+  .ythd-fun-message {
     background-color: var(--yt-spec-additive-background, rgba(0, 0, 0, 0.5));
     padding: 12px;
     margin-bottom: 10px;
-    direction: ltr;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -87,10 +116,7 @@
       margin: 0;
       font-size: 1.4rem;
       line-height: 1.8rem;
-
-      &:not(:last-child) {
-        margin-bottom: 10px;
-      }
+      margin-bottom: 10px;
     }
 
     & .link {
@@ -105,7 +131,6 @@
       background: none;
       cursor: pointer;
       align-self: end;
-      overflow: clip;
     }
   }
 </style>
