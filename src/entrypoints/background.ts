@@ -4,15 +4,15 @@ import pathIconOff from "@/public/icon-off.png";
 
 function iconActions() {
   storage.watch<boolean>("local:isExtensionEnabled", isEnabled =>
-    chrome.action.setIcon({
+    browser.action.setIcon({
       path: isEnabled! ? pathIconOn : pathIconOff
     })
   );
 }
 
 export default defineBackground(() => {
-  chrome.runtime.setUninstallURL("");
-  chrome.runtime.onInstalled.addListener(() => {
+  browser.runtime.setUninstallURL("");
+  browser.runtime.onInstalled.addListener(() => {
     iconActions();
   });
 });
