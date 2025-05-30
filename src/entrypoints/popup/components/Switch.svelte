@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
+  import "ccc-components/styles/switch.css";
 
   interface Props {
     checked?: boolean;
@@ -8,7 +9,7 @@
     className?: string;
   }
 
-  const random = Math.random();
+  const random = crypto.randomUUID();
 
   // eslint-disable-next-line prefer-const
   let { checked = $bindable(false), children, className, change }: Props = $props();
@@ -27,8 +28,6 @@
 </article>
 
 <style>
-  @import url("node_modules/ccc-components/styles/switch.css");
-
   .ccc-switch {
     --ccc-accent-color: var(--switch-on-thumb-color);
     display: flex;
