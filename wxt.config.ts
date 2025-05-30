@@ -80,21 +80,6 @@ export default defineConfig({
     sourcesTemplate: "youtube-auto-hd-fps-{{version}}-{{browser}}-source.zip"
   },
   modules: ["@wxt-dev/module-svelte"],
-  svelte: {
-    vite: {
-      preprocess: [
-        vitePreprocess({
-          script: true,
-          style: {
-            css: {
-              postcss: {
-                plugins: [nesting, autoprefixer]
-              }
-            }
-          }
-        })
-      ]
-    }
   vite: () => ({
     build: {
       sourcemap: "inline"
@@ -104,5 +89,8 @@ export default defineConfig({
         plugins: [nesting, autoprefixer]
       }
     }
+  }),
+  webExt: {
+    disabled: true // https://wxt.dev/guide/essentials/config/browser-startup.html
   }
 });
