@@ -1,4 +1,4 @@
-import { storage, type StorageArea } from "wxt/storage";
+import { storage, type StorageArea } from "#imports";
 import type {
   EnhancedBitrateFpsPreferences,
   EnhancedBitratePreferences,

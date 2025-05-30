@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { storage } from "wxt/storage";
+  import { storage } from "#imports";
   import Switch from "@/entrypoints/popup/components/Switch.svelte";
   import { isExtensionEnabled } from "@/entrypoints/popup/store";
   import { getI18n } from "@/lib/ythd-utils";

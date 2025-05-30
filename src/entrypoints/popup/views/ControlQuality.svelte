@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { storage } from "wxt/storage";
+  import { storage } from "#imports";
   import Slider from "../components/Slider.svelte";
   import Switch from "../components/Switch.svelte";
   import { isEnhancedBitrates, qualitiesStored } from "@/entrypoints/popup/store";

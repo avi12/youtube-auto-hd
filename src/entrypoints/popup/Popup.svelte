@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { storage } from "wxt/storage";
+  import { storage } from "#imports";
   import {
     isEnhancedBitrates,
     isExcludeVertical,

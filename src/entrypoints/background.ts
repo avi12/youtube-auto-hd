@@ -1,4 +1,4 @@
-import { storage } from "wxt/storage";
+import { storage } from "#imports";
 import pathIconOn from "@/public/icon-128.png";
 import pathIconOff from "@/public/icon-off.png";
 

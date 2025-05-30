@@ -1,7 +1,7 @@
 <script lang="ts">
   import { mdiGithub, mdiHeartOutline, mdiStarOutline, mdiTranslate } from "@mdi/js";
 
-  import { storage } from "wxt/storage";
+  import { storage } from "#imports";
   import Icon from "@/entrypoints/popup/components/Icon.svelte";
   import { isHideDonationSection } from "@/entrypoints/popup/store";
   import { getI18n } from "@/lib/ythd-utils";

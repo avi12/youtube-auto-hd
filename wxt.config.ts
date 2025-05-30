@@ -1,4 +1,3 @@
-import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import autoprefixer from "autoprefixer";
 import nesting from "postcss-nesting";
 import { defineConfig, type UserManifest } from "wxt";
@@ -8,6 +7,7 @@ import fs from "fs";
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   srcDir: "src",
+  publicDir: "src/public",
   manifest({ browser }) {
     const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
     const url = packageJson.repository;
@@ -94,6 +94,15 @@ export default defineConfig({
           }
         })
       ]
+    }
+  vite: () => ({
+    build: {
+      sourcemap: "inline"
+    },
+    css: {
+      postcss: {
+        plugins: [nesting, autoprefixer]
+      }
     }
   }
 });
