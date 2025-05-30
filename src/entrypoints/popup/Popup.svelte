@@ -8,7 +8,7 @@
     isResizeVideo,
     qualitiesStored,
     sizeVideo
-  } from "@/entrypoints/popup/store";
+  } from "@/entrypoints/popup/states.svelte";
   import ControlEnabled from "@/entrypoints/popup/views/ControlEnabled.svelte";
   import ControlQuality from "@/entrypoints/popup/views/ControlQuality.svelte";
   import ControlSize from "@/entrypoints/popup/views/ControlSize.svelte";
@@ -29,24 +29,24 @@
     storage.getItem<boolean>("sync:isHideDonationSection", { fallback: initial.isHideDonationSection })
   ]).then(
     ([qualities, pIsEnhancedBitrates, isExtEnabled, autoResize, size, pisExcludeVertical, pIsHideDonationSection]) => {
-      $qualitiesStored = qualities;
-      $isEnhancedBitrates = pIsEnhancedBitrates;
-      $isExtensionEnabled = isExtEnabled;
-      $isResizeVideo = autoResize;
-      $sizeVideo = size;
-      $isExcludeVertical = pisExcludeVertical;
-      $isHideDonationSection = pIsHideDonationSection;
+      qualitiesStored.value = qualities;
+      isEnhancedBitrates.value = pIsEnhancedBitrates;
+      isExtensionEnabled.value = isExtEnabled;
+      isResizeVideo.value = autoResize;
+      sizeVideo.value = size;
+      isExcludeVertical.value = pisExcludeVertical;
+      isHideDonationSection.value = pIsHideDonationSection;
     }
   );
 </script>
 
 <main class:rtl={getI18n("@@bidi_dir") === "rtl"}>
-  {#if $isExtensionEnabled !== undefined}
+  {#if isExtensionEnabled.value !== null}
     <ControlEnabled />
   {/if}
 
-  {#if $isExtensionEnabled}
-    {#if $qualitiesStored !== undefined && $isEnhancedBitrates !== undefined}
+  {#if isExtensionEnabled.value}
+    {#if qualitiesStored.value !== null && isEnhancedBitrates.value !== null}
       <ControlQuality />
     {/if}
 

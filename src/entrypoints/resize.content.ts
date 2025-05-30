@@ -3,10 +3,16 @@ import type { VideoAutoResize, VideoSize } from "@/lib/types";
 import { initial } from "@/lib/ythd-setup";
 import { addGlobalEventListener, getIsExtensionEnabled, getVisibleElement, SELECTORS } from "@/lib/ythd-utils";
 
-let preferences = {
-  viewMode: initial.size as VideoSize,
-  isResizeVideo: initial.isResizeVideo as VideoAutoResize,
-  isExcludeVertical: initial.isExcludeVertical as boolean
+interface Preferences {
+  viewMode: VideoSize;
+  isResizeVideo: VideoAutoResize;
+  isExcludeVertical: boolean;
+}
+
+let preferences: Preferences = {
+  viewMode: initial.size,
+  isResizeVideo: initial.isResizeVideo,
+  isExcludeVertical: initial.isExcludeVertical
 };
 
 function getCurrentViewMode() {

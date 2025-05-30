@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { storage } from "#imports";
+  import { storage, browser } from "#imports";
   import Switch from "@/entrypoints/popup/components/Switch.svelte";
-  import { isExcludeVertical, isResizeVideo, sizeVideo } from "@/entrypoints/popup/store";
+  import { isExcludeVertical, isResizeVideo, sizeVideo } from "@/entrypoints/popup/states.svelte";
   import { getI18n } from "@/lib/ythd-utils";
 
   const i18n: Record<string, string> = {
@@ -40,32 +40,33 @@
   }
 
   $effect(() => {
-    storage.setItem("sync:autoResize", $isResizeVideo);
+    storage.setItem("sync:autoResize", isResizeVideo.value);
   });
 
   $effect(() => {
-    if ($isResizeVideo && !$isExcludeVertical) {
-      chrome.cookies.set({
-        url: "https://youtube.com/",
-        name: "wide",
-        value: $sizeVideo.toString()
-      });
+    if (!isResizeVideo.value || !isExcludeVertical.value || sizeVideo.value === null) {
+      return;
     }
+    browser.cookies.set({
+      url: "https://youtube.com/",
+      name: "wide",
+      value: sizeVideo.value.toString()
+    });
   });
 
   $effect(() => {
-    storage.setItem("sync:size", $sizeVideo);
+    storage.setItem("sync:size", sizeVideo.value);
   });
 
   $effect(() => {
-    storage.setItem("sync:isExcludeVertical", $isExcludeVertical);
+    storage.setItem("sync:isExcludeVertical", isExcludeVertical.value);
   });
 </script>
 
 <article class="control-section">
-  <Switch bind:checked={$isResizeVideo}>{i18n.labelIsResizeVideo}</Switch>
+  <Switch bind:checked={isResizeVideo.value}>{i18n.labelIsResizeVideo}</Switch>
 
-  {#if $isResizeVideo}
+  {#if isResizeVideo.value}
     <section class="size">
       <div class="label">{i18n.labelVideoSize}</div>
 
@@ -96,8 +97,8 @@
           class="box"
           data-size="small"
           aria-label={i18n.labelSizeSmall}
-          class:selected={$sizeVideo === 0}
-          onclick={() => ($sizeVideo = 0)}
+          class:selected={sizeVideo.value === 0}
+          onclick={() => (sizeVideo.value = 0)}
           tabindex="0">
           <!--suppress HtmlUnknownTag -->
           <div class="rectangle"></div>
@@ -106,8 +107,8 @@
           class="box"
           data-size="large"
           aria-label={i18n.labelSizeLarge}
-          class:selected={$sizeVideo === 1}
-          onclick={() => ($sizeVideo = 1)}
+          class:selected={sizeVideo.value === 1}
+          onclick={() => (sizeVideo.value = 1)}
           tabindex="-1">
           <!--suppress HtmlUnknownTag -->
           <div class="rectangle"></div>
@@ -115,7 +116,7 @@
       </div>
     </section>
 
-    <Switch bind:checked={$isExcludeVertical}>{i18n.labelOExcludeVertical}</Switch>
+    <Switch bind:checked={isExcludeVertical.value}>{i18n.labelOExcludeVertical}</Switch>
   {/if}
 </article>
 

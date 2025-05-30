@@ -1,6 +1,6 @@
 <script lang="ts">
   import PromotionLinks from "@/entrypoints/popup/components/PromotionLinks.svelte";
-  import { isHideDonationSection } from "@/entrypoints/popup/store";
+  import { isHideDonationSection } from "@/entrypoints/popup/states.svelte";
   import { getI18n } from "@/lib/ythd-utils";
 
   const i18n: Record<string, string> = {
@@ -8,7 +8,7 @@
   };
 </script>
 
-{#if $isHideDonationSection}
+{#if isHideDonationSection.value}
   <details class="promotion-section">
     <summary class="summary">
       <span>{i18n.labelSubheader}</span>

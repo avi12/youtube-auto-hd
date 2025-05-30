@@ -3,7 +3,7 @@
   import "ccc-components/styles/switch.css";
 
   interface Props {
-    checked?: boolean;
+    checked: boolean | null | undefined;
     change?: (isChecked: boolean) => void;
     children?: Snippet;
     className?: string;

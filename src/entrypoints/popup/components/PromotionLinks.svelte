@@ -1,9 +1,9 @@
 <script lang="ts">
   import { mdiGithub, mdiHeartOutline, mdiStarOutline, mdiTranslate } from "@mdi/js";
 
-  import { storage } from "#imports";
+  import { storage, browser } from "#imports";
   import Icon from "@/entrypoints/popup/components/Icon.svelte";
-  import { isHideDonationSection } from "@/entrypoints/popup/store";
+  import { isHideDonationSection } from "@/entrypoints/popup/states.svelte";
   import { getI18n } from "@/lib/ythd-utils";
 
   const i18n: Record<string, string> = {
@@ -74,14 +74,14 @@
   ];
 
   $effect(() => {
-    if ($isHideDonationSection) {
-      storage.setItem("sync:isHideDonationSection", $isHideDonationSection);
+    if (isHideDonationSection.value) {
+      storage.setItem("sync:isHideDonationSection", isHideDonationSection.value);
     }
   });
 </script>
 
 <menu>
-  {#each links as link}
+  {#each links as link (link.url)}
     <li>
       <a
         class="link"
@@ -90,9 +90,9 @@
           e.preventDefault();
           const { url } = link;
           if (url.includes("paypal.me")) {
-            $isHideDonationSection = true;
+            isHideDonationSection.value = true;
           }
-          await chrome.tabs.create({ url });
+          await browser.tabs.create({ url });
           close();
         }}>
         <Icon path={link.icon} />
