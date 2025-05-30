@@ -30,6 +30,9 @@ importers:
       '@types/chrome':
         specifier: ^0.0.325
         version: 0.0.325
+      '@types/node':
+        specifier: ^22.15.27
+        version: 22.15.27
       '@wxt-dev/module-svelte':
         specifier: ^2.0.3
         version: 2.0.3(svelte@5.33.10)(vite@6.3.5(@types/node@22.15.27)(jiti@2.4.2)(less@4.2.0)(lightningcss@1.27.0)(sass@1.79.4)(yaml@2.5.1))(wxt@0.20.6(@types/node@22.15.27)(jiti@2.4.2)(less@4.2.0)(lightningcss@1.27.0)(rollup@4.41.1)(sass@1.79.4)(yaml@2.5.1))

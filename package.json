@@ -42,6 +42,7 @@
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@tsconfig/svelte": "^5.0.4",
     "@types/chrome": "^0.0.325",
+    "@types/node": "^22.15.27",
     "@wxt-dev/module-svelte": "^2.0.3",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.1.2",
