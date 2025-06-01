@@ -28,3 +28,7 @@ build
 *.njsproj
 *.sln
 *.sw?
+
+test-browsers
+screenshots*
+screenshot-process.js

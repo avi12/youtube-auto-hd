@@ -1,5 +1,4 @@
 import autoprefixer from "autoprefixer";
-import nesting from "postcss-nesting";
 import { defineConfig, type UserManifest } from "wxt";
 import { execSync } from "child_process";
 import fs from "fs";
@@ -46,21 +45,11 @@ export default defineConfig({
     return manifest;
   },
   hooks: {
-    "build:manifestGenerated"(_, manifest) {
-      manifest.action!.default_icon = manifest.icons;
-      manifest.options_ui = {
-        page: manifest.action?.default_popup ?? "popup.html",
-        // If not Firefox
-        ...(!manifest.browser_specific_settings && {
-          browser_style: true
-        })
-      };
-    },
     "zip:extension:done"(_, zipPath) {
       if (zipPath.match(/chrome|opera/)) {
         execSync(`webext-store-incompat-fixer -i ${zipPath} --stores chrome,opera`);
       } else if (zipPath.includes("edge")) {
-        const supportedLocales = ["en", "he", "be"];
+        const supportedLocales = ["en", "he", "it", "fr"];
         execSync(
           `webext-store-incompat-fixer -i ${zipPath} --stores edge --edge-locale-inclusions ${supportedLocales}`
         );
@@ -86,11 +75,8 @@ export default defineConfig({
     },
     css: {
       postcss: {
-        plugins: [nesting, autoprefixer]
+        plugins: [autoprefixer]
       }
     }
-  }),
-  webExt: {
-    disabled: true // https://wxt.dev/guide/essentials/config/browser-startup.html
-  }
+  })
 });

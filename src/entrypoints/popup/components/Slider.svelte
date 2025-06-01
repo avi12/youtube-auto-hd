@@ -63,35 +63,37 @@
       border: none;
       box-shadow: none;
 
-      /*noinspection CssUnusedSymbol*/
-
-      & :global(.noUi-connect) {
-        background: var(--slider-track-cover-color);
+      & :global {
+        /*noinspection CssUnusedSymbol*/
+        .noUi-connect {
+          background: var(--slider-track-cover-color);
+        }
       }
 
-      /*noinspection CssUnusedSymbol*/
+      & :global {
+        /*noinspection CssUnusedSymbol*/
+        .noUi-handle {
+          --width: 16px;
+          --height: var(--width);
+          --top: calc(-1 * var(--height) / 2 + 1px);
+          --right: calc(-1 * var(--width) / 2);
+          width: var(--width);
+          height: var(--height);
+          top: var(--top);
+          right: var(--right);
+          border-radius: 50%;
+          background: var(--slider-track-cover-color);
 
-      & :global(.noUi-handle) {
-        --width: 16px;
-        --height: var(--width);
-        --top: calc(-1 * var(--height) / 2 + 1px);
-        --right: calc(-1 * var(--width) / 2);
-        width: var(--width);
-        height: var(--height);
-        top: var(--top);
-        right: var(--right);
-        border-radius: 50%;
-        background: var(--slider-track-cover-color);
+          /* Overrides for noUiSlider */
+          border: none;
+          box-shadow: none;
 
-        /* Overrides for noUiSlider */
-        border: none;
-        box-shadow: none;
+          /* Overrides for noUiSlider */
 
-        /* Overrides for noUiSlider */
-
-        &::before,
-        &::after {
-          content: unset;
+          &::before,
+          &::after {
+            content: unset;
+          }
         }
       }
     }
@@ -100,16 +102,6 @@
 
     & .label {
       flex: 1;
-    }
-  }
-
-  /*noinspection CssUnusedSymbol*/
-  :global(.noUi-rtl) {
-    /*noinspection CssUnusedSymbol*/
-
-    & .noUi-handle {
-      /* Overrides for noUiSlider */
-      left: unset !important;
     }
   }
 </style>
