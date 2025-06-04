@@ -4,11 +4,11 @@ A browser extension that sets the quality of YouTube videos according to the use
 FPS.
 Available for:
 
-- [Google Chrome](https://chrome.google.com/webstore/detail/fcphghnknhkimeagdglkljinmpbagone) ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/fcphghnknhkimeagdglkljinmpbagone?color=white&label=users&style=flat-square)
+ - [Google Chrome](https://chromewebstore.google.com/detail/fcphghnknhkimeagdglkljinmpbagone) 120+ ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/fcphghnknhkimeagdglkljinmpbagone?color=white&label=users&style=flat-square)
 - [Mozilla Firefox](https://addons.mozilla.org/firefox/addon/youtube-auto-hd-fps)
-  101+ ![Mozilla Add-on](https://img.shields.io/amo/users/youtube-auto-hd-fps?color=white&label=users&style=flat-square)
-- [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom) ![users count](https://img.shields.io/badge/dynamic/json?label=users&query=activeInstallCount&style=flat-square&color=white&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/ggnepcoiimddpmjaoejhdfppjbcnfaom)
-- [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps)
+  117+ ![Mozilla Add-on](https://img.shields.io/amo/users/youtube-auto-hd-fps?color=white&label=users&style=flat-square)
+- [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/ggnepcoiimddpmjaoejhdfppjbcnfaom) 120+ ![users count](https://img.shields.io/badge/dynamic/json?label=users&query=activeInstallCount&style=flat-square&color=white&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/ggnepcoiimddpmjaoejhdfppjbcnfaom)
+- [Opera](https://addons.opera.com/en/extensions/details/youtube-auto-hd-fps) 120+
 - [Safari](https://apps.apple.com/us/app/id1546729687) - maintained
   by [carlosjeurissen](https://github.com/carlosjeurissen)
 - [Naver Whale](https://store.whale.naver.com/detail/njejcbikjebbmiggdpdggelmoifodjhh) - maintained

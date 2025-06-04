@@ -1,5 +1,6 @@
 import autoprefixer from "autoprefixer";
 import { defineConfig, type UserManifest } from "wxt";
+import packageJson from "./package.json" assert { type: "json" };
 import { execSync } from "child_process";
 import fs from "fs";
 
@@ -8,9 +9,8 @@ export default defineConfig({
   srcDir: "src",
   publicDir: "src/public",
   manifest({ browser }) {
-    const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
     const url = packageJson.repository;
-    const [, author, email] = packageJson.author!.match(/(.+) <(.+)>/);
+    const [, author, email] = packageJson.author.match(/(.+) <(.+)>/)!;
     let manifest: UserManifest = {
       name: browser === "edge" ? "Auto HD for YouTube" : "YouTube Auto HD + FPS",
       description: "__MSG_cj_i18n_02146__",
@@ -23,6 +23,7 @@ export default defineConfig({
         "https://youtube.googleapis.com/*"
       ],
       permissions: ["cookies", "storage"],
+      // @ts-expect-error Firefox and Opera accept a string-based author
       author: browser === "opera" || browser === "firefox" ? packageJson.author : { email }
     };
     if (browser === "firefox") {
@@ -30,7 +31,8 @@ export default defineConfig({
         ...manifest,
         browser_specific_settings: {
           gecko: {
-            id: "avi6106@gmail.com"
+            id: "avi6106@gmail.com",
+            strict_min_version: "117.0"
           }
         },
         developer: {
@@ -39,8 +41,11 @@ export default defineConfig({
         }
       };
     } else {
-      // if not Firefox
-      manifest.offline_enabled = true;
+      manifest = {
+        ...manifest,
+        offline_enabled: true,
+        minimum_chrome_version: "120.0"
+      };
     }
     return manifest;
   },
