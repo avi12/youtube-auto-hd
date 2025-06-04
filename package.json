@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
-    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@sveltejs/vite-plugin-svelte": "^5.1.0",
     "@types/chrome": "^0.0.326",
     "@types/node": "^22.15.29",
     "@wxt-dev/module-svelte": "^2.0.3",
@@ -51,20 +51,20 @@
     "dotenv": "^16.5.0",
     "eslint": "^9.28.0",
     "eslint-config-avi12": "github:avi12/eslint-config-avi12",
-    "eslint-plugin-svelte": "^3.9.0",
+    "eslint-plugin-svelte": "^3.9.1",
     "globals": "^16.2.0",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.4.0",
     "sharp": "^0.34.2",
-    "svelte": "^5.33.11",
+    "svelte": "^5.33.14",
     "svelte-check": "^4.2.1",
     "svelte-eslint-parser": "^1.2.0",
     "svelte-preprocess": "^6.0.3",
     "tslib": "^2.8.1",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.33.0",
+    "typescript-eslint": "^8.33.1",
     "webext-store-incompat-fixer": "^0.18.1",
-    "wxt": "^0.20.6"
+    "wxt": "^0.20.7"
   },
-  "packageManager": "pnpm@10.11.0"
+  "packageManager": "pnpm@10.11.1"
 }
