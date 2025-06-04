@@ -31,7 +31,7 @@ or [report a bug](https://github.com/avi12/youtube-auto-hd/issues/new?assignees=
 Due to the way the browsers handle extensions, when an extension receives an update, content scripts in previously-open
 web
 pages cannot use the [Storage API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage)
-until the user reloads them, which means that if YTHD received an update and the user
+until the user reloads them. This means that if YTHD received an update and the user
 attempts to change a setting, he must reload the such pages for the settings to take effect
 
 ### A semi working solution
@@ -54,7 +54,7 @@ Install [Node.js](https://nodejs.org) and [PNPM](https://pnpm.io/installation)
 pnpm i
 ```
 
-## Start the dev server & run in a test browser
+## Start the dev server and run in a test browser
 
 ### Chrome
 
