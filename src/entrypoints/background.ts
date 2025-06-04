@@ -11,7 +11,7 @@ function iconActions() {
 }
 
 export default defineBackground(() => {
-  browser.runtime.setUninstallURL("");
+  browser.runtime.setUninstallURL("https://bit.ly/43Lna30");
   browser.runtime.onInstalled.addListener(() => {
     iconActions();
   });
