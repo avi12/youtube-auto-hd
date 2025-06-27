@@ -11,7 +11,7 @@ function iconActions() {
 }
 
 export default defineBackground(() => {
-  browser.runtime.setUninstallURL("https://avi12.com/redirects/monetization/ythd");
+  browser.runtime.setUninstallURL("");
   browser.runtime.onInstalled.addListener(() => {
     iconActions();
   });
