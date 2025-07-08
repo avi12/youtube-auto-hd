@@ -1,11 +1,11 @@
 {
 "cj_i18n_00354":{"message":"Dona"},
-"cj_i18n_01605":{"message":"Ajudeu amb les traduccions"},
+"cj_i18n_01605":{"message":"Ajuda amb les traduccions"},
 "cj_i18n_02146":{"message":"Configura automàticament la qualitat del vídeo a YouTube segons els seus FPS!"},
-"cj_i18n_02148":{"message":"FPS del vídeos"},
+"cj_i18n_02148":{"message":"FPS dels vídeos"},
 "cj_i18n_02149":{"message":"FPS i per sota"},
 "cj_i18n_06567":{"message":"Mantén la mida a"},
-"cj_i18n_06568":{"message":"Canviar la mida dels vídeos automàticament"},
+"cj_i18n_06568":{"message":"Canvia la mida dels vídeos automàticament"},
 "cj_i18n_06858":{"message":"Totes les velocitats de fotogrames"},
 "cj_i18n_06860":{"message":"Ajuda al desenvolupador"},
 "cj_i18n_06861":{"message":"Valora l'extensió"},
@@ -15,7 +15,7 @@
 "cj_i18n_07265":{"message":"Els vídeos es reproduiran fins a 30 FPS per a aquesta qualitat."},
 "cj_i18n_07266":{"message":"L'extensió està activada"},
 "cj_i18n_07392":{"message":"Utilitza la taxa de bits millorada quan sigui de màxima qualitat"},
-"cj_i18n_07584":{"message":"Cal teniar accés al YouTube Premium"},
+"cj_i18n_07584":{"message":"Cal tenir accés al YouTube Premium"},
 "cj_i18n_07669":{"message":"Contacteu-me"},
 "cj_i18n_07754":{"message":"Excepte els vídeos verticals"}
 }
