@@ -1,4 +1,16 @@
 {
 "cj_i18n_00354":{"message":"Donera"},
-"cj_i18n_02146":{"message":"Automatically set the video quality on YouTube according to its FPS!"}
+"cj_i18n_01605":{"message":"Hjälp med översättningar"},
+"cj_i18n_02146":{"message":"Ställ in YouTube-videokvalitet automatiskt enligt deras FPS!"},
+"cj_i18n_02148":{"message":"FPS-videor"},
+"cj_i18n_02149":{"message":"FPS och nedan"},
+"cj_i18n_06567":{"message":"Behåll storleken"},
+"cj_i18n_06568":{"message":"Ändra storlek på videor automatiskt"},
+"cj_i18n_06858":{"message":"Alla framerates"},
+"cj_i18n_06860":{"message":"Stöd utvecklaren"},
+"cj_i18n_06861":{"message":"Betygsätt tillägget"},
+"cj_i18n_06862":{"message":"Använd samma kvalitet för alla bildfrekvenser"},
+"cj_i18n_07097":{"message":"Standardvy"},
+"cj_i18n_07098":{"message":"Biovisning"},
+"cj_i18n_07669":{"message":"Kontakta oss"}
 }
