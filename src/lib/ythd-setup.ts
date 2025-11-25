@@ -22,6 +22,7 @@ export const initial = {
     50: false,
     30: false
   },
+  isUseSuperResolution: true,
   isResizeVideo: false,
   size: 1,
   isExcludeVertical: false

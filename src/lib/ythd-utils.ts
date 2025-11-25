@@ -10,6 +10,7 @@ import { prepareToChangeQualityOnDesktop } from "@/entrypoints/desktop.content/f
 
 export const OBSERVER_OPTIONS: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
 window.ythdLastUserQualities = { ...initial.qualities };
+window.ythdIsUseSuperResolution = initial.isUseSuperResolution;
 
 export async function getStorage<T>({
   area,
@@ -28,12 +29,9 @@ export async function getStorage<T>({
   } catch {
     value = fallback;
   }
-  // @ts-expect-error Incompatible types
   if (typeof window[updateWindowKey] !== "object") {
-    // @ts-expect-error Incompatible types
     window[updateWindowKey] = value;
   } else {
-    // @ts-expect-error Incompatible types
     window[updateWindowKey] = { ...fallback, ...value };
   }
   return value;
@@ -62,6 +60,7 @@ export enum SELECTORS {
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player:not(#inline-preview-player)",
+  channelTrailerContainer = "ytd-channel-video-player-renderer",
   donationInjectParent = "ytd-comments",
   // Premium
   labelPremium = ".ytp-premium-label"
@@ -107,8 +106,12 @@ export function addStorageListener(): void {
   });
 
   storage.watch<EnhancedBitratePreferences>("local:isEnhancedBitrates", async isEnhancedBitrates => {
-    window.ythdLastEnhancedBitrateClicked = {};
-    window.ythdLastUserEnhancedBitrates = isEnhancedBitrates;
+    window.ythdLastEnhancedBitrateClicked = isEnhancedBitrates;
+    await prepareToChangeQualityOnDesktop();
+  });
+
+  storage.watch<boolean>("local:isUseSuperResolution", async isUseSuperResolution => {
+    window.ythdIsUseSuperResolution = isUseSuperResolution;
     await prepareToChangeQualityOnDesktop();
   });
 }

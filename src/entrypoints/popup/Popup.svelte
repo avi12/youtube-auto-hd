@@ -6,6 +6,7 @@
     isExtensionEnabled,
     isHideDonationSection,
     isResizeVideo,
+    isUseSuperResolution,
     qualitiesStored,
     sizeVideo
   } from "@/entrypoints/popup/states.svelte";
@@ -20,6 +21,9 @@
   Promise.all([
     storage.getItem<QualityFpsPreferences>("local:qualities", { fallback: initial.qualities }),
     storage.getItem<EnhancedBitratePreferences>("local:isEnhancedBitrates", { fallback: initial.isEnhancedBitrates }),
+    storage.getItem<typeof initial.isUseSuperResolution>("local:isUseSuperResolution", {
+      fallback: initial.isUseSuperResolution
+    }),
     storage.getItem<typeof initial.isExtensionEnabled>("local:isExtensionEnabled", {
       fallback: initial.isExtensionEnabled
     }),
@@ -28,9 +32,19 @@
     storage.getItem<boolean>("sync:isExcludeVertical", { fallback: initial.isExcludeVertical }),
     storage.getItem<boolean>("sync:isHideDonationSection", { fallback: initial.isHideDonationSection })
   ]).then(
-    ([qualities, pIsEnhancedBitrates, isExtEnabled, autoResize, size, pisExcludeVertical, pIsHideDonationSection]) => {
+    ([
+      qualities,
+      pIsEnhancedBitrates,
+      pIsUseSuperResolution,
+      isExtEnabled,
+      autoResize,
+      size,
+      pisExcludeVertical,
+      pIsHideDonationSection
+    ]) => {
       qualitiesStored.value = qualities;
       isEnhancedBitrates.value = pIsEnhancedBitrates;
+      isUseSuperResolution.value = pIsUseSuperResolution;
       isExtensionEnabled.value = isExtEnabled;
       isResizeVideo.value = autoResize;
       sizeVideo.value = size;

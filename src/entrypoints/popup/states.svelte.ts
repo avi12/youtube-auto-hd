@@ -9,3 +9,4 @@ export const qualitiesStored = $state<{ value: Record<string, VideoQuality> | nu
 export const isEnhancedBitrates = $state<{ value: Record<string, IsEnhancedBitrate> | null }>({
   value: null
 });
+export const isUseSuperResolution = $state<{ value: boolean | null }>({ value: null });
