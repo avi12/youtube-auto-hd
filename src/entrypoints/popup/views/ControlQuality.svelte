@@ -2,7 +2,7 @@
   import { storage } from "#imports";
   import Slider from "../components/Slider.svelte";
   import Switch from "../components/Switch.svelte";
-  import {isEnhancedBitrates, isUseSuperResolution, qualitiesStored} from "@/entrypoints/popup/states.svelte";
+  import { isEnhancedBitrates, isUseSuperResolution, qualitiesStored } from "@/entrypoints/popup/states.svelte";
   import type { VideoFPS, VideoQuality } from "@/lib/types";
   import { fpsSupported, qualities } from "@/lib/ythd-setup";
   import { getI18n } from "@/lib/ythd-utils";
@@ -26,6 +26,8 @@
   let qualityForAllSelected = $state(qualitiesSelected[0]);
 
   const qualitiesReversed = [...qualities].reverse();
+
+  const isEnablePerFpsEnhancedBitrateToggle = false;
 
   $effect(() => {
     if (!isSameQualityForAllFps || qualitiesStored.value === null) {
@@ -70,18 +72,8 @@
           </div>
         </Slider>
 
-        {#if qualityForAllSelected >= 1080}
-          <Switch
-            change={isEnableEnhancedBitRate => {
-              fpsList.forEach(fps => {
-                if (isEnhancedBitrates.value) {
-                  isEnhancedBitrates.value[fps] = isEnableEnhancedBitRate;
-                }
-              });
-            }}
-            checked={isSameEnhancedBitrateForAllFps}
-            className="switch">{i18n.preferEnhancedBitrate}</Switch>
-          <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
+        {#if isEnablePerFpsEnhancedBitrateToggle && qualityForAllSelected >= 1080}
+          {@render toggleEnhancedBitrateForAllFps()}
         {/if}
 
         {#if qualityForAllSelected < 720}
@@ -108,7 +100,7 @@
             </div>
           </Slider>
 
-          {#if qualitiesStored.value[fps] >= 1080}
+          {#if isEnablePerFpsEnhancedBitrateToggle && qualitiesStored.value[fps] >= 1080}
             <Switch
               change={isEnableEnhancedBitRate => {
                 if (isEnhancedBitrates.value) {
@@ -127,15 +119,33 @@
       {/each}
     {/if}
   {/if}
+
+  {#if !isEnablePerFpsEnhancedBitrateToggle}
+    {@render toggleEnhancedBitrateForAllFps()}
+  {/if}
 </article>
 
 <hr />
 
-<Switch bind:checked={isUseSuperResolution.value} style="margin-block: 15px">
+<Switch bind:checked={isUseSuperResolution.value} style="margin-block: 1.25rem;">
   {i18n.labelUseSuperResolution}
 </Switch>
 
 <hr />
+
+{#snippet toggleEnhancedBitrateForAllFps()}
+  <Switch
+    change={isEnableEnhancedBitRate => {
+      fpsList.forEach(fps => {
+        if (isEnhancedBitrates.value) {
+          isEnhancedBitrates.value[fps] = isEnableEnhancedBitRate;
+        }
+      });
+    }}
+    checked={isSameEnhancedBitrateForAllFps}
+    className="switch">{i18n.preferEnhancedBitrate}</Switch>
+  <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
+{/snippet}
 
 <style>
   .control-section {
