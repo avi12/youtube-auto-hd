@@ -46,12 +46,12 @@ Filling will grant you access to a Google Spreadsheet via email, in which you ca
 
 ## Requirements for setting up
 
-Install [Node.js](https://nodejs.org) and [PNPM](https://pnpm.io/installation)
+Install [Node.js](https://nodejs.org) and [Bun](https://bun.sh)
 
 ## Install dependencies
 
 ```shell script
-pnpm i
+bun i
 ```
 
 ## Start the dev server and run in a test browser
@@ -59,25 +59,25 @@ pnpm i
 ### Chrome
 
 ```shell script
-pnpm dev
+bun dev
 ```
 
 ### Chrome RTL
 
 ```shell
-pnpm dev:rtl
+bun dev:rtl
 ```
 
 ### Edge
 
 ```shell
-pnpm dev:edge
+bun dev:edge
 ```
 
 ### Opera
 
 ```shell
-pnpm dev:opera
+bun dev:opera
 ```
 
 ### Firefox
@@ -91,25 +91,25 @@ follow [this guide](https://extensionworkshop.com/documentation/develop/temporar
 ### Chrome
 
 ```shell script
-pnpm build
+bun build
 ```
 
 ### Edge
 
 ```shell script
-pnpm build:edge
+bun build:edge
 ```
 
 ### Opera
 
 ```shell
-pnpm build:opera
+bun build:opera
 ```
 
 ### Firefox
 
 ```shell
-pnpm build:firefox
+bun build:firefox
 ```
 
 ## Package
@@ -117,25 +117,25 @@ pnpm build:firefox
 ### Chrome
 
 ```shell
-pnpm package
+bun package
 ```
 
 ### Edge
 
 ```shell
-pnpm package:edge
+bun package:edge
 ```
 
 ### Opera
 
 ```shell
-pnpm package:opera
+bun package:opera
 ```
 
 ### Firefox
 
 ```shell
-pnpm package:firefox
+bun package:firefox
 ```
 
 ## Shorthands
@@ -143,25 +143,25 @@ pnpm package:firefox
 ### Chrome
 
 ```shell
-pnpm build:package
+bun build:package
 ```
 
 ### Edge
 
 ```shell
-pnpm build:package:edge
+bun build:package:edge
 ```
 
 ### Opera
 
 ```shell
-pnpm build:package:opera
+bun build:package:opera
 ```
 
 ### Firefox
 
 ```shell
-pnpm build:package:firefox
+bun build:package:firefox
 ```
 
 ## Contribution
