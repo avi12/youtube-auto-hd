@@ -3,17 +3,16 @@ import {
   type EnhancedVideoQuality,
   type FullYouTubeLabel,
   SUFFIX_EBR,
-  type VideoFPS,
   type VideoQuality
 } from "@/lib/types";
 import { initial } from "@/lib/ythd-setup";
 import { getFpsFromRange, getStorage, getVisibleElement, OBSERVER_OPTIONS, SELECTORS } from "@/lib/ythd-utils";
 
-function getPlayerDiv(elVideo: HTMLVideoElement): HTMLDivElement {
+function getPlayerDiv(elVideo: HTMLVideoElement) {
   return elVideo.closest(SELECTORS.player) as HTMLDivElement;
 }
 
-function getIsLastOptionQuality(elVideo: HTMLVideoElement): boolean {
+function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
   const elOptionInSettings = getPlayerDiv(elVideo).querySelector(SELECTORS.optionQuality);
   if (!elOptionInSettings) {
     return false;
@@ -32,7 +31,7 @@ function getIsLastOptionQuality(elVideo: HTMLVideoElement): boolean {
   return numberString.length >= minQualityCharLength;
 }
 
-function getIsQualityElement(element: Element): boolean {
+function getIsQualityElement(element: Element) {
   const isQuality = Boolean(element.textContent?.match(/\d/));
   const isHasChildren = element.children.length > 1;
   return isQuality && !isHasChildren;
@@ -43,43 +42,89 @@ function getCurrentQualityElements(): Array<HTMLDivElement> {
   return elMenuOptions.filter(getIsQualityElement) as Array<HTMLDivElement>;
 }
 
-function convertQualityToNumber(elQuality: Element): VideoQuality | EnhancedVideoQuality {
-  const isPremiumQuality = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
+interface QualityDetail {
+  key: string;
+  value: {
+    paygatedIndicatorText: string;
+    trackingParams: string;
+  };
+}
+
+interface PlayabilityStatus {
+  contextParams: string;
+  miniplayer: Record<string, unknown>;
+  offlineability: Record<string, unknown>;
+  paygatedQualitiesMetadata?: {
+    qualityDetails: QualityDetail[];
+  };
+}
+
+function convertQualityToNumber(
+  elQuality: Element,
+  playabilityStatus: PlayabilityStatus
+): VideoQuality | EnhancedVideoQuality {
   const qualityNumber = parseInt(elQuality.textContent!);
+  const { paygatedQualitiesMetadata } = playabilityStatus;
+  if (!paygatedQualitiesMetadata) {
+    return qualityNumber as VideoQuality; // regular quality
+  }
+
+  const isPremiumQuality =
+    elQuality.querySelector(SELECTORS.labelPremium) &&
+    paygatedQualitiesMetadata.qualityDetails[0].key.match(/premium/i);
   if (isPremiumQuality) {
     return (qualityNumber + SUFFIX_EBR) as EnhancedVideoQuality;
   }
-  return qualityNumber as VideoQuality;
+  return qualityNumber as VideoQuality; // either super resolution or regular quality
 }
 
-function getAvailableQualities(): (VideoQuality | EnhancedVideoQuality)[] {
+function getAvailableQualities(playabilityStatus: PlayabilityStatus): (VideoQuality | EnhancedVideoQuality)[] {
   const elQualities = getCurrentQualityElements();
-  return elQualities.map(convertQualityToNumber);
+  return elQualities.map(elQUality => convertQualityToNumber(elQUality, playabilityStatus));
 }
 
-function getVideoFPS(): number {
-  const elQualities = getCurrentQualityElements();
-  const labelQuality = elQualities[0]?.textContent as FullYouTubeLabel;
-  if (!labelQuality) {
-    return 30;
-  }
-  const fpsMatch = labelQuality.match(/[ps](\d+)/);
-  return fpsMatch ? (Number(fpsMatch[1]) as VideoFPS) : 30;
+function getVideoFPS(adaptiveFormats: Record<string, any>[]): number {
+  const video = adaptiveFormats.find(format => "fps" in format)!;
+  return video.fps;
 }
 
-function openQualityMenu(elVideo: HTMLVideoElement): void {
+function openQualityMenu(elVideo: HTMLVideoElement) {
   const elSettingQuality = getPlayerDiv(elVideo).querySelector<HTMLDivElement>(SELECTORS.optionQuality);
   elSettingQuality?.click();
 }
 
-function changeQuality(
+async function getInitialPlayerResponse() {
+  const body = await (await fetch(location.href)).text();
+
+  function getJson(body: string) {
+    return JSON.parse(body.match(/ytInitialPlayerResponse\s*=\s*({.+?})\s*;\s*(?:var\s+meta|<\/script|\n)/)![1]);
+  }
+
+  try {
+    return getJson(body);
+  } catch {
+    if (location.pathname.startsWith("/embed")) {
+      const videoId = location.pathname.split("/").pop();
+      const bodyEmbed = await (await fetch(`https://www.youtube.com/watch?v=${videoId}`)).text();
+      return getJson(bodyEmbed);
+    }
+    const elChannelTrailerContainer = getVisibleElement<HTMLDivElement>(SELECTORS.channelTrailerContainer);
+    const elAVideo = elChannelTrailerContainer.querySelector<HTMLAnchorElement>("a[href*=watch]");
+    const bodyTrailer = await (await fetch(elAVideo!.href)).text();
+    return getJson(bodyTrailer);
+  }
+}
+
+async function changeQuality(
   qualityCustom?: VideoQuality | EnhancedVideoQuality,
-  isEnhancedBitrateCustom?: Partial<EnhancedBitratePreferences>
-): void {
-  const fpsVideo = getVideoFPS();
+  isEnhancedBitrateCustom?: Partial<EnhancedBitratePreferences>,
+  isUseSuperResolution?: boolean
+) {
+  const ytInitialPlayerResponse = await getInitialPlayerResponse();
+  const fpsVideo = getVideoFPS(ytInitialPlayerResponse.streamingData.adaptiveFormats);
   const fpsStep = getFpsFromRange(window.ythdLastUserQualities!, fpsVideo);
   const elQualities = getCurrentQualityElements();
-  const qualitiesAvailable = getAvailableQualities();
+  const qualitiesAvailable = getAvailableQualities(ytInitialPlayerResponse.playabilityStatus);
   const qualityPreferred = qualityCustom || window.ythdLastUserQualities![fpsStep];
   const isEnhancedBitrate = { ...window.ythdLastUserEnhancedBitrates, ...isEnhancedBitrateCustom };
 
@@ -90,6 +135,20 @@ function changeQuality(
   const isQualityPreferredEBR = qualitiesAvailable[0].toString().endsWith(SUFFIX_EBR) && isEnhancedBitrate[fpsStep];
   if (isQualityPreferredEBR) {
     applyQuality(0);
+    return;
+  }
+
+  const paygatedQualitiesMetadata = ytInitialPlayerResponse.playabilityStatus?.paygatedQualitiesMetadata;
+  const isSuperResolution = !paygatedQualitiesMetadata?.qualityDetails[0]?.key?.match(/premium/i);
+
+  if (isSuperResolution && !isUseSuperResolution) {
+    const superResolutionQualitiesSorted: VideoQuality[] = paygatedQualitiesMetadata.qualityDetails
+      .map(detail => parseInt(detail.key))
+      .sort((a, b) => a - b);
+
+    const superResolutionQualityLowest = superResolutionQualitiesSorted[0];
+    const iHighestRegularQuality = qualitiesAvailable.indexOf(superResolutionQualityLowest) + 1;
+    applyQuality(iHighestRegularQuality);
     return;
   }
 
@@ -105,22 +164,27 @@ function changeQuality(
   applyQuality(iQualityFallback);
 }
 
-function changeQualityWhenPossible(elVideo: HTMLVideoElement): void {
+async function changeQualityWhenPossible() {
+  const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
   if (!getIsLastOptionQuality(elVideo)) {
-    elVideo.addEventListener("canplay", () => changeQualityWhenPossible(elVideo), { once: true });
+    elVideo.addEventListener("canplay", changeQualityWhenPossible, { once: true });
     return;
   }
 
   openQualityMenu(elVideo);
-  changeQuality(window.ythdLastQualityClicked!, window.ythdLastEnhancedBitrateClicked);
+  await changeQuality(
+    window.ythdLastQualityClicked!,
+    window.ythdLastEnhancedBitrateClicked!,
+    window.ythdIsUseSuperResolution!
+  );
 }
 
-function getIsSettingsMenuOpen(): boolean {
+function getIsSettingsMenuOpen() {
   const elButtonSettings = getVisibleElement<HTMLButtonElement>(SELECTORS.buttonSettings);
   return elButtonSettings?.ariaExpanded === "true";
 }
 
-async function closeMenu(elPlayer: HTMLDivElement): Promise<void> {
+function closeMenu(elPlayer: HTMLDivElement) {
   const clickPanelBackIfPossible = (): boolean => {
     const elPanelHeaderBack = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.panelHeaderBack);
     if (elPanelHeaderBack) {
@@ -141,12 +205,12 @@ async function closeMenu(elPlayer: HTMLDivElement): Promise<void> {
   }).observe(elPlayer, OBSERVER_OPTIONS);
 }
 
-async function changeQualityAndClose(elVideo: HTMLVideoElement, elPlayer: HTMLDivElement): Promise<void> {
-  changeQualityWhenPossible(elVideo);
-  await closeMenu(elPlayer);
+async function changeQualityAndClose(elPlayer: HTMLDivElement) {
+  await changeQualityWhenPossible();
+  closeMenu(elPlayer);
 }
 
-export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> {
+export async function prepareToChangeQualityOnDesktop(e?: Event) {
   window.ythdLastUserQualities = await getStorage({
     area: "local",
     key: "qualities",
@@ -159,9 +223,15 @@ export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> 
     fallback: initial.isEnhancedBitrates,
     updateWindowKey: "ythdLastUserEnhancedBitrates"
   });
+  window.ythdIsUseSuperResolution = await getStorage({
+    area: "local",
+    key: "isUseSuperResolution",
+    fallback: initial.isUseSuperResolution,
+    updateWindowKey: "ythdIsUseSuperResolution"
+  });
 
-  const elVideo = (e?.target ?? getVisibleElement(SELECTORS.video)) as HTMLVideoElement;
-  if (!elVideo) {
+  const elVideo = e?.target ?? getVisibleElement(SELECTORS.video);
+  if (!(elVideo instanceof HTMLVideoElement)) {
     return;
   }
 
@@ -176,7 +246,7 @@ export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> 
     elSettings.click();
   }
   elSettings.click();
-  await changeQualityAndClose(elVideo, elPlayer);
+  await changeQualityAndClose(elPlayer);
 
   elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings)?.blur();
 }

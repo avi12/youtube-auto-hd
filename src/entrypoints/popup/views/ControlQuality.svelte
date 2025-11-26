@@ -2,7 +2,7 @@
   import { storage } from "#imports";
   import Slider from "../components/Slider.svelte";
   import Switch from "../components/Switch.svelte";
-  import { isEnhancedBitrates, qualitiesStored } from "@/entrypoints/popup/states.svelte";
+  import { isEnhancedBitrates, isUseSuperResolution, qualitiesStored } from "@/entrypoints/popup/states.svelte";
   import type { VideoFPS, VideoQuality } from "@/lib/types";
   import { fpsSupported, qualities } from "@/lib/ythd-setup";
   import { getI18n } from "@/lib/ythd-utils";
@@ -14,7 +14,8 @@
     labelQualityEnd: getI18n("cj_i18n_02148", "FPS videos"),
     preferEnhancedBitrate: getI18n("cj_i18n_07392", "Use enhanced bitrate when it's the highest quality"),
     requiresYouTubePremium: getI18n("cj_i18n_07584", "Requires YouTube Premium"),
-    fpsWarning: getI18n("cj_i18n_07265", "Videos will play at up to 30 FPS for this quality")
+    fpsWarning: getI18n("cj_i18n_07265", "Videos will play at up to 30 FPS for this quality"),
+    labelUseSuperResolution: getI18n("cj_i18n_07966", "Use super resolution when available")
   };
 
   const fpsList = [...fpsSupported].sort((a, b) => a - b);
@@ -25,6 +26,8 @@
   let qualityForAllSelected = $state(qualitiesSelected[0]);
 
   const qualitiesReversed = [...qualities].reverse();
+
+  const isEnablePerFpsEnhancedBitrateToggle = false;
 
   $effect(() => {
     if (!isSameQualityForAllFps || qualitiesStored.value === null) {
@@ -41,6 +44,10 @@
 
   $effect(() => {
     storage.setItem("local:isEnhancedBitrates", isEnhancedBitrates.value);
+  });
+
+  $effect(() => {
+    storage.setItem("local:isUseSuperResolution", isUseSuperResolution.value);
   });
 
   function fpsToRange(i: number): string {
@@ -65,18 +72,8 @@
           </div>
         </Slider>
 
-        {#if qualityForAllSelected >= 1080}
-          <Switch
-            change={isEnableEnhancedBitRate => {
-              fpsList.forEach(fps => {
-                if (isEnhancedBitrates.value) {
-                  isEnhancedBitrates.value[fps] = isEnableEnhancedBitRate;
-                }
-              });
-            }}
-            checked={isSameEnhancedBitrateForAllFps}
-            className="switch">{i18n.preferEnhancedBitrate}</Switch>
-          <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
+        {#if isEnablePerFpsEnhancedBitrateToggle && qualityForAllSelected >= 1080}
+          {@render toggleEnhancedBitrateForAllFps()}
         {/if}
 
         {#if qualityForAllSelected < 720}
@@ -86,7 +83,7 @@
     {:else}
       {#each Object.keys(qualitiesStored.value) as fps, iFps (fps)}
         {#if iFps > 0}
-          <hr class="mt-4" />
+          <hr />
         {/if}
 
         <section class="control-section">
@@ -103,7 +100,7 @@
             </div>
           </Slider>
 
-          {#if qualitiesStored.value[fps] >= 1080}
+          {#if isEnablePerFpsEnhancedBitrateToggle && qualitiesStored.value[fps] >= 1080}
             <Switch
               change={isEnableEnhancedBitRate => {
                 if (isEnhancedBitrates.value) {
@@ -122,9 +119,33 @@
       {/each}
     {/if}
   {/if}
+
+  {#if !isEnablePerFpsEnhancedBitrateToggle}
+    {@render toggleEnhancedBitrateForAllFps()}
+  {/if}
 </article>
 
-<hr class="mt-4" />
+<hr />
+
+<Switch bind:checked={isUseSuperResolution.value} style="margin-block: 1.25rem;">
+  {i18n.labelUseSuperResolution}
+</Switch>
+
+<hr />
+
+{#snippet toggleEnhancedBitrateForAllFps()}
+  <Switch
+    change={isEnableEnhancedBitRate => {
+      fpsList.forEach(fps => {
+        if (isEnhancedBitrates.value) {
+          isEnhancedBitrates.value[fps] = isEnableEnhancedBitRate;
+        }
+      });
+    }}
+    checked={isSameEnhancedBitrateForAllFps}
+    className="switch">{i18n.preferEnhancedBitrate}</Switch>
+  <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
+{/snippet}
 
 <style>
   .control-section {

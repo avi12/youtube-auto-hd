@@ -24,7 +24,7 @@ async function resizePlayerIfNeeded() {
   const elSizeToggle = getVisibleElement<HTMLButtonElement>(SELECTORS.sizeToggle);
   const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
 
-  if (!preferences.isResizeVideo) {
+  if (!preferences.isResizeVideo || !elVideo) {
     return;
   }
 

@@ -12,18 +12,19 @@ import {
 declare global {
   interface Window {
     ythdLastQualityClicked: VideoQuality | null;
-    ythdLastEnhancedBitrateClicked: Partial<EnhancedBitratePreferences>;
+    ythdLastEnhancedBitrateClicked: Partial<EnhancedBitratePreferences> | null;
     ythdLastUserQualities: EnhancedBitrateFpsPreferences | null;
     ythdLastUserEnhancedBitrates: EnhancedBitratePreferences | null;
+    ythdIsUseSuperResolution: boolean | null;
     ythdExtEnabled: boolean;
   }
 }
 window.ythdLastQualityClicked = null;
 window.ythdLastEnhancedBitrateClicked = {};
+window.ythdIsUseSuperResolution = null;
 
 let gTitleLast = document.title;
 let gUrlLast = location.href;
-let gPlayerObserver: MutationObserver;
 
 function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event): void {
   // We use programmatic clicks to change quality on desktop, but we need to save/respond only to user clicks
@@ -52,17 +53,11 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event): void {
   }
 
   const fps = Number(fpsMatch[1] || 30) as VideoFPS;
-  window.ythdLastQualityClicked = parseInt(labelQuality as string) as VideoQuality;
-  window.ythdLastEnhancedBitrateClicked[fps] = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
+  window.ythdLastQualityClicked = parseInt(labelQuality) as VideoQuality;
+  window.ythdLastEnhancedBitrateClicked![fps] = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
 }
 
-function getIsExit(mutations: Array<MutationRecord>): boolean {
-  const regexExit = /ytp-tooltip-title|ytp-time-current|ytp-bound-time-right/;
-  const target = mutations[mutations.length - 1].target as HTMLDivElement;
-  return Boolean(target?.className.match(regexExit));
-}
-
-function addTemporaryBodyListenerOnDesktop(): void {
+async function addTemporaryBodyListenerOnDesktop() {
   if (!window.ythdExtEnabled) {
     return;
   }
@@ -74,41 +69,22 @@ function addTemporaryBodyListenerOnDesktop(): void {
   gTitleLast = document.title;
   gUrlLast = location.href;
 
-  // Typically - listen to the player div (<video> container)
-  // Otherwise, suppose it's a main channel page that has a channel trailer,
-  // the <video> container wouldn't immediately exist, hence listen to the document
-  const elementToTrack = getVisibleElement<HTMLDivElement>(SELECTORS.player) || document;
-
-  if (!gPlayerObserver) {
-    gPlayerObserver = new MutationObserver(async mutations => {
-      const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
-      if (getIsExit(mutations) || !elVideo) {
-        return;
-      }
-
-      const elPlayer = elVideo.closest(SELECTORS.player);
-      if (!elPlayer) {
-        return;
-      }
-
-      // We need to reset global variables, as well as prepare to change the quality of the new video
-      window.ythdLastQualityClicked = null;
-      window.ythdLastEnhancedBitrateClicked = {};
-      await prepareToChangeQualityOnDesktop();
-      elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
-      elPlayer.removeEventListener("click", saveManualQualityChangeOnDesktop);
-
-      // Used to:
-      // - Change the quality even if a pre-roll or a mid-roll ad is playing
-      // - Change the quality if the video "refreshes", which happens when idling for a while (e.g. a couple of hours) and then resuming
-      elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
-      elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
-
-      gPlayerObserver.disconnect();
-    });
+  const elPlayer = getVisibleElement<HTMLDivElement>(SELECTORS.player);
+  if (!elPlayer) {
+    return;
   }
 
-  gPlayerObserver.observe(elementToTrack, OBSERVER_OPTIONS);
+  elPlayer.removeEventListener("click", saveManualQualityChangeOnDesktop);
+  elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
+
+  const elVideo = elPlayer.querySelector<HTMLVideoElement>(SELECTORS.video)!;
+  // Used to:
+  // - Change the quality even if a pre-roll or a mid-roll ad is playing
+  // - Change the quality if the video "refreshes", which happens when idling for a while (e.g. a couple of hours) and then resuming
+  elVideo.removeEventListener("canplay", saveManualQualityChangeOnDesktop);
+  elVideo.addEventListener("canplay", saveManualQualityChangeOnDesktop);
+
+  await prepareToChangeQualityOnDesktop();
 }
 
 async function init(): Promise<void> {
@@ -142,8 +118,6 @@ async function init(): Promise<void> {
     observer.disconnect();
 
     await prepareToChangeQualityOnDesktop();
-    elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
-    elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
   }).observe(document, OBSERVER_OPTIONS);
 }
 
