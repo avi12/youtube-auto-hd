@@ -14,7 +14,7 @@ Available for:
 - [Naver Whale](https://store.whale.naver.com/detail/njejcbikjebbmiggdpdggelmoifodjhh) - maintained
   by [carlosjeurissen](https://github.com/carlosjeurissen)
 
-![A screenshot from the extension's pop-up page](https://github.com/user-attachments/assets/62ea0380-c2ac-44d8-a7b1-2b2b28dcbd68)
+![A screenshot from the extension's pop-up page](https://private-user-images.githubusercontent.com/6422804/519330665-bcd2a557-8c1d-425a-a497-73072f8c8cff.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjQxNzk4NTYsIm5iZiI6MTc2NDE3OTU1NiwicGF0aCI6Ii82NDIyODA0LzUxOTMzMDY2NS1iY2QyYTU1Ny04YzFkLTQyNWEtYTQ5Ny03MzA3MmY4YzhjZmYucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI1MTEyNiUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNTExMjZUMTc1MjM2WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NjQyNWE2ZTc1NjY0YmMwYzc1NGM1MTUzYmUyNjJkNzJmODA5OTgyYzYzMGFiNjEyNmFjZTJlZTA0MTQ4YzNiYSZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QifQ.-3xysrNqFRP-PMwgvceMSss5iRgZsn0okC6CAGYD3VE)
 
 Made by [Avi](https://avi12.com)
 
