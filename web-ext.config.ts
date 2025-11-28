@@ -20,7 +20,7 @@ const path = (() => {
   return osMap[process.platform] || "";
 })();
 
-const env = dotenv.configDotenv({ path }).parsed as {
+const env = dotenv.configDotenv({ path, quiet: true }).parsed as {
   VITE_PATH_EDGE: string;
   VITE_PATH_OPERA: string;
 };
@@ -32,6 +32,7 @@ export default defineWebExtConfig({
     edge: env.VITE_PATH_EDGE,
     opera: env.VITE_PATH_OPERA.replace("USERPROFILE", process.env.HOME!)
   },
+  disabled: true,
   startUrls: [VITE_BLANK ? "about:blank" : "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
   chromiumArgs: [`--lang=${VITE_LANG}`],
   ...(browser === "chrome" && VITE_LANG.match(/en|he/) && VITE_BLANK && { disabled: true })
