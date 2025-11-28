@@ -83,7 +83,7 @@
     {:else}
       {#each Object.keys(qualitiesStored.value) as fps, iFps (fps)}
         {#if iFps > 0}
-          <hr class="mt-4" />
+          <hr />
         {/if}
 
         <section class="control-section">
