@@ -5,7 +5,7 @@
   import { isEnhancedBitrates, isUseSuperResolution, qualitiesStored } from "@/entrypoints/popup/states.svelte";
   import type { VideoFPS, VideoQuality } from "@/lib/types";
   import { fpsSupported, qualities } from "@/lib/ythd-setup";
-  import { getI18n } from "@/lib/ythd-utils";
+  import {getI18n, getUncircularJson} from "@/lib/ythd-utils";
 
   const i18n: Record<string, string> = {
     labelSwitchSameQuality: getI18n("cj_i18n_06862", "Use the same quality for all frame rates"),
@@ -37,7 +37,11 @@
   });
 
   $effect(() => {
-    storage.setItem("local:qualities", qualitiesStored.value);
+    storage.setItem("local:qualities", getUncircularJson(qualitiesStored.value));
+  });
+
+  $effect(() => {
+    storage.setItem("local:isEnhancedBitrates", getUncircularJson(isEnhancedBitrates.value));
   });
 
   $effect(() => {
