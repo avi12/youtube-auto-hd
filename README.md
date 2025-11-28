@@ -14,7 +14,7 @@ Available for:
 - [Naver Whale](https://store.whale.naver.com/detail/njejcbikjebbmiggdpdggelmoifodjhh) - maintained
   by [carlosjeurissen](https://github.com/carlosjeurissen)
 
-![A screenshot from the extension's pop-up page](https://github.com/user-attachments/assets/62ea0380-c2ac-44d8-a7b1-2b2b28dcbd68)
+![A screenshot from the extension's pop-up page](https://private-user-images.githubusercontent.com/6422804/519377266-5ab156c9-dd51-465f-8016-c84a94d2e064.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjQxODc0NjMsIm5iZiI6MTc2NDE4NzE2MywicGF0aCI6Ii82NDIyODA0LzUxOTM3NzI2Ni01YWIxNTZjOS1kZDUxLTQ2NWYtODAxNi1jODRhOTRkMmUwNjQucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI1MTEyNiUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNTExMjZUMTk1OTIzWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9N2E1ODg5OTRjZjBlMjNkMjE0YjVkOTgxMTg1Zjg3OTBkMzViYWRlODc5YjQ4NjJjYTZlM2IyMzZiZWI3OWI4OCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QifQ.kHhpkGWREaj-t72hkMzVCDBZjUw-hoaJIHXI2xzoxFQ)
 
 Made by [Avi](https://avi12.com)
 
@@ -46,12 +46,12 @@ Filling will grant you access to a Google Spreadsheet via email, in which you ca
 
 ## Requirements for setting up
 
-Install [Node.js](https://nodejs.org) and [PNPM](https://pnpm.io/installation)
+Install [Node.js](https://nodejs.org) and [Bun](https://bun.sh)
 
 ## Install dependencies
 
 ```shell script
-pnpm i
+bun i
 ```
 
 ## Start the dev server and run in a test browser
@@ -59,25 +59,25 @@ pnpm i
 ### Chrome
 
 ```shell script
-pnpm dev
+bun dev
 ```
 
 ### Chrome RTL
 
 ```shell
-pnpm dev:rtl
+bun dev:rtl
 ```
 
 ### Edge
 
 ```shell
-pnpm dev:edge
+bun dev:edge
 ```
 
 ### Opera
 
 ```shell
-pnpm dev:opera
+bun dev:opera
 ```
 
 ### Firefox
@@ -91,25 +91,25 @@ follow [this guide](https://extensionworkshop.com/documentation/develop/temporar
 ### Chrome
 
 ```shell script
-pnpm build
+bun build
 ```
 
 ### Edge
 
 ```shell script
-pnpm build:edge
+bun build:edge
 ```
 
 ### Opera
 
 ```shell
-pnpm build:opera
+bun build:opera
 ```
 
 ### Firefox
 
 ```shell
-pnpm build:firefox
+bun build:firefox
 ```
 
 ## Package
@@ -117,25 +117,25 @@ pnpm build:firefox
 ### Chrome
 
 ```shell
-pnpm package
+bun package
 ```
 
 ### Edge
 
 ```shell
-pnpm package:edge
+bun package:edge
 ```
 
 ### Opera
 
 ```shell
-pnpm package:opera
+bun package:opera
 ```
 
 ### Firefox
 
 ```shell
-pnpm package:firefox
+bun package:firefox
 ```
 
 ## Shorthands
@@ -143,25 +143,25 @@ pnpm package:firefox
 ### Chrome
 
 ```shell
-pnpm build:package
+bun build:package
 ```
 
 ### Edge
 
 ```shell
-pnpm build:package:edge
+bun build:package:edge
 ```
 
 ### Opera
 
 ```shell
-pnpm build:package:opera
+bun build:package:opera
 ```
 
 ### Firefox
 
 ```shell
-pnpm build:package:firefox
+bun build:package:firefox
 ```
 
 ## Contribution
