@@ -10,6 +10,7 @@ import { prepareToChangeQualityOnDesktop } from "@/entrypoints/desktop.content/f
 
 export const OBSERVER_OPTIONS: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
 window.ythdLastUserQualities = { ...initial.qualities };
+window.ythdIsUseSuperResolution = initial.isUseSuperResolution;
 
 export async function getStorage<T>({
   area,
@@ -28,12 +29,9 @@ export async function getStorage<T>({
   } catch {
     value = fallback;
   }
-  // @ts-expect-error Incompatible types
   if (typeof window[updateWindowKey] !== "object") {
-    // @ts-expect-error Incompatible types
     window[updateWindowKey] = value;
   } else {
-    // @ts-expect-error Incompatible types
     window[updateWindowKey] = { ...fallback, ...value };
   }
   return value;
@@ -107,8 +105,12 @@ export function addStorageListener(): void {
   });
 
   storage.watch<EnhancedBitratePreferences>("local:isEnhancedBitrates", async isEnhancedBitrates => {
-    window.ythdLastEnhancedBitrateClicked = {};
-    window.ythdLastUserEnhancedBitrates = isEnhancedBitrates;
+    window.ythdLastEnhancedBitrateClicked = isEnhancedBitrates;
+    await prepareToChangeQualityOnDesktop();
+  });
+
+  storage.watch<boolean>("local:isUseSuperResolution", async isUseSuperResolution => {
+    window.ythdIsUseSuperResolution = isUseSuperResolution;
     await prepareToChangeQualityOnDesktop();
   });
 }
@@ -134,4 +136,24 @@ export function getFpsFromRange(
     .map(fps => parseInt(fps))
     .sort((a, b) => b - a) as Array<VideoFPS>;
   return fpsList.find(fps => fps <= fpsToCheck) || (fpsList.at(-1) as VideoFPS);
+}
+
+const getCircularReplacer = () => {
+  const seen = new WeakSet();
+  return (_: unknown, value: unknown) => {
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) {
+        return;
+      }
+      seen.add(value);
+    }
+    return value;
+  };
+};
+
+export function getUncircularJson(obj: Record<string, unknown> | null) {
+  if (!obj) {
+    return obj;
+  }
+  return JSON.parse(JSON.stringify(obj, getCircularReplacer()));
 }

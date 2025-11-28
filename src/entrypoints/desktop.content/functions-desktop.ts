@@ -3,17 +3,19 @@ import {
   type EnhancedVideoQuality,
   type FullYouTubeLabel,
   SUFFIX_EBR,
+  SUFFIX_SUPER_RESOLUTION,
+  type SuperResolutionQuality,
   type VideoFPS,
   type VideoQuality
 } from "@/lib/types";
 import { initial } from "@/lib/ythd-setup";
 import { getFpsFromRange, getStorage, getVisibleElement, OBSERVER_OPTIONS, SELECTORS } from "@/lib/ythd-utils";
 
-function getPlayerDiv(elVideo: HTMLVideoElement): HTMLDivElement {
+function getPlayerDiv(elVideo: HTMLVideoElement) {
   return elVideo.closest(SELECTORS.player) as HTMLDivElement;
 }
 
-function getIsLastOptionQuality(elVideo: HTMLVideoElement): boolean {
+function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
   const elOptionInSettings = getPlayerDiv(elVideo).querySelector(SELECTORS.optionQuality);
   if (!elOptionInSettings) {
     return false;
@@ -32,7 +34,7 @@ function getIsLastOptionQuality(elVideo: HTMLVideoElement): boolean {
   return numberString.length >= minQualityCharLength;
 }
 
-function getIsQualityElement(element: Element): boolean {
+function getIsQualityElement(element: Element) {
   const isQuality = Boolean(element.textContent?.match(/\d/));
   const isHasChildren = element.children.length > 1;
   return isQuality && !isHasChildren;
@@ -43,21 +45,27 @@ function getCurrentQualityElements(): Array<HTMLDivElement> {
   return elMenuOptions.filter(getIsQualityElement) as Array<HTMLDivElement>;
 }
 
-function convertQualityToNumber(elQuality: Element): VideoQuality | EnhancedVideoQuality {
-  const isPremiumQuality = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
-  const qualityNumber = parseInt(elQuality.textContent!);
-  if (isPremiumQuality) {
-    return (qualityNumber + SUFFIX_EBR) as EnhancedVideoQuality;
+function convertQualityToNumber(elQuality: Element) {
+  const isRegularQuality = !elQuality.querySelector(SELECTORS.labelPremium);
+  const qualityNumber = parseInt(elQuality.textContent);
+  if (isRegularQuality) {
+    {
+      return qualityNumber as VideoQuality;
+    }
   }
-  return qualityNumber as VideoQuality;
+  const isPremiumQuality = elQuality.textContent.match(/premium/i);
+  if (isPremiumQuality) {
+    return `${qualityNumber}${SUFFIX_EBR}` as EnhancedVideoQuality;
+  }
+  return `${qualityNumber}${SUFFIX_SUPER_RESOLUTION}` as SuperResolutionQuality;
 }
 
-function getAvailableQualities(): (VideoQuality | EnhancedVideoQuality)[] {
+function getAvailableQualities() {
   const elQualities = getCurrentQualityElements();
   return elQualities.map(convertQualityToNumber);
 }
 
-function getVideoFPS(): number {
+function getVideoFPS() {
   const elQualities = getCurrentQualityElements();
   const labelQuality = elQualities[0]?.textContent as FullYouTubeLabel;
   if (!labelQuality) {
@@ -67,15 +75,16 @@ function getVideoFPS(): number {
   return fpsMatch ? (Number(fpsMatch[1]) as VideoFPS) : 30;
 }
 
-function openQualityMenu(elVideo: HTMLVideoElement): void {
+function openQualityMenu(elVideo: HTMLVideoElement) {
   const elSettingQuality = getPlayerDiv(elVideo).querySelector<HTMLDivElement>(SELECTORS.optionQuality);
   elSettingQuality?.click();
 }
 
 function changeQuality(
   qualityCustom?: VideoQuality | EnhancedVideoQuality,
-  isEnhancedBitrateCustom?: Partial<EnhancedBitratePreferences>
-): void {
+  isEnhancedBitrateCustom?: Partial<EnhancedBitratePreferences>,
+  isUseSuperResolution?: boolean
+) {
   const fpsVideo = getVideoFPS();
   const fpsStep = getFpsFromRange(window.ythdLastUserQualities!, fpsVideo);
   const elQualities = getCurrentQualityElements();
@@ -93,26 +102,42 @@ function changeQuality(
     return;
   }
 
-  const iQualityPreferred = qualitiesAvailable.findIndex(quality => quality === qualityPreferred);
+  const iQualityPreferred = qualitiesAvailable.findIndex(quality => {
+    const qualityLabel = quality.toString();
+    const qualityNumber = parseInt(qualityLabel);
+
+    if (qualityLabel.endsWith(SUFFIX_EBR) && !isEnhancedBitrate[fpsStep]) {
+      return false;
+    }
+
+    if (qualityLabel.endsWith(SUFFIX_SUPER_RESOLUTION) && !isUseSuperResolution) {
+      return false;
+    }
+
+    return qualityNumber <= parseInt(qualityPreferred.toString());
+  });
+
   if (iQualityPreferred > -1) {
     applyQuality(iQualityPreferred);
     return;
   }
 
-  const iQualityFallback = qualitiesAvailable.findIndex(
-    quality => !quality.toString().endsWith(SUFFIX_EBR) && quality < qualityPreferred
-  );
-  applyQuality(iQualityFallback);
+  const iLastQuality = qualitiesAvailable.length - 1;
+  applyQuality(iLastQuality);
 }
 
-function changeQualityWhenPossible(elVideo: HTMLVideoElement): void {
+function changeQualityWhenPossible(elVideo: HTMLVideoElement) {
   if (!getIsLastOptionQuality(elVideo)) {
     elVideo.addEventListener("canplay", () => changeQualityWhenPossible(elVideo), { once: true });
     return;
   }
 
   openQualityMenu(elVideo);
-  changeQuality(window.ythdLastQualityClicked!, window.ythdLastEnhancedBitrateClicked);
+  changeQuality(
+    window.ythdLastQualityClicked!,
+    window.ythdLastEnhancedBitrateClicked!,
+    window.ythdIsUseSuperResolution!
+  );
 }
 
 function getIsSettingsMenuOpen(): boolean {
@@ -120,7 +145,7 @@ function getIsSettingsMenuOpen(): boolean {
   return elButtonSettings?.ariaExpanded === "true";
 }
 
-async function closeMenu(elPlayer: HTMLDivElement): Promise<void> {
+function closeMenu(elPlayer: HTMLDivElement) {
   const clickPanelBackIfPossible = (): boolean => {
     const elPanelHeaderBack = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.panelHeaderBack);
     if (elPanelHeaderBack) {
@@ -141,12 +166,12 @@ async function closeMenu(elPlayer: HTMLDivElement): Promise<void> {
   }).observe(elPlayer, OBSERVER_OPTIONS);
 }
 
-async function changeQualityAndClose(elVideo: HTMLVideoElement, elPlayer: HTMLDivElement): Promise<void> {
+function changeQualityAndClose(elVideo: HTMLVideoElement, elPlayer: HTMLDivElement) {
   changeQualityWhenPossible(elVideo);
-  await closeMenu(elPlayer);
+  closeMenu(elPlayer);
 }
 
-export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> {
+export async function prepareToChangeQualityOnDesktop(e?: Event) {
   window.ythdLastUserQualities = await getStorage({
     area: "local",
     key: "qualities",
@@ -159,9 +184,15 @@ export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> 
     fallback: initial.isEnhancedBitrates,
     updateWindowKey: "ythdLastUserEnhancedBitrates"
   });
+  window.ythdIsUseSuperResolution = await getStorage({
+    area: "local",
+    key: "isUseSuperResolution",
+    fallback: initial.isUseSuperResolution,
+    updateWindowKey: "ythdIsUseSuperResolution"
+  });
 
-  const elVideo = (e?.target ?? getVisibleElement(SELECTORS.video)) as HTMLVideoElement;
-  if (!elVideo) {
+  const elVideo = e?.target ?? getVisibleElement(SELECTORS.video);
+  if (!(elVideo instanceof HTMLVideoElement)) {
     return;
   }
 
@@ -176,7 +207,7 @@ export async function prepareToChangeQualityOnDesktop(e?: Event): Promise<void> 
     elSettings.click();
   }
   elSettings.click();
-  await changeQualityAndClose(elVideo, elPlayer);
+  changeQualityAndClose(elVideo, elPlayer);
 
   elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings)?.blur();
 }
