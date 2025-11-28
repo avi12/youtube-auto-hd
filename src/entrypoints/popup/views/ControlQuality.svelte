@@ -27,6 +27,8 @@
 
   const qualitiesReversed = [...qualities].reverse();
 
+  const isEnablePerFpsEnhancedBitrateToggle = false;
+
   $effect(() => {
     if (!isSameQualityForAllFps || qualitiesStored.value === null) {
       return;
@@ -70,18 +72,8 @@
           </div>
         </Slider>
 
-        {#if qualityForAllSelected >= 1080}
-          <Switch
-            change={isEnableEnhancedBitRate => {
-              fpsList.forEach(fps => {
-                if (isEnhancedBitrates.value) {
-                  isEnhancedBitrates.value[fps] = isEnableEnhancedBitRate;
-                }
-              });
-            }}
-            checked={isSameEnhancedBitrateForAllFps}
-            className="switch">{i18n.preferEnhancedBitrate}</Switch>
-          <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
+        {#if isEnablePerFpsEnhancedBitrateToggle && qualityForAllSelected >= 1080}
+          {@render toggleEnhancedBitrateForAllFps()}
         {/if}
 
         {#if qualityForAllSelected < 720}
@@ -108,7 +100,7 @@
             </div>
           </Slider>
 
-          {#if qualitiesStored.value[fps] >= 1080}
+          {#if isEnablePerFpsEnhancedBitrateToggle && qualitiesStored.value[fps] >= 1080}
             <Switch
               change={isEnableEnhancedBitRate => {
                 if (isEnhancedBitrates.value) {
@@ -126,6 +118,10 @@
         </section>
       {/each}
     {/if}
+  {/if}
+
+  {#if !isEnablePerFpsEnhancedBitrateToggle}
+    {@render toggleEnhancedBitrateForAllFps()}
   {/if}
 </article>
 
