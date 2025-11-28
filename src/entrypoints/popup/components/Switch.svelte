@@ -7,15 +7,17 @@
     change?: (isChecked: boolean) => void;
     children?: Snippet;
     className?: string;
+
+    [key: string]: unknown;
   }
 
   const random = crypto.randomUUID();
 
   // eslint-disable-next-line prefer-const
-  let { checked = $bindable(false), children, className, change }: Props = $props();
+  let { checked = $bindable(false), children, className, change, ...rest }: Props = $props();
 </script>
 
-<article class="ccc-switch {className}" dir={document.querySelector(".rtl") ? "rtl" : "ltr"}>
+<article class="ccc-switch {className}" dir={document.querySelector(".rtl") ? "rtl" : "ltr"} {...rest}>
   <input
     bind:checked
     class="ccc-switch__input"
@@ -41,7 +43,7 @@
     & .ccc-switch__label {
       width: 100%;
       margin-inline-start: 0;
-      padding-inline-end: 21px;
+      padding-inline: 0 21px;
     }
   }
 </style>
