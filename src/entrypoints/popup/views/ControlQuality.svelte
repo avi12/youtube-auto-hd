@@ -50,6 +50,10 @@
     storage.setItem("local:isUseSuperResolution", isUseSuperResolution.value);
   });
 
+  $effect(() => {
+    storage.setItem("local:isUseSuperResolution", isUseSuperResolution.value);
+  });
+
   function fpsToRange(i: number): string {
     const fpsRangeStart: number = fpsList[i - 1] + 1;
     const fps: VideoFPS = fpsList[i];

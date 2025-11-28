@@ -60,6 +60,7 @@ export enum SELECTORS {
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
   player = ".html5-video-player:not(#inline-preview-player)",
+  channelTrailerContainer = "ytd-channel-video-player-renderer",
   donationInjectParent = "ytd-comments",
   // Premium
   labelPremium = ".ytp-premium-label"
