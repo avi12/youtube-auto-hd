@@ -27,8 +27,6 @@
 
   const qualitiesReversed = [...qualities].reverse();
 
-  const isEnablePerFpsEnhancedBitrateToggle = false;
-
   $effect(() => {
     if (!isSameQualityForAllFps || qualitiesStored.value === null) {
       return;
@@ -44,10 +42,6 @@
 
   $effect(() => {
     storage.setItem("local:isEnhancedBitrates", getUncircularJson(isEnhancedBitrates.value));
-  });
-
-  $effect(() => {
-    storage.setItem("local:isUseSuperResolution", isUseSuperResolution.value);
   });
 
   $effect(() => {
@@ -76,8 +70,18 @@
           </div>
         </Slider>
 
-        {#if isEnablePerFpsEnhancedBitrateToggle && qualityForAllSelected >= 1080}
-          {@render toggleEnhancedBitrateForAllFps()}
+        {#if qualityForAllSelected >= 1080}
+          <Switch
+            change={isEnableEnhancedBitRate => {
+              fpsList.forEach(fps => {
+                if (isEnhancedBitrates.value) {
+                  isEnhancedBitrates.value[fps] = isEnableEnhancedBitRate;
+                }
+              });
+            }}
+            checked={isSameEnhancedBitrateForAllFps}
+            className="switch">{i18n.preferEnhancedBitrate}</Switch>
+          <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
         {/if}
 
         {#if qualityForAllSelected < 720}
@@ -87,7 +91,7 @@
     {:else}
       {#each Object.keys(qualitiesStored.value) as fps, iFps (fps)}
         {#if iFps > 0}
-          <hr />
+          <hr class="mt-4" />
         {/if}
 
         <section class="control-section">
@@ -104,7 +108,7 @@
             </div>
           </Slider>
 
-          {#if isEnablePerFpsEnhancedBitrateToggle && qualitiesStored.value[fps] >= 1080}
+          {#if qualitiesStored.value[fps] >= 1080}
             <Switch
               change={isEnableEnhancedBitRate => {
                 if (isEnhancedBitrates.value) {
@@ -122,10 +126,6 @@
         </section>
       {/each}
     {/if}
-  {/if}
-
-  {#if !isEnablePerFpsEnhancedBitrateToggle}
-    {@render toggleEnhancedBitrateForAllFps()}
   {/if}
 </article>
 
