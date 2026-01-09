@@ -34,8 +34,7 @@ export default defineWebExtConfig({
     edge: env.VITE_PATH_EDGE,
     opera: env.VITE_PATH_OPERA.replace("USERPROFILE", process.env.USERPROFILE!)
   },
-  disabled: true,
+  disabled: VITE_BLANK !== "1",
   startUrls: [VITE_BLANK ? "about:blank" : "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
-  chromiumArgs: [`--lang=${VITE_LANG}`],
-  ...(browser === "chrome" && VITE_LANG.match(/en|he/) && VITE_BLANK && { disabled: false })
+  chromiumArgs: [`--lang=${VITE_LANG}`]
 });
