@@ -27,4 +27,4 @@ export type EnhancedBitrateFpsPreferences = Record<VideoFPS, VideoQuality | Enha
 export type EnhancedBitratePreferences = Record<VideoFPS, IsEnhancedBitrate>;
 
 export type VideoAutoResize = boolean;
-export type VideoSize = 1 | 0;
+export type VideoSize = 1 | 0 | "1" | "0";

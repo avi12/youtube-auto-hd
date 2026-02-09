@@ -97,7 +97,7 @@
           class="box"
           data-size="small"
           aria-label={i18n.labelSizeSmall}
-          class:selected={sizeVideo.value === 0}
+          class:selected={Number(sizeVideo.value) === 0}
           onclick={() => (sizeVideo.value = 0)}
           tabindex="0">
           <!--suppress HtmlUnknownTag -->
@@ -107,7 +107,7 @@
           class="box"
           data-size="large"
           aria-label={i18n.labelSizeLarge}
-          class:selected={sizeVideo.value === 1}
+          class:selected={Number(sizeVideo.value) !== 0}
           onclick={() => (sizeVideo.value = 1)}
           tabindex="-1">
           <!--suppress HtmlUnknownTag -->
