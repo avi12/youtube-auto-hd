@@ -46,7 +46,7 @@ async function resizePlayerIfNeeded() {
     return;
   }
 
-  while (getCurrentViewMode() !== viewModePreferred) {
+  while (getCurrentViewMode() !== Number(viewModePreferred)) {
     elSizeToggle.click();
 
     await new Promise(resolve => setTimeout(resolve, 100));
