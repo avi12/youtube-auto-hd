@@ -24,29 +24,19 @@ async function resizePlayerIfNeeded() {
   const elSizeToggle = getVisibleElement<HTMLButtonElement>(SELECTORS.sizeToggle);
   const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
 
-  if (!preferences.isResizeVideo || !elVideo) {
+  if (!preferences.isResizeVideo || !elVideo || !elSizeToggle) {
     return;
   }
 
-  const isWidescreen = elVideo.clientWidth > elVideo.clientHeight;
+  const isVerticalVideo = elVideo.clientWidth <= elVideo.clientHeight;
+  const shouldForceDefaultMode = preferences.isExcludeVertical && isVerticalVideo;
 
-  let viewModePreferred: VideoSize;
-  if (preferences.isExcludeVertical) {
-    if (isWidescreen) {
-      viewModePreferred = preferences.viewMode;
-    } else {
-      viewModePreferred = 0;
-    }
-  } else {
-    viewModePreferred = preferences.viewMode;
-  }
+  const targetViewMode = shouldForceDefaultMode ? 0 : Number(preferences.viewMode);
 
-  const viewModeCurrent = getCurrentViewMode();
-  if (viewModeCurrent === viewModePreferred) {
-    return;
-  }
+  const isPrefersDefaultSize = targetViewMode === 0;
+  const isPrefersTheaterSize = !isPrefersDefaultSize;
 
-  while (getCurrentViewMode() !== Number(viewModePreferred)) {
+  while ((getCurrentViewMode() === 0 && isPrefersTheaterSize) || (getCurrentViewMode() === 1 && isPrefersDefaultSize)) {
     elSizeToggle.click();
 
     await new Promise(resolve => setTimeout(resolve, 100));
