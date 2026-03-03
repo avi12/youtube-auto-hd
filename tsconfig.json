@@ -2,6 +2,6 @@
   "extends": ["./.wxt/tsconfig.json"],
   "compilerOptions": {
     "types": ["svelte", "chrome", "node"],
-    "noImplicitAny": false
+    "noImplicitAny": true
   }
 }

@@ -31,7 +31,8 @@
     "build:package:opera": "bun build:opera && bun package:opera",
     "build:package:firefox": "bun build:firefox && bun package:firefox",
     "build:package:all": "concurrently \"bun build:package\" \"bun build:package:edge\" \"bun build:package:opera\" \"bun build:package:firefox\" --names Chrome,Edge,Opera,Firefox",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "svelte:check": "svelte-check --tsconfig ./tsconfig.json",
+    "lint:fix": "eslint --fix",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
