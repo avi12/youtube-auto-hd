@@ -36,7 +36,7 @@ function getIsQualityElement(element: Element) {
   return isQuality && !isHasChildren;
 }
 
-function getCurrentQualityElements(): Array<HTMLDivElement> {
+function getCurrentQualityElements() {
   const elMenuOptions = [...getVisibleElement(SELECTORS.player).querySelectorAll<HTMLDivElement>(SELECTORS.menuOption)];
   return elMenuOptions.filter(getIsQualityElement);
 }
@@ -134,13 +134,13 @@ function changeQualityWhenPossible(elVideo: HTMLVideoElement) {
   );
 }
 
-function getIsSettingsMenuOpen(): boolean {
+function getIsSettingsMenuOpen() {
   const elButtonSettings = getVisibleElement<HTMLButtonElement>(SELECTORS.buttonSettings);
   return elButtonSettings?.ariaExpanded === "true";
 }
 
 function closeMenu(elPlayer: HTMLDivElement) {
-  const clickPanelBackIfPossible = (): boolean => {
+  const clickPanelBackIfPossible = () => {
     const elPanelHeaderBack = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.panelHeaderBack);
     if (elPanelHeaderBack) {
       elPanelHeaderBack.click();

@@ -16,7 +16,7 @@ let isYouTubeMusicEnabled = false;
 let gTitleLast = document.title;
 let gUrlLast = location.href;
 
-async function sendQualityToMainWorld(): Promise<void> {
+async function sendQualityToMainWorld() {
   const isSameQuality = await getStorage({
     area: "local",
     key: "isSameQualityMusicAsYouTube",
@@ -44,7 +44,7 @@ async function sendQualityToMainWorld(): Promise<void> {
   await musicMessenger.sendMessage(MusicMessage.APPLY_QUAILTY, qualitiesMusic);
 }
 
-async function addTemporaryBodyListenerOnMusic(): Promise<void> {
+async function addTemporaryBodyListenerOnMusic() {
   if (!isExtensionEnabled || !isYouTubeMusicEnabled) {
     return;
   }
@@ -66,7 +66,7 @@ async function addTemporaryBodyListenerOnMusic(): Promise<void> {
   elVideo.addEventListener("canplay", sendQualityToMainWorld, { once: true });
 }
 
-async function init(): Promise<void> {
+async function init() {
   await addGlobalEventListener(addTemporaryBodyListenerOnMusic);
 
   storage.watch<boolean>("local:isExtensionEnabled", async isExtEnabled => {

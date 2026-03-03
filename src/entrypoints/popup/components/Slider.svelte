@@ -62,10 +62,12 @@
       border: none;
       box-shadow: none;
 
+      /*noinspection CssUnusedSymbol*/
       & :global(.noUi-connect) {
         background: var(--slider-track-cover-color);
       }
 
+      /*noinspection CssUnusedSymbol*/
       & :global(.noUi-handle) {
         --width: 16px;
         --height: var(--width);
@@ -83,13 +85,13 @@
         box-shadow: none;
       }
 
+      /*noinspection CssUnusedSymbol*/
       & :global(.noUi-handle::before),
+      /*noinspection CssUnusedSymbol*/
       & :global(.noUi-handle::after) {
         content: unset;
       }
     }
-
-    /*noinspection CssUnusedSymbol*/
 
     & .label {
       flex: 1;

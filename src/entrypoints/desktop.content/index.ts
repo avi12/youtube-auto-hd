@@ -28,13 +28,13 @@ window.ythdIsUseSuperResolution = null;
 let gTitleLast = document.title;
 let gUrlLast = location.href;
 
-function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event): void {
+function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event) {
   // We use programmatic clicks to change quality on desktop, but we need to save/respond only to user clicks
   if (!isTrusted || !(target instanceof HTMLElement)) {
     return;
   }
 
-  function getQualityParentElement(elTarget: HTMLElement): HTMLElement {
+  function getQualityParentElement(elTarget: HTMLElement) {
     if (elTarget.matches(SELECTORS.labelPremium) || elTarget.matches("sup")) {
       return elTarget.parentElement!;
     }
@@ -94,7 +94,7 @@ async function addTemporaryBodyListenerOnDesktop() {
   elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
 }
 
-async function init(): Promise<void> {
+async function init() {
   addGlobalEventListener(addTemporaryBodyListenerOnDesktop);
   addStorageListener();
 

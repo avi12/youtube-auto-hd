@@ -2,8 +2,7 @@ import { storage, type StorageArea } from "#imports";
 import type {
   EnhancedBitrateFpsPreferences,
   EnhancedBitratePreferences,
-  QualityFpsPreferences,
-  VideoFPS
+  QualityFpsPreferences
 } from "./types";
 import { fpsSupported, initial } from "./ythd-setup";
 import { prepareToChangeQualityOnDesktop } from "@/entrypoints/desktop.content/functions-desktop";
@@ -22,7 +21,7 @@ export async function getStorage<T>({
   key: string;
   fallback: T;
   updateWindowKey: string;
-}): Promise<T> {
+}) {
   let value: T;
   try {
     value = await storage.getItem<T>(`${area}:${key}`, { fallback });
@@ -37,7 +36,7 @@ export async function getStorage<T>({
   return value;
 }
 
-export async function getIsExtensionEnabled(): Promise<boolean> {
+export async function getIsExtensionEnabled() {
   return getStorage({
     area: "local",
     key: "isExtensionEnabled",
@@ -66,7 +65,7 @@ export enum SELECTORS {
   labelPremium = ".ytp-premium-label"
 }
 
-export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T {
+export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS) {
   const elements = [...document.querySelectorAll<T>(elementName)];
   return elements.find(isElementVisible)!;
 }
@@ -74,8 +73,8 @@ export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS)
 export async function getElementByMutationObserver<T extends HTMLElement>(
   selector: SELECTORS,
   isVisible = true
-): Promise<T> {
-  return new Promise(resolve => {
+) {
+  return new Promise<T>(resolve => {
     new MutationObserver((_, observer) => {
       const element = isVisible ? getVisibleElement<T>(selector) : document.querySelector<T>(selector);
       if (element) {
@@ -86,7 +85,7 @@ export async function getElementByMutationObserver<T extends HTMLElement>(
   });
 }
 
-export function addStorageListener(): void {
+export function addStorageListener() {
   storage.watch<boolean>("local:isExtensionEnabled", async isExtEnabled => {
     window.ythdExtEnabled = isExtEnabled ?? false;
     const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
@@ -125,14 +124,14 @@ export async function addGlobalEventListener(addTemporaryBodyListener: () => voi
   observer.observe(elTitle, OBSERVER_OPTIONS);
 }
 
-function isElementVisible(element: HTMLElement): boolean {
+function isElementVisible(element: HTMLElement) {
   return element?.offsetWidth > 0 && element?.offsetHeight > 0;
 }
 
 export function getFpsFromRange(
   qualities: QualityFpsPreferences | EnhancedBitrateFpsPreferences,
   fpsToCheck: number
-): VideoFPS {
+) {
   const fpsList = fpsSupported.filter(fps => fps.toString() in qualities).sort((a, b) => b - a);
   return fpsList.find(fps => fps <= fpsToCheck) ?? fpsList.at(-1)!;
 }

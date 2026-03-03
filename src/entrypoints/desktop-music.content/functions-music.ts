@@ -24,8 +24,8 @@ const QUALITY_NUMBER: Record<string, VideoQuality> = Object.fromEntries<VideoQua
   Object.entries(QUALITY_MAP).map(([number, label]) => [label, qualities.find(q => q === Number(number))!])
 );
 
-async function measureVideoFps(elVideo: HTMLVideoElement): Promise<number> {
-  return new Promise(resolve => {
+async function measureVideoFps(elVideo: HTMLVideoElement) {
+  return new Promise<number>(resolve => {
     let lastMediaTime = 0;
     let lastFrameNum = 0;
     const frameDiffs: number[] = [];
