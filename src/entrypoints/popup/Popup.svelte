@@ -1,18 +1,22 @@
 <script lang="ts">
   import { storage } from "#imports";
   import {
+    isEnableYouTubeMusic,
     isEnhancedBitrates,
     isExcludeVertical,
     isExtensionEnabled,
     isHideDonationSection,
     isResizeVideo,
+    isSameQualityMusicAsYouTube,
     isUseSuperResolution,
+    qualitiesMusicStored,
     qualitiesStored,
     sizeVideo
   } from "@/entrypoints/popup/states.svelte";
   import ControlEnabled from "@/entrypoints/popup/views/ControlEnabled.svelte";
   import ControlQuality from "@/entrypoints/popup/views/ControlQuality.svelte";
   import ControlSize from "@/entrypoints/popup/views/ControlSize.svelte";
+  import ControlYouTubeMusic from "@/entrypoints/popup/views/ControlYouTubeMusic.svelte";
   import Promotions from "@/entrypoints/popup/views/Promotions.svelte";
   import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/types";
   import { initial } from "@/lib/ythd-setup";
@@ -30,7 +34,10 @@
     storage.getItem<VideoAutoResize>("sync:autoResize", { fallback: initial.isResizeVideo }),
     storage.getItem<VideoSize>("sync:size", { fallback: initial.size }),
     storage.getItem<boolean>("sync:isExcludeVertical", { fallback: initial.isExcludeVertical }),
-    storage.getItem<boolean>("sync:isHideDonationSection", { fallback: initial.isHideDonationSection })
+    storage.getItem<boolean>("sync:isHideDonationSection", { fallback: initial.isHideDonationSection }),
+    storage.getItem<boolean>("local:isEnableYouTubeMusic", { fallback: false }),
+    storage.getItem<boolean>("local:isSameQualityMusicAsYouTube", { fallback: true }),
+    storage.getItem<QualityFpsPreferences>("local:qualitiesMusic", { fallback: initial.qualities })
   ]).then(
     ([
       qualities,
@@ -40,7 +47,10 @@
       autoResize,
       size,
       pisExcludeVertical,
-      pIsHideDonationSection
+      pIsHideDonationSection,
+      pIsEnableYouTubeMusic,
+      pIsSameQualityMusicAsYouTube,
+      pQualitiesMusic
     ]) => {
       qualitiesStored.value = qualities;
       isEnhancedBitrates.value = pIsEnhancedBitrates;
@@ -50,6 +60,9 @@
       sizeVideo.value = size;
       isExcludeVertical.value = pisExcludeVertical;
       isHideDonationSection.value = pIsHideDonationSection;
+      isEnableYouTubeMusic.value = pIsEnableYouTubeMusic;
+      isSameQualityMusicAsYouTube.value = pIsSameQualityMusicAsYouTube;
+      qualitiesMusicStored.value = pQualitiesMusic;
     }
   );
 </script>
@@ -65,6 +78,10 @@
     {/if}
 
     <ControlSize />
+
+    {#if isEnableYouTubeMusic.value !== null}
+      <ControlYouTubeMusic />
+    {/if}
   {/if}
 
   <Promotions />

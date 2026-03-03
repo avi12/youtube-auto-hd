@@ -4,7 +4,7 @@
   import { isExtensionEnabled } from "@/entrypoints/popup/states.svelte";
   import { getI18n } from "@/lib/ythd-utils";
 
-  const i18n: Record<string, string> = {
+  const i18n = {
     labelEnabled: getI18n("cj_i18n_07266", "Extension is on")
   };
 

@@ -1,0 +1,136 @@
+import { storage } from "#imports";
+import { MusicMessage, musicMessenger } from "@/lib/music-messaging";
+import type { QualityFpsPreferences } from "@/lib/types";
+import { initial } from "@/lib/ythd-setup";
+import {
+  addGlobalEventListener,
+  getIsExtensionEnabled,
+  getStorage,
+  getVisibleElement,
+  OBSERVER_OPTIONS,
+  SELECTORS
+} from "@/lib/ythd-utils";
+
+let isExtensionEnabled = false;
+let isYouTubeMusicEnabled = false;
+let gTitleLast = document.title;
+let gUrlLast = location.href;
+
+async function sendQualityToMainWorld(): Promise<void> {
+  const isSameQuality = await getStorage({
+    area: "local",
+    key: "isSameQualityMusicAsYouTube",
+    fallback: true,
+    updateWindowKey: "ythdIsSameQualityMusicAsYouTube"
+  });
+  const qualitiesYouTube = await getStorage({
+    area: "local",
+    key: "qualities",
+    fallback: initial.qualities,
+    updateWindowKey: "ythdLastUserQualities"
+  });
+
+  if (isSameQuality) {
+    await musicMessenger.sendMessage(MusicMessage.APPLY_QUAILTY, qualitiesYouTube);
+    return;
+  }
+
+  const qualitiesMusic = await getStorage({
+    area: "local",
+    key: "qualitiesMusic",
+    fallback: qualitiesYouTube,
+    updateWindowKey: "ythdLastUserQualities"
+  });
+  await musicMessenger.sendMessage(MusicMessage.APPLY_QUAILTY, qualitiesMusic);
+}
+
+async function addTemporaryBodyListenerOnMusic(): Promise<void> {
+  if (!isExtensionEnabled || !isYouTubeMusicEnabled) {
+    return;
+  }
+
+  if (gTitleLast === document.title && gUrlLast === location.href) {
+    return;
+  }
+
+  gTitleLast = document.title;
+  gUrlLast = location.href;
+
+  const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
+  if (!elVideo) {
+    return;
+  }
+
+  await sendQualityToMainWorld();
+  elVideo.removeEventListener("canplay", sendQualityToMainWorld);
+  elVideo.addEventListener("canplay", sendQualityToMainWorld, { once: true });
+}
+
+async function init(): Promise<void> {
+  await addGlobalEventListener(addTemporaryBodyListenerOnMusic);
+
+  storage.watch<boolean>("local:isExtensionEnabled", async isExtEnabled => {
+    isExtensionEnabled = isExtEnabled ?? false;
+    if (!isExtEnabled || !isYouTubeMusicEnabled) {
+      return;
+    }
+    await sendQualityToMainWorld();
+  });
+
+  storage.watch<QualityFpsPreferences>("local:qualities", async () => {
+    if (!isExtensionEnabled || !isYouTubeMusicEnabled) {
+      return;
+    }
+    await sendQualityToMainWorld();
+  });
+
+  storage.watch<QualityFpsPreferences>("local:qualitiesMusic", async () => {
+    if (!isExtensionEnabled || !isYouTubeMusicEnabled) {
+      return;
+    }
+    await sendQualityToMainWorld();
+  });
+
+  storage.watch<boolean>("local:isSameQualityMusicAsYouTube", async () => {
+    if (!isExtensionEnabled || !isYouTubeMusicEnabled) {
+      return;
+    }
+    await sendQualityToMainWorld();
+  });
+
+  storage.watch<boolean>("local:isEnableYouTubeMusic", async isEnabled => {
+    isYouTubeMusicEnabled = isEnabled ?? false;
+    if (!isEnabled || !isExtensionEnabled) {
+      return;
+    }
+    await sendQualityToMainWorld();
+  });
+
+  isYouTubeMusicEnabled = await getStorage({
+    area: "local",
+    key: "isEnableYouTubeMusic",
+    fallback: false,
+    updateWindowKey: "ythdIsYouTubeMusicEnabled"
+  });
+  isExtensionEnabled = await getIsExtensionEnabled();
+
+  if (!isExtensionEnabled || !isYouTubeMusicEnabled) {
+    return;
+  }
+
+  new MutationObserver(async (_, observer) => {
+    const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
+    if (!elVideo) {
+      return;
+    }
+
+    observer.disconnect();
+    await sendQualityToMainWorld();
+    elVideo.addEventListener("canplay", sendQualityToMainWorld, { once: true });
+  }).observe(document, OBSERVER_OPTIONS);
+}
+
+export default defineContentScript({
+  matches: ["https://music.youtube.com/*"],
+  main: () => init()
+});

@@ -17,7 +17,7 @@ let preferences: Preferences = {
 
 function getCurrentViewMode() {
   const sizeCurrentMatch = document.cookie.match(/wide=([10])/);
-  return sizeCurrentMatch ? (Number(sizeCurrentMatch[1]) as VideoSize) : 0;
+  return sizeCurrentMatch?.[1] === "1" ? 1 : 0;
 }
 
 async function resizePlayerIfNeeded() {
@@ -31,7 +31,7 @@ async function resizePlayerIfNeeded() {
   const isVerticalVideo = elVideo.clientWidth <= elVideo.clientHeight;
   const shouldForceDefaultMode = preferences.isExcludeVertical && isVerticalVideo;
 
-  const targetViewMode = shouldForceDefaultMode ? 0 : Number(preferences.viewMode);
+  const targetViewMode = shouldForceDefaultMode ? 0 : preferences.viewMode;
 
   const isPrefersDefaultSize = targetViewMode === 0;
   const isPrefersTheaterSize = !isPrefersDefaultSize;
@@ -75,7 +75,7 @@ function addStorageListener() {
     if (!isEnabled || !isWatchPage) {
       return;
     }
-    preferences.isResizeVideo = isResizeVideo as VideoAutoResize;
+    preferences.isResizeVideo = isResizeVideo ?? false;
     preferences.viewMode = await storage.getItem<VideoSize>("sync:size", { fallback: initial.size });
     await resizePlayerIfNeeded();
   });
@@ -85,7 +85,7 @@ function addStorageListener() {
     if (!isEnabled || !isWatchPage) {
       return;
     }
-    preferences.viewMode = size as VideoSize;
+    preferences.viewMode = size ?? initial.size;
     preferences.isResizeVideo = await storage.getItem<VideoAutoResize>("sync:autoResize", {
       fallback: initial.isResizeVideo
     });
@@ -100,7 +100,7 @@ function addStorageListener() {
     if (!isEnabled || !isWatchPage) {
       return;
     }
-    preferences.isExcludeVertical = isExcludeVertical as boolean;
+    preferences.isExcludeVertical = isExcludeVertical ?? false;
     preferences.viewMode = await storage.getItem<VideoSize>("sync:size", { fallback: initial.size });
     await resizePlayerIfNeeded();
   });

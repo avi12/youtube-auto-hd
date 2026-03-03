@@ -1,18 +1,15 @@
 import {
   type EnhancedBitratePreferences,
   type EnhancedVideoQuality,
-  type FullYouTubeLabel,
   SUFFIX_EBR,
   SUFFIX_SUPER_RESOLUTION,
-  type SuperResolutionQuality,
-  type VideoFPS,
   type VideoQuality
 } from "@/lib/types";
-import { initial } from "@/lib/ythd-setup";
+import { fpsSupported, initial, qualities } from "@/lib/ythd-setup";
 import { getFpsFromRange, getStorage, getVisibleElement, OBSERVER_OPTIONS, SELECTORS } from "@/lib/ythd-utils";
 
 function getPlayerDiv(elVideo: HTMLVideoElement) {
-  return elVideo.closest(SELECTORS.player) as HTMLDivElement;
+  return elVideo.closest<HTMLDivElement>(SELECTORS.player)!;
 }
 
 function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
@@ -29,9 +26,8 @@ function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
   if (!matchNumber) {
     return false;
   }
-  const numberString = matchNumber[0] as FullYouTubeLabel;
   const minQualityCharLength = 3; // e.g. 3 characters in 720p
-  return numberString.length >= minQualityCharLength;
+  return matchNumber[0].length >= minQualityCharLength;
 }
 
 function getIsQualityElement(element: Element) {
@@ -41,23 +37,21 @@ function getIsQualityElement(element: Element) {
 }
 
 function getCurrentQualityElements(): Array<HTMLDivElement> {
-  const elMenuOptions = [...getVisibleElement(SELECTORS.player).querySelectorAll(SELECTORS.menuOption)];
-  return elMenuOptions.filter(getIsQualityElement) as Array<HTMLDivElement>;
+  const elMenuOptions = [...getVisibleElement(SELECTORS.player).querySelectorAll<HTMLDivElement>(SELECTORS.menuOption)];
+  return elMenuOptions.filter(getIsQualityElement);
 }
 
 function convertQualityToNumber(elQuality: Element) {
   const isRegularQuality = !elQuality.querySelector(SELECTORS.labelPremium);
-  const qualityNumber = parseInt(elQuality.textContent);
+  const qualityNumber = qualities.find(q => q === parseInt(elQuality.textContent!))!;
   if (isRegularQuality) {
-    {
-      return qualityNumber as VideoQuality;
-    }
+    return qualityNumber;
   }
-  const isPremiumQuality = elQuality.textContent.match(/premium/i);
+  const isPremiumQuality = elQuality.textContent!.match(/premium/i);
   if (isPremiumQuality) {
-    return `${qualityNumber}${SUFFIX_EBR}` as EnhancedVideoQuality;
+    return `${qualityNumber}${SUFFIX_EBR}`;
   }
-  return `${qualityNumber}${SUFFIX_SUPER_RESOLUTION}` as SuperResolutionQuality;
+  return `${qualityNumber}${SUFFIX_SUPER_RESOLUTION}`;
 }
 
 function getAvailableQualities() {
@@ -67,12 +61,12 @@ function getAvailableQualities() {
 
 function getVideoFPS() {
   const elQualities = getCurrentQualityElements();
-  const labelQuality = elQualities[0]?.textContent as FullYouTubeLabel;
+  const labelQuality = elQualities[0]?.textContent;
   if (!labelQuality) {
     return 30;
   }
   const fpsMatch = labelQuality.match(/[ps](\d+)/);
-  return fpsMatch ? (Number(fpsMatch[1]) as VideoFPS) : 30;
+  return fpsMatch ? fpsSupported.find(f => f === Number(fpsMatch[1])) ?? 30 : 30;
 }
 
 function openQualityMenu(elVideo: HTMLVideoElement) {

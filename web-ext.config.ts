@@ -21,18 +21,17 @@ const pathEnv = (() => {
   return osMap[process.platform] || "";
 })();
 
-const env = dotenv.configDotenv({ path: pathEnv, quiet: true }).parsed as {
-  VITE_PATH_EDGE: string;
-  VITE_PATH_OPERA: string;
-};
+const parsed = dotenv.configDotenv({ path: pathEnv, quiet: true }).parsed ?? {};
+const VITE_PATH_EDGE = parsed.VITE_PATH_EDGE ?? "";
+const VITE_PATH_OPERA = parsed.VITE_PATH_OPERA ?? "";
 
 const { VITE_LANG = "en", VITE_BLANK = "" } = process.env;
 
 export default defineWebExtConfig({
   binaries: {
     ...(executable && { [browser]: path.resolve(executable) }),
-    edge: env.VITE_PATH_EDGE,
-    opera: env.VITE_PATH_OPERA.replace("USERPROFILE", process.env.USERPROFILE!)
+    edge: VITE_PATH_EDGE,
+    opera: VITE_PATH_OPERA.replace("USERPROFILE", process.env.USERPROFILE!)
   },
   disabled: VITE_BLANK !== "1",
   startUrls: [VITE_BLANK ? "about:blank" : "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],

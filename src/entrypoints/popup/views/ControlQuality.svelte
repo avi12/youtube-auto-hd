@@ -5,9 +5,9 @@
   import { isEnhancedBitrates, isUseSuperResolution, qualitiesStored } from "@/entrypoints/popup/states.svelte";
   import type { VideoFPS, VideoQuality } from "@/lib/types";
   import { fpsSupported, qualities } from "@/lib/ythd-setup";
-  import {getI18n, getUncircularJson} from "@/lib/ythd-utils";
+  import { getI18n, getUncircularJson } from "@/lib/ythd-utils";
 
-  const i18n: Record<string, string> = {
+  const i18n = {
     labelSwitchSameQuality: getI18n("cj_i18n_06862", "Use the same quality for all frame rates"),
     labelAllFramerates: getI18n("cj_i18n_06858", "All frame rates"),
     fpsAndBelow: getI18n("cj_i18n_02149", "FPS and below"),
@@ -136,20 +136,6 @@
 </Switch>
 
 <hr />
-
-{#snippet toggleEnhancedBitrateForAllFps()}
-  <Switch
-    change={isEnableEnhancedBitRate => {
-      fpsList.forEach(fps => {
-        if (isEnhancedBitrates.value) {
-          isEnhancedBitrates.value[fps] = isEnableEnhancedBitRate;
-        }
-      });
-    }}
-    checked={isSameEnhancedBitrateForAllFps}
-    className="switch">{i18n.preferEnhancedBitrate}</Switch>
-  <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
-{/snippet}
 
 <style>
   .control-section {

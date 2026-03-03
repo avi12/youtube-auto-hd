@@ -4,7 +4,7 @@
   import { isExcludeVertical, isResizeVideo, sizeVideo } from "@/entrypoints/popup/states.svelte";
   import { getI18n } from "@/lib/ythd-utils";
 
-  const i18n: Record<string, string> = {
+  const i18n = {
     labelIsResizeVideo: getI18n("cj_i18n_06568", "Auto-resize videos"),
     labelVideoSize: getI18n("cj_i18n_06567", "Keep size at"),
     labelOExcludeVertical: getI18n("cj_i18n_07754", "Except for vertical videos"),
@@ -16,15 +16,15 @@
   const isRTL = Boolean(document.querySelector(".rtl"));
 
   function focusPrevItem() {
-    const elBox = document.activeElement?.previousElementSibling as HTMLButtonElement;
-    if (elBox) {
+    const elBox = document.activeElement?.previousElementSibling;
+    if (elBox instanceof HTMLButtonElement) {
       activate(elBox);
     }
   }
 
   function focusNextItem() {
-    const elBox = document.activeElement?.nextElementSibling as HTMLButtonElement;
-    if (elBox) {
+    const elBox = document.activeElement?.nextElementSibling;
+    if (elBox instanceof HTMLButtonElement) {
       activate(elBox);
     }
   }
@@ -97,7 +97,7 @@
           class="box"
           data-size="small"
           aria-label={i18n.labelSizeSmall}
-          class:selected={Number(sizeVideo.value) === 0}
+          class:selected={sizeVideo.value === 0}
           onclick={() => (sizeVideo.value = 0)}
           tabindex="0">
           <!--suppress HtmlUnknownTag -->
@@ -107,7 +107,7 @@
           class="box"
           data-size="large"
           aria-label={i18n.labelSizeLarge}
-          class:selected={Number(sizeVideo.value) !== 0}
+          class:selected={sizeVideo.value === 1}
           onclick={() => (sizeVideo.value = 1)}
           tabindex="-1">
           <!--suppress HtmlUnknownTag -->

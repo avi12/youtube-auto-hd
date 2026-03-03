@@ -5,10 +5,10 @@ import type {
   QualityFpsPreferences,
   VideoFPS
 } from "./types";
-import { initial } from "./ythd-setup";
+import { fpsSupported, initial } from "./ythd-setup";
 import { prepareToChangeQualityOnDesktop } from "@/entrypoints/desktop.content/functions-desktop";
 
-export const OBSERVER_OPTIONS: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
+export const OBSERVER_OPTIONS = Object.freeze<MutationObserverInit>({ childList: true, subtree: true });
 window.ythdLastUserQualities = { ...initial.qualities };
 window.ythdIsUseSuperResolution = initial.isUseSuperResolution;
 
@@ -67,8 +67,8 @@ export enum SELECTORS {
 }
 
 export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T {
-  const elements = [...document.querySelectorAll(elementName)] as Array<T>;
-  return elements.find(isElementVisible) as T;
+  const elements = [...document.querySelectorAll<T>(elementName)];
+  return elements.find(isElementVisible)!;
 }
 
 export async function getElementByMutationObserver<T extends HTMLElement>(
@@ -88,7 +88,7 @@ export async function getElementByMutationObserver<T extends HTMLElement>(
 
 export function addStorageListener(): void {
   storage.watch<boolean>("local:isExtensionEnabled", async isExtEnabled => {
-    window.ythdExtEnabled = isExtEnabled as boolean;
+    window.ythdExtEnabled = isExtEnabled ?? false;
     const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
     if (!elVideo) {
       return;
@@ -133,10 +133,8 @@ export function getFpsFromRange(
   qualities: QualityFpsPreferences | EnhancedBitrateFpsPreferences,
   fpsToCheck: number
 ): VideoFPS {
-  const fpsList = Object.keys(qualities)
-    .map(fps => parseInt(fps))
-    .sort((a, b) => b - a) as Array<VideoFPS>;
-  return fpsList.find(fps => fps <= fpsToCheck) || (fpsList.at(-1) as VideoFPS);
+  const fpsList = fpsSupported.filter(fps => fps.toString() in qualities).sort((a, b) => b - a);
+  return fpsList.find(fps => fps <= fpsToCheck) ?? fpsList.at(-1)!;
 }
 
 const getCircularReplacer = () => {
