@@ -76,5 +76,5 @@ export async function applyQualityOnMusic(qualities: QualityFpsPreferences) {
 
   const bestQuality = availableQualities.at(iPreferredQuality > -1 ? iPreferredQuality : -2)!;
   elYTMusicPlayer.setPlaybackQualityRange(bestQuality, bestQuality);
-  console.log("YTMusic: Applied quality", elYTMusicPlayer.getPlaybackQuality());
+  console.log("[YTHD] Applied quality", elYTMusicPlayer.getPlaybackQuality());
 }

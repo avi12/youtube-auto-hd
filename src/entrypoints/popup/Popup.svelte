@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { storage } from "#imports";
   import {
     isEnableYouTubeMusic,
     isEnhancedBitrates,
@@ -19,69 +18,59 @@
   import ControlYouTubeMusic from "@/entrypoints/popup/views/ControlYouTubeMusic.svelte";
   import Promotions from "@/entrypoints/popup/views/Promotions.svelte";
   import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/types";
-  import { initial } from "@/lib/ythd-setup";
+  import { untrack } from "svelte";
   import { getI18n } from "@/lib/ythd-utils";
 
-  Promise.all([
-    storage.getItem<QualityFpsPreferences>("local:qualities", { fallback: initial.qualities }),
-    storage.getItem<EnhancedBitratePreferences>("local:isEnhancedBitrates", { fallback: initial.isEnhancedBitrates }),
-    storage.getItem<typeof initial.isUseSuperResolution>("local:isUseSuperResolution", {
-      fallback: initial.isUseSuperResolution
-    }),
-    storage.getItem<typeof initial.isExtensionEnabled>("local:isExtensionEnabled", {
-      fallback: initial.isExtensionEnabled
-    }),
-    storage.getItem<VideoAutoResize>("sync:autoResize", { fallback: initial.isResizeVideo }),
-    storage.getItem<VideoSize>("sync:size", { fallback: initial.size }),
-    storage.getItem<boolean>("sync:isExcludeVertical", { fallback: initial.isExcludeVertical }),
-    storage.getItem<boolean>("sync:isHideDonationSection", { fallback: initial.isHideDonationSection }),
-    storage.getItem<boolean>("local:isEnableYouTubeMusic", { fallback: false }),
-    storage.getItem<boolean>("local:isSameQualityMusicAsYouTube", { fallback: true }),
-    storage.getItem<QualityFpsPreferences>("local:qualitiesMusic", { fallback: initial.qualities })
-  ]).then(
-    ([
-      qualities,
-      pIsEnhancedBitrates,
-      pIsUseSuperResolution,
-      isExtEnabled,
-      autoResize,
-      size,
-      pisExcludeVertical,
-      pIsHideDonationSection,
-      pIsEnableYouTubeMusic,
-      pIsSameQualityMusicAsYouTube,
-      pQualitiesMusic
-    ]) => {
-      qualitiesStored.value = qualities;
-      isEnhancedBitrates.value = pIsEnhancedBitrates;
-      isUseSuperResolution.value = pIsUseSuperResolution;
-      isExtensionEnabled.value = isExtEnabled;
-      isResizeVideo.value = autoResize;
-      sizeVideo.value = size;
-      isExcludeVertical.value = pisExcludeVertical;
-      isHideDonationSection.value = pIsHideDonationSection;
-      isEnableYouTubeMusic.value = pIsEnableYouTubeMusic;
-      isSameQualityMusicAsYouTube.value = pIsSameQualityMusicAsYouTube;
-      qualitiesMusicStored.value = pQualitiesMusic;
-    }
-  );
+  interface Props {
+    qualities: QualityFpsPreferences;
+    enhancedBitrates: EnhancedBitratePreferences;
+    useSuperResolution: boolean;
+    extensionEnabled: boolean;
+    autoResize: VideoAutoResize;
+    size: VideoSize;
+    excludeVertical: boolean;
+    hideDonationSection: boolean;
+    enableYouTubeMusic: boolean;
+    sameQualityMusicAsYouTube: boolean;
+    qualitiesMusic: QualityFpsPreferences;
+  }
+
+  const {
+    qualities,
+    enhancedBitrates,
+    useSuperResolution,
+    extensionEnabled,
+    autoResize,
+    size,
+    excludeVertical,
+    hideDonationSection,
+    enableYouTubeMusic,
+    sameQualityMusicAsYouTube,
+    qualitiesMusic
+  }: Props = $props();
+
+  untrack(() => {
+    qualitiesStored.value = qualities;
+    isEnhancedBitrates.value = enhancedBitrates;
+    isUseSuperResolution.value = useSuperResolution;
+    isExtensionEnabled.value = extensionEnabled;
+    isResizeVideo.value = autoResize;
+    sizeVideo.value = size;
+    isExcludeVertical.value = excludeVertical;
+    isHideDonationSection.value = hideDonationSection;
+    isEnableYouTubeMusic.value = enableYouTubeMusic;
+    isSameQualityMusicAsYouTube.value = sameQualityMusicAsYouTube;
+    qualitiesMusicStored.value = qualitiesMusic;
+  });
 </script>
 
 <main class:rtl={getI18n("@@bidi_dir") === "rtl"}>
-  {#if isExtensionEnabled.value !== null}
-    <ControlEnabled />
-  {/if}
+  <ControlEnabled />
 
   {#if isExtensionEnabled.value}
-    {#if qualitiesStored.value !== null && isEnhancedBitrates.value !== null}
-      <ControlQuality />
-    {/if}
-
+    <ControlQuality />
     <ControlSize />
-
-    {#if isEnableYouTubeMusic.value !== null}
-      <ControlYouTubeMusic />
-    {/if}
+    <ControlYouTubeMusic />
   {/if}
 
   <Promotions />
