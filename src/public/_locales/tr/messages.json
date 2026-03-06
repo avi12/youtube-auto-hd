@@ -1,5 +1,6 @@
 {
 "cj_i18n_00354":{"message":"Bağış yap"},
+"cj_i18n_01057":{"message":"Youtube Müzik"},
 "cj_i18n_01605":{"message":"Çevirilerde yardım edin"},
 "cj_i18n_02146":{"message":"Video kalitesini videonun FPS' sine göre otomatik olarak ayarla!"},
 "cj_i18n_02148":{"message":"FPS videoları"},
@@ -15,5 +16,6 @@
 "cj_i18n_07265":{"message":"Videolar bu kalite için 30 FPS'de oynayacak"},
 "cj_i18n_07266":{"message":"Eklenti açık"},
 "cj_i18n_07392":{"message":"En yüksek kalite olduğunda gelişmiş bit hızını kullan"},
-"cj_i18n_07669":{"message":"Bizimle iletişime geç"}
+"cj_i18n_07669":{"message":"Bizimle iletişime geç"},
+"cj_i18n_08028":{"message":"Görüntü kalitesini göster"}
 }

@@ -1,5 +1,6 @@
 {
 "cj_i18n_00354":{"message":"Doneren"},
+"cj_i18n_01057":{"message":"YouTube Muziek"},
 "cj_i18n_01605":{"message":"Draag bij aan vertalingen"},
 "cj_i18n_02146":{"message":"Pas videokwaliteit op YouTube automatisch aan op basis van de FPS!"},
 "cj_i18n_02148":{"message":"FPS video’s"},
@@ -16,5 +17,6 @@
 "cj_i18n_07266":{"message":"Extensie staat aan"},
 "cj_i18n_07584":{"message":"YouTube Premium is hiervoor nodig"},
 "cj_i18n_07669":{"message":"Contacteer me"},
-"cj_i18n_07754":{"message":"Behalve voor verticale video’s"}
+"cj_i18n_07754":{"message":"Behalve voor verticale video’s"},
+"cj_i18n_08028":{"message":"Kwaliteit"}
 }
