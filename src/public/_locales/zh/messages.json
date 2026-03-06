@@ -1,5 +1,6 @@
 {
 "cj_i18n_00354":{"message":"捐赠"},
+"cj_i18n_01057":{"message":"YouTube 音乐"},
 "cj_i18n_01605":{"message":"帮助翻译"},
 "cj_i18n_02146":{"message":"自动根据帧率来设置 Youtube 视频的质量"},
 "cj_i18n_02148":{"message":"帧率视频"},
@@ -15,5 +16,6 @@
 "cj_i18n_07265":{"message":"将此画质下的帧率限制为30FPS"},
 "cj_i18n_07266":{"message":"插件已开启"},
 "cj_i18n_07392":{"message":"当视频为最高质量时，开启YouTube的增强比特率功能"},
-"cj_i18n_07669":{"message":"联系我们"}
+"cj_i18n_07669":{"message":"联系我们"},
+"cj_i18n_08028":{"message":"观看画质"}
 }

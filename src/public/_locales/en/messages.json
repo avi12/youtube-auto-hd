@@ -1,5 +1,6 @@
 {
 "cj_i18n_00354":{"message":"Donate"},
+"cj_i18n_01057":{"message":"YouTube Music"},
 "cj_i18n_01605":{"message":"Help with translations"},
 "cj_i18n_02146":{"message":"Automatically set the video quality on YouTube according to its FPS!"},
 "cj_i18n_02148":{"message":"FPS videos"},
@@ -19,5 +20,8 @@
 "cj_i18n_07669":{"message":"Contact me"},
 "cj_i18n_07754":{"message":"Except for vertical videos"},
 "cj_i18n_07966":{"message":"Use super resolution when available"},
+"cj_i18n_08028":{"message":"Quality"},
+"cj_i18n_08029":{"message":"Apply on YouTube Music"},
+"cj_i18n_08030":{"message":"Use global quality preferences"},
 "cj_i18n_todo":{"message":""}
 }
