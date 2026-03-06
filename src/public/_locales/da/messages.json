@@ -1,5 +1,6 @@
 {
 "cj_i18n_00354":{"message":"Doner"},
+"cj_i18n_01057":{"message":"YouTube Musik"},
 "cj_i18n_01605":{"message":"Hjælp med oversættelser"},
 "cj_i18n_02146":{"message":"Indstil YouTube-videokvalitet automatisk i henhold til deres FPS!"},
 "cj_i18n_02148":{"message":"FPS videoer"},
@@ -12,5 +13,6 @@
 "cj_i18n_06862":{"message":"Brug den samme kvalitet for alle billedhastigheder"},
 "cj_i18n_07097":{"message":"Standardvisning"},
 "cj_i18n_07098":{"message":"Biografvisning"},
-"cj_i18n_07669":{"message":"Kontakt os"}
+"cj_i18n_07669":{"message":"Kontakt os"},
+"cj_i18n_08028":{"message":"Se kvalitet"}
 }
