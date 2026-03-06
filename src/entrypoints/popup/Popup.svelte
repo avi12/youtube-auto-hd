@@ -6,7 +6,7 @@
     isExtensionEnabled,
     isHideDonationSection,
     isResizeVideo,
-    isSameQualityMusicAsYouTube,
+    isUseGlobalQualityPreferences,
     isUseSuperResolution,
     qualitiesMusicStored,
     qualitiesStored,
@@ -31,7 +31,7 @@
     excludeVertical: boolean;
     hideDonationSection: boolean;
     enableYouTubeMusic: boolean;
-    sameQualityMusicAsYouTube: boolean;
+    useGlobalQualityPreferences: boolean;
     qualitiesMusic: QualityFpsPreferences;
   }
 
@@ -45,7 +45,7 @@
     excludeVertical,
     hideDonationSection,
     enableYouTubeMusic,
-    sameQualityMusicAsYouTube,
+    useGlobalQualityPreferences,
     qualitiesMusic
   }: Props = $props();
 
@@ -59,7 +59,7 @@
     isExcludeVertical.value = excludeVertical;
     isHideDonationSection.value = hideDonationSection;
     isEnableYouTubeMusic.value = enableYouTubeMusic;
-    isSameQualityMusicAsYouTube.value = sameQualityMusicAsYouTube;
+    isUseGlobalQualityPreferences.value = useGlobalQualityPreferences;
     qualitiesMusicStored.value = qualitiesMusic;
   });
 </script>

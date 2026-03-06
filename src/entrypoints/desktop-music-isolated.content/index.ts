@@ -19,8 +19,8 @@ let gUrlLast = location.href;
 async function sendQualityToMainWorld() {
   const isSameQuality = await getStorage({
     area: "local",
-    key: "isSameQualityMusicAsYouTube",
-    fallback: true,
+    key: "isUseGlobalQualityPreferences",
+    fallback: initial.isUseGlobalQualityPreferences,
     updateWindowKey: "ythdIsSameQualityMusicAsYouTube"
   });
   const qualitiesYouTube = await getStorage({
@@ -91,7 +91,7 @@ async function init() {
     await sendQualityToMainWorld();
   });
 
-  storage.watch<boolean>("local:isSameQualityMusicAsYouTube", async () => {
+  storage.watch<boolean>("local:isUseGlobalQualityPreferences", async () => {
     if (!isExtensionEnabled || !isYouTubeMusicEnabled) {
       return;
     }
@@ -99,7 +99,7 @@ async function init() {
   });
 
   storage.watch<boolean>("local:isEnableYouTubeMusic", async isEnabled => {
-    isYouTubeMusicEnabled = isEnabled ?? false;
+    isYouTubeMusicEnabled = isEnabled ?? initial.isEnableYouTubeMusic;
     if (!isEnabled || !isExtensionEnabled) {
       return;
     }
@@ -109,7 +109,7 @@ async function init() {
   isYouTubeMusicEnabled = await getStorage({
     area: "local",
     key: "isEnableYouTubeMusic",
-    fallback: false,
+    fallback: initial.isEnableYouTubeMusic,
     updateWindowKey: "ythdIsYouTubeMusicEnabled"
   });
   isExtensionEnabled = await getIsExtensionEnabled();

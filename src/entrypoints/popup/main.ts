@@ -15,7 +15,7 @@ const [
   excludeVertical,
   hideDonationSection,
   enableYouTubeMusic,
-  sameQualityMusicAsYouTube,
+  useGlobalQualityPreferences,
   qualitiesMusic
 ] = await Promise.all([
   storage.getItem<QualityFpsPreferences>("local:qualities", { fallback: initial.qualities }),
@@ -26,8 +26,8 @@ const [
   storage.getItem<VideoSize>("sync:size", { fallback: initial.size }),
   storage.getItem<boolean>("sync:isExcludeVertical", { fallback: initial.isExcludeVertical }),
   storage.getItem<boolean>("sync:isHideDonationSection", { fallback: initial.isHideDonationSection }),
-  storage.getItem<boolean>("local:isEnableYouTubeMusic", { fallback: false }),
-  storage.getItem<boolean>("local:isSameQualityMusicAsYouTube", { fallback: true }),
+  storage.getItem<boolean>("local:isEnableYouTubeMusic", { fallback: initial.isEnableYouTubeMusic }),
+  storage.getItem<boolean>("local:isUseGlobalQualityPreferences", { fallback: initial.isUseGlobalQualityPreferences }),
   storage.getItem<QualityFpsPreferences>("local:qualitiesMusic", { fallback: initial.qualities })
 ]);
 
@@ -43,7 +43,7 @@ export default mount(Popup, {
     excludeVertical,
     hideDonationSection,
     enableYouTubeMusic,
-    sameQualityMusicAsYouTube,
+    useGlobalQualityPreferences,
     qualitiesMusic
   }
 });

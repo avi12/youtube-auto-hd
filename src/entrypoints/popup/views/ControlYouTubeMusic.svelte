@@ -4,7 +4,7 @@
   import Switch from "../components/Switch.svelte";
   import {
     isEnableYouTubeMusic,
-    isSameQualityMusicAsYouTube,
+    isUseGlobalQualityPreferences,
     qualitiesMusicStored,
     qualitiesStored
   } from "@/entrypoints/popup/states.svelte";
@@ -12,12 +12,13 @@
   import { getI18n, getUncircularJson } from "@/lib/ythd-utils";
 
   const i18n = {
+    labelSectionHeading: getI18n("cj_i18n_01057", "YouTube Music"),
     labelEnableYouTubeMusic: getI18n("cj_i18n_todo", "Run on YouTube Music"),
-    labelSameQuality: getI18n("cj_i18n_todo", "Same quality configuration as above")
+    labelSameQuality: getI18n("cj_i18n_08030", "Use global quality preferences")
   };
 
   $effect(() => {
-    if (!isSameQualityMusicAsYouTube.value || !qualitiesStored.value || !qualitiesMusicStored.value) {
+    if (!isUseGlobalQualityPreferences.value || !qualitiesStored.value || !qualitiesMusicStored.value) {
       return;
     }
     for (const fps of fpsList) {
@@ -32,41 +33,55 @@
     storage.setItem("local:qualitiesMusic", getUncircularJson(qualitiesMusicStored.value));
   });
 
+  let isEnableInitialized = false;
   $effect(() => {
-    if (isSameQualityMusicAsYouTube.value === null) {
-      return;
+    const value = isEnableYouTubeMusic.value;
+    if (isEnableInitialized && value !== null) {
+      storage.setItem("local:isEnableYouTubeMusic", value);
     }
-    storage.setItem("local:isSameQualityMusicAsYouTube", isSameQualityMusicAsYouTube.value);
+    isEnableInitialized = true;
   });
 
+  let isSameQualityInitialized = false;
   $effect(() => {
-    if (isEnableYouTubeMusic.value === null) {
-      return;
+    const value = isUseGlobalQualityPreferences.value;
+    if (isSameQualityInitialized && value !== null) {
+      storage.setItem("local:isUseGlobalQualityPreferences", value);
     }
-    storage.setItem("local:isEnableYouTubeMusic", isEnableYouTubeMusic.value);
+    isSameQualityInitialized = true;
   });
 </script>
 
-<Switch bind:checked={isEnableYouTubeMusic.value} style="margin-block: 1.25rem;">
-  {i18n.labelEnableYouTubeMusic}
-</Switch>
-
-{#if isEnableYouTubeMusic.value}
-  <Switch bind:checked={isSameQualityMusicAsYouTube.value}>
-    {i18n.labelSameQuality}
+<article class="control-section">
+  <div class="section-heading">{i18n.labelSectionHeading}</div>
+  <Switch bind:checked={isEnableYouTubeMusic.value}>
+    {i18n.labelEnableYouTubeMusic}
   </Switch>
 
-  {#if !isSameQualityMusicAsYouTube.value && qualitiesMusicStored.value !== null}
-    <article class="control-section">
-      <QualitySliderList qualitiesRecord={qualitiesMusicStored.value} />
-    </article>
+  {#if isEnableYouTubeMusic.value}
+    <Switch bind:checked={isUseGlobalQualityPreferences.value} className="switch">
+      {i18n.labelSameQuality}
+    </Switch>
+
+    {#if !isUseGlobalQualityPreferences.value && qualitiesMusicStored.value !== null}
+      <div class="music-quality">
+        <QualitySliderList qualitiesRecord={qualitiesMusicStored.value} />
+      </div>
+    {/if}
   {/if}
-{/if}
+</article>
 
 <hr />
 
 <style>
   .control-section {
-    margin-top: 20px;
+    /*noinspection CssUnusedSymbol*/
+    & :global(.switch) {
+      margin-top: 1.25rem;
+    }
+  }
+
+  .music-quality {
+    margin-top: 1.25rem;
   }
 </style>

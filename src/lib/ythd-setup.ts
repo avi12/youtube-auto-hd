@@ -22,5 +22,7 @@ export const initial = {
   isUseSuperResolution: true,
   isResizeVideo: false,
   size: 1,
-  isExcludeVertical: false
+  isExcludeVertical: false,
+  isEnableYouTubeMusic: true,
+  isUseGlobalQualityPreferences: true
 } as const;
