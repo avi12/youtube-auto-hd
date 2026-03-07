@@ -1,5 +1,5 @@
+import type { QualityFpsPreferences } from "./ythd-types";
 import { defineCustomEventMessaging } from "@webext-core/messaging/page";
-import type { QualityFpsPreferences } from "./types";
 
 export enum MusicMessage {
   APPLY_QUAILTY = "applyQuality"

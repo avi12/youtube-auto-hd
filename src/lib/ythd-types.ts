@@ -1,4 +1,4 @@
-import { fpsSupported, qualities } from "./ythd-setup";
+import { fpsSupported, qualities } from "./ythd-defaults";
 
 export const SUFFIX_EBR = "ebr";
 export const SUFFIX_SUPER_RESOLUTION = "sr";

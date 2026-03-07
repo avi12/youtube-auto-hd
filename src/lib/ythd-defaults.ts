@@ -1,8 +1,8 @@
 export const qualities = [4320, 2160, 1440, 1080, 720, 480, 360, 240, 144] as const;
 
-const qualityClosest = qualities.find(quality => quality <= screen.height)!;
+const qualityClosest = qualities.find(quality => quality <= screen.height) ?? qualities[qualities.length - 1];
 export const fpsSupported = [60, 50, 30] as const;
-export const fpsList = [...fpsSupported].sort((a, b) => a - b);
+export const fpsList = [...fpsSupported].sort((first, second) => first - second);
 
 export const initial = {
   isExtensionEnabled: true,
