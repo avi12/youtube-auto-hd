@@ -57,7 +57,7 @@ export default [
           groups: [["side-effect", "builtin", "external", "internal", "parent", "sibling", "index", "unknown"]]
         }
       ],
-      "id-length": ["error", { min: 3, exceptions: ["i", "e", "id", "to"], exceptionPatterns: ["^_"] }],
+      "id-length": ["error", { min: 3, exceptions: ["i", "e", "id", "to", "fs"], exceptionPatterns: ["^_"] }],
       "prefer-const": "error"
     }
   }

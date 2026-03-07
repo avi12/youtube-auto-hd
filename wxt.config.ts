@@ -8,7 +8,7 @@ import { defineConfig } from "wxt";
 export default defineConfig({
   srcDir: "src",
   publicDir: "src/public",
-  manifest({ browser }) {
+  manifest({ browser, mode }) {
     const url = packageJson.repository;
     const [, author, email] = packageJson.author.match(/(.+) <(.+)>/)!;
 
@@ -24,6 +24,10 @@ export default defineConfig({
         "https://youtube.googleapis.com/*"
       ],
       permissions: ["cookies", "storage"],
+      options_ui: {
+        page: "popup.html",
+        open_in_tab: mode === "development"
+      },
       author: browser === "opera" || browser === "firefox" ? packageJson.author : { email },
       ...(browser !== "firefox" && {
         offline_enabled: true,
