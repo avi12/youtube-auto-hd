@@ -7,6 +7,7 @@ import { storage, type StorageArea } from "#imports";
 
 export const OBSERVER_OPTIONS = Object.freeze<MutationObserverInit>({ childList: true, subtree: true });
 window.ythdLastUserQualities = { ...initial.qualities };
+window.ythdLastUserEnhancedBitrates = { ...initial.isEnhancedBitrates };
 window.ythdIsUseSuperResolution = initial.isUseSuperResolution;
 
 export async function getStorage<T>({
@@ -25,11 +26,11 @@ export async function getStorage<T>({
   }
 }
 
-export async function getIsExtensionEnabled() {
+export async function getIsExtensionEnabled(fallback: boolean = initial.isExtensionEnabled) {
   return getStorage({
     area: "local",
     key: "isExtensionEnabled",
-    fallback: initial.isExtensionEnabled
+    fallback
   });
 }
 

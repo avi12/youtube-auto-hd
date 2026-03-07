@@ -1,6 +1,5 @@
 import { initial } from "@/lib/ythd-defaults";
-import { PlayerMessage, musicMessenger } from "@/lib/ythd-player-messaging";
-import type { QualityFpsPreferences } from "@/lib/ythd-types";
+import { musicMessenger, PlayerMessage } from "@/lib/ythd-player-messaging";
 import {
   addGlobalEventListener,
   getIsExtensionEnabled,
@@ -11,48 +10,48 @@ import {
 } from "@/lib/ythd-utils";
 import { storage } from "#imports";
 
-let isExtensionEnabled = false;
-let isYouTubeMusicEnabled = false;
-let cachedIsSameQuality = initial.isUseGlobalQualityPreferences;
-let cachedQualitiesYouTube: QualityFpsPreferences = { ...initial.qualities };
-let cachedQualitiesMusic: QualityFpsPreferences = { ...initial.qualities };
+let lastIsExtensionEnabled = initial.isExtensionEnabled;
+let lastIsYouTubeMusicEnabled = initial.isEnableYouTubeMusic;
+let lastIsSameQuality = initial.isUseGlobalQualityPreferences;
+let lastQualitiesYouTube = { ...initial.qualities };
+let lastQualitiesMusic = { ...initial.qualities };
 let gTitleLast = document.title;
 let gUrlLast = location.href;
 
 async function sendQualityToMainWorld() {
-  cachedIsSameQuality = await getStorage({
+  lastIsSameQuality = await getStorage({
     area: "local",
     key: "isUseGlobalQualityPreferences",
-    fallback: cachedIsSameQuality
+    fallback: lastIsSameQuality
   });
-  cachedQualitiesYouTube = await getStorage({
+  lastQualitiesYouTube = await getStorage({
     area: "local",
     key: "qualities",
-    fallback: cachedQualitiesYouTube
+    fallback: lastQualitiesYouTube
   });
 
-  if (cachedIsSameQuality) {
-    await musicMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, cachedQualitiesYouTube);
+  if (lastIsSameQuality) {
+    await musicMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, lastQualitiesYouTube);
     return;
   }
 
-  cachedQualitiesMusic = await getStorage({
+  lastQualitiesMusic = await getStorage({
     area: "local",
     key: "qualitiesMusic",
-    fallback: cachedQualitiesMusic
+    fallback: lastQualitiesMusic
   });
-  await musicMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, cachedQualitiesMusic);
+  await musicMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, lastQualitiesMusic);
 }
 
 async function sendQualityIfEnabled() {
-  if (!isExtensionEnabled || !isYouTubeMusicEnabled) {
+  if (!lastIsExtensionEnabled || !lastIsYouTubeMusicEnabled) {
     return;
   }
   await sendQualityToMainWorld();
 }
 
 async function addTemporaryBodyListenerOnMusic() {
-  if (!isExtensionEnabled || !isYouTubeMusicEnabled) {
+  if (!lastIsExtensionEnabled || !lastIsYouTubeMusicEnabled) {
     return;
   }
 
@@ -75,8 +74,8 @@ async function addTemporaryBodyListenerOnMusic() {
 async function init() {
   await addGlobalEventListener(addTemporaryBodyListenerOnMusic);
 
-  storage.watch<boolean>("local:isExtensionEnabled", async isExtEnabled => {
-    isExtensionEnabled = isExtEnabled ?? false;
+  storage.watch<boolean>("local:lastIsExtensionEnabled", async isExtEnabled => {
+    lastIsExtensionEnabled = isExtEnabled ?? false;
     await sendQualityIfEnabled();
   });
 
@@ -85,18 +84,18 @@ async function init() {
   storage.watch("local:isUseGlobalQualityPreferences", sendQualityIfEnabled);
 
   storage.watch<boolean>("local:isEnableYouTubeMusic", async isEnabled => {
-    isYouTubeMusicEnabled = isEnabled ?? initial.isEnableYouTubeMusic;
+    lastIsYouTubeMusicEnabled = isEnabled ?? initial.isEnableYouTubeMusic;
     await sendQualityIfEnabled();
   });
 
-  isYouTubeMusicEnabled = await getStorage({
+  lastIsYouTubeMusicEnabled = await getStorage({
     area: "local",
     key: "isEnableYouTubeMusic",
-    fallback: initial.isEnableYouTubeMusic
+    fallback: lastIsYouTubeMusicEnabled
   });
-  isExtensionEnabled = await getIsExtensionEnabled();
+  lastIsExtensionEnabled = await getIsExtensionEnabled(lastIsExtensionEnabled);
 
-  if (!isExtensionEnabled || !isYouTubeMusicEnabled) {
+  if (!lastIsExtensionEnabled || !lastIsYouTubeMusicEnabled) {
     return;
   }
 

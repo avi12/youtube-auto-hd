@@ -183,17 +183,17 @@ export async function prepareToChangeQualityOnDesktop(e?: Event) {
   window.ythdLastUserQualities = await getStorage({
     area: "local",
     key: "qualities",
-    fallback: initial.qualities
+    fallback: window.ythdLastUserQualities
   });
   window.ythdLastUserEnhancedBitrates = await getStorage({
     area: "local",
     key: "isEnhancedBitrates",
-    fallback: initial.isEnhancedBitrates
+    fallback: window.ythdLastUserEnhancedBitrates
   });
   window.ythdIsUseSuperResolution = await getStorage({
     area: "local",
     key: "isUseSuperResolution",
-    fallback: initial.isUseSuperResolution
+    fallback: window.ythdIsUseSuperResolution
   });
 
   const elVideo = e?.target ?? getVisibleElement(SELECTORS.video);
