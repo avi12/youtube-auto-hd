@@ -1,7 +1,6 @@
-import { storage } from "#imports";
-import { MusicMessage, musicMessenger } from "@/lib/music-messaging";
-import type { QualityFpsPreferences } from "@/lib/types";
-import { initial } from "@/lib/ythd-setup";
+import { initial } from "@/lib/ythd-defaults";
+import { MusicMessage, musicMessenger } from "@/lib/ythd-music-messaging";
+import type { QualityFpsPreferences } from "@/lib/ythd-types";
 import {
   addGlobalEventListener,
   getIsExtensionEnabled,
@@ -10,6 +9,7 @@ import {
   OBSERVER_OPTIONS,
   SELECTORS
 } from "@/lib/ythd-utils";
+import { storage } from "#imports";
 
 let isExtensionEnabled = false;
 let isYouTubeMusicEnabled = false;
@@ -20,14 +20,12 @@ async function sendQualityToMainWorld() {
   const isSameQuality = await getStorage({
     area: "local",
     key: "isUseGlobalQualityPreferences",
-    fallback: initial.isUseGlobalQualityPreferences,
-    updateWindowKey: "ythdIsSameQualityMusicAsYouTube"
+    fallback: initial.isUseGlobalQualityPreferences
   });
   const qualitiesYouTube = await getStorage({
     area: "local",
     key: "qualities",
-    fallback: initial.qualities,
-    updateWindowKey: "ythdLastUserQualities"
+    fallback: initial.qualities
   });
 
   if (isSameQuality) {
@@ -38,8 +36,7 @@ async function sendQualityToMainWorld() {
   const qualitiesMusic = await getStorage({
     area: "local",
     key: "qualitiesMusic",
-    fallback: qualitiesYouTube,
-    updateWindowKey: "ythdLastUserQualities"
+    fallback: qualitiesYouTube
   });
   await musicMessenger.sendMessage(MusicMessage.APPLY_QUAILTY, qualitiesMusic);
 }
@@ -109,8 +106,7 @@ async function init() {
   isYouTubeMusicEnabled = await getStorage({
     area: "local",
     key: "isEnableYouTubeMusic",
-    fallback: initial.isEnableYouTubeMusic,
-    updateWindowKey: "ythdIsYouTubeMusicEnabled"
+    fallback: initial.isEnableYouTubeMusic
   });
   isExtensionEnabled = await getIsExtensionEnabled();
 

@@ -1,11 +1,11 @@
-import { applyQualityOnMusic } from "./functions-music";
-import { MusicMessage, musicMessenger } from "@/lib/music-messaging";
+import { MusicMessage, musicMessenger } from "@/lib/ythd-music-messaging";
+import { changeQualityViaPlayerAPI } from "@/lib/ythd-player-api";
 
 export default defineContentScript({
   matches: ["https://music.youtube.com/*"],
   main() {
     musicMessenger.onMessage(MusicMessage.APPLY_QUAILTY, async ({ data }) => {
-      await applyQualityOnMusic(data);
+      await changeQualityViaPlayerAPI(data);
     });
   },
   world: "MAIN"
