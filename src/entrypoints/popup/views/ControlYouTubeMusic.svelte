@@ -8,7 +8,7 @@
     qualitiesMusicStored,
     qualitiesStored
   } from "@/entrypoints/popup/states.svelte";
-  import { fpsList } from "@/lib/ythd-setup";
+  import { fpsList } from "@/lib/ythd-defaults";
   import { getI18n, getUncircularJson } from "@/lib/ythd-utils";
 
   const i18n = {

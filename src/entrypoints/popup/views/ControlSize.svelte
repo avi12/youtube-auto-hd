@@ -100,7 +100,7 @@
           class:selected={sizeVideo.value === 0}
           onclick={() => (sizeVideo.value = 0)}
           tabindex="0">
-          <!--suppress HtmlUnknownTag -->
+          <!-- suppress HtmlUnknownTag -->
           <div class="rectangle"></div>
         </button>
         <button
@@ -110,7 +110,7 @@
           class:selected={sizeVideo.value === 1}
           onclick={() => (sizeVideo.value = 1)}
           tabindex="-1">
-          <!--suppress HtmlUnknownTag -->
+          <!-- suppress HtmlUnknownTag -->
           <div class="rectangle"></div>
         </button>
       </div>

@@ -17,7 +17,7 @@
   import ControlSize from "@/entrypoints/popup/views/ControlSize.svelte";
   import ControlYouTubeMusic from "@/entrypoints/popup/views/ControlYouTubeMusic.svelte";
   import Promotions from "@/entrypoints/popup/views/Promotions.svelte";
-  import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/types";
+  import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/ythd-types";
   import { untrack } from "svelte";
   import { getI18n } from "@/lib/ythd-utils";
 

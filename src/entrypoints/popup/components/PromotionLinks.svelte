@@ -22,7 +22,7 @@
   };
 
   const browserName = (() => {
-    const extensionBaseUrl = chrome.runtime.getURL("");
+    const extensionBaseUrl = browser.runtime.getURL("");
 
     const isFirefox = extensionBaseUrl.startsWith("moz-extension://");
     if (isFirefox) {

@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import "nouislider/dist/nouislider.css";
   import type { Snippet } from "svelte";
-  import type { VideoQuality } from "@/lib/types";
+  import type { VideoQuality } from "@/lib/ythd-types";
 
   interface Props {
     values?: Array<VideoQuality>;
@@ -11,7 +11,7 @@
     children?: Snippet;
   }
 
-  // eslint-disable-next-line prefer-const
+   
   let { values = [], value = $bindable(), children }: Props = $props();
 
   const index = $derived(values.indexOf(value));

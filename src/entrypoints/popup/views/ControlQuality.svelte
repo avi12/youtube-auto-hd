@@ -4,8 +4,8 @@
   import Slider from "../components/Slider.svelte";
   import Switch from "../components/Switch.svelte";
   import { isEnhancedBitrates, isUseSuperResolution, qualitiesStored } from "@/entrypoints/popup/states.svelte";
-  import type { VideoQuality } from "@/lib/types";
-  import { fpsList, qualities } from "@/lib/ythd-setup";
+  import type { VideoQuality } from "@/lib/ythd-types";
+  import { fpsList, qualities } from "@/lib/ythd-defaults";
   import { getI18n, getUncircularJson } from "@/lib/ythd-utils";
 
   const i18n = {

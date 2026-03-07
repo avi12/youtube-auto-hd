@@ -1,4 +1,4 @@
-import type { IsEnhancedBitrate, VideoAutoResize, VideoQuality, VideoSize } from "@/lib/types";
+import type { IsEnhancedBitrate, VideoAutoResize, VideoQuality, VideoSize } from "@/lib/ythd-types";
 
 export const isExtensionEnabled = $state<{ value: boolean | null }>({ value: null });
 export const isHideDonationSection = $state<{ value: boolean | null }>({ value: null });

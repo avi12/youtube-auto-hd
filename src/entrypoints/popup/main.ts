@@ -1,9 +1,9 @@
-import { storage } from "#imports";
 import "./popup.css";
-import { mount } from "svelte";
 import Popup from "./Popup.svelte";
-import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/types";
-import { initial } from "@/lib/ythd-setup";
+import { initial } from "@/lib/ythd-defaults";
+import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/ythd-types";
+import { storage } from "#imports";
+import { mount } from "svelte";
 
 const [
   qualities,
@@ -32,7 +32,7 @@ const [
 ]);
 
 export default mount(Popup, {
-  target: document.getElementById("app")!,
+  target: document.getElementById("app") ?? document.body,
   props: {
     qualities,
     enhancedBitrates,

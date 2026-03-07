@@ -13,7 +13,7 @@
 
   const random = crypto.randomUUID();
 
-  // eslint-disable-next-line prefer-const
+   
   let { checked = $bindable(false), children, className, change, ...rest }: Props = $props();
 </script>
 
