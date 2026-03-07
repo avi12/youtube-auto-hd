@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
-import { defineWebExtConfig } from "wxt";
 import { execSync } from "child_process";
+import dotenv from "dotenv";
 import path from "node:path";
+import { defineWebExtConfig } from "wxt";
 
 const [, , , ...argv] = process.argv;
 const browser = argv.at(-1) || argv.at(-2) || "chrome";

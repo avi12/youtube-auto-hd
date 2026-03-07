@@ -1,18 +1,17 @@
 import eslint from "@eslint/js";
-import avi12 from "eslint-config-avi12";
-import svelteEslint from "eslint-plugin-svelte";
-import { globalIgnores } from "eslint/config";
 import perfectionist from "eslint-plugin-perfectionist";
+import svelteEslint from "eslint-plugin-svelte";
 import globals from "globals";
 import svelteParser from "svelte-eslint-parser";
 import tsEslint from "typescript-eslint";
 
 export default [
-  globalIgnores([".wxt/**", "build/**", "test-browsers/**", "node_modules/**", "eslint.config.js"]),
   eslint.configs.recommended,
   ...tsEslint.configs.recommended,
   ...svelteEslint.configs["flat/recommended"],
-  ...avi12,
+  {
+    ignores: [".wxt/**", "build/**", "test-browsers/**", "node_modules/**", ".playwright-*/**"],
+  },
   {
     files: ["**/*.svelte"],
     languageOptions: {
@@ -22,16 +21,24 @@ export default [
       },
       globals: {
         ...globals.browser,
-        ...globals.node,
-        chrome: true
+        ...globals.node
       }
     },
     rules: {
-      "@typescript-eslint/consistent-type-assertions": ["error", { assertionStyle: "never" }]
+      "@typescript-eslint/consistent-type-assertions": ["error", { assertionStyle: "never" }],
+      "svelte/mustache-spacing": "error",
+      "svelte/html-self-closing": ["error", { void: "always", normal: "never", svg: "always", svelte: "always" }],
+      "svelte/shorthand-attribute": ["error", { prefer: "always" }],
+      "svelte/shorthand-directive": ["error", { prefer: "always" }],
+      "svelte/spaced-html-comment": ["error", "always"],
+      "svelte/no-spaces-around-equal-signs-in-attribute": "error",
+      "svelte/html-closing-bracket-spacing": "error",
+      "svelte/first-attribute-linebreak": ["error", { multiline: "below", singleline: "beside" }],
+      "svelte/max-attributes-per-line": ["error", { multiline: 1, singleline: 5 }]
     }
   },
   {
-    files: ["**/*.{ts,js}"],
+    files: ["**/*.{ts,js}", "eslint.config.js"],
     languageOptions: {
       parser: tsEslint.parser
     },
@@ -49,7 +56,9 @@ export default [
           sortSideEffects: true,
           groups: [["side-effect", "builtin", "external", "internal", "parent", "sibling", "index", "unknown"]]
         }
-      ]
+      ],
+      "id-length": ["error", { min: 3, exceptions: ["i", "e", "id", "to"], exceptionPatterns: ["^_"] }],
+      "prefer-const": "error"
     }
   }
 ];

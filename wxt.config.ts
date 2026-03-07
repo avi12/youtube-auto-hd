@@ -1,8 +1,8 @@
-import autoprefixer from "autoprefixer";
-import { defineConfig } from "wxt";
 import packageJson from "./package.json" assert { type: "json" };
+import autoprefixer from "autoprefixer";
 import { execSync } from "node:child_process";
 import fs from "node:fs";
+import { defineConfig } from "wxt";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
