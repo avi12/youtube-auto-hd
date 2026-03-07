@@ -33,27 +33,26 @@ export const QUALITY_NUMBER = Object.fromEntries<VideoQuality>(
   })
 );
 
-export async function measureVideoFps(elVideo: HTMLVideoElement) {
+async function measureVideoFps(elVideo: HTMLVideoElement) {
   return new Promise<number>(resolve => {
     let lastMediaTime = 0;
     let lastFrameNum = 0;
-    const frameDiffs: number[] = [];
+    let sampleSum = 0;
+    let sampleCount = 0;
 
     function onVideoFrame(_: DOMHighResTimeStamp, metadata: VideoFrameCallbackMetadata) {
-      if (lastMediaTime && !elVideo.paused && elVideo.playbackRate === 1) {
-        const timeDiff = Math.abs(metadata.mediaTime - lastMediaTime);
-        const frameDiff = Math.abs(metadata.presentedFrames - lastFrameNum);
-        const diffPerFrame = timeDiff / frameDiff;
+      if (lastMediaTime && !elVideo.paused) {
+        const timeDiff = metadata.mediaTime - lastMediaTime;
+        const frameDiff = metadata.presentedFrames - lastFrameNum;
+        const diffPerFrame = timeDiff / frameDiff / elVideo.playbackRate;
 
         if (diffPerFrame > 0 && diffPerFrame < 1) {
-          frameDiffs.push(diffPerFrame);
-          if (frameDiffs.length > 30) {
-            frameDiffs.shift();
-          }
+          sampleSum += diffPerFrame;
+          sampleCount++;
 
-          if (frameDiffs.length === 30) {
-            const averageDiff = frameDiffs.reduce((sum, diff) => sum + diff) / frameDiffs.length;
-            resolve(Math.round(1 / averageDiff));
+          if (sampleCount === 30) {
+            const fps = sampleCount / sampleSum;
+            resolve(fps);
             return;
           }
         }
