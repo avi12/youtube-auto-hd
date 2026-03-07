@@ -25,4 +25,4 @@ export const initial = {
   isExcludeVertical: false,
   isEnableYouTubeMusic: true,
   isUseGlobalQualityPreferences: true
-};
+} as const;

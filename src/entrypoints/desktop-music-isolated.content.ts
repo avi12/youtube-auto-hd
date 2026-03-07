@@ -10,8 +10,8 @@ import {
 } from "@/lib/ythd-utils";
 import { storage } from "#imports";
 
-let lastIsExtensionEnabled = initial.isExtensionEnabled;
-let lastIsYouTubeMusicEnabled = initial.isEnableYouTubeMusic;
+let lastIsExtensionEnabled: boolean = initial.isExtensionEnabled;
+let lastIsYouTubeMusicEnabled: boolean = initial.isEnableYouTubeMusic;
 let lastIsSameQuality = initial.isUseGlobalQualityPreferences;
 let lastQualitiesYouTube = { ...initial.qualities };
 let lastQualitiesMusic = { ...initial.qualities };

@@ -12,6 +12,7 @@
     qualitiesStored,
     sizeVideo
   } from "@/entrypoints/popup/states.svelte";
+  import Section from "@/entrypoints/popup/components/Section.svelte";
   import ControlEnabled from "@/entrypoints/popup/views/ControlEnabled.svelte";
   import ControlQuality from "@/entrypoints/popup/views/ControlQuality.svelte";
   import ControlSize from "@/entrypoints/popup/views/ControlSize.svelte";
@@ -68,9 +69,9 @@
   <ControlEnabled />
 
   {#if isExtensionEnabled.value}
-    <ControlQuality />
-    <ControlSize />
-    <ControlYouTubeMusic />
+    <Section label={getI18n("cj_i18n_08028", "Quality")}><ControlQuality /></Section>
+    <Section label={getI18n("cj_i18n_06859", "Player size")}><ControlSize /></Section>
+    <Section label={getI18n("cj_i18n_01057", "YouTube Music")}><ControlYouTubeMusic /></Section>
   {/if}
 
   <Promotions />

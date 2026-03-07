@@ -12,7 +12,6 @@
   import { getI18n, getUncircularJson } from "@/lib/ythd-utils";
 
   const i18n = {
-    labelSectionHeading: getI18n("cj_i18n_01057", "YouTube Music"),
     labelEnableYouTubeMusic: getI18n("cj_i18n_todo", "Run on YouTube Music"),
     labelSameQuality: getI18n("cj_i18n_08030", "Use global quality preferences")
   };
@@ -53,7 +52,6 @@
 </script>
 
 <article class="control-section">
-  <div class="section-heading">{i18n.labelSectionHeading}</div>
   <Switch bind:checked={isEnableYouTubeMusic.value}>
     {i18n.labelEnableYouTubeMusic}
   </Switch>
