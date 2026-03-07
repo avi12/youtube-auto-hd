@@ -1,6 +1,6 @@
 import { prepareToChangeQualityOnDesktop } from "@/entrypoints/desktop-isolated.content/functions-desktop";
 import { fpsSupported, initial, qualities } from "@/lib/ythd-defaults";
-import { ShortsMessage, shortsMessenger } from "@/lib/ythd-shorts-messaging";
+import { PlayerMessage, shortsMessenger } from "@/lib/ythd-player-messaging";
 import type {
   EnhancedBitrateFpsPreferences,
   EnhancedBitratePreferences,
@@ -41,7 +41,7 @@ async function sendQualityToShortsMainWorld() {
   const qualityPreferences = await storage.getItem<QualityFpsPreferences>("local:qualities", {
     fallback: initial.qualities
   });
-  await shortsMessenger.sendMessage(ShortsMessage.APPLY_QUALITY, qualityPreferences);
+  await shortsMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, qualityPreferences);
 }
 
 function getQualityParentElement(elTarget: HTMLElement) {
@@ -83,9 +83,12 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event) {
 
 async function handleShortsNavigation(elVideo: HTMLVideoElement) {
   elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
-  await sendQualityToShortsMainWorld();
   elVideo.removeEventListener("canplay", sendQualityToShortsMainWorld);
-  elVideo.addEventListener("canplay", sendQualityToShortsMainWorld, { once: true });
+  if (elVideo.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+    await sendQualityToShortsMainWorld();
+  } else {
+    elVideo.addEventListener("canplay", sendQualityToShortsMainWorld, { once: true });
+  }
 }
 
 function observeForVideoOnNonWatchPage() {
@@ -227,7 +230,6 @@ function observeForInitialVideo() {
     if (isShortsPage()) {
       observer.disconnect();
       await sendQualityToShortsMainWorld();
-      elVideo.addEventListener("canplay", sendQualityToShortsMainWorld, { once: true });
       return;
     }
 
@@ -253,7 +255,7 @@ async function init() {
   await addGlobalEventListener(addTemporaryBodyListenerOnDesktop);
   addStorageListeners();
 
-  window.ythdExtEnabled = await getIsExtensionEnabled();
+  window.ythdExtEnabled = await getIsExtensionEnabled(window.ythdExtEnabled);
   if (!window.ythdExtEnabled) {
     return;
   }
