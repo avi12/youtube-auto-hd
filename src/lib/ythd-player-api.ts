@@ -1,14 +1,14 @@
-import type { QualityFpsPreferences, VideoQuality, YTMusicQuality } from "@/lib/types";
-import { qualities } from "@/lib/ythd-setup";
-import { getFpsFromRange, getVisibleElement, SELECTORS } from "@/lib/ythd-utils";
+import { qualities } from "./ythd-defaults";
+import type { QualityFpsPreferences, VideoQuality, YTMusicQuality } from "./ythd-types";
+import { getFpsFromRange, getPlayerDiv, getVisibleElement, SELECTORS } from "./ythd-utils";
 
-type YTMusicPlayerElement = HTMLDivElement & {
+type YTPlayerElement = HTMLDivElement & {
   setPlaybackQualityRange(quality1: YTMusicQuality, quality2: YTMusicQuality): void;
   getAvailableQualityLevels(): YTMusicQuality[];
   getPlaybackQuality(): YTMusicQuality;
 };
 
-const QUALITY_MAP: Record<VideoQuality, YTMusicQuality> = {
+export const QUALITY_MAP: Record<VideoQuality, YTMusicQuality> = {
   4320: "highres",
   2160: "hd2160",
   1440: "hd1440",
@@ -20,11 +20,17 @@ const QUALITY_MAP: Record<VideoQuality, YTMusicQuality> = {
   144: "tiny"
 };
 
-const QUALITY_NUMBER: Record<string, VideoQuality> = Object.fromEntries<VideoQuality>(
-  Object.entries(QUALITY_MAP).map(([number, label]) => [label, qualities.find(q => q === Number(number))!])
+export const QUALITY_NUMBER = Object.fromEntries<VideoQuality>(
+  Object.entries(QUALITY_MAP).map(([number, label]) => {
+    const videoQuality = qualities.find(quality => quality === Number(number));
+    if (videoQuality === undefined) {
+      throw new Error(`[YTHD] Invalid quality value in QUALITY_MAP: ${number}`);
+    }
+    return [label, videoQuality];
+  })
 );
 
-async function measureVideoFps(elVideo: HTMLVideoElement) {
+export async function measureVideoFps(elVideo: HTMLVideoElement) {
   return new Promise<number>(resolve => {
     let lastMediaTime = 0;
     let lastFrameNum = 0;
@@ -59,22 +65,29 @@ async function measureVideoFps(elVideo: HTMLVideoElement) {
   });
 }
 
-export async function applyQualityOnMusic(qualities: QualityFpsPreferences) {
+export async function changeQualityViaPlayerAPI(qualityPreferences: QualityFpsPreferences) {
   const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
   if (!elVideo) {
     return;
   }
 
-  const elYTMusicPlayer = getVisibleElement<YTMusicPlayerElement>(SELECTORS.player);
-  const availableQualities = elYTMusicPlayer.getAvailableQualityLevels();
+  const elPlayer = getPlayerDiv<YTPlayerElement>(elVideo);
+  if (!elPlayer) {
+    return;
+  }
+
+  const availableQualities = elPlayer.getAvailableQualityLevels();
   const fpsCurrent = await measureVideoFps(elVideo);
-  const fpsStep = getFpsFromRange(qualities, fpsCurrent);
-  const preferredQuality = QUALITY_MAP[qualities[fpsStep]];
+  const fpsStep = getFpsFromRange(qualityPreferences, fpsCurrent);
+  const preferredQuality = QUALITY_MAP[qualityPreferences[fpsStep]];
   const iPreferredQuality = availableQualities.findIndex(
     quality => QUALITY_NUMBER[quality] <= QUALITY_NUMBER[preferredQuality]
   );
 
-  const bestQuality = availableQualities.at(iPreferredQuality > -1 ? iPreferredQuality : -2)!;
-  elYTMusicPlayer.setPlaybackQualityRange(bestQuality, bestQuality);
-  console.log("[YTHD] Applied quality", elYTMusicPlayer.getPlaybackQuality());
+  const bestQuality = availableQualities.at(iPreferredQuality > -1 ? iPreferredQuality : -2);
+  if (!bestQuality) {
+    return;
+  }
+  elPlayer.setPlaybackQualityRange(bestQuality, bestQuality);
+  console.log("[YTHD] Applied quality", elPlayer.getPlaybackQuality());
 }
