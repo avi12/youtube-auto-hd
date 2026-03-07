@@ -71,7 +71,11 @@ async function measureVideoFps(elVideo: HTMLVideoElement) {
   });
 }
 
+let latestCallId = 0;
+
 export async function changeQualityViaPlayerAPI(qualityPreferences: QualityFpsPreferences) {
+  const callId = ++latestCallId;
+
   const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
   if (!elVideo) {
     return;
@@ -84,6 +88,12 @@ export async function changeQualityViaPlayerAPI(qualityPreferences: QualityFpsPr
 
   const availableQualities = elPlayer.getAvailableQualityLevels();
   const fpsCurrent = await measureVideoFps(elVideo);
+
+  // A newer call came in while measuring FPS — discard this stale result
+  if (callId !== latestCallId) {
+    return;
+  }
+
   const fpsStep = getFpsFromRange(qualityPreferences, fpsCurrent);
   const preferredQuality = QUALITY_MAP[qualityPreferences[fpsStep]];
   const iPreferredQuality = availableQualities.findIndex(
