@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { Snippet } from "svelte";
+  import type {Snippet} from "svelte";
 
-  const { label, children }: { label: string; children: Snippet } = $props();
+  const {label, children}: { label: string; children: Snippet } = $props();
 </script>
 
 <h2 class="group-label">{label}</h2>

@@ -18,9 +18,9 @@
   import ControlSize from "@/entrypoints/popup/views/ControlSize.svelte";
   import ControlYouTubeMusic from "@/entrypoints/popup/views/ControlYouTubeMusic.svelte";
   import Promotions from "@/entrypoints/popup/views/Promotions.svelte";
-  import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/ythd-types";
-  import { untrack } from "svelte";
-  import { getI18n } from "@/lib/ythd-utils";
+  import type {EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize} from "@/lib/ythd-types";
+  import {untrack} from "svelte";
+  import {getI18n} from "@/lib/ythd-utils";
 
   interface Props {
     qualities: QualityFpsPreferences;
@@ -69,9 +69,15 @@
   <ControlEnabled />
 
   {#if isExtensionEnabled.value}
-    <Section label={getI18n("cj_i18n_08028", "Quality")}><ControlQuality /></Section>
-    <Section label={getI18n("cj_i18n_06859", "Player size")}><ControlSize /></Section>
-    <Section label={getI18n("cj_i18n_01057", "YouTube Music")}><ControlYouTubeMusic /></Section>
+    <Section label={getI18n("cj_i18n_08028", "Quality")}>
+      <ControlQuality />
+    </Section>
+    <Section label={getI18n("cj_i18n_06859", "Player size")}>
+      <ControlSize />
+    </Section>
+    <Section label={getI18n("cj_i18n_01057", "YouTube Music")}>
+      <ControlYouTubeMusic />
+    </Section>
   {/if}
 
   <Promotions />

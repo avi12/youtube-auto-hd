@@ -1,5 +1,5 @@
 import { changeQualityViaPlayerAPI } from "@/lib/ythd-player-api";
-import { PlayerMessage, musicMessenger, shortsMessenger } from "@/lib/ythd-player-messaging";
+import { musicMessenger, PlayerMessage, shortsMessenger } from "@/lib/ythd-player-messaging";
 
 export default defineContentScript({
   matches: ["https://www.youtube.com/*", "https://music.youtube.com/*"],

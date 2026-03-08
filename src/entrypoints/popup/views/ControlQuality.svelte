@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { storage } from "#imports";
+  import {storage} from "#imports";
   import QualitySliderList from "../components/QualitySliderList.svelte";
   import Slider from "../components/Slider.svelte";
   import Switch from "../components/Switch.svelte";
-  import { isEnhancedBitrates, isUseSuperResolution, qualitiesStored } from "@/entrypoints/popup/states.svelte";
-  import type { VideoQuality } from "@/lib/ythd-types";
-  import { fpsList, qualities } from "@/lib/ythd-defaults";
-  import { getI18n, getUncircularJson } from "@/lib/ythd-utils";
+  import {isEnhancedBitrates, isUseSuperResolution, qualitiesStored} from "@/entrypoints/popup/states.svelte";
+  import type {VideoQuality} from "@/lib/ythd-types";
+  import {fpsList, qualities} from "@/lib/ythd-defaults";
+  import {getI18n, getUncircularJson} from "@/lib/ythd-utils";
 
   const i18n = {
     labelSwitchSameQuality: getI18n("cj_i18n_06862", "Use the same quality for all frame rates"),
@@ -64,15 +64,15 @@
 
         {#if qualityForAllSelected >= 1080}
           <Switch
-            change={isEnableEnhancedBitRate => {
+                  change={isEnableEnhancedBitRate => {
               fpsList.forEach(fps => {
                 if (isEnhancedBitrates.value) {
                   isEnhancedBitrates.value[fps] = isEnableEnhancedBitRate;
                 }
               });
             }}
-            checked={isSameEnhancedBitrateForAllFps}
-            className="switch">{i18n.preferEnhancedBitrate}</Switch>
+                  checked={isSameEnhancedBitrateForAllFps}
+                  className="switch">{i18n.preferEnhancedBitrate}</Switch>
           <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
         {/if}
 
@@ -86,13 +86,13 @@
           {#if qualitiesStored.value}
             {#if qualitiesStored.value[fps] >= 1080}
               <Switch
-                change={isEnableEnhancedBitRate => {
+                      change={isEnableEnhancedBitRate => {
                   if (isEnhancedBitrates.value) {
                     isEnhancedBitrates.value[fps] = isEnableEnhancedBitRate;
                   }
                 }}
-                checked={isEnhancedBitrates.value?.[fps]}
-                className="switch">{i18n.preferEnhancedBitrate}</Switch>
+                      checked={isEnhancedBitrates.value?.[fps]}
+                      className="switch">{i18n.preferEnhancedBitrate}</Switch>
               <div class="text-secondary">{i18n.requiresYouTubePremium}</div>
             {/if}
 
@@ -117,6 +117,7 @@
 <style>
   .control-section {
     /*noinspection CssUnusedSymbol*/
+
     & :global(.switch) {
       margin-top: 1.25rem;
     }

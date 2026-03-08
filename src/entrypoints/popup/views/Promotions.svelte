@@ -1,7 +1,7 @@
 <script lang="ts">
   import PromotionLinks from "@/entrypoints/popup/components/PromotionLinks.svelte";
-  import { isHideDonationSection } from "@/entrypoints/popup/states.svelte";
-  import { getI18n } from "@/lib/ythd-utils";
+  import {isHideDonationSection} from "@/entrypoints/popup/states.svelte";
+  import {getI18n} from "@/lib/ythd-utils";
 
   const i18n = {
     labelSubheader: getI18n("cj_i18n_06860", "Support developer")

@@ -1,8 +1,5 @@
 import { fpsSupported, initial } from "./ythd-defaults";
-import type {
-  EnhancedBitrateFpsPreferences,
-  QualityFpsPreferences
-} from "./ythd-types";
+import type { EnhancedBitrateFpsPreferences, QualityFpsPreferences } from "./ythd-types";
 import { storage, type StorageArea } from "#imports";
 
 export const OBSERVER_OPTIONS = Object.freeze<MutationObserverInit>({ childList: true, subtree: true });
@@ -11,10 +8,10 @@ window.ythdLastUserEnhancedBitrates = { ...initial.isEnhancedBitrates };
 window.ythdIsUseSuperResolution = initial.isUseSuperResolution;
 
 export async function getStorage<T>({
-  area,
-  key,
-  fallback
-}: {
+                                      area,
+                                      key,
+                                      fallback
+                                    }: {
   area: StorageArea;
   key: string;
   fallback: T;

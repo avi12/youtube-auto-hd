@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { storage, browser } from "#imports";
+  import {browser, storage} from "#imports";
   import Switch from "@/entrypoints/popup/components/Switch.svelte";
-  import { isExcludeVertical, isResizeVideo, sizeVideo } from "@/entrypoints/popup/states.svelte";
-  import { getI18n } from "@/lib/ythd-utils";
+  import {isExcludeVertical, isResizeVideo, sizeVideo} from "@/entrypoints/popup/states.svelte";
+  import {getI18n} from "@/lib/ythd-utils";
 
   const i18n = {
     labelIsResizeVideo: getI18n("cj_i18n_06568", "Auto-resize videos"),
@@ -72,8 +72,8 @@
 
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div
-        class="inner"
-        onkeydown={e => {
+              class="inner"
+              onkeydown={e => {
           // https://web.dev/control-focus-with-tabindex/#create-accessible-components-with-roving-tabindex
           switch (e.code) {
             case "ArrowLeft":
@@ -92,24 +92,24 @@
               break;
           }
         }}
-        bind:this={elContainer}>
+              bind:this={elContainer}>
         <button
-          class="box"
-          data-size="small"
-          aria-label={i18n.labelSizeSmall}
-          class:selected={sizeVideo.value === 0}
-          onclick={() => (sizeVideo.value = 0)}
-          tabindex="0">
+                class="box"
+                data-size="small"
+                aria-label={i18n.labelSizeSmall}
+                class:selected={sizeVideo.value === 0}
+                onclick={() => (sizeVideo.value = 0)}
+                tabindex="0">
           <!-- suppress HtmlUnknownTag -->
           <div class="rectangle"></div>
         </button>
         <button
-          class="box"
-          data-size="large"
-          aria-label={i18n.labelSizeLarge}
-          class:selected={sizeVideo.value === 1}
-          onclick={() => (sizeVideo.value = 1)}
-          tabindex="-1">
+                class="box"
+                data-size="large"
+                aria-label={i18n.labelSizeLarge}
+                class:selected={sizeVideo.value === 1}
+                onclick={() => (sizeVideo.value = 1)}
+                tabindex="-1">
           <!-- suppress HtmlUnknownTag -->
           <div class="rectangle"></div>
         </button>

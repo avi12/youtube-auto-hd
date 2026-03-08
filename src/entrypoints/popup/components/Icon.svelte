@@ -3,7 +3,7 @@
     path?: string;
   }
 
-  const { path = "" }: Props = $props();
+  const {path = ""}: Props = $props();
 
   const SIZE = 24;
 </script>

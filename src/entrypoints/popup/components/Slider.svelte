@@ -1,9 +1,9 @@
 <script lang="ts">
-  import noUiSlider, { type API } from "nouislider";
-  import { onMount } from "svelte";
+  import noUiSlider, {type API} from "nouislider";
+  import type {Snippet} from "svelte";
+  import {onMount} from "svelte";
   import "nouislider/dist/nouislider.css";
-  import type { Snippet } from "svelte";
-  import type { VideoQuality } from "@/lib/ythd-types";
+  import type {VideoQuality} from "@/lib/ythd-types";
 
   interface Props {
     values?: Array<VideoQuality>;
@@ -11,8 +11,8 @@
     children?: Snippet;
   }
 
-   
-  let { values = [], value = $bindable(), children }: Props = $props();
+
+  let {values = [], value = $bindable(), children}: Props = $props();
 
   const index = $derived(values.indexOf(value));
   let elSlider = $state<HTMLDivElement>();
@@ -63,11 +63,13 @@
       box-shadow: none;
 
       /*noinspection CssUnusedSymbol*/
+
       & :global(.noUi-connect) {
         background: var(--slider-track-cover-color);
       }
 
       /*noinspection CssUnusedSymbol*/
+
       & :global(.noUi-handle) {
         --width: 16px;
         --height: var(--width);
@@ -86,8 +88,9 @@
       }
 
       /*noinspection CssUnusedSymbol*/
+
       & :global(.noUi-handle::before),
-      /*noinspection CssUnusedSymbol*/
+        /*noinspection CssUnusedSymbol*/
       & :global(.noUi-handle::after) {
         content: unset;
       }

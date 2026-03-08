@@ -9,8 +9,8 @@ type YTPlayerElement = HTMLDivElement & {
 };
 
 /** @see https://gist.github.com/Araxeus/fc574d0f31ba71d62215c0873a7b048e
-    @see Official docs: https://developers.google.com/youtube/iframe_api_reference#Playback_quality
-  */
+ @see Official docs: https://developers.google.com/youtube/iframe_api_reference#Playback_quality
+ */
 export const QUALITY_MAP: Record<VideoQuality, YTMusicQuality> = {
   4320: "highres",
   2160: "hd2160",
