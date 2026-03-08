@@ -1,7 +1,7 @@
 # YouTube Auto HD + FPS
 
-A browser extension that sets the quality of YouTube videos according to the user's preference, based on the video's
-FPS.
+A browser extension that sets the quality of YouTube/YouTube Music/Short videos according to the user's preference, based on the video's
+FPS  
 Available for:
 
  - [Google Chrome](https://chromewebstore.google.com/detail/fcphghnknhkimeagdglkljinmpbagone) 120+ ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/fcphghnknhkimeagdglkljinmpbagone?color=white&label=users&style=flat-square)
@@ -14,7 +14,12 @@ Available for:
 - [Naver Whale](https://store.whale.naver.com/detail/njejcbikjebbmiggdpdggelmoifodjhh) - maintained
   by [carlosjeurissen](https://github.com/carlosjeurissen)
 
-![A screenshot from the extension's pop-up page](https://private-user-images.githubusercontent.com/6422804/519377266-5ab156c9-dd51-465f-8016-c84a94d2e064.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjQxODc0NjMsIm5iZiI6MTc2NDE4NzE2MywicGF0aCI6Ii82NDIyODA0LzUxOTM3NzI2Ni01YWIxNTZjOS1kZDUxLTQ2NWYtODAxNi1jODRhOTRkMmUwNjQucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI1MTEyNiUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNTExMjZUMTk1OTIzWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9N2E1ODg5OTRjZjBlMjNkMjE0YjVkOTgxMTg1Zjg3OTBkMzViYWRlODc5YjQ4NjJjYTZlM2IyMzZiZWI3OWI4OCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QifQ.kHhpkGWREaj-t72hkMzVCDBZjUw-hoaJIHXI2xzoxFQ)
+<details>
+<summary>Screenshots</summary>
+<img alt="screenshot 1" src="https://github.com/user-attachments/assets/439c027b-5e08-4075-b38b-912fc1fe5f4d" />
+
+<img alt="screenshot 2" src="https://github.com/user-attachments/assets/0f524f93-0926-4a56-94c5-8510894c2850" />
+</details>
 
 Made by [Avi](https://avi12.com)
 
