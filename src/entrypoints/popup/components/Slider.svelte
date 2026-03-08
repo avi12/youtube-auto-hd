@@ -1,9 +1,9 @@
 <script lang="ts">
-  import noUiSlider, { type API } from "nouislider";
-  import { onMount } from "svelte";
+  import noUiSlider, {type API} from "nouislider";
+  import type {Snippet} from "svelte";
+  import {onMount} from "svelte";
   import "nouislider/dist/nouislider.css";
-  import type { Snippet } from "svelte";
-  import type { VideoQuality } from "@/lib/types";
+  import type {VideoQuality} from "@/lib/ythd-types";
 
   interface Props {
     values?: Array<VideoQuality>;
@@ -11,10 +11,10 @@
     children?: Snippet;
   }
 
-  // eslint-disable-next-line prefer-const
-  let { values = [], value = $bindable(), children }: Props = $props();
 
-  let index = values.indexOf(value);
+  let {values = [], value = $bindable(), children}: Props = $props();
+
+  const index = $derived(values.indexOf(value));
   let elSlider = $state<HTMLDivElement>();
   let slider: API;
 
@@ -33,9 +33,8 @@
       step: 1,
       direction: document.querySelector(".rtl") ? "rtl" : "ltr"
     });
-    slider.on("update", pValues => {
-      value = pValues[0] as VideoQuality;
-      index = values.indexOf(value);
+    slider.on("update", (_, __, unencoded) => {
+      value = values[Math.round(unencoded[0])];
     });
   });
 </script>
@@ -63,42 +62,39 @@
       border: none;
       box-shadow: none;
 
-      & :global {
-        /*noinspection CssUnusedSymbol*/
-        .noUi-connect {
-          background: var(--slider-track-cover-color);
-        }
+      /*noinspection CssUnusedSymbol*/
+
+      & :global(.noUi-connect) {
+        background: var(--slider-track-cover-color);
       }
 
-      & :global {
+      /*noinspection CssUnusedSymbol*/
+
+      & :global(.noUi-handle) {
+        --width: 16px;
+        --height: var(--width);
+        --top: calc(-1 * var(--height) / 2 + 1px);
+        --right: calc(-1 * var(--width) / 2);
+        width: var(--width);
+        height: var(--height);
+        top: var(--top);
+        right: var(--right);
+        border-radius: 50%;
+        background: var(--slider-track-cover-color);
+
+        /* Overrides for noUiSlider */
+        border: none;
+        box-shadow: none;
+      }
+
+      /*noinspection CssUnusedSymbol*/
+
+      & :global(.noUi-handle::before),
         /*noinspection CssUnusedSymbol*/
-        .noUi-handle {
-          --width: 16px;
-          --height: var(--width);
-          --top: calc(-1 * var(--height) / 2 + 1px);
-          --right: calc(-1 * var(--width) / 2);
-          width: var(--width);
-          height: var(--height);
-          top: var(--top);
-          right: var(--right);
-          border-radius: 50%;
-          background: var(--slider-track-cover-color);
-
-          /* Overrides for noUiSlider */
-          border: none;
-          box-shadow: none;
-
-          /* Overrides for noUiSlider */
-
-          &::before,
-          &::after {
-            content: unset;
-          }
-        }
+      & :global(.noUi-handle::after) {
+        content: unset;
       }
     }
-
-    /*noinspection CssUnusedSymbol*/
 
     & .label {
       flex: 1;

@@ -1,17 +1,18 @@
-import autoprefixer from "autoprefixer";
-import { defineConfig, type UserManifest } from "wxt";
 import packageJson from "./package.json" assert { type: "json" };
-import { execSync } from "child_process";
-import fs from "fs";
+import autoprefixer from "autoprefixer";
+import { execSync } from "node:child_process";
+import fs from "node:fs";
+import { defineConfig } from "wxt";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   srcDir: "src",
   publicDir: "src/public",
-  manifest({ browser }) {
+  manifest({ browser, mode }) {
     const url = packageJson.repository;
     const [, author, email] = packageJson.author.match(/(.+) <(.+)>/)!;
-    let manifest: UserManifest = {
+
+    return {
       name: browser === "edge" ? "Auto HD for YouTube" : "YouTube Auto HD + FPS",
       description: "__MSG_cj_i18n_02146__",
       homepage_url: url,
@@ -23,12 +24,16 @@ export default defineConfig({
         "https://youtube.googleapis.com/*"
       ],
       permissions: ["cookies", "storage"],
-      // @ts-expect-error Firefox and Opera accept a string-based author
-      author: browser === "opera" || browser === "firefox" ? packageJson.author : { email }
-    };
-    if (browser === "firefox") {
-      manifest = {
-        ...manifest,
+      options_ui: {
+        page: "popup.html",
+        open_in_tab: mode === "development"
+      },
+      author: browser === "opera" || browser === "firefox" ? packageJson.author : { email },
+      ...(browser !== "firefox" && {
+        offline_enabled: true,
+        minimum_chrome_version: "120.0"
+      }),
+      ...(browser === "firefox" && {
         browser_specific_settings: {
           gecko: {
             id: "avi6106@gmail.com",
@@ -39,15 +44,8 @@ export default defineConfig({
           name: author,
           url
         }
-      };
-    } else {
-      manifest = {
-        ...manifest,
-        offline_enabled: true,
-        minimum_chrome_version: "120.0"
-      };
-    }
-    return manifest;
+      })
+    };
   },
   hooks: {
     "zip:extension:done"(_, zipPath) {

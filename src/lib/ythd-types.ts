@@ -1,14 +1,11 @@
-import { fpsSupported, qualities } from "./ythd-setup";
+import { fpsSupported, qualities } from "./ythd-defaults";
 
 export const SUFFIX_EBR = "ebr";
 export const SUFFIX_SUPER_RESOLUTION = "sr";
 
 export type VideoQuality = (typeof qualities)[number];
 
-// Fix: Add 'extends number' so TS knows T is valid inside `${T}`
-type AddSuffix<T extends number, S extends string> = T extends any
-  ? `${T}${S}`
-  : never;
+type AddSuffix<T extends number, S extends string> = `${T}${S}`;
 
 export type EnhancedVideoQuality = AddSuffix<Exclude<VideoQuality, 720 | 480 | 360 | 240 | 144>, typeof SUFFIX_EBR>;
 
@@ -18,7 +15,8 @@ export type IsEnhancedBitrate = boolean;
 export type Progressive = "p";
 export type Spherical = "s";
 
-export type FullYouTubeLabel = `${VideoQuality}${Progressive | Spherical}${VideoFPS}`; // "1080p60" | "720s50" ...`
+type QualityLabelRaw = `${VideoQuality}${Progressive | Spherical}`;
+export type QualityLabel = QualityLabelRaw | `${QualityLabelRaw}${Exclude<VideoFPS, 30>}`;
 
 export type QualityFpsPreferences = Record<VideoFPS, VideoQuality>;
 
@@ -27,4 +25,8 @@ export type EnhancedBitrateFpsPreferences = Record<VideoFPS, VideoQuality | Enha
 export type EnhancedBitratePreferences = Record<VideoFPS, IsEnhancedBitrate>;
 
 export type VideoAutoResize = boolean;
-export type VideoSize = 1 | 0 | "1" | "0";
+export type VideoSize = 1 | 0;
+
+export type YTMusicQuality =
+  | "highres" | "hd2160" | "hd1440" | "hd1080" | "hd720"
+  | "large" | "medium" | "small" | "tiny";

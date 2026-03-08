@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { storage, browser } from "#imports";
+  import {browser, storage} from "#imports";
   import Switch from "@/entrypoints/popup/components/Switch.svelte";
-  import { isExcludeVertical, isResizeVideo, sizeVideo } from "@/entrypoints/popup/states.svelte";
-  import { getI18n } from "@/lib/ythd-utils";
+  import {isExcludeVertical, isResizeVideo, sizeVideo} from "@/entrypoints/popup/states.svelte";
+  import {getI18n} from "@/lib/ythd-utils";
 
-  const i18n: Record<string, string> = {
+  const i18n = {
     labelIsResizeVideo: getI18n("cj_i18n_06568", "Auto-resize videos"),
     labelVideoSize: getI18n("cj_i18n_06567", "Keep size at"),
     labelOExcludeVertical: getI18n("cj_i18n_07754", "Except for vertical videos"),
@@ -16,15 +16,15 @@
   const isRTL = Boolean(document.querySelector(".rtl"));
 
   function focusPrevItem() {
-    const elBox = document.activeElement?.previousElementSibling as HTMLButtonElement;
-    if (elBox) {
+    const elBox = document.activeElement?.previousElementSibling;
+    if (elBox instanceof HTMLButtonElement) {
       activate(elBox);
     }
   }
 
   function focusNextItem() {
-    const elBox = document.activeElement?.nextElementSibling as HTMLButtonElement;
-    if (elBox) {
+    const elBox = document.activeElement?.nextElementSibling;
+    if (elBox instanceof HTMLButtonElement) {
       activate(elBox);
     }
   }
@@ -72,8 +72,8 @@
 
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div
-        class="inner"
-        onkeydown={e => {
+              class="inner"
+              onkeydown={e => {
           // https://web.dev/control-focus-with-tabindex/#create-accessible-components-with-roving-tabindex
           switch (e.code) {
             case "ArrowLeft":
@@ -92,24 +92,26 @@
               break;
           }
         }}
-        bind:this={elContainer}>
+              bind:this={elContainer}>
         <button
-          class="box"
-          data-size="small"
-          aria-label={i18n.labelSizeSmall}
-          class:selected={Number(sizeVideo.value) === 0}
-          onclick={() => (sizeVideo.value = 0)}
-          tabindex="0">
+                class="box"
+                data-size="small"
+                aria-label={i18n.labelSizeSmall}
+                class:selected={sizeVideo.value === 0}
+                onclick={() => (sizeVideo.value = 0)}
+                tabindex="0">
+          <!-- eslint-disable-next-line svelte/spaced-html-comment -->
           <!--suppress HtmlUnknownTag -->
           <div class="rectangle"></div>
         </button>
         <button
-          class="box"
-          data-size="large"
-          aria-label={i18n.labelSizeLarge}
-          class:selected={Number(sizeVideo.value) !== 0}
-          onclick={() => (sizeVideo.value = 1)}
-          tabindex="-1">
+                class="box"
+                data-size="large"
+                aria-label={i18n.labelSizeLarge}
+                class:selected={sizeVideo.value === 1}
+                onclick={() => (sizeVideo.value = 1)}
+                tabindex="-1">
+          <!-- eslint-disable-next-line svelte/spaced-html-comment -->
           <!--suppress HtmlUnknownTag -->
           <div class="rectangle"></div>
         </button>

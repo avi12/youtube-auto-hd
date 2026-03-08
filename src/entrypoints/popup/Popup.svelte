@@ -1,70 +1,83 @@
 <script lang="ts">
-  import { storage } from "#imports";
   import {
+    isEnableYouTubeMusic,
     isEnhancedBitrates,
     isExcludeVertical,
     isExtensionEnabled,
     isHideDonationSection,
     isResizeVideo,
+    isUseGlobalQualityPreferences,
     isUseSuperResolution,
+    qualitiesMusicStored,
     qualitiesStored,
     sizeVideo
   } from "@/entrypoints/popup/states.svelte";
+  import Section from "@/entrypoints/popup/components/Section.svelte";
   import ControlEnabled from "@/entrypoints/popup/views/ControlEnabled.svelte";
   import ControlQuality from "@/entrypoints/popup/views/ControlQuality.svelte";
   import ControlSize from "@/entrypoints/popup/views/ControlSize.svelte";
+  import ControlYouTubeMusic from "@/entrypoints/popup/views/ControlYouTubeMusic.svelte";
   import Promotions from "@/entrypoints/popup/views/Promotions.svelte";
-  import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/types";
-  import { initial } from "@/lib/ythd-setup";
-  import { getI18n } from "@/lib/ythd-utils";
+  import type {EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize} from "@/lib/ythd-types";
+  import {untrack} from "svelte";
+  import {getI18n} from "@/lib/ythd-utils";
 
-  Promise.all([
-    storage.getItem<QualityFpsPreferences>("local:qualities", { fallback: initial.qualities }),
-    storage.getItem<EnhancedBitratePreferences>("local:isEnhancedBitrates", { fallback: initial.isEnhancedBitrates }),
-    storage.getItem<typeof initial.isUseSuperResolution>("local:isUseSuperResolution", {
-      fallback: initial.isUseSuperResolution
-    }),
-    storage.getItem<typeof initial.isExtensionEnabled>("local:isExtensionEnabled", {
-      fallback: initial.isExtensionEnabled
-    }),
-    storage.getItem<VideoAutoResize>("sync:autoResize", { fallback: initial.isResizeVideo }),
-    storage.getItem<VideoSize>("sync:size", { fallback: initial.size }),
-    storage.getItem<boolean>("sync:isExcludeVertical", { fallback: initial.isExcludeVertical }),
-    storage.getItem<boolean>("sync:isHideDonationSection", { fallback: initial.isHideDonationSection })
-  ]).then(
-    ([
-      qualities,
-      pIsEnhancedBitrates,
-      pIsUseSuperResolution,
-      isExtEnabled,
-      autoResize,
-      size,
-      pisExcludeVertical,
-      pIsHideDonationSection
-    ]) => {
-      qualitiesStored.value = qualities;
-      isEnhancedBitrates.value = pIsEnhancedBitrates;
-      isUseSuperResolution.value = pIsUseSuperResolution;
-      isExtensionEnabled.value = isExtEnabled;
-      isResizeVideo.value = autoResize;
-      sizeVideo.value = size;
-      isExcludeVertical.value = pisExcludeVertical;
-      isHideDonationSection.value = pIsHideDonationSection;
-    }
-  );
+  interface Props {
+    qualities: QualityFpsPreferences;
+    enhancedBitrates: EnhancedBitratePreferences;
+    useSuperResolution: boolean;
+    extensionEnabled: boolean;
+    autoResize: VideoAutoResize;
+    size: VideoSize;
+    excludeVertical: boolean;
+    hideDonationSection: boolean;
+    enableYouTubeMusic: boolean;
+    useGlobalQualityPreferences: boolean;
+    qualitiesMusic: QualityFpsPreferences;
+  }
+
+  const {
+    qualities,
+    enhancedBitrates,
+    useSuperResolution,
+    extensionEnabled,
+    autoResize,
+    size,
+    excludeVertical,
+    hideDonationSection,
+    enableYouTubeMusic,
+    useGlobalQualityPreferences,
+    qualitiesMusic
+  }: Props = $props();
+
+  untrack(() => {
+    qualitiesStored.value = qualities;
+    isEnhancedBitrates.value = enhancedBitrates;
+    isUseSuperResolution.value = useSuperResolution;
+    isExtensionEnabled.value = extensionEnabled;
+    isResizeVideo.value = autoResize;
+    sizeVideo.value = size;
+    isExcludeVertical.value = excludeVertical;
+    isHideDonationSection.value = hideDonationSection;
+    isEnableYouTubeMusic.value = enableYouTubeMusic;
+    isUseGlobalQualityPreferences.value = useGlobalQualityPreferences;
+    qualitiesMusicStored.value = qualitiesMusic;
+  });
 </script>
 
 <main class:rtl={getI18n("@@bidi_dir") === "rtl"}>
-  {#if isExtensionEnabled.value !== null}
-    <ControlEnabled />
-  {/if}
+  <ControlEnabled />
 
   {#if isExtensionEnabled.value}
-    {#if qualitiesStored.value !== null && isEnhancedBitrates.value !== null}
+    <Section label={getI18n("cj_i18n_08028", "Quality")}>
       <ControlQuality />
-    {/if}
-
-    <ControlSize />
+    </Section>
+    <Section label={getI18n("cj_i18n_06859", "Player size")}>
+      <ControlSize />
+    </Section>
+    <Section label={getI18n("cj_i18n_01057", "YouTube Music")}>
+      <ControlYouTubeMusic />
+    </Section>
   {/if}
 
   <Promotions />

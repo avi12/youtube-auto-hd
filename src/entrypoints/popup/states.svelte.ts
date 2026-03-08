@@ -1,4 +1,4 @@
-import type { IsEnhancedBitrate, VideoAutoResize, VideoQuality, VideoSize } from "@/lib/types";
+import type { IsEnhancedBitrate, VideoAutoResize, VideoQuality, VideoSize } from "@/lib/ythd-types";
 
 export const isExtensionEnabled = $state<{ value: boolean | null }>({ value: null });
 export const isHideDonationSection = $state<{ value: boolean | null }>({ value: null });
@@ -10,3 +10,6 @@ export const isEnhancedBitrates = $state<{ value: Record<string, IsEnhancedBitra
   value: null
 });
 export const isUseSuperResolution = $state<{ value: boolean | null }>({ value: null });
+export const isEnableYouTubeMusic = $state<{ value: boolean | null }>({ value: null });
+export const isUseGlobalQualityPreferences = $state<{ value: boolean | null }>({ value: null });
+export const qualitiesMusicStored = $state<{ value: Record<string, VideoQuality> | null }>({ value: null });

@@ -1,11 +1,11 @@
-import { storage } from "#imports";
 import pathIconOn from "@/public/icon-128.png";
 import pathIconOff from "@/public/icon-off.png";
+import { storage } from "#imports";
 
 function iconActions() {
   storage.watch<boolean>("local:isExtensionEnabled", isEnabled =>
     browser.action.setIcon({
-      path: isEnabled! ? pathIconOn : pathIconOff
+      path: (isEnabled ?? false) ? pathIconOn : pathIconOff
     })
   );
 }

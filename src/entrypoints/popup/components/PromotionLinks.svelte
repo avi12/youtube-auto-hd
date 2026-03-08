@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { mdiGithub, mdiHeartOutline, mdiStarOutline, mdiTranslate } from "@mdi/js";
+  import {mdiGithub, mdiHeartOutline, mdiStarOutline, mdiTranslate} from "@mdi/js";
 
-  import { storage, browser } from "#imports";
+  import {browser, storage} from "#imports";
   import Icon from "@/entrypoints/popup/components/Icon.svelte";
-  import { isHideDonationSection } from "@/entrypoints/popup/states.svelte";
-  import { getI18n } from "@/lib/ythd-utils";
+  import {isHideDonationSection} from "@/entrypoints/popup/states.svelte";
+  import {getI18n} from "@/lib/ythd-utils";
 
   const i18n: Record<string, string> = {
     labelRate: getI18n("cj_i18n_06861", "Rate extension"),
@@ -22,14 +22,14 @@
   };
 
   const browserName = (() => {
-    const extensionBaseUrl = chrome.runtime.getURL("");
+    const extensionBaseUrl = browser.runtime.getURL("");
 
     const isFirefox = extensionBaseUrl.startsWith("moz-extension://");
     if (isFirefox) {
       return "firefox";
     }
 
-    const { userAgent } = navigator;
+    const {userAgent} = navigator;
 
     const isOpera = userAgent.includes("OPR");
     if (isOpera) {
@@ -84,9 +84,9 @@
   {#each links as link (link.url)}
     <li>
       <a
-        class="link"
-        href={link.url}
-        onclick={async e => {
+              class="link"
+              href={link.url}
+              onclick={async e => {
           e.preventDefault();
           const { url } = link;
           if (url.includes("paypal.me")) {

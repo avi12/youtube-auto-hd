@@ -1,48 +1,33 @@
+import { fpsSupported, initial } from "./ythd-defaults";
+import type { EnhancedBitrateFpsPreferences, QualityFpsPreferences } from "./ythd-types";
 import { storage, type StorageArea } from "#imports";
-import type {
-  EnhancedBitrateFpsPreferences,
-  EnhancedBitratePreferences,
-  QualityFpsPreferences,
-  VideoFPS
-} from "./types";
-import { initial } from "./ythd-setup";
-import { prepareToChangeQualityOnDesktop } from "@/entrypoints/desktop.content/functions-desktop";
 
-export const OBSERVER_OPTIONS: MutationObserverInit = Object.freeze({ childList: true, subtree: true });
+export const OBSERVER_OPTIONS = Object.freeze<MutationObserverInit>({ childList: true, subtree: true });
 window.ythdLastUserQualities = { ...initial.qualities };
+window.ythdLastUserEnhancedBitrates = { ...initial.isEnhancedBitrates };
 window.ythdIsUseSuperResolution = initial.isUseSuperResolution;
 
 export async function getStorage<T>({
-  area,
-  key,
-  fallback,
-  updateWindowKey
-}: {
+                                      area,
+                                      key,
+                                      fallback
+                                    }: {
   area: StorageArea;
   key: string;
   fallback: T;
-  updateWindowKey: string;
-}): Promise<T> {
-  let value: T;
+}) {
   try {
-    value = await storage.getItem<T>(`${area}:${key}`, { fallback });
+    return await storage.getItem<T>(`${area}:${key}`, { fallback });
   } catch {
-    value = fallback;
+    return fallback;
   }
-  if (typeof window[updateWindowKey] !== "object") {
-    window[updateWindowKey] = value;
-  } else {
-    window[updateWindowKey] = { ...fallback, ...value };
-  }
-  return value;
 }
 
-export async function getIsExtensionEnabled(): Promise<boolean> {
+export async function getIsExtensionEnabled(fallback: boolean = initial.isExtensionEnabled) {
   return getStorage({
     area: "local",
     key: "isExtensionEnabled",
-    fallback: initial.isExtensionEnabled,
-    updateWindowKey: "ythdExtEnabled"
+    fallback
   });
 }
 
@@ -66,16 +51,20 @@ export enum SELECTORS {
   labelPremium = ".ytp-premium-label"
 }
 
-export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T {
-  const elements = [...document.querySelectorAll(elementName)] as Array<T>;
-  return elements.find(isElementVisible) as T;
+export function getPlayerDiv<T extends HTMLDivElement = HTMLDivElement>(elVideo: HTMLVideoElement): T | null {
+  return elVideo.closest<T>(SELECTORS.player);
+}
+
+export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T | undefined {
+  const elements = [...document.querySelectorAll<T>(elementName)];
+  return elements.find(isElementVisible);
 }
 
 export async function getElementByMutationObserver<T extends HTMLElement>(
   selector: SELECTORS,
   isVisible = true
-): Promise<T> {
-  return new Promise(resolve => {
+) {
+  return new Promise<T>(resolve => {
     new MutationObserver((_, observer) => {
       const element = isVisible ? getVisibleElement<T>(selector) : document.querySelector<T>(selector);
       if (element) {
@@ -83,36 +72,6 @@ export async function getElementByMutationObserver<T extends HTMLElement>(
         resolve(element);
       }
     }).observe(document, OBSERVER_OPTIONS);
-  });
-}
-
-export function addStorageListener(): void {
-  storage.watch<boolean>("local:isExtensionEnabled", async isExtEnabled => {
-    window.ythdExtEnabled = isExtEnabled as boolean;
-    const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
-    if (!elVideo) {
-      return;
-    }
-    if (!isExtEnabled) {
-      return;
-    }
-    await prepareToChangeQualityOnDesktop();
-  });
-
-  storage.watch<QualityFpsPreferences>("local:qualities", async qualities => {
-    window.ythdLastQualityClicked = null;
-    window.ythdLastUserQualities = qualities;
-    await prepareToChangeQualityOnDesktop();
-  });
-
-  storage.watch<EnhancedBitratePreferences>("local:isEnhancedBitrates", async isEnhancedBitrates => {
-    window.ythdLastEnhancedBitrateClicked = isEnhancedBitrates;
-    await prepareToChangeQualityOnDesktop();
-  });
-
-  storage.watch<boolean>("local:isUseSuperResolution", async isUseSuperResolution => {
-    window.ythdIsUseSuperResolution = isUseSuperResolution;
-    await prepareToChangeQualityOnDesktop();
   });
 }
 
@@ -125,18 +84,16 @@ export async function addGlobalEventListener(addTemporaryBodyListener: () => voi
   observer.observe(elTitle, OBSERVER_OPTIONS);
 }
 
-function isElementVisible(element: HTMLElement): boolean {
+function isElementVisible(element: HTMLElement) {
   return element?.offsetWidth > 0 && element?.offsetHeight > 0;
 }
 
 export function getFpsFromRange(
   qualities: QualityFpsPreferences | EnhancedBitrateFpsPreferences,
   fpsToCheck: number
-): VideoFPS {
-  const fpsList = Object.keys(qualities)
-    .map(fps => parseInt(fps))
-    .sort((a, b) => b - a) as Array<VideoFPS>;
-  return fpsList.find(fps => fps <= fpsToCheck) || (fpsList.at(-1) as VideoFPS);
+) {
+  const fpsList = fpsSupported.filter(fps => fps.toString() in qualities).sort((first, second) => second - first);
+  return fpsList.find(fps => fps <= fpsToCheck) ?? fpsList[fpsList.length - 1] ?? fpsSupported[2];
 }
 
 const getCircularReplacer = () => {
