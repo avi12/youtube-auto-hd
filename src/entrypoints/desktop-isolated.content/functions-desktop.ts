@@ -1,4 +1,4 @@
-import { fpsSupported, initial, qualities } from "@/lib/ythd-defaults";
+import { fpsSupported, qualities } from "@/lib/ythd-defaults";
 import {
   type EnhancedBitratePreferences,
   type EnhancedVideoQuality,
@@ -6,7 +6,14 @@ import {
   SUFFIX_SUPER_RESOLUTION,
   type VideoQuality
 } from "@/lib/ythd-types";
-import { getFpsFromRange, getPlayerDiv, getStorage, getVisibleElement, OBSERVER_OPTIONS, SELECTORS } from "@/lib/ythd-utils";
+import {
+  getFpsFromRange,
+  getPlayerDiv,
+  getStorage,
+  getVisibleElement,
+  OBSERVER_OPTIONS,
+  SELECTORS
+} from "@/lib/ythd-utils";
 
 function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
   const elOptionInSettings = getPlayerDiv(elVideo)?.querySelector(SELECTORS.optionQuality);
