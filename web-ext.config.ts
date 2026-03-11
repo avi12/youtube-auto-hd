@@ -3,10 +3,11 @@ import dotenv from "dotenv";
 import path from "node:path";
 import { defineWebExtConfig } from "wxt";
 
-const [, , , ...argv] = process.argv;
+const [, , command, ...argv] = process.argv;
 const browser = argv.at(-1) || argv.at(-2) || "chrome";
 let executable = "";
-if (browser.match(/chrome|firefox/)) {
+const isRunMode = command !== "build" && command !== "zip";
+if (isRunMode && browser.match(/chrome|firefox/)) {
   [, executable] = execSync(`bunx @puppeteer/browsers install ${browser}@stable --path test-browsers`)
     .toString()
     .trim()
