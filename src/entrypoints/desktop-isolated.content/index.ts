@@ -238,12 +238,6 @@ function observeForInitialVideo() {
       return;
     }
 
-    if (location.pathname.startsWith("/embed/")) {
-      observer.disconnect();
-      await prepareToChangeQualityOnDesktop();
-      return;
-    }
-
     observer.disconnect();
     elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
     elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
