@@ -1,5 +1,6 @@
 {
 "cj_i18n_00354":{"message":"Przekaż darowiznę"},
+"cj_i18n_01057":{"message":"YouTube Music"},
 "cj_i18n_01605":{"message":"Pomóż w tłumaczeniu"},
 "cj_i18n_02146":{"message":"Automatycznie ustaw jakość filmu na YouTube zgodnie z jego FPS!"},
 "cj_i18n_02148":{"message":"FPS wideo"},
@@ -19,5 +20,9 @@
 "cj_i18n_07584":{"message":"Wymaga YouTube Premium"},
 "cj_i18n_07669":{"message":"Skontaktuj się ze mną"},
 "cj_i18n_07754":{"message":"Z wyjątkiem filmików pionowych"},
-"cj_i18n_07966":{"message":"Użyj funkcji superrozdzielczości, gdy jest dostępna"}
+"cj_i18n_07966":{"message":"Użyj funkcji superrozdzielczości, gdy jest dostępna"},
+"cj_i18n_08028":{"message":"Jakość"},
+"cj_i18n_08029":{"message":"Zastosuj w YouTube Music"},
+"cj_i18n_08030":{"message":"Użyj globalnych ustawień jakości"},
+"cj_i18n_todo":{"message":""}
 }
