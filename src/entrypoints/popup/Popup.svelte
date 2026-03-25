@@ -18,9 +18,9 @@
   import ControlSize from "@/entrypoints/popup/views/ControlSize.svelte";
   import ControlYouTubeMusic from "@/entrypoints/popup/views/ControlYouTubeMusic.svelte";
   import Promotions from "@/entrypoints/popup/views/Promotions.svelte";
-  import type {EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize} from "@/lib/ythd-types";
-  import {untrack} from "svelte";
-  import {getI18n} from "@/lib/ythd-utils";
+  import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/ythd-types";
+  import { untrack } from "svelte";
+  import { getI18n } from "@/lib/ythd-utils";
 
   interface Props {
     qualities: QualityFpsPreferences;
@@ -63,9 +63,11 @@
     isUseGlobalQualityPreferences.value = useGlobalQualityPreferences;
     qualitiesMusicStored.value = qualitiesMusic;
   });
+
+  const dir = getI18n("@@bidi_dir") as "ltr" | "rtl";
 </script>
 
-<main class:rtl={getI18n("@@bidi_dir") === "rtl"}>
+<main {dir}>
   <ControlEnabled />
 
   {#if isExtensionEnabled.value}
