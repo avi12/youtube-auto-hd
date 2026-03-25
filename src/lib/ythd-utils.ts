@@ -39,11 +39,16 @@ export enum SELECTORS {
   title = "title",
   video = "video",
   buttonSettings = ".ytp-settings-button",
-  sizeToggle = ".ytp-size-button#original-size, .ytp-size-button", // .ytp-size-button#original-size is to avoid a collision with https://chromewebstore.google.com/detail/youtube-windowed-fullscre/gkkmiofalnjagdcjheckamobghglpdpm
+  sizeToggle = ".ytp-size-button#original-size, .ytp-size-button, .ytp-size-toggle-large, .ytp-size-toggle-small", // .ytp-size-button#original-size is to avoid a collision with https://chromewebstore.google.com/detail/youtube-windowed-fullscre/gkkmiofalnjagdcjheckamobghglpdpm; .ytp-size-toggle-* for V3/VORAPIS compatibility
   optionQuality = ".ytp-settings-menu[data-layer] .ytp-menuitem:last-child",
   menuOption = ".ytp-settings-menu[data-layer] .ytp-menuitem",
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
+  // V3/VORAPIS
+  qualityMenuRowV3 = ".ytp-menu-row",
+  qualityMenuTitleV3 = ".ytp-menu-title",
+  qualityDropDownTriggerV3 = ".ytp-drop-down",
+  qualityOptionV3 = ".ytp-drop-down-menu-button",
   player = ".html5-video-player:not(#inline-preview-player)",
   channelTrailerContainer = "ytd-channel-video-player-renderer",
   donationInjectParent = "ytd-comments",

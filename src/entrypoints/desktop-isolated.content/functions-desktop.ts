@@ -15,22 +15,33 @@ import {
   SELECTORS
 } from "@/lib/ythd-utils";
 
+function getQualityMenuRowV3(elPlayer: HTMLDivElement) {
+  const rows = [...elPlayer.querySelectorAll(SELECTORS.qualityMenuRowV3)];
+  return rows.find(row => row.querySelector(SELECTORS.qualityMenuTitleV3)?.textContent?.match(/quality/i)) ?? null;
+}
+
 function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
-  const elOptionInSettings = getPlayerDiv(elVideo)?.querySelector(SELECTORS.optionQuality);
-  if (!elOptionInSettings) {
+  const elPlayer = getPlayerDiv(elVideo);
+  if (!elPlayer) {
     return false;
   }
 
-  const elQualityName = elOptionInSettings.querySelector<HTMLDivElement>(SELECTORS.menuOptionContent);
+  const elOptionInSettings = elPlayer.querySelector(SELECTORS.optionQuality);
+  if (elOptionInSettings) {
+    const elQualityName = elOptionInSettings.querySelector<HTMLDivElement>(SELECTORS.menuOptionContent);
 
-  // If the video is a channel trailer, the last option is initially the speed one,
-  // and the speed setting can only be a single digit
-  const matchNumber = elQualityName?.textContent?.match(/\d+/);
-  if (!matchNumber) {
-    return false;
+    // If the video is a channel trailer, the last option is initially the speed one,
+    // and the speed setting can only be a single digit
+    const matchNumber = elQualityName?.textContent?.match(/\d+/);
+    if (!matchNumber) {
+      return false;
+    }
+    const minQualityCharLength = 3; // e.g. 3 characters in 720p
+    return matchNumber[0].length >= minQualityCharLength;
   }
-  const minQualityCharLength = 3; // e.g. 3 characters in 720p
-  return matchNumber[0].length >= minQualityCharLength;
+
+  // V3/VORAPIS fallback
+  return Boolean(getQualityMenuRowV3(elPlayer));
 }
 
 function getIsQualityElement(element: Element) {
@@ -44,7 +55,15 @@ function getCurrentQualityElements(elVideo: HTMLVideoElement) {
   if (!elPlayer) {
     return [];
   }
-  return [...elPlayer.querySelectorAll<HTMLDivElement>(SELECTORS.menuOption)].filter(getIsQualityElement);
+
+  const modernElements = [...elPlayer.querySelectorAll<HTMLDivElement>(SELECTORS.menuOption)].filter(getIsQualityElement);
+  if (modernElements.length > 0) {
+    return modernElements;
+  }
+
+  // V3/VORAPIS fallback
+  const qualityRow = getQualityMenuRowV3(elPlayer);
+  return qualityRow ? [...qualityRow.querySelectorAll<HTMLDivElement>(SELECTORS.qualityOptionV3)] : [];
 }
 
 function convertQualityToNumber(elQuality: Element) {
@@ -79,8 +98,19 @@ function getVideoFPS(elVideo: HTMLVideoElement) {
 }
 
 function openQualityMenu(elVideo: HTMLVideoElement) {
-  const elSettingQuality = getPlayerDiv(elVideo)?.querySelector<HTMLDivElement>(SELECTORS.optionQuality);
-  elSettingQuality?.click();
+  const elPlayer = getPlayerDiv(elVideo);
+  if (!elPlayer) {
+    return;
+  }
+
+  const elSettingQuality = elPlayer.querySelector<HTMLDivElement>(SELECTORS.optionQuality);
+  if (elSettingQuality) {
+    elSettingQuality.click();
+    return;
+  }
+
+  // V3/VORAPIS fallback: expand the quality dropdown
+  getQualityMenuRowV3(elPlayer)?.querySelector<HTMLElement>(SELECTORS.qualityDropDownTriggerV3)?.click();
 }
 
 function changeQuality(
@@ -165,6 +195,12 @@ function closeMenu(elPlayer: HTMLDivElement) {
   };
 
   if (clickPanelBackIfPossible()) {
+    return;
+  }
+
+  // V3/VORAPIS: close the settings panel via the settings button
+  if (elPlayer.querySelector(SELECTORS.qualityMenuRowV3)) {
+    elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings)?.click();
     return;
   }
 
