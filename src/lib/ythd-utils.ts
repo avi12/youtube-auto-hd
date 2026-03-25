@@ -8,10 +8,10 @@ window.ythdLastUserEnhancedBitrates = { ...initial.isEnhancedBitrates };
 window.ythdIsUseSuperResolution = initial.isUseSuperResolution;
 
 export async function getStorage<T>({
-                                      area,
-                                      key,
-                                      fallback
-                                    }: {
+  area,
+  key,
+  fallback
+}: {
   area: StorageArea;
   key: string;
   fallback: T;
@@ -32,7 +32,7 @@ export async function getIsExtensionEnabled(fallback: boolean = initial.isExtens
 }
 
 export function getI18n(id: Parameters<typeof browser.i18n.getMessage>[0], backup = "") {
-  return (id && browser.i18n.getMessage(id)) || backup;
+  return id && browser.i18n.getMessage(id) || backup;
 }
 
 export enum SELECTORS {
@@ -79,7 +79,7 @@ export async function addGlobalEventListener(addTemporaryBodyListener: () => voi
   // Fires when navigating to another page
   const elTitle =
     document.documentElement.querySelector(SELECTORS.title) ||
-    (await getElementByMutationObserver<HTMLTitleElement>(SELECTORS.title, false));
+    await getElementByMutationObserver<HTMLTitleElement>(SELECTORS.title, false);
   const observer = new MutationObserver(addTemporaryBodyListener);
   observer.observe(elTitle, OBSERVER_OPTIONS);
 }

@@ -5,7 +5,7 @@ import { storage } from "#imports";
 function iconActions() {
   storage.watch<boolean>("local:isExtensionEnabled", isEnabled =>
     browser.action.setIcon({
-      path: (isEnabled ?? false) ? pathIconOn : pathIconOff
+      path: isEnabled ?? false ? pathIconOn : pathIconOff
     })
   );
 }

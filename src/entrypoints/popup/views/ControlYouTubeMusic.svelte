@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {storage} from "#imports";
+  import { storage } from "#imports";
   import QualitySliderList from "../components/QualitySliderList.svelte";
   import Switch from "../components/Switch.svelte";
   import {
@@ -8,8 +8,8 @@
     qualitiesMusicStored,
     qualitiesStored
   } from "@/entrypoints/popup/states.svelte";
-  import {fpsList} from "@/lib/ythd-defaults";
-  import {getI18n, getUncircularJson} from "@/lib/ythd-utils";
+  import { fpsList } from "@/lib/ythd-defaults";
+  import { getI18n, getUncircularJson } from "@/lib/ythd-utils";
 
   const i18n = {
     labelEnableYouTubeMusic: getI18n("cj_i18n_todo", "Run on YouTube Music"),
@@ -73,7 +73,7 @@
 
 <style>
   .control-section {
-    /*noinspection CssUnusedSymbol*/
+    /* noinspection CssUnusedSymbol */
 
     & :global(.switch) {
       margin-top: 1.25rem;

@@ -36,7 +36,7 @@ async function resizePlayerIfNeeded() {
   const isPrefersDefaultSize = targetViewMode === 0;
   const isPrefersTheaterSize = !isPrefersDefaultSize;
 
-  while ((getCurrentViewMode() === 0 && isPrefersTheaterSize) || (getCurrentViewMode() === 1 && isPrefersDefaultSize)) {
+  while (getCurrentViewMode() === 0 && isPrefersTheaterSize || getCurrentViewMode() === 1 && isPrefersDefaultSize) {
     elSizeToggle.click();
 
     await new Promise(resolve => setTimeout(resolve, 100));
@@ -66,7 +66,7 @@ function addStorageListener() {
     if (!isEnabled) {
       return;
     }
-    preferences = { ...preferences, ...(await getPlayerSize()) };
+    preferences = { ...preferences, ...await getPlayerSize() };
     await resizePlayerIfNeeded();
   });
   storage.watch<VideoAutoResize>("sync:autoResize", async isResizeVideo => {
@@ -110,7 +110,7 @@ async function initPlayerResize() {
   addStorageListener();
   addGlobalEventListener(addTemporaryBodyListenerOnDesktop);
 
-  if (!(await getIsExtensionEnabled())) {
+  if (!await getIsExtensionEnabled()) {
     return;
   }
 
