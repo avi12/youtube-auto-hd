@@ -194,8 +194,12 @@ function addStorageListeners() {
   });
 
   storage.watch<QualityFpsPreferences>("local:qualities", async qualityPreferences => {
-    window.ythdLastQualityClicked = undefined;
     window.ythdLastUserQualities = qualityPreferences;
+    // Respect the user's in-player quality choice for the current video;
+    // the new preference will apply on the next navigation.
+    if (window.ythdLastQualityClicked !== undefined) {
+      return;
+    }
     if (!window.ythdExtEnabled) {
       return;
     }
@@ -208,7 +212,7 @@ function addStorageListeners() {
 
   storage.watch<EnhancedBitratePreferences>("local:isEnhancedBitrates", async isEnhancedBitrates => {
     window.ythdLastEnhancedBitrateClicked = isEnhancedBitrates ?? undefined;
-    if (!window.ythdExtEnabled) {
+    if (!window.ythdExtEnabled || window.ythdLastQualityClicked !== undefined) {
       return;
     }
     await prepareToChangeQualityOnDesktop();
@@ -216,7 +220,7 @@ function addStorageListeners() {
 
   storage.watch<boolean>("local:isUseSuperResolution", async isUseSuperResolution => {
     window.ythdIsUseSuperResolution = isUseSuperResolution ?? undefined;
-    if (!window.ythdExtEnabled) {
+    if (!window.ythdExtEnabled || window.ythdLastQualityClicked !== undefined) {
       return;
     }
     await prepareToChangeQualityOnDesktop();
