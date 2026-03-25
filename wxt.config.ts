@@ -25,15 +25,14 @@ export default defineConfig({
       ],
       permissions: ["cookies", "storage"],
       options_ui: {
-        page: "popup.html",
-        open_in_tab: mode === "development"
+        page: "popup.html"
       },
       author: browser === "opera" || browser === "firefox" ? packageJson.author : { email },
-      ...(browser !== "firefox" && {
+      ...browser !== "firefox" && {
         offline_enabled: true,
         minimum_chrome_version: "120.0"
-      }),
-      ...(browser === "firefox" && {
+      },
+      ...browser === "firefox" && {
         browser_specific_settings: {
           gecko: {
             id: "avi6106@gmail.com",
@@ -44,7 +43,7 @@ export default defineConfig({
           name: author,
           url
         }
-      })
+      }
     };
   },
   hooks: {
