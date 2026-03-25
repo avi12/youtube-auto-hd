@@ -258,6 +258,10 @@ export async function prepareToChangeQualityOnDesktop(e?: Event) {
     elSettings.click();
   }
   elSettings.click();
+  // Re-open if the second click closed the panel (can happen in V3/VORAPIS and some YouTube states)
+  if (!getIsSettingsMenuOpen()) {
+    elSettings.click();
+  }
   changeQualityAndClose(elVideo, elPlayer);
 
   elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings)?.blur();

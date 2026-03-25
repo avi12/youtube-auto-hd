@@ -51,6 +51,11 @@ function getQualityParentElement(elTarget: HTMLElement) {
   if (elTarget.matches("span")) {
     return elTarget;
   }
+  // V3/VORAPIS: quality option is a div containing the quality text directly
+  const elQualityOptionV3 = elTarget.closest<HTMLElement>(SELECTORS.qualityOptionV3);
+  if (elQualityOptionV3) {
+    return elQualityOptionV3;
+  }
   return elTarget.querySelector<HTMLElement>("span, div > span");
 }
 
