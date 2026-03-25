@@ -1,8 +1,9 @@
 <script lang="ts">
-  import {browser, storage} from "#imports";
+  import { browser, storage } from "#imports";
   import Switch from "@/entrypoints/popup/components/Switch.svelte";
-  import {isExcludeVertical, isResizeVideo, sizeVideo} from "@/entrypoints/popup/states.svelte";
-  import {getI18n} from "@/lib/ythd-utils";
+  import { isExcludeVertical, isResizeVideo, sizeVideo } from "@/entrypoints/popup/states.svelte";
+  import { getI18n } from "@/lib/ythd-utils";
+  import type { VideoSize } from "@/lib/ythd-types";
 
   const i18n = {
     labelIsResizeVideo: getI18n("cj_i18n_06568", "Auto-resize videos"),
@@ -12,32 +13,7 @@
     labelSizeLarge: getI18n("cj_i18n_07098", "Cinema view")
   };
 
-  let elContainer = $state<Element>();
-  const isRTL = Boolean(document.querySelector(".rtl"));
-
-  function focusPrevItem() {
-    const elBox = document.activeElement?.previousElementSibling;
-    if (elBox instanceof HTMLButtonElement) {
-      activate(elBox);
-    }
-  }
-
-  function focusNextItem() {
-    const elBox = document.activeElement?.nextElementSibling;
-    if (elBox instanceof HTMLButtonElement) {
-      activate(elBox);
-    }
-  }
-
-  function activate(elBox: HTMLElement) {
-    const elBoxes = [...elContainer!.querySelectorAll<HTMLButtonElement>(".size__box")];
-    elBoxes.forEach(el => {
-      el.tabIndex = -1;
-    });
-
-    elBox.tabIndex = 0;
-    elBox.focus();
-  }
+  const groupId = crypto.randomUUID();
 
   $effect(() => {
     storage.setItem("sync:autoResize", isResizeVideo.value);
@@ -67,72 +43,41 @@
   <Switch bind:checked={isResizeVideo.value}>{i18n.labelIsResizeVideo}</Switch>
 
   {#if isResizeVideo.value}
-    <section class="size">
-      <div class="label">{i18n.labelVideoSize}</div>
-
-      <!-- svelte-ignore a11y_no_static_element_interactions -->
-      <div
-              class="inner"
-              onkeydown={e => {
-          // https://web.dev/control-focus-with-tabindex/#create-accessible-components-with-roving-tabindex
-          switch (e.code) {
-            case "ArrowLeft":
-              if (isRTL) {
-                focusNextItem();
-              } else {
-                focusPrevItem();
-              }
-              break;
-            case "ArrowRight":
-              if (isRTL) {
-                focusPrevItem();
-              } else {
-                focusNextItem();
-              }
-              break;
-          }
-        }}
-              bind:this={elContainer}>
-        <button
-                class="box"
-                data-size="small"
-                aria-label={i18n.labelSizeSmall}
-                class:selected={sizeVideo.value === 0}
-                onclick={() => (sizeVideo.value = 0)}
-                tabindex="0">
-          <!-- eslint-disable-next-line svelte/spaced-html-comment -->
-          <!--suppress HtmlUnknownTag -->
-          <div class="rectangle"></div>
-        </button>
-        <button
-                class="box"
-                data-size="large"
-                aria-label={i18n.labelSizeLarge}
-                class:selected={sizeVideo.value === 1}
-                onclick={() => (sizeVideo.value = 1)}
-                tabindex="-1">
-          <!-- eslint-disable-next-line svelte/spaced-html-comment -->
-          <!--suppress HtmlUnknownTag -->
-          <div class="rectangle"></div>
-        </button>
+    <fieldset class="size">
+      <legend>{i18n.labelVideoSize}</legend>
+      <div class="inner">
+        {#each [{ value: 0, label: i18n.labelSizeSmall }, { value: 1, label: i18n.labelSizeLarge }] as option (option.value)}
+          <label class="box" data-size={option.value === 0 ? "small" : "large"} class:selected={sizeVideo.value === option.value}>
+            <input
+              type="radio"
+              name="video-size-{groupId}"
+              bind:group={sizeVideo.value}
+              value={option.value as VideoSize} />
+            <span class="visually-hidden">{option.label}</span>
+            <div class="rectangle"></div>
+          </label>
+        {/each}
       </div>
-    </section>
+    </fieldset>
 
     <Switch bind:checked={isExcludeVertical.value}>{i18n.labelOExcludeVertical}</Switch>
   {/if}
 </article>
 
-<hr />
+<hr class="section-divider" />
 
 <style>
   .size {
     display: flex;
-    justify-content: center;
     align-items: center;
+    min-inline-size: 0;
     margin-top: 1rem;
+    padding: 0;
+    border: none;
 
-    & .label {
+    & > legend {
       flex: 1;
+      padding: 0;
       padding-inline-end: 1rem;
     }
 
@@ -149,43 +94,61 @@
       height: 42px;
       border: 1px solid transparent;
       border-radius: 5px;
-      background-color: transparent;
       cursor: pointer;
-      transition: 0.2s ease-in-out;
+      transition: border-color 200ms ease-in-out;
 
-      &:hover {
+      &:hover,
+      &:focus-within {
         border-color: var(--outline-size-box-wrapper);
+      }
+
+      & input {
+        position: absolute;
+        overflow: hidden;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        border: 0;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+
+      & .visually-hidden {
+        position: absolute;
+        overflow: hidden;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        border: 0;
+        clip-path: inset(50%);
+        white-space: nowrap;
       }
 
       & .rectangle {
         border: 1px solid var(--outline-size-box);
         border-radius: 4px;
-        transition: border-color 0.2s ease-in-out;
+        transition: border-color 200ms ease-in-out;
       }
 
-      &.selected {
-        & .rectangle {
-          border-color: var(--outline-size-box-selected);
-        }
+      &[data-size="small"] .rectangle {
+        width: 21px;
+        height: 14px;
+      }
+
+      &[data-size="large"] .rectangle {
+        width: 34px;
+        height: 26px;
+      }
+
+      &.selected .rectangle {
+        border-color: var(--outline-size-box-selected);
       }
     }
   }
 
-  [data-size="small"] {
-    & .rectangle {
-      width: 21px;
-      height: 14px;
-    }
-  }
-
-  [data-size="large"] {
-    & .rectangle {
-      width: 34px;
-      height: 26px;
-    }
-  }
-
-  hr {
+  .section-divider {
     margin-top: 1.25rem;
   }
 </style>

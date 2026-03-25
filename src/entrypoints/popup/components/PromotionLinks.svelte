@@ -1,10 +1,10 @@
 <script lang="ts">
-  import {mdiGithub, mdiHeartOutline, mdiStarOutline, mdiTranslate} from "@mdi/js";
+  import { mdiGithub, mdiHeartOutline, mdiStarOutline, mdiTranslate } from "@mdi/js";
 
-  import {browser, storage} from "#imports";
+  import { browser, storage } from "#imports";
   import Icon from "@/entrypoints/popup/components/Icon.svelte";
-  import {isHideDonationSection} from "@/entrypoints/popup/states.svelte";
-  import {getI18n} from "@/lib/ythd-utils";
+  import { isHideDonationSection } from "@/entrypoints/popup/states.svelte";
+  import { getI18n } from "@/lib/ythd-utils";
 
   const i18n: Record<string, string> = {
     labelRate: getI18n("cj_i18n_06861", "Rate extension"),
@@ -29,7 +29,7 @@
       return "firefox";
     }
 
-    const {userAgent} = navigator;
+    const { userAgent } = navigator;
 
     const isOpera = userAgent.includes("OPR");
     if (isOpera) {
@@ -80,13 +80,13 @@
   });
 </script>
 
-<menu>
+<menu class="links-menu">
   {#each links as link (link.url)}
     <li>
       <a
-              class="link"
-              href={link.url}
-              onclick={async e => {
+        class="link"
+        href={link.url}
+        onclick={async e => {
           e.preventDefault();
           const { url } = link;
           if (url.includes("paypal.me")) {
@@ -96,7 +96,7 @@
           close();
         }}>
         <Icon path={link.icon} />
-        <span>{link.label}</span>
+        <span class="link-label">{link.label}</span>
       </a>
     </li>
   {/each}
@@ -104,25 +104,25 @@
 
 <style>
   .link {
-    color: var(--text-color-promotion);
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
+    color: var(--text-color-promotion);
+    text-decoration: none;
 
-    & span {
+    & .link-label {
       position: relative;
 
       &::after {
         content: "";
         position: absolute;
-        width: 100%;
-        height: 2px;
-        transform: scaleX(0);
         bottom: -3px;
         left: 0;
+        width: 100%;
+        height: 2px;
         background-color: currentColor;
+        transition: transform 200ms ease-out;
+        transform: scaleX(0);
         transform-origin: bottom right;
-        transition: transform 0.2s ease-out;
       }
 
       &:hover::after {
@@ -132,27 +132,25 @@
     }
   }
 
-  /*noinspection CssUnusedSymbol*/
-  :global(.rtl) {
-    & .link {
-      & span {
-        &::after {
-          transform-origin: bottom left;
-        }
+  /* noinspection CssUnusedSymbol */
+  :global([dir="rtl"]) {
+    & .link .link-label {
+      &::after {
+        transform-origin: bottom left;
+      }
 
-        &:hover::after {
-          transform-origin: bottom right;
-        }
+      &:hover::after {
+        transform-origin: bottom right;
       }
     }
   }
 
-  menu {
-    list-style: none;
-    padding-inline-start: 0;
+  .links-menu {
     margin-bottom: 0;
+    padding-inline-start: 0;
+    list-style: none;
 
-    & li:not(:last-child) {
+    & > :not(:last-child) {
       margin-bottom: 0.5rem;
     }
   }

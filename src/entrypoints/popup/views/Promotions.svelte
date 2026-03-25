@@ -1,7 +1,7 @@
 <script lang="ts">
   import PromotionLinks from "@/entrypoints/popup/components/PromotionLinks.svelte";
-  import {isHideDonationSection} from "@/entrypoints/popup/states.svelte";
-  import {getI18n} from "@/lib/ythd-utils";
+  import { isHideDonationSection } from "@/entrypoints/popup/states.svelte";
+  import { getI18n } from "@/lib/ythd-utils";
 
   const i18n = {
     labelSubheader: getI18n("cj_i18n_06860", "Support developer")
@@ -11,7 +11,7 @@
 {#if isHideDonationSection.value}
   <details class="promotion-section">
     <summary class="summary">
-      <span>{i18n.labelSubheader}</span>
+      <span class="summary-label">{i18n.labelSubheader}</span>
     </summary>
     <PromotionLinks />
   </details>
@@ -32,7 +32,7 @@
       color: var(--text-color-secondary);
       cursor: pointer;
 
-      & span {
+      & .summary-label {
         margin-inline-start: 1rem;
       }
     }

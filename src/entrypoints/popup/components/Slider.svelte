@@ -1,9 +1,9 @@
 <script lang="ts">
-  import noUiSlider, {type API} from "nouislider";
-  import type {Snippet} from "svelte";
-  import {onMount} from "svelte";
+  import noUiSlider, { type API } from "nouislider";
+  import type { Snippet } from "svelte";
+  import { onMount } from "svelte";
   import "nouislider/dist/nouislider.css";
-  import type {VideoQuality} from "@/lib/ythd-types";
+  import type { VideoQuality } from "@/lib/ythd-types";
 
   interface Props {
     values?: Array<VideoQuality>;
@@ -12,11 +12,12 @@
   }
 
 
-  let {values = [], value = $bindable(), children}: Props = $props();
+  let { values = [], value = $bindable(), children }: Props = $props();
 
   const index = $derived(values.indexOf(value));
   let elSlider = $state<HTMLDivElement>();
   let slider: API;
+  const labelId = crypto.randomUUID();
 
   onMount(() => {
     slider = noUiSlider.create(elSlider!, {
@@ -31,8 +32,9 @@
         max: values.length - 1
       },
       step: 1,
-      direction: document.querySelector(".rtl") ? "rtl" : "ltr"
+      direction: document.querySelector("[dir='rtl']") ? "rtl" : "ltr"
     });
+    elSlider!.querySelector(".noUi-handle")?.setAttribute("aria-labelledby", labelId);
     slider.on("update", (_, __, unencoded) => {
       value = values[Math.round(unencoded[0])];
     });
@@ -40,7 +42,7 @@
 </script>
 
 <div class="slider">
-  <div class="label">
+  <div class="label" id={labelId}>
     {@render children?.()}
   </div>
   <div bind:this={elSlider} class="slider-element"></div>
@@ -49,50 +51,50 @@
 <style>
   .slider {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
 
     & .slider-element.slider-element {
       flex: 1;
       height: 2px;
-      background: var(--slider-track-uncover-color);
 
       /* Overrides for noUiSlider */
       border: none;
+      background: var(--slider-track-uncover-color);
       box-shadow: none;
 
-      /*noinspection CssUnusedSymbol*/
+      /* noinspection CssUnusedSymbol */
 
       & :global(.noUi-connect) {
         background: var(--slider-track-cover-color);
       }
 
-      /*noinspection CssUnusedSymbol*/
+      /* noinspection CssUnusedSymbol */
 
       & :global(.noUi-handle) {
         --width: 16px;
         --height: var(--width);
         --top: calc(-1 * var(--height) / 2 + 1px);
         --right: calc(-1 * var(--width) / 2);
-        width: var(--width);
-        height: var(--height);
+
         top: var(--top);
         right: var(--right);
-        border-radius: 50%;
-        background: var(--slider-track-cover-color);
+        width: var(--width);
+        height: var(--height);
 
         /* Overrides for noUiSlider */
         border: none;
+        border-radius: 50%;
+        background: var(--slider-track-cover-color);
         box-shadow: none;
       }
 
-      /*noinspection CssUnusedSymbol*/
+      /* noinspection CssUnusedSymbol */
 
       & :global(.noUi-handle::before),
-        /*noinspection CssUnusedSymbol*/
       & :global(.noUi-handle::after) {
-        content: unset;
+        content: none;
       }
     }
 

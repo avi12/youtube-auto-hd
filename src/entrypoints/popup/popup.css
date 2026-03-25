@@ -1,48 +1,40 @@
 :root {
-  --bg-color: hsl(0, 0%, 100%);
-  --text-color-primary: hsl(0, 0%, 0%);
-  --text-color-secondary: hsl(0, 0%, 53%);
-  --text-color-warning: hsl(0, 0%, 0%);
-  --bg-color-warning: hsl(0, 0%, 90%);
-  --text-color-promotion: hsl(210, 60%, 53%);
-
-  --switch-on-thumb-color: hsl(0, 93%, 61%);
-  --switch-on-bg-color: hsl(0, 100%, 90%);
-  --switch-off-thumb-color: hsl(0, 93%, 61%);
-  --switch-off-bg-color: hsl(0, 0%, 92%);
-
-  --slider-track-cover-color: hsl(0, 93%, 61%);
-  --slider-track-uncover-color: hsl(0, 0%, 90%);
-
-  --outline-size-box-wrapper: hsl(0, 0%, 83%);
-  --outline-size-box: hsl(0, 0%, 78%);
-  --outline-size-box-selected: hsl(0, 93%, 61%);
-
-  --hr-color: hsl(0, 0%, 90%);
+  --bg-color: hsl(0deg 0% 100%);
+  --text-color-primary: hsl(0deg 0% 0%);
+  --text-color-secondary: hsl(0deg 0% 53%);
+  --text-color-warning: hsl(0deg 0% 0%);
+  --bg-color-warning: hsl(0deg 0% 90%);
+  --text-color-promotion: hsl(210deg 60% 53%);
+  --switch-on-thumb-color: hsl(0deg 93% 61%);
+  --switch-on-bg-color: hsl(0deg 100% 90%);
+  --switch-off-thumb-color: hsl(0deg 93% 61%);
+  --switch-off-bg-color: hsl(0deg 0% 92%);
+  --slider-track-cover-color: hsl(0deg 93% 61%);
+  --slider-track-uncover-color: hsl(0deg 0% 90%);
+  --outline-size-box-wrapper: hsl(0deg 0% 83%);
+  --outline-size-box: hsl(0deg 0% 78%);
+  --outline-size-box-selected: hsl(0deg 93% 61%);
+  --hr-color: hsl(0deg 0% 90%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-color: hsl(0, 0%, 7%);
-    --text-color-primary: hsl(0, 0%, 100%);
-    --text-color-secondary: hsl(0, 0%, 55%);
-    --text-color-warning: hsl(0, 0%, 100%);
-    --bg-color-warning: hsl(0, 0%, 25%);
-    --text-color-promotion: hsl(210, 50%, 53%);
-
-    --switch-on-thumb-color: hsl(0, 100%, 50%);
-    --switch-on-bg-color: hsl(0, 15%, 31%);
-    --switch-off-thumb-color: hsl(0, 0%, 85%);
-    --switch-off-bg-color: hsl(0, 0%, 27%);
-
-    --slider-track-cover-color: hsl(0, 0%, 80%);
-    --slider-track-uncover-color: hsl(0, 0%, 27%);
-
-    --outline-size-box-wrapper: hsl(0, 0%, 50%);
-    --outline-size-box: hsl(0, 0%, 35%);
-    --outline-size-box-selected: hsl(0, 0%, 81%);
-
-    --hr-color: hsl(0, 0%, 27%);
+    --bg-color: hsl(0deg 0% 7%);
+    --text-color-primary: hsl(0deg 0% 100%);
+    --text-color-secondary: hsl(0deg 0% 55%);
+    --text-color-warning: hsl(0deg 0% 100%);
+    --bg-color-warning: hsl(0deg 0% 25%);
+    --text-color-promotion: hsl(210deg 50% 53%);
+    --switch-on-thumb-color: hsl(0deg 100% 50%);
+    --switch-on-bg-color: hsl(0deg 15% 31%);
+    --switch-off-thumb-color: hsl(0deg 0% 85%);
+    --switch-off-bg-color: hsl(0deg 0% 27%);
+    --slider-track-cover-color: hsl(0deg 0% 80%);
+    --slider-track-uncover-color: hsl(0deg 0% 27%);
+    --outline-size-box-wrapper: hsl(0deg 0% 50%);
+    --outline-size-box: hsl(0deg 0% 35%);
+    --outline-size-box-selected: hsl(0deg 0% 81%);
+    --hr-color: hsl(0deg 0% 27%);
   }
 }
 
@@ -53,8 +45,8 @@
 
 /* Firefox */
 html {
-  scrollbar-width: none;
   color-scheme: light dark;
+  scrollbar-width: none;
 }
 
 hr {
@@ -64,17 +56,18 @@ hr {
 
 /* Global */
 body {
-  color: var(--text-color-primary);
-  background-color: var(--bg-color);
   width: 280px;
-  font-size: max(0.85rem, 13px);
-  font-family: Roboto, Arial, sans-serif;
-  padding: 12px 18px 16px;
-  user-select: none;
   margin: 0 auto;
+  padding-block: 12px 16px;
+  padding-inline: 18px;
+  background-color: var(--bg-color);
+  color: var(--text-color-primary);
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 0.85rem;
+  user-select: none;
 }
 
-.rtl {
+[dir="rtl"] {
   direction: rtl;
 }
 
@@ -83,12 +76,13 @@ body {
 }
 
 .group-label {
-  font-size: 0.7rem;
+  margin-block: 20px 8px;
+  margin-inline: 0;
+  color: var(--text-color-secondary);
   font-weight: 600;
+  font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-color-secondary);
-  margin: 20px 0 8px;
 
   & + .control-section {
     margin-top: 12px;
