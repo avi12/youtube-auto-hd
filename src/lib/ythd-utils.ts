@@ -38,7 +38,7 @@ export function getI18n(id: Parameters<typeof browser.i18n.getMessage>[0], backu
 export enum SELECTORS {
   title = "title",
   video = "video",
-  buttonSettings = ".ytp-settings-button",
+  buttonSettings = ".ytp-settings-button, .ytp-settings-button-active", // V3/VORAPIS changes the class to .ytp-settings-button-active when the panel is open
   sizeToggle = ".ytp-size-button#original-size, .ytp-size-button, .ytp-size-toggle-large, .ytp-size-toggle-small", // .ytp-size-button#original-size is to avoid a collision with https://chromewebstore.google.com/detail/youtube-windowed-fullscre/gkkmiofalnjagdcjheckamobghglpdpm; .ytp-size-toggle-* for V3/VORAPIS compatibility
   optionQuality = ".ytp-settings-menu[data-layer] .ytp-menuitem:last-child",
   menuOption = ".ytp-settings-menu[data-layer] .ytp-menuitem",

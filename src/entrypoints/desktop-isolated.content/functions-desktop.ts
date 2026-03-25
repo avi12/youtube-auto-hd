@@ -185,12 +185,8 @@ function getIsSettingsMenuOpen() {
 }
 
 function closeMenu(elPlayer: HTMLDivElement) {
-  // V3/VORAPIS: close via the settings button using a persistent control-bar indicator.
-  // Checking quality panel elements is unreliable here since clicking a quality option
-  // may have already changed the panel DOM (e.g. navigated to a sub-panel with a back
-  // button). Clicking that back button would return to the main panel without closing it.
+  // V3/VORAPIS: quality changes never open the settings panel, so never close it
   if (elPlayer.querySelector(SELECTORS.playerIndicatorV3)) {
-    elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings)?.click();
     return;
   }
 
@@ -252,19 +248,23 @@ export async function prepareToChangeQualityOnDesktop(e?: Event) {
     return;
   }
 
-  const elSettings = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings);
-  if (!elSettings) {
-    return;
+  const isV3 = Boolean(elPlayer.querySelector(SELECTORS.playerIndicatorV3));
+
+  if (!isV3) {
+    const elSettings = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings);
+    if (!elSettings) {
+      return;
+    }
+    if (!getIsSettingsMenuOpen()) {
+      elSettings.click();
+    }
+    elSettings.click();
+    // Re-open if the second click closed the panel
+    if (!getIsSettingsMenuOpen()) {
+      elSettings.click();
+    }
   }
 
-  if (!getIsSettingsMenuOpen()) {
-    elSettings.click();
-  }
-  elSettings.click();
-  // Re-open if the second click closed the panel (can happen in V3/VORAPIS and some YouTube states)
-  if (!getIsSettingsMenuOpen()) {
-    elSettings.click();
-  }
   changeQualityAndClose(elVideo, elPlayer);
 
   elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings)?.blur();
