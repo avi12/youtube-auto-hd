@@ -3,12 +3,12 @@
     path?: string;
   }
 
-  const {path = ""}: Props = $props();
+  const { path = "" }: Props = $props();
 
   const SIZE = 24;
 </script>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="{SIZE}px" height="{SIZE}px">
+<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="{SIZE}px" height="{SIZE}px">
   <path d={path} />
 </svg>
 
