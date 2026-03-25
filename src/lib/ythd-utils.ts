@@ -45,6 +45,7 @@ export enum SELECTORS {
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
   // V3/VORAPIS
+  playerIndicatorV3 = ".ytp-size-toggle-large, .ytp-size-toggle-small", // always present in V3's control bar; used to detect V3 regardless of settings panel state
   qualityMenuRowV3 = ".ytp-menu-row",
   qualityMenuTitleV3 = ".ytp-menu-title",
   qualityDropDownTriggerV3 = ".ytp-drop-down",

@@ -185,6 +185,15 @@ function getIsSettingsMenuOpen() {
 }
 
 function closeMenu(elPlayer: HTMLDivElement) {
+  // V3/VORAPIS: close via the settings button using a persistent control-bar indicator.
+  // Checking quality panel elements is unreliable here since clicking a quality option
+  // may have already changed the panel DOM (e.g. navigated to a sub-panel with a back
+  // button). Clicking that back button would return to the main panel without closing it.
+  if (elPlayer.querySelector(SELECTORS.playerIndicatorV3)) {
+    elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings)?.click();
+    return;
+  }
+
   const clickPanelBackIfPossible = () => {
     const elPanelHeaderBack = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.panelHeaderBack);
     if (elPanelHeaderBack) {
@@ -195,12 +204,6 @@ function closeMenu(elPlayer: HTMLDivElement) {
   };
 
   if (clickPanelBackIfPossible()) {
-    return;
-  }
-
-  // V3/VORAPIS: close the settings panel via the settings button
-  if (elPlayer.querySelector(SELECTORS.qualityMenuRowV3)) {
-    elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings)?.click();
     return;
   }
 
