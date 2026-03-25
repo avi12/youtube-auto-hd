@@ -179,9 +179,11 @@ function changeQualityWhenPossible(elVideo: HTMLVideoElement) {
   return true;
 }
 
-function getIsSettingsMenuOpen() {
-  const elButtonSettings = getVisibleElement<HTMLButtonElement>(SELECTORS.buttonSettings);
-  return elButtonSettings?.ariaExpanded === "true";
+function getIsSettingsPanelOpen(elPlayer: HTMLDivElement) {
+  const elSettingsButton = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings);
+  // Modern YouTube uses aria-expanded; V3 uses a class change on the button
+  return elSettingsButton?.ariaExpanded === "true" ||
+    elSettingsButton?.classList.contains("ytp-settings-button-active") === true;
 }
 
 function closeMenu(elPlayer: HTMLDivElement) {
@@ -248,6 +250,11 @@ export async function prepareToChangeQualityOnDesktop(e?: Event) {
     return;
   }
 
+  // Don't interfere if the user currently has the settings panel open
+  if (getIsSettingsPanelOpen(elPlayer)) {
+    return;
+  }
+
   const isV3 = Boolean(elPlayer.querySelector(SELECTORS.playerIndicatorV3));
 
   if (!isV3) {
@@ -255,12 +262,12 @@ export async function prepareToChangeQualityOnDesktop(e?: Event) {
     if (!elSettings) {
       return;
     }
-    if (!getIsSettingsMenuOpen()) {
+    if (!getIsSettingsPanelOpen(elPlayer)) {
       elSettings.click();
     }
     elSettings.click();
     // Re-open if the second click closed the panel
-    if (!getIsSettingsMenuOpen()) {
+    if (!getIsSettingsPanelOpen(elPlayer)) {
       elSettings.click();
     }
   }
