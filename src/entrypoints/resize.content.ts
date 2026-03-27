@@ -15,12 +15,12 @@ let preferences: Preferences = {
   isExcludeVertical: initial.isExcludeVertical
 };
 
-function getCurrentViewMode() {
-  // VORAPIS: the visible button reveals the current mode — large button means currently in default mode
-  if (getVisibleElement(SELECTORS.sizeToggleLarge)) {
+function getCurrentViewMode(): VideoSize {
+  // VORAPIS: button presence in DOM reveals current mode — controls may be auto-hidden so offsetWidth is unreliable
+  if (document.querySelector(SELECTORS.sizeToggleLarge)) {
     return 0;
   }
-  if (getVisibleElement(SELECTORS.sizeToggleSmall)) {
+  if (document.querySelector(SELECTORS.sizeToggleSmall)) {
     return 1;
   }
   // Regular YouTube: use the wide cookie
