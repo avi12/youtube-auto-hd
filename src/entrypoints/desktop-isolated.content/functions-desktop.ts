@@ -15,9 +15,16 @@ import {
   SELECTORS
 } from "@/lib/ythd-utils";
 
-function getQualityMenuRowV3(elPlayer: HTMLDivElement) {
-  const rows = [...elPlayer.querySelectorAll(SELECTORS.qualityMenuRowV3)];
-  return rows.find(row => row.querySelector(SELECTORS.qualityMenuTitleV3)?.textContent?.match(/quality/i)) ?? null;
+const MIN_QUALITY_DIGITS_IN_LABEL = 3; // e.g. 3 characters in 720p
+
+function getQualityMenuItem(elPlayer: HTMLDivElement) {
+  const menuItems = elPlayer.querySelectorAll<HTMLDivElement>(SELECTORS.menuOption).values();
+  return (
+    menuItems.find(item => {
+      const content = item.querySelector<HTMLDivElement>(SELECTORS.menuOptionContent);
+      return Boolean(content?.textContent?.match(new RegExp(`\\d{${MIN_QUALITY_DIGITS_IN_LABEL},}`)));
+    }) ?? null
+  );
 }
 
 function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
@@ -26,28 +33,20 @@ function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
     return false;
   }
 
-  const elOptionInSettings = elPlayer.querySelector(SELECTORS.optionQuality);
-  if (elOptionInSettings) {
-    const elQualityName = elOptionInSettings.querySelector<HTMLDivElement>(SELECTORS.menuOptionContent);
-
-    // If the video is a channel trailer, the last option is initially the speed one,
-    // and the speed setting can only be a single digit
-    const matchNumber = elQualityName?.textContent?.match(/\d+/);
-    if (!matchNumber) {
-      return false;
-    }
-    const minQualityCharLength = 3; // e.g. 3 characters in 720p
-    return matchNumber[0].length >= minQualityCharLength;
+  // Quality submenu items already in DOM (e.g. persisted from a previous interaction on Premium YouTube)
+  if (getCurrentQualityElements(elVideo).length > 0) {
+    return true;
   }
 
-  // V3/VORAPIS fallback
-  return Boolean(getQualityMenuRowV3(elPlayer));
+  if (getQualityMenuItem(elPlayer)) {
+    return true;
+  }
+
+  return Boolean(elPlayer.querySelector(SELECTORS.qualityDropDownTrigger));
 }
 
 function getIsQualityElement(element: Element) {
-  const isQuality = Boolean(element.textContent?.match(/\d/));
-  const isHasChildren = element.children.length > 1;
-  return isQuality && !isHasChildren;
+  return element.children.length <= 2 && Boolean(element.textContent?.match(/\d{3,}/));
 }
 
 function getCurrentQualityElements(elVideo: HTMLVideoElement) {
@@ -56,14 +55,13 @@ function getCurrentQualityElements(elVideo: HTMLVideoElement) {
     return [];
   }
 
-  const modernElements = [...elPlayer.querySelectorAll<HTMLDivElement>(SELECTORS.menuOption)].filter(getIsQualityElement);
-  if (modernElements.length > 0) {
-    return modernElements;
+  const menuItems = elPlayer.querySelectorAll<HTMLDivElement>(
+    `${SELECTORS.menuOption}, ${SELECTORS.qualityOption}`
+  );
+  if (!menuItems.values().some(getIsQualityElement)) {
+    return [];
   }
-
-  // V3/VORAPIS fallback
-  const qualityRow = getQualityMenuRowV3(elPlayer);
-  return qualityRow ? [...qualityRow.querySelectorAll<HTMLDivElement>(SELECTORS.qualityOptionV3)] : [];
+  return menuItems.values().filter(getIsQualityElement).toArray();
 }
 
 function convertQualityToNumber(elQuality: Element) {
@@ -83,18 +81,22 @@ function convertQualityToNumber(elQuality: Element) {
 }
 
 function getAvailableQualities(elVideo: HTMLVideoElement) {
-  const elQualities = getCurrentQualityElements(elVideo);
-  return elQualities.map(convertQualityToNumber).filter(quality => quality !== undefined);
+  return getCurrentQualityElements(elVideo)
+    .values()
+    .map(convertQualityToNumber)
+    .filter(quality => quality !== undefined)
+    .toArray();
 }
 
 function getVideoFPS(elVideo: HTMLVideoElement) {
   const elQualities = getCurrentQualityElements(elVideo);
-  const labelQuality = elQualities[0]?.textContent;
-  if (!labelQuality) {
-    return 30;
+  for (const elQuality of elQualities) {
+    const fpsMatch = elQuality.textContent?.match(/[ps](\d+)/);
+    if (fpsMatch) {
+      return fpsSupported.find(fps => fps === Number(fpsMatch[1])) ?? 30;
+    }
   }
-  const fpsMatch = labelQuality.match(/[ps](\d+)/);
-  return fpsMatch ? fpsSupported.find(fps => fps === Number(fpsMatch[1])) ?? 30 : 30;
+  return 30;
 }
 
 function openQualityMenu(elVideo: HTMLVideoElement) {
@@ -103,14 +105,18 @@ function openQualityMenu(elVideo: HTMLVideoElement) {
     return;
   }
 
-  const elSettingQuality = elPlayer.querySelector<HTMLDivElement>(SELECTORS.optionQuality);
+  // Quality items already accessible — no need to navigate through main menu
+  if (getCurrentQualityElements(elVideo).length > 0) {
+    return;
+  }
+
+  const elSettingQuality = getQualityMenuItem(elPlayer);
   if (elSettingQuality) {
     elSettingQuality.click();
     return;
   }
 
-  // V3/VORAPIS fallback: expand the quality dropdown
-  getQualityMenuRowV3(elPlayer)?.querySelector<HTMLElement>(SELECTORS.qualityDropDownTriggerV3)?.click();
+  elPlayer.querySelector<HTMLElement>(SELECTORS.qualityDropDownTrigger)?.click();
 }
 
 function changeQuality(
@@ -131,7 +137,11 @@ function changeQuality(
   const isEnhancedBitrate = { ...window.ythdLastUserEnhancedBitrates, ...isEnhancedBitrateCustom };
 
   const applyQuality = (iQuality: number) => {
-    elQualities[iQuality]?.click();
+    const element = elQualities[iQuality];
+    if (!element || element.ariaChecked === "true") {
+      return;
+    }
+    element.click();
   };
 
   const isQualityPreferredEBR = qualitiesAvailable[0]?.toString().endsWith(SUFFIX_EBR) && isEnhancedBitrate[fpsStep];
@@ -168,7 +178,6 @@ function changeQualityWhenPossible(elVideo: HTMLVideoElement) {
   if (!getIsLastOptionQuality(elVideo)) {
     return false;
   }
-
   openQualityMenu(elVideo);
   changeQuality(
     elVideo,
@@ -179,19 +188,7 @@ function changeQualityWhenPossible(elVideo: HTMLVideoElement) {
   return true;
 }
 
-function getIsSettingsPanelOpen(elPlayer: HTMLDivElement) {
-  const elSettingsButton = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings);
-  // Modern YouTube uses aria-expanded; V3 uses a class change on the button
-  return elSettingsButton?.ariaExpanded === "true" ||
-    elSettingsButton?.classList.contains("ytp-settings-button-active") === true;
-}
-
 function closeMenu(elPlayer: HTMLDivElement) {
-  // V3/VORAPIS: quality changes never open the settings panel, so never close it
-  if (elPlayer.querySelector(SELECTORS.playerIndicatorV3)) {
-    return;
-  }
-
   const clickPanelBackIfPossible = () => {
     const elPanelHeaderBack = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.panelHeaderBack);
     if (elPanelHeaderBack) {
@@ -213,10 +210,18 @@ function closeMenu(elPlayer: HTMLDivElement) {
 }
 
 function changeQualityAndClose(elVideo: HTMLVideoElement, elPlayer: HTMLDivElement) {
-  const qualityWasSet = changeQualityWhenPossible(elVideo);
-  if (qualityWasSet) {
+  if (changeQualityWhenPossible(elVideo)) {
     closeMenu(elPlayer);
   }
+}
+
+function getIsSettingsPanelOpen(elPlayer: HTMLDivElement) {
+  const elSettingsButton = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings);
+  if (!elSettingsButton) {
+    return false;
+  }
+  const isVorapis = elSettingsButton.ariaPressed === "true";
+  return elSettingsButton.ariaExpanded === "true" || isVorapis;
 }
 
 export async function prepareToChangeQualityOnDesktop(e?: Event) {
@@ -255,21 +260,13 @@ export async function prepareToChangeQualityOnDesktop(e?: Event) {
     return;
   }
 
-  const isV3 = Boolean(elPlayer.querySelector(SELECTORS.playerIndicatorV3));
-
-  if (!isV3) {
+  // Only open/close the settings panel when quality elements aren't already in the DOM.
+  // On VORAPIS, quality items are always present so this step is unnecessary and
+  // risks interfering with video buffering.
+  if (getCurrentQualityElements(elVideo).length === 0) {
     const elSettings = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings);
-    if (!elSettings) {
-      return;
-    }
-    if (!getIsSettingsPanelOpen(elPlayer)) {
-      elSettings.click();
-    }
-    elSettings.click();
-    // Re-open if the second click closed the panel
-    if (!getIsSettingsPanelOpen(elPlayer)) {
-      elSettings.click();
-    }
+    elSettings?.click();
+    elSettings?.click();
   }
 
   changeQualityAndClose(elVideo, elPlayer);

@@ -38,22 +38,16 @@ export function getI18n(id: Parameters<typeof browser.i18n.getMessage>[0], backu
 export enum SELECTORS {
   title = "title",
   video = "video",
-  buttonSettings = ".ytp-settings-button, .ytp-settings-button-active", // V3/VORAPIS changes the class to .ytp-settings-button-active when the panel is open
-  sizeToggle = ".ytp-size-button#original-size, .ytp-size-button, .ytp-size-toggle-large, .ytp-size-toggle-small", // .ytp-size-button#original-size is to avoid a collision with https://chromewebstore.google.com/detail/youtube-windowed-fullscre/gkkmiofalnjagdcjheckamobghglpdpm; .ytp-size-toggle-* for V3/VORAPIS compatibility
-  optionQuality = ".ytp-settings-menu[data-layer] .ytp-menuitem:last-child",
+  buttonSettings = ".ytp-settings-button, .ytp-settings-button-active",
+  sizeToggle = ".ytp-size-button#original-size, .ytp-size-button, .ytp-size-toggle-large, .ytp-size-toggle-small",
   menuOption = ".ytp-settings-menu[data-layer] .ytp-menuitem",
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
-  // V3/VORAPIS
-  playerIndicatorV3 = ".ytp-size-toggle-large, .ytp-size-toggle-small", // always present in V3's control bar; used to detect V3 regardless of settings panel state
-  qualityMenuRowV3 = ".ytp-menu-row",
-  qualityMenuTitleV3 = ".ytp-menu-title",
-  qualityDropDownTriggerV3 = ".ytp-drop-down",
-  qualityOptionV3 = ".ytp-drop-down-menu-button",
+  qualityDropDownTrigger = ".ytp-drop-down-label",
+  qualityOption = ".ytp-drop-down-menu-button",
   player = ".html5-video-player:not(#inline-preview-player)",
   channelTrailerContainer = "ytd-channel-video-player-renderer",
   donationInjectParent = "ytd-comments",
-  // Premium
   labelPremium = ".ytp-premium-label"
 }
 
@@ -62,8 +56,7 @@ export function getPlayerDiv<T extends HTMLDivElement = HTMLDivElement>(elVideo:
 }
 
 export function getVisibleElement<T extends HTMLElement>(elementName: SELECTORS): T | undefined {
-  const elements = [...document.querySelectorAll<T>(elementName)];
-  return elements.find(isElementVisible);
+  return document.querySelectorAll<T>(elementName).values().find(isElementVisible);
 }
 
 export async function getElementByMutationObserver<T extends HTMLElement>(
@@ -82,7 +75,6 @@ export async function getElementByMutationObserver<T extends HTMLElement>(
 }
 
 export async function addGlobalEventListener(addTemporaryBodyListener: () => void) {
-  // Fires when navigating to another page
   const elTitle =
     document.documentElement.querySelector(SELECTORS.title) ||
     await getElementByMutationObserver<HTMLTitleElement>(SELECTORS.title, false);

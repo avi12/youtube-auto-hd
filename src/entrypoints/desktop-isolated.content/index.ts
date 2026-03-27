@@ -2,7 +2,6 @@ import { prepareToChangeQualityOnDesktop } from "@/entrypoints/desktop-isolated.
 import { fpsSupported, initial, qualities } from "@/lib/ythd-defaults";
 import { PlayerMessage, shortsMessenger } from "@/lib/ythd-player-messaging";
 import type {
-  EnhancedBitrateFpsPreferences,
   EnhancedBitratePreferences,
   QualityFpsPreferences,
   VideoQuality
@@ -21,7 +20,7 @@ declare global {
   interface Window {
     ythdLastQualityClicked: VideoQuality | undefined;
     ythdLastEnhancedBitrateClicked: Partial<EnhancedBitratePreferences> | undefined;
-    ythdLastUserQualities: EnhancedBitrateFpsPreferences | null;
+    ythdLastUserQualities: QualityFpsPreferences | null;
     ythdLastUserEnhancedBitrates: EnhancedBitratePreferences | null;
     ythdIsUseSuperResolution: boolean | undefined;
     ythdExtEnabled: boolean;
@@ -51,8 +50,7 @@ function getQualityParentElement(elTarget: HTMLElement) {
   if (elTarget.matches("span")) {
     return elTarget;
   }
-  // V3/VORAPIS: quality option is a div containing the quality text directly
-  const elQualityOptionV3 = elTarget.closest<HTMLElement>(SELECTORS.qualityOptionV3);
+  const elQualityOptionV3 = elTarget.closest<HTMLElement>(SELECTORS.qualityOption);
   if (elQualityOptionV3) {
     return elQualityOptionV3;
   }
@@ -60,8 +58,8 @@ function getQualityParentElement(elTarget: HTMLElement) {
 }
 
 function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event) {
-  // We use programmatic clicks to change quality on desktop, but we need to save/respond only to user clicks
-  if (!isTrusted || !(target instanceof HTMLElement) || location.pathname.startsWith("/shorts")) {
+  const isUserClick = isTrusted;
+  if (!isUserClick || !(target instanceof HTMLElement) || location.pathname.startsWith("/shorts")) {
     return;
   }
 
@@ -70,7 +68,7 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event) {
     return;
   }
 
-  const labelQuality = elQuality.textContent; // 480p, 720s, 1440p60, 1080p Premium, ...
+  const labelQuality = elQuality.textContent;
   if (!labelQuality) {
     return;
   }
@@ -97,12 +95,10 @@ async function handleShortsNavigation(elVideo: HTMLVideoElement) {
 }
 
 function observeForVideoOnNonWatchPage() {
-  // Non-watch pages (channel pages, home, etc.) may have a video that loads async (e.g. channel trailer).
-  // Observe until a visible video appears, then apply quality.
   const urlAtObserverSetup = location.href;
   gPendingVideoObserver = new MutationObserver(async (_, observer) => {
-    // Guard against a race where another navigation fires before the video appears
-    if (location.href !== urlAtObserverSetup) {
+    const urlChangedBeforeVideoAppeared = location.href !== urlAtObserverSetup;
+    if (urlChangedBeforeVideoAppeared) {
       observer.disconnect();
       return;
     }
@@ -137,7 +133,6 @@ async function addTemporaryBodyListenerOnDesktop() {
   gTitleLast = document.title;
   gUrlLast = location.href;
 
-  // Cancel any pending observer from a previous navigation (e.g. user left channel page before trailer loaded)
   gPendingVideoObserver?.disconnect();
   gPendingVideoObserver = null;
 
@@ -155,11 +150,8 @@ async function addTemporaryBodyListenerOnDesktop() {
 
   await prepareToChangeQualityOnDesktop();
 
-  // Re-query after the async operation: the video may have changed during navigation
-  // (e.g. a channel trailer was visible before the await, but the watch page video is visible now).
   const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
   if (!elVideo) {
-    // No visible video yet — e.g. navigating to a channel page where the trailer loads async.
     observeForVideoOnNonWatchPage();
     return;
   }
@@ -173,9 +165,6 @@ async function addTemporaryBodyListenerOnDesktop() {
   elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
   elPlayer.removeEventListener("click", saveManualQualityChangeOnDesktop);
 
-  // Used to:
-  // - Change the quality even if a pre-roll or a mid-roll ad is playing
-  // - Change the quality if the video "refreshes", which happens when idling for a while (e.g. a couple of hours) and then resuming
   elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
   elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
 }
@@ -195,9 +184,8 @@ function addStorageListeners() {
 
   storage.watch<QualityFpsPreferences>("local:qualities", async qualityPreferences => {
     window.ythdLastUserQualities = qualityPreferences;
-    // Respect the user's in-player quality choice for the current video;
-    // the new preference will apply on the next navigation.
-    if (window.ythdLastQualityClicked !== undefined) {
+    const userChoseQualityManuallyForCurrentVideo = window.ythdLastQualityClicked !== undefined;
+    if (userChoseQualityManuallyForCurrentVideo) {
       return;
     }
     if (!window.ythdExtEnabled) {
@@ -228,8 +216,6 @@ function addStorageListeners() {
 }
 
 function observeForInitialVideo() {
-  // When the user visits a /shorts or /embed or a different video page,
-  // the video's quality will be changed as soon as it loads
   new MutationObserver(async (_, observer) => {
     const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
     if (!elVideo) {
