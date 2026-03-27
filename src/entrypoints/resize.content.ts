@@ -15,30 +15,31 @@ let preferences: Preferences = {
   isExcludeVertical: initial.isExcludeVertical
 };
 
-function getCurrentViewMode() {
-  const sizeCurrentMatch = document.cookie.match(/wide=([10])/);
-  return sizeCurrentMatch?.[1] === "1" ? 1 : 0;
+function getCurrentViewMode(): VideoSize {
+  // VORAPIS: the visible button reveals the current mode — large button means currently in default mode
+  if (getVisibleElement(SELECTORS.sizeToggleLarge)) return 0;
+  if (getVisibleElement(SELECTORS.sizeToggleSmall)) return 1;
+  // Regular YouTube: use the wide cookie
+  return document.cookie.match(/wide=([10])/)?.[1] === "1" ? 1 : 0;
 }
 
 async function resizePlayerIfNeeded() {
-  const elSizeToggle = getVisibleElement<HTMLButtonElement>(SELECTORS.sizeToggle);
   const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
-
-  if (!preferences.isResizeVideo || !elVideo || !elSizeToggle) {
+  if (!preferences.isResizeVideo || !elVideo) {
     return;
   }
 
   const isVerticalVideo = elVideo.clientWidth <= elVideo.clientHeight;
   const shouldForceDefaultMode = preferences.isExcludeVertical && isVerticalVideo;
-
   const targetViewMode = shouldForceDefaultMode ? 0 : preferences.viewMode;
 
-  const isPrefersDefaultSize = targetViewMode === 0;
-  const isPrefersTheaterSize = !isPrefersDefaultSize;
-
-  while (getCurrentViewMode() === 0 && isPrefersTheaterSize || getCurrentViewMode() === 1 && isPrefersDefaultSize) {
+  while (getCurrentViewMode() !== targetViewMode) {
+    // Re-query each iteration: on VORAPIS the large/small button elements swap after each click
+    const elSizeToggle = getVisibleElement<HTMLButtonElement>(SELECTORS.sizeToggle);
+    if (!elSizeToggle) {
+      return;
+    }
     elSizeToggle.click();
-
     await new Promise(resolve => setTimeout(resolve, 100));
   }
 }

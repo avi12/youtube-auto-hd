@@ -40,6 +40,8 @@ export enum SELECTORS {
   video = "video",
   buttonSettings = ".ytp-settings-button, .ytp-settings-button-active",
   sizeToggle = ".ytp-size-button#original-size, .ytp-size-button, .ytp-size-toggle-large, .ytp-size-toggle-small",
+  sizeToggleLarge = ".ytp-size-toggle-large",
+  sizeToggleSmall = ".ytp-size-toggle-small",
   menuOption = ".ytp-settings-menu[data-layer] .ytp-menuitem",
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
