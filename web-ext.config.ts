@@ -16,8 +16,6 @@ process.loadEnvFile(path);
 
 const { LANG = "en" } = process.env;
 
-const isFirefox = /(?:-b|--browser) firefox/.test(process.argv.join(" "));
-
 function findDefaultFirefoxProfile() {
   const profilesDir = (() => {
     const home = homedir();
@@ -77,9 +75,7 @@ export default defineWebExtConfig({
     keepProfileChanges: true,
     chromiumProfile: resolve(import.meta.dirname, "../User Data")
   },
-  ...isFirefox && {
-    firefoxArgs: ["-marionette", "-marionette-port", "2828"]
-  },
+  firefoxArgs: ["-marionette", "-marionette-port", "2828"],
   ...process.env.FIREFOX_WITH_PROFILE === "1" && {
     firefoxProfile: findDefaultFirefoxProfile(),
     keepProfileChanges: true
@@ -89,6 +85,6 @@ export default defineWebExtConfig({
     "--remote-debugging-port=9226",
     "--isolated",
     "--disable-blink-features=AutomationControlled",
-    ...[process.env.CHROME_WITH_PROFILE === "1" ? "--profile-directory=Profile 1" : ""]
+    ...[process.env.CHROME_WITH_PROFILE === "1" ? "--profile-directory=Default" : ""]
   ]
 });
