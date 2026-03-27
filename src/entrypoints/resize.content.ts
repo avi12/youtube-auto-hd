@@ -17,8 +17,12 @@ let preferences: Preferences = {
 
 function getCurrentViewMode(): VideoSize {
   // VORAPIS: the visible button reveals the current mode — large button means currently in default mode
-  if (getVisibleElement(SELECTORS.sizeToggleLarge)) return 0;
-  if (getVisibleElement(SELECTORS.sizeToggleSmall)) return 1;
+  if (getVisibleElement(SELECTORS.sizeToggleLarge)) {
+    return 0;
+  }
+  if (getVisibleElement(SELECTORS.sizeToggleSmall)) {
+    return 1;
+  }
   // Regular YouTube: use the wide cookie
   return document.cookie.match(/wide=([10])/)?.[1] === "1" ? 1 : 0;
 }
