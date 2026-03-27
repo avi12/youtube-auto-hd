@@ -15,7 +15,7 @@ let preferences: Preferences = {
   isExcludeVertical: initial.isExcludeVertical
 };
 
-function getCurrentViewMode(): VideoSize {
+function getCurrentViewMode() {
   // VORAPIS: the visible button reveals the current mode — large button means currently in default mode
   if (getVisibleElement(SELECTORS.sizeToggleLarge)) {
     return 0;
@@ -27,7 +27,7 @@ function getCurrentViewMode(): VideoSize {
   return document.cookie.match(/wide=([10])/)?.[1] === "1" ? 1 : 0;
 }
 
-async function resizePlayerIfNeeded() {
+function resizePlayerIfNeeded() {
   const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
   if (!preferences.isResizeVideo || !elVideo) {
     return;
@@ -37,14 +37,8 @@ async function resizePlayerIfNeeded() {
   const shouldForceDefaultMode = preferences.isExcludeVertical && isVerticalVideo;
   const targetViewMode = shouldForceDefaultMode ? 0 : preferences.viewMode;
 
-  while (getCurrentViewMode() !== targetViewMode) {
-    // Re-query each iteration: on VORAPIS the large/small button elements swap after each click
-    const elSizeToggle = getVisibleElement<HTMLButtonElement>(SELECTORS.sizeToggle);
-    if (!elSizeToggle) {
-      return;
-    }
-    elSizeToggle.click();
-    await new Promise(resolve => setTimeout(resolve, 100));
+  if (getCurrentViewMode() !== targetViewMode) {
+    getVisibleElement<HTMLButtonElement>(SELECTORS.sizeToggle)?.click();
   }
 }
 
@@ -57,13 +51,13 @@ async function getPlayerSize() {
   return { viewMode: size, isResizeVideo, isExcludeVertical };
 }
 
-async function addTemporaryBodyListenerOnDesktop() {
+function addTemporaryBodyListenerOnDesktop() {
   const elSize = document.querySelector<HTMLButtonElement>(SELECTORS.sizeToggle);
   if (!elSize) {
     return;
   }
 
-  await resizePlayerIfNeeded();
+  resizePlayerIfNeeded();
 }
 
 function addStorageListener() {
@@ -72,7 +66,7 @@ function addStorageListener() {
       return;
     }
     preferences = { ...preferences, ...await getPlayerSize() };
-    await resizePlayerIfNeeded();
+    resizePlayerIfNeeded();
   });
   storage.watch<VideoAutoResize>("sync:autoResize", async isResizeVideo => {
     const isEnabled = await getIsExtensionEnabled();
@@ -82,7 +76,7 @@ function addStorageListener() {
     }
     preferences.isResizeVideo = isResizeVideo ?? false;
     preferences.viewMode = await storage.getItem<VideoSize>("sync:size", { fallback: initial.size });
-    await resizePlayerIfNeeded();
+    resizePlayerIfNeeded();
   });
   storage.watch<VideoSize>("sync:size", async size => {
     const isEnabled = await getIsExtensionEnabled();
@@ -97,7 +91,7 @@ function addStorageListener() {
     preferences.isExcludeVertical = await storage.getItem<boolean>("sync:isExcludeVertical", {
       fallback: initial.isExcludeVertical
     });
-    await resizePlayerIfNeeded();
+    resizePlayerIfNeeded();
   });
   storage.watch<boolean>("sync:isExcludeVertical", async isExcludeVertical => {
     const isEnabled = await getIsExtensionEnabled();
@@ -107,7 +101,7 @@ function addStorageListener() {
     }
     preferences.isExcludeVertical = isExcludeVertical ?? false;
     preferences.viewMode = await storage.getItem<VideoSize>("sync:size", { fallback: initial.size });
-    await resizePlayerIfNeeded();
+    resizePlayerIfNeeded();
   });
 }
 
@@ -121,7 +115,7 @@ async function initPlayerResize() {
 
   preferences = await getPlayerSize();
 
-  await resizePlayerIfNeeded();
+  resizePlayerIfNeeded();
 }
 
 export default defineContentScript({
