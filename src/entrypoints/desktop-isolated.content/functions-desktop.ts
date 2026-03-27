@@ -55,13 +55,11 @@ function getCurrentQualityElements(elVideo: HTMLVideoElement) {
     return [];
   }
 
-  const menuItems = elPlayer.querySelectorAll<HTMLDivElement>(
-    `${SELECTORS.menuOption}, ${SELECTORS.qualityOption}`
-  );
-  if (!menuItems.values().some(getIsQualityElement)) {
-    return [];
-  }
-  return menuItems.values().filter(getIsQualityElement).toArray();
+  return elPlayer
+    .querySelectorAll<HTMLDivElement>(`${SELECTORS.menuOption}, ${SELECTORS.qualityOption}`)
+    .values()
+    .filter(getIsQualityElement)
+    .toArray();
 }
 
 function convertQualityToNumber(elQuality: Element) {
