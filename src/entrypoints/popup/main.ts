@@ -6,8 +6,8 @@ import { storage } from "#imports";
 import { mount } from "svelte";
 
 const [
-  qualities,
-  enhancedBitrates,
+  qualitiesRaw,
+  enhancedBitratesRaw,
   useSuperResolution,
   extensionEnabled,
   autoResize,
@@ -16,7 +16,7 @@ const [
   hideDonationSection,
   enableYouTubeMusic,
   useGlobalQualityPreferences,
-  qualitiesMusic
+  qualitiesMusicRaw
 ] = await Promise.all([
   storage.getItem<QualityFpsPreferences>("local:qualities", { fallback: initial.qualities }),
   storage.getItem<EnhancedBitratePreferences>("local:isEnhancedBitrates", { fallback: initial.isEnhancedBitrates }),
@@ -30,6 +30,11 @@ const [
   storage.getItem<boolean>("local:isUseGlobalQualityPreferences", { fallback: initial.isUseGlobalQualityPreferences }),
   storage.getItem<QualityFpsPreferences>("local:qualitiesMusic", { fallback: initial.qualities })
 ]);
+
+// Merge with initial to ensure all FPS keys exist (handles storage from older versions)
+const qualities = { ...initial.qualities, ...qualitiesRaw };
+const enhancedBitrates = { ...initial.isEnhancedBitrates, ...enhancedBitratesRaw };
+const qualitiesMusic = { ...initial.qualities, ...qualitiesMusicRaw };
 
 export default mount(Popup, {
   target: document.getElementById("app") ?? document.body,
