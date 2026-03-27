@@ -1,6 +1,8 @@
 import { initial } from "@/lib/ythd-defaults";
 import type { VideoAutoResize, VideoSize } from "@/lib/ythd-types";
-import { addGlobalEventListener, getIsExtensionEnabled, getVisibleElement, SELECTORS } from "@/lib/ythd-utils";
+import {
+  addGlobalEventListener, getIsExtensionEnabled, getVisibleElement, OBSERVER_OPTIONS, SELECTORS
+} from "@/lib/ythd-utils";
 import { storage } from "#imports";
 
 interface Preferences {
@@ -42,6 +44,14 @@ function resizePlayerIfNeeded() {
   }
 }
 
+function setupVideoResizeListener(elVideo: HTMLVideoElement) {
+  elVideo.removeEventListener("canplay", resizePlayerIfNeeded);
+  elVideo.addEventListener("canplay", resizePlayerIfNeeded);
+  if (elVideo.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+    resizePlayerIfNeeded();
+  }
+}
+
 async function getPlayerSize() {
   const [isResizeVideo, size, isExcludeVertical] = await Promise.all([
     storage.getItem<VideoAutoResize>("sync:autoResize", { fallback: initial.isResizeVideo }),
@@ -52,12 +62,11 @@ async function getPlayerSize() {
 }
 
 function addTemporaryBodyListenerOnDesktop() {
-  const elSize = document.querySelector<HTMLButtonElement>(SELECTORS.sizeToggle);
-  if (!elSize) {
+  const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
+  if (!elVideo) {
     return;
   }
-
-  resizePlayerIfNeeded();
+  setupVideoResizeListener(elVideo);
 }
 
 function addStorageListener() {
@@ -115,7 +124,19 @@ async function initPlayerResize() {
 
   preferences = await getPlayerSize();
 
-  resizePlayerIfNeeded();
+  const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
+  if (elVideo) {
+    setupVideoResizeListener(elVideo);
+  } else {
+    new MutationObserver((_, observer) => {
+      const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
+      if (!elVideo) {
+        return;
+      }
+      observer.disconnect();
+      setupVideoResizeListener(elVideo);
+    }).observe(document, OBSERVER_OPTIONS);
+  }
 }
 
 export default defineContentScript({
