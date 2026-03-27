@@ -49,7 +49,6 @@ export enum SELECTORS {
   qualityDropDownTrigger = ".ytp-drop-down-label",
   qualityOption = ".ytp-drop-down-menu-button",
   player = ".html5-video-player:not(#inline-preview-player)",
-  channelTrailerContainer = "ytd-channel-video-player-renderer",
   donationInjectParent = "ytd-comments",
   labelPremium = ".ytp-premium-label"
 }
