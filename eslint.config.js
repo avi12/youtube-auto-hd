@@ -48,7 +48,7 @@ export default [
     },
     rules: {
       "@stylistic/no-extra-parens": "error",
-      "@stylistic/max-len": ["error", { code: 120 }],
+      "@stylistic/max-len": ["error", { code: 120, ignoreUrls: true }],
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/consistent-type-assertions": ["error", { assertionStyle: "never" }],
       "@typescript-eslint/ban-ts-comment": "error",

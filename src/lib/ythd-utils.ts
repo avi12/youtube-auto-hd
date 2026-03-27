@@ -39,7 +39,7 @@ export enum SELECTORS {
   title = "title",
   video = "video",
   buttonSettings = ".ytp-settings-button, .ytp-settings-button-active",
-  // .ytp-size-button#original-size avoids collision with the "YouTube Windowed Fullscreen" extension
+  // .ytp-size-button#original-size avoids collision with https://chromewebstore.google.com/detail/youtube-windowed-fullscre/gkkmiofalnjagdcjheckamobghglpdpm
   sizeToggle = ".ytp-size-button#original-size, .ytp-size-button, .ytp-size-toggle-large, .ytp-size-toggle-small",
   sizeToggleLarge = ".ytp-size-toggle-large",
   sizeToggleSmall = ".ytp-size-toggle-small",
