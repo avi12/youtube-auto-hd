@@ -8,11 +8,19 @@
 "cj_i18n_06568":{"message":"Videos automatisch anpassen"},
 "cj_i18n_06858":{"message":"Alle Bildraten"},
 "cj_i18n_06859":{"message":"Größe des Players"},
-"cj_i18n_06860":{"message":"Unterstütze den Entwickler"},
+"cj_i18n_06860":{"message":"Den Entwickler unterstützen"},
 "cj_i18n_06861":{"message":"Bewerte die Erweiterung"},
 "cj_i18n_06862":{"message":"Gleiche Qualität für alle Bildraten verwenden"},
+"cj_i18n_07097":{"message":"Standard-Ansicht"},
+"cj_i18n_07098":{"message":"Kino-Ansicht"},
+"cj_i18n_07265":{"message":"In dieser Qualität werden Videos in bis zu 30 FPS abgespielt."},
 "cj_i18n_07266":{"message":"Erweiterung ist eingeschaltet"},
-"cj_i18n_07392":{"message":"Nutze die verbesserte Bitrate, sofern verfügbar."},
+"cj_i18n_07392":{"message":"Verbesserte Bitrate nutzen, sofern es die höchste Einstellung ist"},
+"cj_i18n_07584":{"message":"Benötigt YouTube Premium"},
 "cj_i18n_07669":{"message":"Kontaktéiert eis"},
-"cj_i18n_08028":{"message":"Qualität"}
+"cj_i18n_07754":{"message":"Außer für vertikale Videos"},
+"cj_i18n_07966":{"message":"Super-Auflösung, sofern verfügbar"},
+"cj_i18n_08028":{"message":"Qualität"},
+"cj_i18n_08029":{"message":"Auf YouTube Music anwenden"},
+"cj_i18n_08030":{"message":"Globale Qualitätseinstellung nutzen"}
 }
