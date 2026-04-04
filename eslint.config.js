@@ -1,24 +1,19 @@
 import eslint from "@eslint/js";
 import avi12 from "eslint-config-avi12";
+import importNewlines from "eslint-plugin-import-newlines";
 import perfectionist from "eslint-plugin-perfectionist";
 import svelteEslint from "eslint-plugin-svelte";
+import { globalIgnores } from "eslint/config";
 import globals from "globals";
 import svelteParser from "svelte-eslint-parser";
 import tsEslint from "typescript-eslint";
 
 export default [
+  globalIgnores([".wxt/**", "build/**"]),
   eslint.configs.recommended,
   ...tsEslint.configs.recommended,
   ...svelteEslint.configs["flat/recommended"],
   ...avi12,
-  {
-    ignores: [".wxt/**", "build/**", "test-browsers/**", "node_modules/**", ".playwright-*/**"]
-  },
-  {
-    rules: {
-      "import/order": "off"
-    }
-  },
   {
     files: ["**/*.svelte"],
     languageOptions: {
@@ -28,40 +23,48 @@ export default [
       },
       globals: {
         ...globals.browser,
-        ...globals.node,
+        chrome: true
+      }
+    },
+    rules: {
+      "import/order": "off",
+      "prefer-const": ["error", { destructuring: "all" }]
+    }
+  },
+  {
+    files: ["src/**/*.{ts,js}"],
+    languageOptions: {
+      parser: tsEslint.parser,
+      globals: {
+        ...globals.browser,
         chrome: true
       }
     }
   },
   {
     files: ["**/*.{ts,js}"],
+    ignores: ["src/**"],
     languageOptions: {
       parser: tsEslint.parser,
       globals: {
-        ...globals.browser,
-        ...globals.node,
-        chrome: true
+        ...globals.node
       }
-    },
+    }
+  },
+  {
+    files: ["**/*.{ts,js}"],
     plugins: {
-      perfectionist
+      perfectionist,
+      "import-newlines": importNewlines
     },
     rules: {
-      "@stylistic/no-extra-parens": "error",
-      "@stylistic/max-len": ["error", { code: 120, ignoreUrls: true }],
+      "import-newlines/enforce": ["error", { items: 3, forceSingleLine: true }],
       "@typescript-eslint/no-explicit-any": "error",
-      "@typescript-eslint/consistent-type-assertions": ["error", { assertionStyle: "never" }],
       "@typescript-eslint/ban-ts-comment": "error",
-      "perfectionist/sort-imports": [
-        "error",
-        {
-          type: "alphabetical",
-          order: "asc",
-          newlinesBetween: "ignore",
-          sortSideEffects: true,
-          groups: [["side-effect", "builtin", "external", "internal", "parent", "sibling", "index", "unknown"]]
-        }
-      ]
+      "@typescript-eslint/consistent-type-assertions": ["error", { assertionStyle: "never" }],
+      "id-length": ["error", { min: 3, exceptions: ["_", "e"], properties: "never" }],
+      "import/order": "off",
+      "perfectionist/sort-imports": ["error", { internalPattern: ["^@/"], newlinesBetween: 0 }]
     }
   }
 ];

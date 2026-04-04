@@ -1,32 +1,24 @@
 {
   "extends": ["stylelint-config-ccb"],
-  "customSyntax": "postcss-html",
-  "ignoreFiles": ["build/**", "node_modules/**", "**/*.svg"],
+  "plugins": ["@stylistic/stylelint-plugin"],
   "rules": {
-    "color-format/format": null,
-    "csstree/validator": null,
-    "declaration-property-max-values": null,
-    "declaration-property-unit-allowed-list": null,
-    "declaration-property-value-allowed-list": null,
+    "@stylistic/indentation": 2,
+    "csstools/value-no-unknown-custom-properties": null,
     "declaration-property-value-disallowed-list": null,
     "function-disallowed-list": null,
     "no-invalid-position-declaration": null,
     "no-unknown-custom-properties": null,
-    "plugin/no-low-performance-animation-properties": null,
-    "plugin/no-unsupported-browser-features": null,
     "prettier/prettier": null,
     "selector-class-pattern": null,
-    "selector-disallowed-list": null,
     "selector-max-type": null,
     "selector-pseudo-class-disallowed-list": null,
-    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["global"] }],
-    "selector-pseudo-element-allowed-list": null,
-    "csstools/value-no-unknown-custom-properties": null
+    "selector-pseudo-class-no-unknown": [true, {"ignorePseudoClasses":  ["global"]}],
+    "selector-pseudo-element-allowed-list": null
   },
   "overrides": [
     {
-      "files": ["**/*.css"],
-      "customSyntax": "postcss"
+      "files": ["src/**/*.svelte"],
+      "customSyntax": "postcss-html"
     }
   ]
 }

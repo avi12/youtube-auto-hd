@@ -3,13 +3,13 @@
     "chrome-devtools-mcp": {
       "type": "stdio",
       "command": "cmd",
-      "args": ["/c", "bunx", "chrome-devtools-mcp@latest", "--browser-url=http://127.0.0.1:9226"],
+      "args": ["/c", "bunx", "chrome-devtools-mcp@latest", "--browser-url=http://localhost:9226"],
       "env": {}
     },
     "firefox-devtools-mcp": {
       "type": "stdio",
       "command": "cmd",
-      "args": ["/c", "bunx", "firefox-devtools-mcp@latest", "--connect-existing", "--marionette-port", "2828"],
+      "args": ["/c", "bunx", "firefox-devtools-mcp@latest", "--connect-existing", "--marionette-port", "2828", "--cdp-port", "9225"],
       "env": {}
     }
   }
