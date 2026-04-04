@@ -22,7 +22,7 @@ export default defineConfig({
       "https://www.youtube-nocookie.com/*",
       "https://youtube.googleapis.com/*"
     ],
-    permissions: ["cookies", "storage"],
+    permissions: ["cookies", "storage", ...(mode === "development" ? ["management"] : [])],
     options_ui: {
       page: "popup.html"
     },
@@ -49,7 +49,7 @@ export default defineConfig({
       if (zipPath.match(/chrome|opera/)) {
         execSync(`webext-store-incompat-fixer -i ${zipPath} --stores chrome,opera`);
       } else if (zipPath.includes("edge")) {
-        const supportedLocales = ["en", "he", "it", "fr"];
+        const supportedLocales = ["de", "en", "eo", "gl", "he", "ia", "it", "lb", "pl", "pt", "pt_BR", "pt_PT", "rm", "szl"];
         execSync(
           `webext-store-incompat-fixer -i ${zipPath} --stores edge --edge-locale-inclusions ${supportedLocales}`
         );
