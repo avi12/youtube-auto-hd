@@ -1,9 +1,13 @@
-import { initial } from "@/lib/ythd-defaults";
-import type { VideoAutoResize, VideoSize } from "@/lib/ythd-types";
-import {
-  addGlobalEventListener, getIsExtensionEnabled, getVisibleElement, OBSERVER_OPTIONS, SELECTORS
-} from "@/lib/ythd-utils";
 import { storage } from "#imports";
+import type { VideoAutoResize, VideoSize } from "@/lib/ythd-types";
+import { initial } from "@/lib/ythd-defaults";
+import {
+  addGlobalEventListener,
+  getIsExtensionEnabled,
+  getVisibleElement,
+  OBSERVER_OPTIONS,
+  SELECTORS
+} from "@/lib/ythd-utils";
 
 interface Preferences {
   viewMode: VideoSize;

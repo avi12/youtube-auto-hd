@@ -259,7 +259,7 @@ export async function prepareToChangeQualityOnDesktop(e?: Event) {
   }
 
   // Only open/close the settings panel when quality elements aren't already in the DOM.
-  // On VORAPIS, quality items are always present so this step is unnecessary and
+  // On VORAPIS, quality items are always present, so this step is unnecessary and
   // risks interfering with video buffering.
   if (getCurrentQualityElements(elVideo).length === 0) {
     const elSettings = elPlayer.querySelector<HTMLButtonElement>(SELECTORS.buttonSettings);
