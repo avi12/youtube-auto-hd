@@ -1,28 +1,40 @@
 import { readdirSync, existsSync, cpSync } from "node:fs";
-import { homedir, platform } from "node:os";
-import { resolve, join, basename } from "node:path";
+import { homedir } from "node:os";
+import { join, basename, resolve } from "node:path";
 import { defineWebExtConfig } from "wxt";
 
-const path = (() => {
-  const osMap: Partial<Record<NodeJS.Platform, string>> = {
-    win32: ".env.windows",
-    darwin: ".env.mac",
-    linux: ".env.linux"
-  };
-  return osMap[process.platform] || "";
-})();
+const {
+  LANG = "en",
+  BLANK,
+  CHROME_PROFILE,
+  CHROME_PORT = "9226",
+  CHROME_INSTANCE = "",
+  FIREFOX_PROFILE,
+  FIREFOX_PORT = "9225",
+  FIREFOX_MARIONETTE_PORT = "2828"
+} = process.env;
 
-process.loadEnvFile(path);
+const osPlatform = process.platform;
+const home = homedir();
 
-const { LANG = "en" } = process.env;
+const edgeByPlatform: Partial<Record<NodeJS.Platform, string>> = {
+  win32: join(process.env.ProgramFiles!, "Microsoft/Edge/Application/msedge.exe"),
+  darwin: "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+  linux: "/usr/bin/microsoft-edge-stable"
+};
+
+const operaByPlatform: Partial<Record<NodeJS.Platform, string>> = {
+  win32: join(process.env.LOCALAPPDATA!, "Programs/Opera/opera.exe"),
+  darwin: "/Applications/Opera.app/Contents/MacOS/Opera",
+  linux: "/usr/bin/opera"
+};
 
 function findDefaultFirefoxProfile() {
   const profilesDir = (() => {
-    const home = homedir();
-    if (platform() === "win32") {
-      return join(home, "AppData/Roaming/Mozilla/Firefox/Profiles");
+    if (osPlatform === "win32") {
+      return join(process.env.APPDATA!, "Mozilla/Firefox/Profiles");
     }
-    if (platform() === "darwin") {
+    if (osPlatform === "darwin") {
       return join(home, "Library/Application Support/Firefox/Profiles");
     }
     return join(home, ".mozilla/firefox");
@@ -31,60 +43,73 @@ function findDefaultFirefoxProfile() {
     return undefined;
   }
   const profiles = readdirSync(profilesDir);
-  const found =
-    profiles.find(dir => dir.endsWith(".default-release")) ??
-    profiles.find(dir => dir.includes("default")) ??
-    profiles[0];
-  return found ? join(profilesDir, found) : undefined;
+  const found = profiles.find(dir => dir.endsWith(".default-release")) ?? profiles.find(dir => dir.includes("default")) ?? profiles[0];
+  if (found) {
+    return join(profilesDir, found);
+  }
 }
 
 const LOCK_FILES = new Set(["lockfile", "SingletonLock", "SingletonCookie", "SingletonSocket", "LOCK"]);
 
-function setupChromeProfile() {
+function copyChromeProfiles() {
   const chromeSrcByPlatform: Partial<Record<NodeJS.Platform, string>> = {
     win32: join(process.env.LOCALAPPDATA!, "Google", "Chrome", "User Data"),
-    darwin: join(homedir(), "Library", "Application Support", "Google", "Chrome"),
-    linux: join(homedir(), ".config", "google-chrome")
+    darwin: join(home, "Library", "Application Support", "Google", "Chrome"),
+    linux: join(home, ".config", "google-chrome")
   };
-  const src = chromeSrcByPlatform[process.platform];
+  const src = chromeSrcByPlatform[osPlatform];
   if (!src || !existsSync(src)) {
     return;
   }
 
-  const dest = resolve(import.meta.dirname, "../User Data");
+  const suffix = CHROME_INSTANCE ? `-${CHROME_INSTANCE}` : "";
+  const dest = resolve(import.meta.dirname, `../User Data${suffix}`);
   if (existsSync(dest)) {
-    return;
+    return dest;
   }
 
-  console.log(`Copying Chrome profile from ${src} to ${dest}...`);
-  cpSync(src, dest, { recursive: true, filter: src => !LOCK_FILES.has(basename(src)) });
+  console.log(`Copying Chrome profiles from ${src} to ${dest}...`);
+  cpSync(join(src, "Local State"), join(dest, "Local State"));
+
+  const profileDirectories = readdirSync(src).filter(name => name === "Default" || name.startsWith("Profile "));
+  for (const directory of profileDirectories) {
+    cpSync(join(src, directory), join(dest, directory), {
+      recursive: true,
+      filter: source => !LOCK_FILES.has(basename(source))
+    });
+  }
+
   console.log("Done.");
+  return dest;
 }
 
-if (process.env.CHROME_WITH_PROFILE === "1") {
-  setupChromeProfile();
-}
+const chromeUserData = CHROME_PROFILE ? copyChromeProfiles() : undefined;
 
 export default defineWebExtConfig({
   binaries: {
-    ...(process.env.PATH_EDGE && { edge: process.env.PATH_EDGE }),
-    ...(process.env.PATH_OPERA && { opera: process.env.PATH_OPERA.replace("USERPROFILE", homedir()) })
+    edge: edgeByPlatform[osPlatform] ?? "",
+    opera: operaByPlatform[osPlatform] ?? ""
   },
   startUrls: ["https://www.youtube.com/watch?v=aiSla-5xq3w"],
-  ...process.env.CHROME_WITH_PROFILE === "1" && {
+  ...chromeUserData && {
     keepProfileChanges: true,
-    chromiumProfile: resolve(import.meta.dirname, "../User Data")
+    chromiumProfile: chromeUserData
   },
-  firefoxArgs: ["-marionette", "-marionette-port", "2828"],
-  ...process.env.FIREFOX_WITH_PROFILE === "1" && {
+  ...FIREFOX_PROFILE && {
     firefoxProfile: findDefaultFirefoxProfile(),
     keepProfileChanges: true
   },
+  firefoxArgs: [
+    "-marionette",
+    "-marionette-port", FIREFOX_MARIONETTE_PORT,
+    "--remote-debugging-port", FIREFOX_PORT
+  ],
   chromiumArgs: [
     `--lang=${LANG}`,
-    "--remote-debugging-port=9226",
+    `--remote-debugging-port=${CHROME_PORT}`,
     "--isolated",
     "--disable-blink-features=AutomationControlled",
-    ...[process.env.CHROME_WITH_PROFILE === "1" ? "--profile-directory=Default" : ""]
+    `--profile-directory=${CHROME_PROFILE ?? "Default"}`,
+    ...BLANK ? ["--disable-features=DarkMode"] : []
   ]
 });
