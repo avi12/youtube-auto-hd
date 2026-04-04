@@ -12,7 +12,7 @@
   import { getI18n, getUncircularJson } from "@/lib/ythd-utils";
 
   const i18n = {
-    labelEnableYouTubeMusic: getI18n("cj_i18n_todo", "Run on YouTube Music"),
+    labelEnableYouTubeMusic: getI18n("cj_i18n_08029", "Apply on YouTube Music"),
     labelSameQuality: getI18n("cj_i18n_08030", "Use global quality preferences")
   };
 
