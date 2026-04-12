@@ -1,23 +1,22 @@
 {
   "extends": ["stylelint-config-ccb"],
-  "plugins": ["@stylistic/stylelint-plugin"],
   "rules": {
-    "@stylistic/indentation": 2,
     "csstools/value-no-unknown-custom-properties": null,
     "declaration-property-value-disallowed-list": null,
-    "function-disallowed-list": null,
     "no-invalid-position-declaration": null,
     "no-unknown-custom-properties": null,
     "prettier/prettier": null,
     "selector-class-pattern": null,
     "selector-max-type": null,
-    "selector-pseudo-class-disallowed-list": null,
-    "selector-pseudo-class-no-unknown": [true, {"ignorePseudoClasses":  ["global"]}],
-    "selector-pseudo-element-allowed-list": null
+    "selector-pseudo-class-no-unknown": [true, {"ignorePseudoClasses": ["global"]}]
   },
   "overrides": [
     {
-      "files": ["src/**/*.svelte"],
+      "files": ["**/*.svelte"],
+      "customSyntax": "postcss-html"
+    },
+    {
+      "files": ["**/*.html"],
       "customSyntax": "postcss-html"
     }
   ]

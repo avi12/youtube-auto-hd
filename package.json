@@ -34,7 +34,7 @@
     "build:package:all": "bunx concurrently \"bun build:package\" \"bun build:package:edge\" \"bun build:package:opera\" \"bun build:package:firefox\" --names Chrome,Edge,Opera,Firefox",
     "svelte:check": "bunx svelte-check",
     "lint:fix": "eslint --fix",
-    "lint:css": "stylelint \"src/**/*.{svelte,css}\" --fix",
+    "lint:css": "stylelint . --fix",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
