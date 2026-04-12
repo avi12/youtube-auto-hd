@@ -1,6 +1,7 @@
-import { readdirSync, existsSync, cpSync } from "node:fs";
+import { readdirSync, existsSync, cpSync, readFileSync } from "node:fs";
+import { createServer } from "node:http";
 import { homedir } from "node:os";
-import { join, basename, resolve } from "node:path";
+import { join, basename, resolve, extname } from "node:path";
 import { defineWebExtConfig } from "wxt";
 
 const {
@@ -85,12 +86,39 @@ function copyChromeProfiles() {
 
 const chromeUserData = CHROME_PROFILE ? copyChromeProfiles() : undefined;
 
+const LOCAL_SERVER_PORT = 3456;
+const testsDir = resolve(import.meta.dirname, "tests");
+
+const MIME_TYPES: Partial<Record<string, string>> = {
+  ".html": "text/html; charset=utf-8",
+  ".css": "text/css; charset=utf-8"
+};
+
+function startLocalServer() {
+  const server = createServer((request, response) => {
+    const filePath = join(testsDir, decodeURIComponent(request.url ?? "/"));
+    try {
+      const content = readFileSync(filePath);
+      response.writeHead(200, { "Content-Type": MIME_TYPES[extname(filePath)] ?? "text/plain" });
+      response.end(content);
+    } catch {
+      response.writeHead(404);
+      response.end();
+    }
+  });
+  server.on("error", () => {}); // silently ignore EADDRINUSE if already running
+  server.listen(LOCAL_SERVER_PORT);
+  return `http://localhost:${LOCAL_SERVER_PORT}/local-embed.html`;
+}
+
+const localEmbedUrl = startLocalServer();
+
 export default defineWebExtConfig({
   binaries: {
     edge: edgeByPlatform[osPlatform] ?? "",
     opera: operaByPlatform[osPlatform] ?? ""
   },
-  startUrls: ["https://www.youtube.com/watch?v=aiSla-5xq3w"],
+  startUrls: [localEmbedUrl],
   ...chromeUserData && {
     keepProfileChanges: true,
     chromiumProfile: chromeUserData
@@ -106,10 +134,10 @@ export default defineWebExtConfig({
   ],
   chromiumArgs: [
     `--lang=${LANG}`,
-    `--remote-debugging-port=${CHROME_PORT}`,
     "--isolated",
     "--disable-blink-features=AutomationControlled",
     `--profile-directory=${CHROME_PROFILE ?? "Default"}`,
+    `--remote-debugging-port=${CHROME_PORT}`,
     ...BLANK ? ["--disable-features=DarkMode"] : []
   ]
 });
