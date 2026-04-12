@@ -31,7 +31,7 @@ async function sendQualityToMainWorld() {
   });
 
   if (lastIsSameQuality) {
-    await musicMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, lastQualitiesYouTube);
+    void musicMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, lastQualitiesYouTube);
     return;
   }
 
@@ -40,17 +40,17 @@ async function sendQualityToMainWorld() {
     key: "qualitiesMusic",
     fallback: lastQualitiesMusic
   });
-  await musicMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, lastQualitiesMusic);
+  void musicMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, lastQualitiesMusic);
 }
 
-async function sendQualityIfEnabled() {
+function sendQualityIfEnabled() {
   if (!lastIsExtensionEnabled || !lastIsYouTubeMusicEnabled) {
     return;
   }
-  await sendQualityToMainWorld();
+  void sendQualityToMainWorld();
 }
 
-async function addTemporaryBodyListenerOnMusic() {
+function addTemporaryBodyListenerOnMusic() {
   if (!lastIsExtensionEnabled || !lastIsYouTubeMusicEnabled) {
     return;
   }
@@ -72,20 +72,20 @@ async function addTemporaryBodyListenerOnMusic() {
 }
 
 async function init() {
-  await addGlobalEventListener(addTemporaryBodyListenerOnMusic);
+  void addGlobalEventListener(addTemporaryBodyListenerOnMusic);
 
-  storage.watch<boolean>("local:lastIsExtensionEnabled", async isExtEnabled => {
+  storage.watch<boolean>("local:lastIsExtensionEnabled", isExtEnabled => {
     lastIsExtensionEnabled = isExtEnabled ?? false;
-    await sendQualityIfEnabled();
+    sendQualityIfEnabled();
   });
 
   storage.watch("local:qualities", sendQualityIfEnabled);
   storage.watch("local:qualitiesMusic", sendQualityIfEnabled);
   storage.watch("local:isUseGlobalQualityPreferences", sendQualityIfEnabled);
 
-  storage.watch<boolean>("local:isEnableYouTubeMusic", async isEnabled => {
+  storage.watch<boolean>("local:isEnableYouTubeMusic", isEnabled => {
     lastIsYouTubeMusicEnabled = isEnabled ?? initial.isEnableYouTubeMusic;
-    await sendQualityIfEnabled();
+    sendQualityIfEnabled();
   });
 
   lastIsYouTubeMusicEnabled = await getStorage({
@@ -99,7 +99,7 @@ async function init() {
     return;
   }
 
-  new MutationObserver(async (_, observer) => {
+  new MutationObserver((_, observer) => {
     const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
     if (!elVideo) {
       return;
