@@ -13,5 +13,6 @@ function createPlayerMessenger(namespace: string) {
   return defineCustomEventMessaging<PlayerMessengerSchema>({ namespace });
 }
 
+export const embedMessenger = createPlayerMessenger("ythd-embed");
 export const musicMessenger = createPlayerMessenger("ythd-music");
 export const shortsMessenger = createPlayerMessenger("ythd-shorts");

@@ -1,6 +1,7 @@
 import { prepareToChangeQualityOnDesktop } from "@/entrypoints/desktop-isolated.content/functions-desktop";
 import { fpsSupported, initial, qualities } from "@/lib/ythd-defaults";
 import { PlayerMessage, shortsMessenger } from "@/lib/ythd-player-messaging";
+import { addStorageListeners } from "@/lib/ythd-storage-bridge";
 import type {
   EnhancedBitratePreferences,
   QualityFpsPreferences,
@@ -15,6 +16,7 @@ import {
   SELECTORS
 } from "@/lib/ythd-utils";
 import { storage } from "#imports";
+
 
 declare global {
   interface Window {
@@ -36,11 +38,11 @@ function isShortsPage() {
   return location.pathname.startsWith("/shorts/");
 }
 
-async function sendQualityToShortsMainWorld() {
+async function sendQualityToMainWorld() {
   const qualityPreferences = await storage.getItem<QualityFpsPreferences>("local:qualities", {
     fallback: initial.qualities
   });
-  await shortsMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, qualityPreferences);
+  void shortsMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, qualityPreferences);
 }
 
 function getQualityParentElement(elTarget: HTMLElement) {
@@ -58,8 +60,7 @@ function getQualityParentElement(elTarget: HTMLElement) {
 }
 
 function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event) {
-  const isUserClick = isTrusted;
-  if (!isUserClick || !(target instanceof HTMLElement) || location.pathname.startsWith("/shorts")) {
+  if (!isTrusted || !(target instanceof HTMLElement) || location.pathname.startsWith("/shorts")) {
     return;
   }
 
@@ -84,13 +85,13 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event) {
   window.ythdLastEnhancedBitrateClicked[fps] = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
 }
 
-async function handleShortsNavigation(elVideo: HTMLVideoElement) {
+function handleShortsNavigation(elVideo: HTMLVideoElement) {
   elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
-  elVideo.removeEventListener("canplay", sendQualityToShortsMainWorld);
+  elVideo.removeEventListener("canplay", sendQualityToMainWorld);
   if (elVideo.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
-    await sendQualityToShortsMainWorld();
+    void sendQualityToMainWorld();
   } else {
-    elVideo.addEventListener("canplay", sendQualityToShortsMainWorld, { once: true });
+    elVideo.addEventListener("canplay", sendQualityToMainWorld, { once: true });
   }
 }
 
@@ -141,7 +142,7 @@ async function addTemporaryBodyListenerOnDesktop() {
     if (!elVideo) {
       return;
     }
-    await handleShortsNavigation(elVideo);
+    handleShortsNavigation(elVideo);
     return;
   }
 
@@ -161,7 +162,7 @@ async function addTemporaryBodyListenerOnDesktop() {
     return;
   }
 
-  elVideo.removeEventListener("canplay", sendQualityToShortsMainWorld);
+  elVideo.removeEventListener("canplay", sendQualityToMainWorld);
   elVideo.removeEventListener("canplay", prepareToChangeQualityOnDesktop);
   elPlayer.removeEventListener("click", saveManualQualityChangeOnDesktop);
 
@@ -169,54 +170,8 @@ async function addTemporaryBodyListenerOnDesktop() {
   elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
 }
 
-function addStorageListeners() {
-  storage.watch<boolean>("local:isExtensionEnabled", async isExtEnabled => {
-    window.ythdExtEnabled = isExtEnabled ?? false;
-    if (!isExtEnabled) {
-      return;
-    }
-    if (isShortsPage()) {
-      await sendQualityToShortsMainWorld();
-    } else {
-      await prepareToChangeQualityOnDesktop();
-    }
-  });
-
-  storage.watch<QualityFpsPreferences>("local:qualities", async qualityPreferences => {
-    window.ythdLastUserQualities = qualityPreferences;
-    const userChoseQualityManuallyForCurrentVideo = window.ythdLastQualityClicked !== undefined;
-    if (userChoseQualityManuallyForCurrentVideo) {
-      return;
-    }
-    if (!window.ythdExtEnabled) {
-      return;
-    }
-    if (isShortsPage()) {
-      await sendQualityToShortsMainWorld();
-    } else {
-      await prepareToChangeQualityOnDesktop();
-    }
-  });
-
-  storage.watch<EnhancedBitratePreferences>("local:isEnhancedBitrates", async isEnhancedBitrates => {
-    window.ythdLastEnhancedBitrateClicked = isEnhancedBitrates ?? undefined;
-    if (!window.ythdExtEnabled || window.ythdLastQualityClicked !== undefined) {
-      return;
-    }
-    await prepareToChangeQualityOnDesktop();
-  });
-
-  storage.watch<boolean>("local:isUseSuperResolution", async isUseSuperResolution => {
-    window.ythdIsUseSuperResolution = isUseSuperResolution ?? undefined;
-    if (!window.ythdExtEnabled || window.ythdLastQualityClicked !== undefined) {
-      return;
-    }
-    await prepareToChangeQualityOnDesktop();
-  });
-}
-
 function observeForInitialVideo() {
-  new MutationObserver(async (_, observer) => {
+  new MutationObserver((_, observer) => {
     const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
     if (!elVideo) {
       return;
@@ -224,7 +179,7 @@ function observeForInitialVideo() {
 
     if (isShortsPage()) {
       observer.disconnect();
-      await sendQualityToShortsMainWorld();
+      void sendQualityToMainWorld();
       return;
     }
 
@@ -236,24 +191,30 @@ function observeForInitialVideo() {
     observer.disconnect();
     elVideo.addEventListener("canplay", prepareToChangeQualityOnDesktop);
     elPlayer.addEventListener("click", saveManualQualityChangeOnDesktop);
-    await prepareToChangeQualityOnDesktop();
+    void prepareToChangeQualityOnDesktop();
   }).observe(document, OBSERVER_OPTIONS);
 }
 
 async function init() {
-  await addGlobalEventListener(addTemporaryBodyListenerOnDesktop);
-  addStorageListeners();
+  addStorageListeners(() => {
+    if (isShortsPage()) {
+      void sendQualityToMainWorld();
+      return;
+    }
+    void prepareToChangeQualityOnDesktop();
+  });
 
   window.ythdExtEnabled = await getIsExtensionEnabled(window.ythdExtEnabled);
   if (!window.ythdExtEnabled) {
     return;
   }
 
+  void addGlobalEventListener(addTemporaryBodyListenerOnDesktop);
+
   observeForInitialVideo();
 }
 
 export default defineContentScript({
-  matches: ["https://www.youtube.com/*", "https://www.youtube-nocookie.com/*", "https://youtube.googleapis.com/*"],
-  allFrames: true,
+  matches: ["https://www.youtube.com/*"],
   main: () => init()
 });
