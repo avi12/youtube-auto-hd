@@ -88,6 +88,11 @@ function isElementVisible(element: HTMLElement) {
   return element?.offsetWidth > 0 && element?.offsetHeight > 0;
 }
 
+export function extractFpsFromLabel(label: string) {
+  const fpsMatch = label.match(/[ps](\d+)/);
+  return fpsMatch ? fpsSupported.find(fps => fps === Number(fpsMatch[1])) ?? 30 : 30;
+}
+
 export function getFpsFromRange(
   qualities: QualityFpsPreferences | EnhancedBitrateFpsPreferences,
   fpsToCheck: number

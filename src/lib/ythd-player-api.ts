@@ -1,16 +1,18 @@
 import { qualities } from "./ythd-defaults";
 import type { QualityFpsPreferences, VideoQuality, YTMusicQuality } from "./ythd-types";
-import { getFpsFromRange, getPlayerDiv, getVisibleElement, SELECTORS } from "./ythd-utils";
+import { extractFpsFromLabel, getFpsFromRange, getPlayerDiv, getVisibleElement, SELECTORS } from "./ythd-utils";
 
-type YTPlayerElement = HTMLDivElement & {
-  setPlaybackQualityRange(quality1: YTMusicQuality, quality2: YTMusicQuality): void;
-  getAvailableQualityLevels(): YTMusicQuality[];
-  getPlaybackQuality(): YTMusicQuality;
+type QualityData = {
+  qualityLabel: string;
+  quality: YTMusicQuality;
+  isPlayable: boolean;
 };
 
-/** @see https://gist.github.com/Araxeus/fc574d0f31ba71d62215c0873a7b048e
- @see Official docs: https://developers.google.com/youtube/iframe_api_reference#Playback_quality
- */
+type YTPlayerElement = HTMLDivElement & {
+  setPlaybackQualityRange?(quality1: YTMusicQuality, quality2: YTMusicQuality): void;
+  getAvailableQualityData?(): QualityData[];
+};
+
 export const QUALITY_MAP: Record<VideoQuality, YTMusicQuality> = {
   4320: "highres",
   2160: "hd2160",
@@ -33,77 +35,29 @@ export const QUALITY_NUMBER = Object.fromEntries<VideoQuality>(
   })
 );
 
-async function measureVideoFps(elVideo: HTMLVideoElement) {
-  return new Promise<number>(resolve => {
-    // Number of frame duration samples to average before resolving FPS
-    const SAMPLES_REQUIRED = 30;
-    let lastMediaTime = 0;
-    let lastFrameNum = 0;
-    let secondsPerFrameSum = 0;
-    let sampleCount = 0;
-
-    function onVideoFrame(_: DOMHighResTimeStamp, metadata: VideoFrameCallbackMetadata) {
-      if (lastMediaTime && !elVideo.paused) {
-        const elapsedMediaSeconds = metadata.mediaTime - lastMediaTime;
-        const elapsedFrames = metadata.presentedFrames - lastFrameNum;
-        // Normalize by playbackRate so the measurement is accurate at any speed
-        const secondsPerFrame = elapsedMediaSeconds / elapsedFrames / elVideo.playbackRate;
-
-        const isValidSample = secondsPerFrame > 0 && secondsPerFrame < 1;
-        if (isValidSample) {
-          secondsPerFrameSum += secondsPerFrame;
-          sampleCount++;
-
-          if (sampleCount === SAMPLES_REQUIRED) {
-            const fps = sampleCount / secondsPerFrameSum;
-            resolve(fps);
-            return;
-          }
-        }
-      }
-
-      lastMediaTime = metadata.mediaTime;
-      lastFrameNum = metadata.presentedFrames;
-      elVideo.requestVideoFrameCallback(onVideoFrame);
-    }
-
-    elVideo.requestVideoFrameCallback(onVideoFrame);
-  });
-}
-
-let latestCallId = 0;
-
-export async function changeQualityViaPlayerAPI(qualityPreferences: QualityFpsPreferences) {
-  const callId = ++latestCallId;
-
+export function changeQualityViaPlayerAPI(qualityPreferences: QualityFpsPreferences) {
   const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
   if (!elVideo) {
     return;
   }
 
   const elPlayer = getPlayerDiv<YTPlayerElement>(elVideo);
-  if (!elPlayer) {
+  const qualityData = elPlayer?.getAvailableQualityData?.();
+  if (!qualityData || !elPlayer?.setPlaybackQualityRange) {
     return;
   }
 
-  const availableQualities = elPlayer.getAvailableQualityLevels();
-  const fpsCurrent = await measureVideoFps(elVideo);
+  const fpsLabel = qualityData.find(data => data.qualityLabel.match(/[ps]\d+/))?.qualityLabel;
+  const fpsVideo = fpsLabel ? extractFpsFromLabel(fpsLabel) : 30;
 
-  // A newer call came in while measuring FPS — discard this stale result
-  if (callId !== latestCallId) {
-    return;
-  }
-
-  const fpsStep = getFpsFromRange(qualityPreferences, fpsCurrent);
+  const fpsStep = getFpsFromRange(qualityPreferences, fpsVideo);
   const preferredQuality = QUALITY_MAP[qualityPreferences[fpsStep]];
-  const iPreferredQuality = availableQualities.findIndex(
-    quality => QUALITY_NUMBER[quality] <= QUALITY_NUMBER[preferredQuality]
+  const bestQuality = qualityData.find(
+    data => QUALITY_NUMBER[data.quality] <= QUALITY_NUMBER[preferredQuality]
   );
 
-  const bestQuality = availableQualities.at(iPreferredQuality > -1 ? iPreferredQuality : -2);
   if (!bestQuality) {
     return;
   }
-  elPlayer.setPlaybackQualityRange(bestQuality, bestQuality);
-  console.log("[YTHD] Applied quality", elPlayer.getPlaybackQuality());
+  elPlayer.setPlaybackQualityRange(bestQuality.quality, bestQuality.quality);
 }
