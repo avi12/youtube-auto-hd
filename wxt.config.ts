@@ -12,7 +12,7 @@ export default defineConfig({
   srcDir: "src",
   publicDir: "src/public",
   manifest: ({ browser, mode })=> ({
-    name: "YouTube Auto HD + FPS",
+    name: browser === "edge" ? "Auto HD for YouTube" : "YouTube Auto HD + FPS",
     description: "__MSG_cj_i18n_02146__",
     homepage_url: url,
     default_locale: "en",
