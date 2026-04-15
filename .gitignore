@@ -29,6 +29,8 @@ build
 *.sln
 *.sw?
 
+.claude/settings.local.json
+
 test-browsers
 screenshots*
 screenshot-process.js
