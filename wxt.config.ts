@@ -35,7 +35,11 @@ export default defineConfig({
       browser_specific_settings: {
         gecko: {
           id: "avi6106@gmail.com",
-          strict_min_version: "117.0"
+          strict_min_version: "117.0",
+          data_collection_permissions: {
+            required: ["browsingActivity", "websiteActivity"],
+            optional: ["technicalAndInteraction"]
+          }
         }
       },
       developer: {
