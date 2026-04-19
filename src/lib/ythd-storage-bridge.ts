@@ -31,9 +31,8 @@ export function addStorageListeners(onApply: () => void) {
 
   storage.watch<QualityFpsPreferences>("local:qualities", qualityPreferences => {
     window.ythdLastUserQualities = qualityPreferences;
-    if (window.ythdLastQualityClicked !== undefined) {
-      return;
-    }
+    window.ythdLastQualityClicked = undefined;
+    window.ythdLastEnhancedBitrateClicked = {};
     if (!window.ythdExtEnabled) {
       return;
     }
@@ -42,7 +41,7 @@ export function addStorageListeners(onApply: () => void) {
 
   storage.watch<EnhancedBitratePreferences>("local:isEnhancedBitrates", isEnhancedBitrates => {
     window.ythdLastEnhancedBitrateClicked = isEnhancedBitrates ?? undefined;
-    if (!window.ythdExtEnabled || window.ythdLastQualityClicked !== undefined) {
+    if (!window.ythdExtEnabled) {
       return;
     }
     onApply();
@@ -50,7 +49,7 @@ export function addStorageListeners(onApply: () => void) {
 
   storage.watch<boolean>("local:isUseSuperResolution", isUseSuperResolution => {
     window.ythdIsUseSuperResolution = isUseSuperResolution ?? undefined;
-    if (!window.ythdExtEnabled || window.ythdLastQualityClicked !== undefined) {
+    if (!window.ythdExtEnabled) {
       return;
     }
     onApply();
