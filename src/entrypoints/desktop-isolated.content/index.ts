@@ -5,6 +5,7 @@ import { addStorageListeners } from "@/lib/ythd-storage-bridge";
 import type {
   EnhancedBitratePreferences,
   QualityFpsPreferences,
+  VideoFPS,
   VideoQuality
 } from "@/lib/ythd-types";
 import {
@@ -20,7 +21,7 @@ import { storage } from "#imports";
 
 declare global {
   interface Window {
-    ythdLastQualityClicked: VideoQuality | undefined;
+    ythdLastQualityClicked: Partial<QualityFpsPreferences> | undefined;
     ythdLastEnhancedBitrateClicked: Partial<EnhancedBitratePreferences> | undefined;
     ythdLastUserQualities: QualityFpsPreferences | null;
     ythdLastUserEnhancedBitrates: EnhancedBitratePreferences | null;
@@ -79,8 +80,12 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event) {
     return;
   }
 
-  const fps = fpsSupported.find(fps => fps === Number(fpsMatch[1] || 30)) ?? 30;
-  window.ythdLastQualityClicked = qualities.find(quality => quality === parseInt(labelQuality));
+  const fps = (fpsSupported.find(fps => fps === Number(fpsMatch[1] || 30)) ?? 30) as VideoFPS;
+  const qualityClicked = qualities.find(quality => quality === parseInt(labelQuality));
+  if (qualityClicked) {
+    window.ythdLastQualityClicked ??= {};
+    window.ythdLastQualityClicked[fps] = qualityClicked;
+  }
   window.ythdLastEnhancedBitrateClicked ??= {};
   window.ythdLastEnhancedBitrateClicked[fps] = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
 }
@@ -145,9 +150,6 @@ async function addTemporaryBodyListenerOnDesktop() {
     handleShortsNavigation(elVideo);
     return;
   }
-
-  window.ythdLastQualityClicked = undefined;
-  window.ythdLastEnhancedBitrateClicked = {};
 
   await prepareToChangeQualityOnDesktop();
 

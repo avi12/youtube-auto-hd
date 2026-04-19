@@ -2,10 +2,8 @@ import { fpsSupported, qualities } from "@/lib/ythd-defaults";
 import { loadStorageValues } from "@/lib/ythd-storage-bridge";
 import {
   type EnhancedBitratePreferences,
-  type EnhancedVideoQuality,
   SUFFIX_EBR,
   SUFFIX_SUPER_RESOLUTION,
-  type VideoQuality
 } from "@/lib/ythd-types";
 import {
   extractFpsFromLabel,
@@ -115,7 +113,6 @@ function openQualityMenu(elVideo: HTMLVideoElement) {
 
 function changeQuality(
   elVideo: HTMLVideoElement,
-  qualityCustom?: VideoQuality | EnhancedVideoQuality,
   isEnhancedBitrateCustom?: Partial<EnhancedBitratePreferences>,
   isUseSuperResolution?: boolean
 ) {
@@ -127,7 +124,7 @@ function changeQuality(
   const fpsStep = getFpsFromRange(window.ythdLastUserQualities, fpsVideo);
   const elQualities = getCurrentQualityElements(elVideo);
   const qualitiesAvailable = getAvailableQualities(elVideo);
-  const qualityPreferred = qualityCustom || window.ythdLastUserQualities[fpsStep];
+  const qualityPreferred = window.ythdLastQualityClicked?.[fpsStep] ?? window.ythdLastUserQualities[fpsStep];
 
   const isEnhancedBitrate = { ...window.ythdLastUserEnhancedBitrates, ...isEnhancedBitrateCustom };
 
@@ -179,7 +176,6 @@ function changeQualityWhenPossible(elVideo: HTMLVideoElement) {
   }
   changeQuality(
     elVideo,
-    window.ythdLastQualityClicked,
     window.ythdLastEnhancedBitrateClicked,
     window.ythdIsUseSuperResolution
   );
