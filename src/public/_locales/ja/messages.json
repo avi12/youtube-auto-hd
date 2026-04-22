@@ -1,7 +1,7 @@
 {
 "cj_i18n_00354":{"message":"寄付"},
 "cj_i18n_01605":{"message":"翻訳を手伝う"},
-"cj_i18n_02146":{"message":"YouTubeの動画の画質をFPSに合わせて自動的に設定してくれます"},
+"cj_i18n_02146":{"message":"動画のFPSに応じて、YouTubeの画質を自動的に設定します。"},
 "cj_i18n_02148":{"message":"FPS"},
 "cj_i18n_02149":{"message":"FPS以下"},
 "cj_i18n_06567":{"message":"サイズを維持"},
