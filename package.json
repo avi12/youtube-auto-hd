@@ -9,14 +9,14 @@
   "homepage": "https://github.com/avi12/youtube-auto-hd",
   "author": "Avi <avi6106@gmail.com>",
   "scripts": {
-    "dev": "wxt",
-    "dev:with-profile": "cross-env CHROME_PROFILE=Default CHROME_INSTANCE=1 wxt",
-    "dev:rtl": "cross-env VITE_LANG=he wxt",
-    "dev:opera": "pnpm dev -b opera",
+    "dev": "tsx scripts/dev.ts",
+    "dev:with-profile": "cross-env CHROME_PROFILE=Default tsx scripts/dev.ts",
+    "dev:rtl": "cross-env VITE_LANG=he tsx scripts/dev.ts",
+    "dev:opera": "wxt -b opera",
     "dev:firefox": "wxt -b firefox --mv3",
     "dev:firefox:with-profile": "cross-env FIREFOX_PROFILE=1 wxt -b firefox --mv3",
-    "dev:screenshot": "cross-env BLANK=1 LANG=szl pnpm dev",
-    "dev:screenshot:opera": "pnpm dev:screenshot -b opera",
+    "dev:screenshot": "cross-env BLANK=1 LANG=szl tsx scripts/dev.ts",
+    "dev:screenshot:opera": "cross-env BLANK=1 LANG=szl wxt -b opera",
     "build": "wxt build",
     "build:opera": "pnpm build -b opera",
     "build:firefox": "pnpm build -b firefox --mv3",
@@ -31,7 +31,8 @@
     "ga:dimensions": "tsx scripts/register-ga-custom-dimensions.ts",
     "lint:fix": "eslint --fix",
     "lint:css": "stylelint . --fix",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "dev:wxt": "wxt"
   },
   "packageManager": "pnpm@11.1.2",
   "dependencies": {

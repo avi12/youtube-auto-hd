@@ -37,3 +37,4 @@ test-browsers/
 screenshots*/
 screenshot-process.js
 user-data/
+.dev-logs/
