@@ -44,6 +44,7 @@ export enum SELECTORS {
   sizeToggleLarge = ".ytp-size-toggle-large",
   sizeToggleSmall = ".ytp-size-toggle-small",
   menuOption = ".ytp-settings-menu[data-layer] .ytp-menuitem",
+  menuItem = ".ytp-menuitem",
   menuOptionContent = ".ytp-menuitem-content",
   panelHeaderBack = ".ytp-panel-header button",
   qualityDropDownTrigger = ".ytp-drop-down-label",

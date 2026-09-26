@@ -1,4 +1,9 @@
-import { getVideoFPS, prepareToChangeQualityOnDesktop } from "@/entrypoints/desktop-isolated.content/functions-desktop";
+import {
+  getIsQualityElement,
+  getVideoFPS,
+  prepareToChangeQualityOnDesktop
+} from "@/entrypoints/desktop-isolated.content/functions-desktop";
+import { logDebug } from "@/lib/ythd-debug";
 import { initial, qualities } from "@/lib/ythd-defaults";
 import { PlayerMessage, shortsMessenger } from "@/lib/ythd-player-messaging";
 import { addStorageListeners } from "@/lib/ythd-storage-bridge";
@@ -41,21 +46,31 @@ async function sendQualityToMainWorld() {
   void shortsMessenger.sendMessage(PlayerMessage.APPLY_QUALITY, qualityPreferences);
 }
 
-function getQualityParentElement(elTarget: HTMLElement) {
-  if (elTarget.matches(SELECTORS.labelPremium) || elTarget.tagName === "SUP") {
-    return elTarget.parentElement ?? elTarget;
-  }
-
-  if (elTarget.tagName === "SPAN") {
-    return elTarget;
-  }
-
+// The settings menu's "Quality" row carries the quality it would open onto as its own label
+// ("Quality  2160p60 4K"), so anything that matched a label was also matched by the row that
+// merely OPENS the list. Checking the current quality was therefore recorded as choosing it -
+// pinning whatever happened to be playing, and clearing the enhanced-bitrate preference with it,
+// because the Premium badge sits on the option and not on that row (#217).
+//
+// Only a real option counts. The answer has to come from the clicked node alone: YouTube swaps the
+// panel back to its top level as part of handling the same click, so anything that re-queries the
+// menu afterwards finds the list already gone.
+//
+// An option's own row reads "1080p60 HD" and the row that opens the list reads "Quality1080p60 HD",
+// so the existing "starts with a quality number" test separates them - the same one that decides
+// which rows are options in the first place.
+function getQualityOptionClicked(elTarget: HTMLElement) {
   const elQualityOptionV3 = elTarget.closest<HTMLElement>(SELECTORS.qualityOption);
   if (elQualityOptionV3) {
     return elQualityOptionV3;
   }
 
-  return elTarget.querySelector<HTMLElement>("span, div > span");
+  const elMenuItem = elTarget.closest<HTMLElement>(SELECTORS.menuItem);
+  if (elMenuItem && getIsQualityElement(elMenuItem)) {
+    return elMenuItem;
+  }
+
+  return null;
 }
 
 function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event) {
@@ -63,7 +78,12 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event) {
     return;
   }
 
-  const elQuality = getQualityParentElement(target);
+  const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
+  if (!elVideo) {
+    return;
+  }
+
+  const elQuality = getQualityOptionClicked(target);
   if (!elQuality) {
     return;
   }
@@ -73,21 +93,25 @@ function saveManualQualityChangeOnDesktop({ isTrusted, target }: Event) {
     return;
   }
 
-  if (!labelQuality.match(/[ps]/)) {
+  const qualityClicked = qualities.find(quality => quality === parseInt(labelQuality));
+  if (!qualityClicked) {
     return;
   }
 
-  const elVideo = getVisibleElement<HTMLVideoElement>(SELECTORS.video);
-  const fpsVideo = elVideo ? getVideoFPS(elVideo) : 30;
-  const fps = getFpsFromRange(window.ythdLastUserQualities ?? initial.qualities, fpsVideo);
-  const qualityClicked = qualities.find(quality => quality === parseInt(labelQuality));
-  if (qualityClicked) {
-    window.ythdLastQualityClicked ??= {};
-    window.ythdLastQualityClicked[fps] = qualityClicked;
-  }
-
+  // Read off the option itself: the Premium badge is a child of the option, never of the inner
+  // label span the old lookup could land on
+  const isEnhancedBitrateClicked = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
+  const fps = getFpsFromRange(window.ythdLastUserQualities ?? initial.qualities, getVideoFPS(elVideo));
+  window.ythdLastQualityClicked ??= {};
+  window.ythdLastQualityClicked[fps] = qualityClicked;
   window.ythdLastEnhancedBitrateClicked ??= {};
-  window.ythdLastEnhancedBitrateClicked[fps] = Boolean(elQuality.querySelector(SELECTORS.labelPremium));
+  window.ythdLastEnhancedBitrateClicked[fps] = isEnhancedBitrateClicked;
+  logDebug("manual quality change recorded", {
+    label: labelQuality.trim(),
+    fps,
+    quality: qualityClicked,
+    isEnhancedBitrate: isEnhancedBitrateClicked
+  });
 }
 
 function handleShortsNavigation(elVideo: HTMLVideoElement) {
