@@ -23,8 +23,7 @@
   let isDismissable = $state(false);
   let isDarkTheme = $state(document.documentElement.hasAttribute(ATTRIBUTE_DARK_THEME));
 
-  const dismissLabel = $derived(isDismissable ? "Dismiss" : "Dismiss in a moment");
-
+  const dismissLabel = $derived(isDismissable ? "Don't show again" : "Dismiss in a moment");
   $effect(() => {
     const observer = new MutationObserver(() => {
       isDarkTheme = document.documentElement.hasAttribute(ATTRIBUTE_DARK_THEME);
@@ -54,13 +53,6 @@
   });
 </script>
 
-<svelte:window
-  onkeydown={e => {
-    if (e.key === "Escape" && isDismissable) {
-      onDismiss();
-    }
-  }} />
-
 <aside
   bind:this={elCard}
   class="promotion"
@@ -72,7 +64,7 @@
     <div class="dismiss-anchor">
       <button class="dismiss" aria-label={dismissLabel} disabled={!isDismissable} onclick={onDismiss}>
         <svg aria-hidden="true" focusable="false" height={CLOSE_ICON_SIZE} viewBox="0 0 24 24" width={CLOSE_ICON_SIZE}>
-          <path d={mdiClose} />
+          <path d={mdiClose}/>
         </svg>
       </button>
       {#if !isDismissable}
@@ -81,19 +73,14 @@
     </div>
   </header>
 
-  <p class="headline">I made Auto HD. I also made Video Time Manager.</p>
+  <p class="headline">Hey there</p>
 
   <p class="body">
-    It shows where your YouTube hours actually go. Its <strong>VidMatch</strong> feature introduces you to people
-    who watch like you do.
+    I think you'll like a free big project that I worked on, <a
+      class="call-to-action" href={store.url} onclick={onDismiss}
+      target="_blank">Video
+      Time Manager</a> that shows you how much time you spend on YouTube
   </p>
-
-  <footer class="actions">
-    <a class="call-to-action" href={store.url} onclick={onDismiss} rel="noopener noreferrer" target="_blank">
-      See it on the {store.name}
-    </a>
-    <span class="reassurance">Shown once. Dismiss and it's gone.</span>
-  </footer>
 </aside>
 
 <style>
@@ -122,9 +109,8 @@
     color: var(--promotion-text);
     font-family: Roboto, Arial, sans-serif;
     opacity: 0%;
-    transition:
-      opacity 200ms cubic-bezier(0.05, 0, 0, 1),
-      transform 200ms cubic-bezier(0.05, 0, 0, 1);
+    transition: opacity 200ms cubic-bezier(0.05, 0, 0, 1),
+    transform 200ms cubic-bezier(0.05, 0, 0, 1);
     transform: translateY(6px);
 
     &.dark {
