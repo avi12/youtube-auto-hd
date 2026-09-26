@@ -168,7 +168,7 @@ function trackDebounced({ name, change }: {
  * nothing at all in a build that cannot report - otherwise a dev run would burn the one shot and
  * the real update would stay silent. */
 export async function reportSettingsBaselineOnce() {
-  if (!getIsAnalyticsEnabled()) {
+  if (!await getIsAnalyticsEnabled()) {
     return;
   }
 
