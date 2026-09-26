@@ -13,6 +13,9 @@ Available for:
 - [Naver Whale](https://store.whale.naver.com/detail/njejcbikjebbmiggdpdggelmoifodjhh) - maintained
   by [Jeurissen Apps](https://apps.jeurissen.co/auto-hd-fps-for-youtube)
 
+> **Latest release: 1.17.3** — 26 May 2026  
+> The source here is published per release. 1.18.0 is in the tree, not on the stores yet.
+
 <details>
 <summary>Screenshots</summary>
 <img alt="screenshot 1" src="https://github.com/user-attachments/assets/439c027b-5e08-4075-b38b-912fc1fe5f4d" />
