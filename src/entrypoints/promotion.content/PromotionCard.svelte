@@ -13,25 +13,14 @@
   // Counting only once the card is genuinely on screen keeps the wait from expiring while it's scrolled past
   const VISIBILITY_RATIO = 0.6;
   const CLOSE_ICON_SIZE = 24;
-  // YouTube flags its dark theme here, and its own design tokens are no longer readable custom properties
-  const ATTRIBUTE_DARK_THEME = "dark";
 
   const store = storeVideoTimeManager!;
 
   let elCard = $state<HTMLElement>();
   let isRevealed = $state(false);
   let isDismissable = $state(false);
-  let isDarkTheme = $state(document.documentElement.hasAttribute(ATTRIBUTE_DARK_THEME));
 
   const dismissLabel = $derived(isDismissable ? "Don't show again" : "Dismiss in a moment");
-  $effect(() => {
-    const observer = new MutationObserver(() => {
-      isDarkTheme = document.documentElement.hasAttribute(ATTRIBUTE_DARK_THEME);
-    });
-
-    observer.observe(document.documentElement, { attributeFilter: [ATTRIBUTE_DARK_THEME] });
-    return () => observer.disconnect();
-  });
 
   $effect(() => {
     if (!elCard) {
@@ -56,7 +45,6 @@
 <aside
   bind:this={elCard}
   class="promotion"
-  class:dark={isDarkTheme}
   class:revealed={isRevealed}
   aria-label="A note from YouTube Auto HD + FPS">
   <header class="attribution">
@@ -90,12 +78,16 @@
     margin: 0;
   }
 
+  /* YouTube's own theme tokens, which custom properties inherit through the shadow boundary -
+     so the card follows the page's theme with no script watching for it, and keeps following it
+     when the user switches theme mid-page. The fallbacks are YouTube's light values, used only
+     if it renames these again. */
   .promotion {
-    --promotion-surface: rgb(242 242 242);
-    --promotion-text: rgb(15 15 15);
-    --promotion-text-secondary: rgb(96 96 96);
-    --promotion-link: rgb(6 95 212);
-    --promotion-hover-layer: rgb(0 0 0 / 10%);
+    --promotion-surface: var(--yt-sys-color-baseline--raised-background, rgb(242 242 242));
+    --promotion-text: var(--yt-sys-color-baseline--text-primary, rgb(15 15 15));
+    --promotion-text-secondary: var(--yt-sys-color-baseline--text-secondary, rgb(96 96 96));
+    --promotion-link: var(--yt-sys-color-baseline--call-to-action, rgb(6 95 212));
+    --promotion-hover-layer: var(--yt-sys-color-baseline--additive-background, rgb(0 0 0 / 10%));
 
     direction: ltr;
     position: relative;
@@ -112,14 +104,6 @@
     transition: opacity 200ms cubic-bezier(0.05, 0, 0, 1),
     transform 200ms cubic-bezier(0.05, 0, 0, 1);
     transform: translateY(6px);
-
-    &.dark {
-      --promotion-surface: rgb(39 39 39);
-      --promotion-text: rgb(241 241 241);
-      --promotion-text-secondary: rgb(170 170 170);
-      --promotion-link: rgb(62 166 255);
-      --promotion-hover-layer: rgb(255 255 255 / 10%);
-    }
 
     &.revealed {
       opacity: 100%;
