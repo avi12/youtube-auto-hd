@@ -1,5 +1,6 @@
 import "./popup.css";
 import Popup from "./Popup.svelte";
+import { trackPopupOpened } from "@/lib/ythd-analytics";
 import { initial } from "@/lib/ythd-defaults";
 import type { EnhancedBitratePreferences, QualityFpsPreferences, VideoAutoResize, VideoSize } from "@/lib/ythd-types";
 import { storage } from "#imports";
@@ -45,7 +46,7 @@ const qualitiesMusic = {
   ...qualitiesMusicRaw
 };
 
-export default mount(Popup, {
+const app = mount(Popup, {
   target: document.getElementById("app") ?? document.body,
   props: {
     qualities,
@@ -61,3 +62,8 @@ export default mount(Popup, {
     qualitiesMusic
   }
 });
+
+// After mount, so the analytics chunk never sits between the user and the first paint
+await trackPopupOpened();
+
+export default app;

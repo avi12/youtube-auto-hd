@@ -1,6 +1,8 @@
 <script lang="ts">
   import Icon from "@/entrypoints/popup/components/Icon.svelte";
   import { isHideDonationSection } from "@/entrypoints/popup/states.svelte";
+  import { trackPromotionClick } from "@/lib/ythd-analytics";
+  import { GAPromotionLink } from "@/lib/ythd-analytics-events";
   import { browserName, storeAutoHd } from "@/lib/ythd-stores";
   import { getI18n } from "@/lib/ythd-utils";
   import { mdiGithub, mdiHeartOutline, mdiStarOutline, mdiTranslate } from "@mdi/js";
@@ -17,27 +19,32 @@
     label: string;
     url: string;
     icon: string;
+    analyticsName: GAPromotionLink;
   };
   const links: Array<PromotionalLink> = [
     {
       label: i18n.contact,
       url: "https://github.com/avi12/youtube-auto-hd",
-      icon: mdiGithub
+      icon: mdiGithub,
+      analyticsName: GAPromotionLink.contact
     },
     {
       label: i18n.labelDonate,
       url: "https://paypal.me/avi12",
-      icon: mdiHeartOutline
+      icon: mdiHeartOutline,
+      analyticsName: GAPromotionLink.donate
     },
     {
       label: i18n.labelRate,
       url: storeAutoHd[browserName],
-      icon: mdiStarOutline
+      icon: mdiStarOutline,
+      analyticsName: GAPromotionLink.rate
     },
     {
       label: i18n.labelTranslate,
       url: "https://apps.jeurissen.co/auto-hd-fps-for-youtube/translate",
-      icon: mdiTranslate
+      icon: mdiTranslate,
+      analyticsName: GAPromotionLink.translate
     }
   ];
 
@@ -57,6 +64,10 @@
         onclick={async e => {
           e.preventDefault();
           const { url } = link;
+          // Awaited, not fired and forgotten: close() below destroys this page, and an event still
+          // waiting on its lazy import would go with it
+          await trackPromotionClick({ link: link.analyticsName });
+
           if (url.includes("paypal.me")) {
             isHideDonationSection.value = true;
           }
