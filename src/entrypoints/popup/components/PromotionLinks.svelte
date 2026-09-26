@@ -1,6 +1,7 @@
 <script lang="ts">
   import Icon from "@/entrypoints/popup/components/Icon.svelte";
   import { isHideDonationSection } from "@/entrypoints/popup/states.svelte";
+  import { browserName, storeAutoHd } from "@/lib/ythd-stores";
   import { getI18n } from "@/lib/ythd-utils";
   import { mdiGithub, mdiHeartOutline, mdiStarOutline, mdiTranslate } from "@mdi/js";
   import { browser, storage } from "#imports";
@@ -11,36 +12,6 @@
     labelTranslate: getI18n("cj_i18n_01605", "Help with translations"),
     contact: getI18n("cj_i18n_07669", "Contact me")
   };
-
-  const linkRatingMapper = {
-    chrome: "https://chromewebstore.google.com/detail/fcphghnknhkimeagdglkljinmpbagone",
-    firefox: "https://addons.mozilla.org/firefox/addon/youtube-auto-hd-fps",
-    opera: "https://addons.opera.com/extensions/details/app_id/afgnmkmomgakegdfoldjonhgkohhodol",
-    safari: "https://apps.apple.com/app/id1546729687"
-  };
-
-  const browserName = (() => {
-    const extensionBaseUrl = browser.runtime.getURL("");
-
-    const isFirefox = extensionBaseUrl.startsWith("moz-extension://");
-    if (isFirefox) {
-      return "firefox";
-    }
-
-    const { userAgent } = navigator;
-
-    const isOpera = userAgent.includes("OPR");
-    if (isOpera) {
-      return "opera";
-    }
-
-    const isSafari = userAgent.match(/^((?!chrome|android).)*safari/i);
-    if (isSafari) {
-      return "safari";
-    }
-
-    return "chrome";
-  })();
 
   type PromotionalLink = {
     label: string;
@@ -60,7 +31,7 @@
     },
     {
       label: i18n.labelRate,
-      url: linkRatingMapper[browserName],
+      url: storeAutoHd[browserName],
       icon: mdiStarOutline
     },
     {
