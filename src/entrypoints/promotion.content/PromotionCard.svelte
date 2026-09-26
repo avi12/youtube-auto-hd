@@ -201,11 +201,6 @@
     color: var(--promotion-text-secondary);
     font-size: 13px;
     line-height: 1.46;
-
-    & strong {
-      color: var(--promotion-text);
-      font-weight: 500;
-    }
   }
 
   .call-to-action {
@@ -220,14 +215,6 @@
     &:focus-visible {
       text-decoration: underline;
     }
-  }
-
-  .reassurance {
-    display: block;
-    margin-block-start: 4px;
-    color: var(--promotion-text-secondary);
-    font-size: 12px;
-    line-height: 1.5;
   }
 
   @media (prefers-reduced-motion: reduce) {
