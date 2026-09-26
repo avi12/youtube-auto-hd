@@ -1,5 +1,7 @@
 {
-  "extends": ["stylelint-config-ccb"],
+  "extends": [
+    "stylelint-config-ccb"
+  ],
   "rules": {
     "csstools/value-no-unknown-custom-properties": null,
     "declaration-property-value-disallowed-list": null,
@@ -8,16 +10,54 @@
     "prettier/prettier": null,
     "selector-class-pattern": null,
     "selector-max-type": null,
-    "selector-pseudo-class-no-unknown": [true, {"ignorePseudoClasses": ["global"]}]
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "global"
+        ]
+      }
+    ]
   },
   "overrides": [
     {
-      "files": ["**/*.svelte"],
+      "files": [
+        "**/*.svelte"
+      ],
       "customSyntax": "postcss-html"
     },
     {
-      "files": ["**/*.html"],
+      "files": [
+        "**/*.html"
+      ],
       "customSyntax": "postcss-html"
+    },
+    {
+      "files": [
+        "src/entrypoints/*.content/**/*.svelte"
+      ],
+      "customSyntax": "postcss-html",
+      "rules": {
+        "a11y/font-size-is-readable": null,
+        "declaration-property-unit-allowed-list": {
+          "animation-delay": [
+            "ms"
+          ],
+          "animation-duration": [
+            "ms"
+          ],
+          "letter-spacing": [
+            "em"
+          ],
+          "opacity": [
+            "%"
+          ],
+          "transition-delay": [
+            "ms"
+          ],
+          "z-index": []
+        }
+      }
     }
   ]
 }
