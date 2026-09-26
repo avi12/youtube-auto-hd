@@ -28,6 +28,7 @@
     "build:package:firefox": "pnpm build:firefox && pnpm package:firefox",
     "build:package:all": "concurrently \"pnpm build:package\" \"pnpm build:package:opera\" \"pnpm build:package:firefox\" --names Chrome,Opera,Firefox",
     "svelte:check": "svelte-check",
+    "ga:dimensions": "tsx scripts/register-ga-custom-dimensions.ts",
     "lint:fix": "eslint --fix",
     "lint:css": "stylelint . --fix",
     "postinstall": "wxt prepare"
