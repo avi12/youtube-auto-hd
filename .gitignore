@@ -15,6 +15,9 @@ lerna-debug.log*
 chrome.env
 firefox.env
 opera.env
+.env
+.env.*
+!.env.example
 
 build/
 

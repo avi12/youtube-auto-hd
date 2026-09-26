@@ -34,7 +34,12 @@ export default defineConfig({
       browser_specific_settings: {
         gecko: {
           id: "avi6106@gmail.com",
-          strict_min_version: "117.0"
+          strict_min_version: "117.0",
+          // Anonymous usage reporting is always on, so Firefox is told it is REQUIRED - disclosed
+          // once in the install prompt rather than left as a switch in about:addons
+          data_collection_permissions: {
+            required: ["technicalAndInteraction"]
+          }
         }
       },
       developer: {
