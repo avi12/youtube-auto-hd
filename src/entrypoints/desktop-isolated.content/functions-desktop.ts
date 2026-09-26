@@ -1,3 +1,4 @@
+import { logDebug } from "@/lib/ythd-debug";
 import { qualities } from "@/lib/ythd-defaults";
 import { loadStorageValues } from "@/lib/ythd-storage-bridge";
 import { type EnhancedBitratePreferences, SUFFIX_EBR, SUFFIX_SUPER_RESOLUTION } from "@/lib/ythd-types";
@@ -11,6 +12,11 @@ import {
 } from "@/lib/ythd-utils";
 
 const MIN_QUALITY_DIGITS_IN_LABEL = 3;
+
+type QualityOption = {
+  element: HTMLDivElement;
+  quality: number | string;
+};
 
 function getQualityNavigationItem(elPlayer: HTMLDivElement) {
   const elMenuItems = [...elPlayer.querySelectorAll<HTMLDivElement>(SELECTORS.menuOption)];
@@ -37,7 +43,7 @@ function getIsLastOptionQuality(elVideo: HTMLVideoElement) {
   return Boolean(elPlayer.querySelector(SELECTORS.qualityDropDownTrigger));
 }
 
-function getIsQualityElement(element: Element) {
+export function getIsQualityElement(element: Element) {
   return Boolean(element.textContent?.trim().match(new RegExp(`^\\d{${MIN_QUALITY_DIGITS_IN_LABEL},}`)));
 }
 
@@ -73,12 +79,20 @@ function convertQualityToNumber(elQuality: Element) {
   return result;
 }
 
-function getAvailableQualities(elVideo: HTMLVideoElement) {
-  return getCurrentQualityElements(elVideo)
-    .values()
-    .map(convertQualityToNumber)
-    .filter(quality => quality !== undefined)
-    .toArray();
+// Each option keeps its own element. Returning two parallel lists and indexing one with the
+// other's index silently selects the wrong quality the moment a label maps to nothing.
+function getAvailableQualities(elVideo: HTMLVideoElement): QualityOption[] {
+  return getCurrentQualityElements(elVideo).flatMap(element => {
+    const quality = convertQualityToNumber(element);
+    if (quality === undefined) {
+      return [];
+    }
+
+    return [{
+      element,
+      quality
+    }];
+  });
 }
 
 export function getVideoFPS(elVideo: HTMLVideoElement) {
@@ -121,26 +135,45 @@ function changeQuality(
 
   const fpsVideo = getVideoFPS(elVideo);
   const fpsStep = getFpsFromRange(window.ythdLastUserQualities, fpsVideo);
-  const elQualities = getCurrentQualityElements(elVideo);
-  const qualitiesAvailable = getAvailableQualities(elVideo);
-  const qualityPreferred = window.ythdLastQualityClicked?.[fpsStep] ?? window.ythdLastUserQualities[fpsStep];
+  const optionsAvailable = getAvailableQualities(elVideo);
+  const qualityPinnedByClick = window.ythdLastQualityClicked?.[fpsStep];
+  const qualityPreferred = qualityPinnedByClick ?? window.ythdLastUserQualities[fpsStep];
   const isEnhancedBitrate = {
     ...window.ythdLastUserEnhancedBitrates,
     ...isEnhancedBitrateCustom
   };
 
-  function applyQuality(iQuality: number) {
-    const elQuality = elQualities[iQuality];
-    if (!elQuality || elQuality.ariaChecked === "true") {
+  logDebug("choosing a quality", {
+    fpsVideo,
+    fpsStep,
+    configured: window.ythdLastUserQualities,
+    qualityPinnedByClick: qualityPinnedByClick ?? null,
+    qualityPreferred,
+    available: optionsAvailable.map(option => option.quality),
+    isEnhancedBitrateWanted: isEnhancedBitrate[fpsStep],
+    isUseSuperResolution
+  });
+
+  function applyQuality(option: QualityOption) {
+    if (option.element.ariaChecked === "true") {
+      logDebug("already on the wanted quality", { quality: option.quality });
       return;
     }
 
-    elQuality.click();
+    logDebug("clicking quality", {
+      quality: option.quality,
+      label: option.element.textContent?.trim()
+    });
+    option.element.click();
   }
 
   function isQualityEligible(quality: string | number) {
     const qualityLabel = quality.toString();
     if (qualityLabel.endsWith(SUFFIX_EBR) && !isEnhancedBitrate[fpsStep]) {
+      logDebug("skipping enhanced bitrate - not opted in for this frame rate", {
+        quality: qualityLabel,
+        fpsStep
+      });
       return false;
     }
 
@@ -151,22 +184,25 @@ function changeQuality(
     return true;
   }
 
-  const iQualityPreferred = qualitiesAvailable.findIndex(quality => {
-    if (!isQualityEligible(quality)) {
+  const optionPreferred = optionsAvailable.find(option => {
+    if (!isQualityEligible(option.quality)) {
       return false;
     }
 
-    return parseInt(quality.toString(), 10) <= parseInt(qualityPreferred.toString(), 10);
+    return parseInt(option.quality.toString(), 10) <= parseInt(qualityPreferred.toString(), 10);
   });
-  if (iQualityPreferred > -1) {
-    applyQuality(iQualityPreferred);
+  if (optionPreferred) {
+    applyQuality(optionPreferred);
     return;
   }
 
-  const iLastEligibleQuality = qualitiesAvailable.findLastIndex(isQualityEligible);
-  if (iLastEligibleQuality > -1) {
-    applyQuality(iLastEligibleQuality);
+  const optionLastEligible = optionsAvailable.findLast(option => isQualityEligible(option.quality));
+  if (optionLastEligible) {
+    applyQuality(optionLastEligible);
+    return;
   }
+
+  logDebug("no eligible quality to apply", { available: optionsAvailable.map(option => option.quality) });
 }
 
 function changeQualityWhenPossible(elVideo: HTMLVideoElement) {
