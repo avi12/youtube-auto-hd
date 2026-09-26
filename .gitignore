@@ -19,6 +19,9 @@ opera.env
 .env.*
 !.env.example
 
+# Drive credential the source-zip upload authenticates with
+ythd.json
+
 build/
 
 # Editor directories and files

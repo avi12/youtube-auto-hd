@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@googleapis/drive": "^26.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
     "@types/chrome": "^0.1.42",
@@ -59,6 +60,7 @@
     "eslint-plugin-import-newlines": "^2.0.0",
     "eslint-plugin-perfectionist": "^5.9.0",
     "eslint-plugin-svelte": "^3.17.1",
+    "fflate": "^0.8.3",
     "globals": "^17.6.0",
     "postcss-html": "^1.8.1",
     "stylelint": "^17.12.0",
