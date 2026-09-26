@@ -1,9 +1,9 @@
 import packageJson from "./package.json" with { type: "json" };
 import { auth, drive } from "@googleapis/drive";
 import autoprefixer from "autoprefixer";
-import { unzipSync } from "fflate";
+import { strToU8, unzipSync, zipSync } from "fflate";
 import { execSync } from "node:child_process";
-import { createReadStream, existsSync, readFileSync } from "node:fs";
+import { createReadStream, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { basename } from "node:path";
 import { defineConfig } from "wxt";
 
@@ -21,6 +21,49 @@ const DRIVE_FOLDER_ENV_BY_BROWSER: Record<string, string> = {
 // Time Manager mints its own (scripts/mint-drive-credentials.ts there). A service account cannot
 // stand in: it would own the uploads and has no Drive quota of its own.
 const DRIVE_CREDENTIALS_FILE = "ythd.json";
+
+// A reviewer opens the archive to reproduce the build, so its README has to be build instructions
+// for the one browser they are reviewing - not the project README, which is written for users and
+// lists every store. Only the build target differs between them.
+function buildInstructionsFor(browser: string) {
+  const targetByBrowser: Record<string, string> = {
+    firefox: "firefox",
+    opera: "opera"
+  };
+  const target = targetByBrowser[browser];
+  if (!target) {
+    return null;
+  }
+
+  return `# Build instructions
+
+YouTube Auto HD + FPS is built with the WXT framework (https://wxt.dev).
+
+## Requirements
+
+- Node.js 22 or newer
+- pnpm - the exact version is pinned in package.json under "packageManager", so \`corepack enable\`
+  is enough to get it
+
+## Steps
+
+1. Extract this archive
+2. From the archive root, install the dependencies: \`pnpm install\`
+3. Build: \`pnpm build:${target}\`
+
+The unpacked extension is written to build/${target}-mv3-production/, which is the exact content of
+the package submitted for review. \`pnpm package:${target}\` zips that directory.
+`;
+}
+
+function writeBuildInstructionsIntoSourcesZip({ sourcesZipPath, instructions }: {
+  sourcesZipPath: string;
+  instructions: string;
+}) {
+  const entries = unzipSync(readFileSync(sourcesZipPath));
+  entries["README.md"] = strToU8(instructions);
+  writeFileSync(sourcesZipPath, zipSync(entries));
+}
 
 // The source zip is built from an exclude list, so anything new at the repo root is in it unless
 // somebody remembers to exclude it - and this archive goes to a store reviewer. Read the zip back
@@ -42,6 +85,14 @@ async function uploadSourcesToDrive({ sourcesZipPath, browser }: {
   sourcesZipPath: string;
   browser: string;
 }) {
+  const instructions = buildInstructionsFor(browser);
+  if (instructions) {
+    writeBuildInstructionsIntoSourcesZip({
+      sourcesZipPath,
+      instructions
+    });
+  }
+
   assertSourcesZipCarriesNoSecret(sourcesZipPath);
 
   const folderEnvName = DRIVE_FOLDER_ENV_BY_BROWSER[browser];
@@ -113,10 +164,12 @@ export default defineConfig({
         gecko: {
           id: "avi6106@gmail.com",
           strict_min_version: "117.0",
-          // Anonymous usage reporting is always on, so Firefox is told it is REQUIRED - disclosed
-          // once in the install prompt rather than left as a switch in about:addons
+          // Mozilla accepts technicalAndInteraction only as OPTIONAL - technical and interaction
+          // data has to stay refusable - so Firefox asks at install and the answer is honoured in
+          // getIsAnalyticsEnabled(). Nothing is required: the extension works the same either way.
           data_collection_permissions: {
-            required: ["technicalAndInteraction"]
+            required: ["none"],
+            optional: ["technicalAndInteraction"]
           }
         }
       },
