@@ -1,12 +1,20 @@
+import { fpsSupported, initial } from "./ythd-defaults";
 import type { EnhancedBitratePreferences, QualityFpsPreferences } from "./ythd-types";
 import { getStorage } from "./ythd-utils";
-import { fpsSupported, initial } from "./ythd-defaults";
 import { storage } from "#imports";
+
+// This module owns the window.ythd* player globals - it seeds them and it is the only thing that
+// refreshes them - so it seeds them here rather than in ythd-utils, which the background imports
+// and where a bare `window` would throw in a service worker
+window.ythdLastUserQualities = { ...initial.qualities };
+window.ythdLastUserEnhancedBitrates = { ...initial.isEnhancedBitrates };
+window.ythdIsUseSuperResolution = initial.isUseSuperResolution;
 
 function parseStorageValue<T>(value: T | string): T {
   if (typeof value !== "string") {
     return value;
   }
+
   try {
     return JSON.parse(value) as T;
   } catch {

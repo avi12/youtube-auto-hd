@@ -6,9 +6,6 @@ export const OBSERVER_OPTIONS = Object.freeze<MutationObserverInit>({
   childList: true,
   subtree: true
 });
-window.ythdLastUserQualities = { ...initial.qualities };
-window.ythdLastUserEnhancedBitrates = { ...initial.isEnhancedBitrates };
-window.ythdIsUseSuperResolution = initial.isUseSuperResolution;
 
 export async function getStorage<T>({
   area,
