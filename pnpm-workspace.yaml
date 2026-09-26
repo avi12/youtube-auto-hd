@@ -1,3 +1,7 @@
+allowBuilds:
+  '@wxt-dev/analytics': false
+  esbuild: true
+  spawn-sync: true
 onlyBuiltDependencies:
   - esbuild
   - spawn-sync
