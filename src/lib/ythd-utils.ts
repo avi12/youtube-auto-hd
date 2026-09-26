@@ -49,6 +49,7 @@ export enum SELECTORS {
   qualityDropDownTrigger = ".ytp-drop-down-label",
   qualityOption = ".ytp-drop-down-menu-button",
   player = ".html5-video-player:not(#inline-preview-player)",
+  watchPage = "ytd-watch-flexy",
   // The top of the related-videos list, where YouTube puts its own sidebar ad
   promotionInjectParent = "#secondary #related ytd-item-section-renderer #contents",
   sidebarAdSlot = "ytd-ad-slot-renderer",
