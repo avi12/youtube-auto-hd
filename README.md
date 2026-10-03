@@ -7,7 +7,7 @@ Available for:
  - [Google Chrome](https://chromewebstore.google.com/detail/fcphghnknhkimeagdglkljinmpbagone) 120+ ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/fcphghnknhkimeagdglkljinmpbagone?color=white&label=users&style=flat-square)
 - [Mozilla Firefox](https://addons.mozilla.org/firefox/addon/avi6106%40gmail.com/)
   117+ ![Mozilla Add-on](https://img.shields.io/amo/users/youtube-auto-hd-fps?color=white&label=users&style=flat-square)
-- [Opera](https://addons.opera.com/extensions/details/app_id/afgnmkmomgakegdfoldjonhgkohhodol) 120+
+- [Opera](https://addons.opera.com/extensions/details/app_id/afgnmkmomgakegdfoldjonhgkohhodol) 120+ ![Opera Add-ons](https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Faddons.opera.com%2Fextensions%2Fdetails%2Fapp_id%2Fafgnmkmomgakegdfoldjonhgkohhodol%2F&search=Downloads%3C%2Fdt%3E%3Cdd%3E%28%5B0-9%2C%5D%2B%29%3C%2Fdd%3E&replace=%241&color=white&label=downloads&style=flat-square)
 - [Safari](https://apps.apple.com/app/auto-hd-fps-for-youtube/id1546729687) - maintained
   by [Jeurissen Apps](https://apps.jeurissen.co/auto-hd-fps-for-youtube)
 - [Naver Whale](https://store.whale.naver.com/detail/njejcbikjebbmiggdpdggelmoifodjhh) - maintained
