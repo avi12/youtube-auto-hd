@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HDR brightness rendering check</title>
+  <link rel="stylesheet" href="../src/lib/ythd-hdr.css">
+</head>
+<body>
+  <video id="original" style="dynamic-range-limit: no-limit"></video>
+  <pre id="result">Running…</pre>
+  <script type="module">
+    const elRoot = document.documentElement;
+    const elOriginal = document.querySelector("video");
+    const elResult = document.querySelector("#result");
+    const checks = [];
+    function assert(condition, message) {
+      if (!condition) throw new Error(message);
+      checks.push(message);
+    }
+    function limit(elVideo) {
+      return getComputedStyle(elVideo).getPropertyValue("dynamic-range-limit");
+    }
+    try {
+      assert(CSS.supports("dynamic-range-limit", "standard"), "Browser supports HDR limiting");
+      assert(limit(elOriginal) === "no-limit", "Disabled: preserves unrestricted rendering");
+      elRoot.setAttribute("data-ythd-limit-hdr", "");
+      assert(limit(elOriginal) === "standard", "Enabled: overrides page video styling");
+      const elReplacement = document.createElement("video");
+      document.body.append(elReplacement);
+      assert(limit(elReplacement) === "standard", "Navigation: newly inserted videos are limited");
+      elRoot.removeAttribute("data-ythd-limit-hdr");
+      assert(limit(elOriginal) === "no-limit" && limit(elReplacement) === "no-limit", "Disabled: restores both videos");
+      window.hdrSmokeResult = { passed: true, checks };
+    } catch (error) {
+      window.hdrSmokeResult = { passed: false, error: error.message, checks };
+    }
+    elResult.textContent = JSON.stringify(window.hdrSmokeResult, null, 2);
+  </script>
+</body>
+</html>

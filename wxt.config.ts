@@ -150,12 +150,12 @@ export default defineConfig({
       "https://www.youtube-nocookie.com/*",
       "https://youtube.googleapis.com/*"
     ],
-    permissions: ["cookies", "storage"],
+    permissions: ["cookies", "storage", "scripting"],
     options_ui: {
       page: "popup.html"
     },
-    author: browser === "opera" || browser === "firefox" ? packageJson.author : { email },
-    ...browser !== "firefox" && {
+    author: browser === "opera" || browser === "firefox" || browser === "safari" ? packageJson.author : { email },
+    ...browser !== "firefox" && browser !== "safari" && {
       offline_enabled: true,
       minimum_chrome_version: "120.0"
     },
@@ -181,6 +181,9 @@ export default defineConfig({
   }),
   hooks: {
     "zip:extension:done"(_, zipPath) {
+      if (zipPath.includes("safari")) {
+        return;
+      }
       const stores = zipPath.match(/chrome|opera/) ? "chrome,opera" : "firefox";
       execSync(`webext-store-incompat-fixer -i ${zipPath} --stores ${stores}`);
     },

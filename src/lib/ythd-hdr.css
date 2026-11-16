@@ -1,0 +1,3 @@
+:root[data-ythd-limit-hdr] video {
+  dynamic-range-limit: standard !important;
+}

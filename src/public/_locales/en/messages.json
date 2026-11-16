@@ -24,5 +24,10 @@
 "cj_i18n_08028":{"message":"Quality"},
 "cj_i18n_08029":{"message":"Apply on YouTube Music"},
 "cj_i18n_08030":{"message":"Use global quality preferences"},
+"cj_i18n_08031":{"message":"Video brightness"},
+"cj_i18n_08032":{"message":"Limit HDR brightness"},
+"cj_i18n_08033":{"message":"Limits HDR highlights to SDR brightness without lowering resolution, rather than downloading SDR."},
+"cj_i18n_08034":{"message":"Force SDR"},
+"cj_i18n_08035":{"message":"Requests SDR video instead of HDR. Reload YouTube after changing this option or the extension’s master switch."},
 "cj_i18n_todo":{"message":""}
 }

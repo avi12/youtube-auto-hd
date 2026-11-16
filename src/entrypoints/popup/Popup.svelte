@@ -5,7 +5,9 @@
     isEnhancedBitrates,
     isExcludeVertical,
     isExtensionEnabled,
+    isForceSdr,
     isHideDonationSection,
+    isLimitHdrBrightness,
     isResizeVideo,
     isUseGlobalQualityPreferences,
     isUseSuperResolution,
@@ -14,6 +16,7 @@
     sizeVideo
   } from "@/entrypoints/popup/states.svelte";
   import ControlEnabled from "@/entrypoints/popup/views/ControlEnabled.svelte";
+  import ControlHdr from "@/entrypoints/popup/views/ControlHdr.svelte";
   import ControlQuality from "@/entrypoints/popup/views/ControlQuality.svelte";
   import ControlSize from "@/entrypoints/popup/views/ControlSize.svelte";
   import ControlYouTubeMusic from "@/entrypoints/popup/views/ControlYouTubeMusic.svelte";
@@ -26,6 +29,8 @@
     qualities: QualityFpsPreferences;
     enhancedBitrates: EnhancedBitratePreferences;
     useSuperResolution: boolean;
+    isLimitHdrBrightness: boolean;
+    isForceSdr: boolean;
     extensionEnabled: boolean;
     autoResize: VideoAutoResize;
     size: VideoSize;
@@ -40,6 +45,8 @@
     qualities,
     enhancedBitrates,
     useSuperResolution,
+    isLimitHdrBrightness: isLimitHdrBrightnessInitial,
+    isForceSdr: isForceSdrInitial,
     extensionEnabled,
     autoResize,
     size,
@@ -54,6 +61,8 @@
     qualitiesStored.value = qualities;
     isEnhancedBitrates.value = enhancedBitrates;
     isUseSuperResolution.value = useSuperResolution;
+    isLimitHdrBrightness.value = isLimitHdrBrightnessInitial;
+    isForceSdr.value = isForceSdrInitial;
     isExtensionEnabled.value = extensionEnabled;
     isResizeVideo.value = autoResize;
     sizeVideo.value = size;
@@ -74,6 +83,9 @@
   {#if isExtensionEnabled.value}
     <Section label={getI18n("cj_i18n_08028", "Quality")}>
       <ControlQuality />
+    </Section>
+    <Section label={getI18n("cj_i18n_08031", "Video brightness")}>
+      <ControlHdr />
     </Section>
     <Section label={getI18n("cj_i18n_06859", "Player size")}>
       <ControlSize />

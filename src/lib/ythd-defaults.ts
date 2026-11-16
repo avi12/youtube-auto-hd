@@ -9,6 +9,8 @@ export const fpsList = [...fpsSupported].sort((first, second) => first - second)
 
 export const initial = {
   isExtensionEnabled: true,
+  isLimitHdrBrightness: true,
+  isForceSdr: false,
   isHideDonationSection: false,
   qualities: {
     60: qualityClosest,

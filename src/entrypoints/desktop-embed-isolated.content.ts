@@ -31,8 +31,7 @@ async function init() {
 }
 
 export default defineContentScript({
-  matches: ["https://www.youtube.com/*", "https://www.youtube-nocookie.com/*"],
-  includeGlobs: ["https://www.youtube.com/embed/*", "https://www.youtube-nocookie.com/embed/*"],
+  matches: ["https://www.youtube.com/embed/*", "https://www.youtube-nocookie.com/embed/*"],
   allFrames: true,
   main: () => init()
 });
